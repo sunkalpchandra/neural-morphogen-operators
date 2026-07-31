@@ -149,3 +149,62 @@ def summarize(df: pd.DataFrame, reference: str = "nmo",
 
 def stars(p: float) -> str:
     return "$^{***}$" if p < 1e-3 else "$^{**}$" if p < 1e-2 else "$^{*}$" if p < 0.05 else ""
+
+
+# --------------------------------------------------------------------------- #
+# Specimen-level analysis (guards against pseudo-replication)
+# --------------------------------------------------------------------------- #
+
+#: Sections that come from the same biological specimen. Serial coronal sections
+#: of one brain are not independent samples: anatomy, donor, batch and assay run
+#: are all shared, so a test that treats them as independent overstates its
+#: effective sample size. Any section not listed maps to itself.
+SPECIMEN_OF = {
+    "merfish_allen": "MERFISH C57BL6J-638850",   # 12 serial sections, one brain
+    "mosta_embryo": "Stereo-seq embryo series",  # consecutive stages, one series
+}
+
+
+def specimen(section: str) -> str:
+    for prefix, name in SPECIMEN_OF.items():
+        if section.startswith(prefix):
+            return name
+    return section
+
+
+def by_specimen(df: pd.DataFrame, metric: str = "pearson_mean",
+                section_col: str = "section", model_col: str = "model") -> pd.DataFrame:
+    """Collapse sections to specimens by averaging within specimen and model.
+
+    This is the conservative unit of analysis. It costs statistical power --
+    with a handful of specimens the Wilcoxon test cannot reach small p-values
+    even under a perfect win record -- but it is the level at which
+    'independent sample' is defensible.
+    """
+    out = df.copy()
+    out[section_col] = out[section_col].map(specimen)
+    return out.groupby([section_col, model_col], as_index=False)[metric].mean()
+
+
+def two_level_report(df: pd.DataFrame, reference: str = "nmo",
+                     metric: str = "pearson_mean") -> Dict[str, List[PairedResult]]:
+    """Paired comparison at both the section and the specimen level.
+
+    Reporting only the first would overstate significance; reporting only the
+    second would discard the demonstration that the advantage is stable across
+    anatomy. Both are returned so the paper can state each for what it is.
+    """
+    return {
+        "section": paired_comparison(df, reference, metric),
+        "specimen": paired_comparison(by_specimen(df, metric), reference, metric),
+    }
+
+
+def min_attainable_p(n: int) -> float:
+    """Smallest two-sided Wilcoxon p attainable with ``n`` paired observations.
+
+    Reported alongside specimen-level tests so a non-significant result is not
+    misread as evidence of no effect when the design cannot produce a
+    significant one.
+    """
+    return 2.0 ** (-(n - 1)) if n >= 1 else float("nan")

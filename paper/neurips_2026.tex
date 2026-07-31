@@ -65,6 +65,8 @@
   MSMinDz,MSMaxHolm,MSMinWins,MSNPairs,MSNBaselines,MSAllSig,BioSections,%
   BioARIRet,BioARIRetBest,BioMarker,BioMarkerBest,BioKNN,BioKNNBest,%
   NumStableDt,NumCFL,NumCFLRatio,NumEulerSteps,NumSpeedup,NumStrangSteps,%
+  MSSpecimens,MSSpecPairs,MSSpecMinP,MSSpecGraphDz,MSSpecGraphDelta,%
+  MSSpecContDz,MSSpecContDelta,MSSpecWins,%
   MatchedNoReaction,MatchedNoReactionDelta,MatchedSeeds,%
   NDatasets,TotalLocations}\do{%
   \expandafter\providecommand\csname\@nmocmd\endcsname{\textbf{??}}}
@@ -123,7 +125,12 @@ gradients).
 Across \MSSections{} tissue sections from four technologies (\MSRuns{} runs), NMO
 improves masked-region reconstruction over graph, Gaussian-process and implicit
 neural-field baselines, beating every one with Holm-corrected $p \le \MSMaxHolm$
-in paired tests over sections and a smallest effect size of $d_z = \MSMinDz$.
+in paired tests over sections. Because twelve of those sections are serial
+sections of one brain, we also report the conservative analysis over
+\MSSpecimens{} independent specimens: the advantage over the continuous
+baselines survives ($d_z = \MSSpecContDz$) while the advantage over graph
+baselines becomes small and statistically unresolved, which we state as the
+limit of what the present data establish.
 Two controls localize the gain: a parameter-matched ablation shows the $0.43\%$
 of weights forming the operator account for $\MatchedNoDynamicsDelta$ Pearson
 $r$, while a non-spatial baseline sharing the same read-out head shows graph
@@ -630,6 +637,14 @@ a known consequence of diffusion-based architectures
 prediction at unmeasured coordinates is well supported, delineation of sharp
 boundaries less so. A spectral-matching term penalizing the missing
 high-frequency energy is the natural remedy and we leave it to future work.
+
+The benchmark's statistical resolution is limited by the number of independent
+specimens rather than by the number of sections. Twelve of \MSSections{} sections
+come from one brain; at the specimen level only \MSSpecPairs{} complete pairs
+remain, where the smallest attainable Wilcoxon $p$ is $\MSSpecMinP$. The
+section-level result establishes consistency across anatomy, and the
+specimen-level result is directionally consistent, but separating NMO from the
+graph baselines with confidence would require additional independent tissues.
 
 Transfer remains the weakest setting. NMO retains a substantial fraction of
 in-domain performance zero-shot, but the STAGATE-style baseline transfers better,

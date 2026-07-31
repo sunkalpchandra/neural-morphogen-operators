@@ -261,6 +261,25 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("MSNPairs", str(res[0].n_sections))
             cmd("MSNBaselines", str(len(res)))
             cmd("MSAllSig", "yes" if all(r.p_holm < 0.05 for r in res) else "no")
+        # Specimen-level (conservative) analysis: serial sections of one brain
+        # are not independent samples, so this is the defensible unit.
+        from .statistics import by_specimen as _bs, min_attainable_p as _map
+        sp = _bs(m8)
+        res2 = _pc(sp, "nmo", "pearson_mean")
+        cmd("MSSpecimens", str(int(sp["section"].nunique())))
+        if res2:
+            cmd("MSSpecPairs", str(res2[0].n_sections))
+            cmd("MSSpecMinP", f"{_map(res2[0].n_sections):.2f}")
+            graphs = [r for r in res2 if r.other in ("gnn", "stagate", "autoencoder")]
+            cont = [r for r in res2 if r.other in ("neural_field", "gp_multiscale")]
+            if graphs:
+                cmd("MSSpecGraphDz", f"{min(r.cohens_dz for r in graphs):.2f}"
+                    + "--" + f"{max(r.cohens_dz for r in graphs):.2f}")
+                cmd("MSSpecGraphDelta", _val(min(r.mean_diff for r in graphs)))
+            if cont:
+                cmd("MSSpecContDz", f"{min(r.cohens_dz for r in cont):.2f}")
+                cmd("MSSpecContDelta", _val(min(r.mean_diff for r in cont)))
+            cmd("MSSpecWins", f"{min(r.n_reference_wins for r in res2)}")
 
     # ---- Experiment 9 : biology ------------------------------------------ #
     bp = Path(results_root) / "exp9" / "biology.json"
