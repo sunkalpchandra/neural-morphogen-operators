@@ -1,0 +1,434 @@
+[
+ {
+  "id": "2607.23466v1",
+  "title": "Extending Fourier Neural Operators for Modeling Parameterized and Coupled PDEs",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.02088v1",
+  "title": "Fourier Neural Operators for Rayleigh-B\u00e9nard Convection",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.00320v1",
+  "title": "From Spectral Methods to Sample Complexity Bounds for Fourier Neural Operators",
+  "year": "2026",
+  "cat": "stat.ML"
+ },
+ {
+  "id": "2606.29436v1",
+  "title": "Fourier Neural Operators with Least-Squares Readout Refit for Learning Random Obstacle-to-Solution Maps",
+  "year": "2026",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2606.28122v1",
+  "title": "Higher-Order Fourier Neural Operator: Explicit Mode Mixer for Nonlinear PDEs",
+  "year": "2026",
+  "cat": "cs.CE"
+ },
+ {
+  "id": "2607.16238v1",
+  "title": "Diffusion-corrected Autoregressive Fourier Neural Operator for Droplet Evolution Prediction",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.27459v2",
+  "title": "Geometry-Conditioned Fourier Neural Operators for Cubic Nonlinear Schrodinger Dynamics on Periodic Domains",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.17733v1",
+  "title": "Latent Residual-Closure Fourier Neural Operator for Robust Multi-Field Solving in Particle-in-Cell Simulations",
+  "year": "2026",
+  "cat": "physics.comp-ph"
+ },
+ {
+  "id": "2607.27867v1",
+  "title": "Orca: Neural Operators for Causal Reasoning in Continuous Time",
+  "year": "2026",
+  "cat": "cs.AI"
+ },
+ {
+  "id": "2607.25668v1",
+  "title": "A Physics-Informed Neural Operator for Thermal Ranking of Low-Cost Wall Materials in Hot-Dry Climates",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.25330v1",
+  "title": "Physics-Informed Neural Operator for Warm-Starting Background-Decomposed and Preconditioned PSFD: Enabling Scalable 3-D EUV Mask Simulation",
+  "year": "2026",
+  "cat": "physics.optics"
+ },
+ {
+  "id": "2607.23337v1",
+  "title": "Neural operator discovery from heterogeneous trajectories",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.23299v1",
+  "title": "PI-GINOT: Data-free geometry-informed neural operator learning for finite-strain hyperelasticity on parametric DogBone specimens",
+  "year": "2026",
+  "cat": "physics.comp-ph"
+ },
+ {
+  "id": "2607.21932v1",
+  "title": "Generalized Neural Operator for Parametric and Boundary-Value Problems",
+  "year": "2026",
+  "cat": "cs.CE"
+ },
+ {
+  "id": "2607.18043v1",
+  "title": "Adaptive Mamba Neural Operators",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.28519v1",
+  "title": "A Trainable-by-Parts Operator Learning Framework: Bridging DeepONet and Karhunen-Loeve Expansions for Large-Scale Applications",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.23502v1",
+  "title": "DVL-DeepONet: A Physics-Guided Operator Learning for Resilient Underwater Navigation",
+  "year": "2026",
+  "cat": "cs.RO"
+ },
+ {
+  "id": "2606.07122v1",
+  "title": "A Unified DeepONet Framework for Logarithmically Stable Infinite-Dimensional Inverse Problems",
+  "year": "2026",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2605.16594v1",
+  "title": "fPINN-DeepONet: A Physics-Informed Operator Learning Framework for Multi-term Time-fractional Mixed Diffusion-wave Equations",
+  "year": "2026",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2605.07828v2",
+  "title": "NSPOD: Accelerating Krylov solvers via DeepONet-learned POD subspaces",
+  "year": "2026",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2605.00760v2",
+  "title": "Learning the Helmholtz equation operator with DeepONet for non-parametric 2D geometries",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2605.00330v2",
+  "title": "Conformalized Quantum DeepONet Ensembles for Scalable Operator Learning with Distribution-Free Uncertainty",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2604.11972v1",
+  "title": "Multi-Head Residual-Gated DeepONet for Coherent Nonlinear Wave Dynamics",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2507.08861v1",
+  "title": "On the under-reaching phenomenon in message-passing neural PDE solvers: revisiting the CFL condition",
+  "year": "2025",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2302.03580v1",
+  "title": "Multi-Scale Message Passing Neural PDE Solvers",
+  "year": "2023",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2202.03376v3",
+  "title": "Message Passing Neural PDE Solvers",
+  "year": "2022",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.20896v1",
+  "title": "HierarchicalDAEW: Domain-Aware Edge-Weighted Graph Convolution with Evidential Uncertainty for Multi-Section Spatial Gene Expression Prediction from H&amp;E Histology",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.14410v2",
+  "title": "LATTICE: Graph Self-Supervised Learning for Multimodal Spatial Omics Integration",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.13508v1",
+  "title": "CDS: Counterfactual Directionality Score for Structured Interventions in Spatial Graphs",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.09166v1",
+  "title": "COAST: Context-Aware Differential Learning for Gene Expression Prediction in Spatial Transcriptomics",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.31394v2",
+  "title": "Resolving superposition in AI for interpretability and cross-modal alignment in patient-neuronal images",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.15458v1",
+  "title": "Structured Nonparametric Variational Inference for Dependent Latent Modeling",
+  "year": "2026",
+  "cat": "stat.ML"
+ },
+ {
+  "id": "2606.08712v1",
+  "title": "SNR-ST-Mix: Sample-specific Neighborhood Regression Mixup for Augmented Spatial Transcriptomics Imputation with Deep Neural Network",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.02424v1",
+  "title": "GC-MoE: Genomics-Guided Cell-Type-Specific Mixture of Experts for Histology-Based Single-Cell Spatial Transcriptomics",
+  "year": "2026",
+  "cat": "cs.CV"
+ },
+ {
+  "id": "2603.25247v1",
+  "title": "FEAST: Fully Connected Expressive Attention for Spatial Transcriptomics",
+  "year": "2026",
+  "cat": "cs.CV"
+ },
+ {
+  "id": "2602.05811v1",
+  "title": "STProtein: predicting spatial protein expression from multi-omics data",
+  "year": "2026",
+  "cat": "cs.AI"
+ },
+ {
+  "id": "2512.22262v2",
+  "title": "INSIGHT: Spatially resolved survival modelling from routine histology crosslinked with molecular profiling reveals prognostic epithelial-immune axes in stage II/III colorectal cancer",
+  "year": "2025",
+  "cat": "q-bio.QM"
+ },
+ {
+  "id": "2511.11380v1",
+  "title": "When Genes Speak: A Semantic-Guided Framework for Spatially Resolved Transcriptomics Data Clustering",
+  "year": "2025",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2506.11491v2",
+  "title": "SemanticST: Spatially Informed Semantic Graph Learning for Clustering, Integration, and Scalable Analysis of Spatial Transcriptomics",
+  "year": "2025",
+  "cat": "q-bio.GN"
+ },
+ {
+  "id": "2502.05458v1",
+  "title": "Block Graph Neural Networks for tumor heterogeneity prediction",
+  "year": "2025",
+  "cat": "cs.CV"
+ },
+ {
+  "id": "2412.02601v2",
+  "title": "MERGE: Multi-faceted Hierarchical Graph-based GNN for Gene Expression Prediction from Whole Slide Histopathology Images",
+  "year": "2024",
+  "cat": "cs.CV"
+ },
+ {
+  "id": "2410.19868v2",
+  "title": "Hypergraph Neural Networks Reveal Spatial Domains from Single-cell Transcriptomics Data",
+  "year": "2024",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2601.11594v2",
+  "title": "Multi-Scale Negative Coupled Information Systems (MNCIS): A Unified Spectral Topology Framework for Stability in Turbulence, AI, and Biology",
+  "year": "2026",
+  "cat": "physics.comp-ph"
+ },
+ {
+  "id": "2510.18472v1",
+  "title": "Computational Physics Applied to Photonic Devices",
+  "year": "2025",
+  "cat": "physics.optics"
+ },
+ {
+  "id": "2501.18189v1",
+  "title": "Neural Network Modeling of Microstructure Complexity Using Digital Libraries",
+  "year": "2025",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2406.01167v1",
+  "title": "Pattern Formation in a Spiking Neural-Field of Renewal Neurons",
+  "year": "2024",
+  "cat": "q-bio.NC"
+ },
+ {
+  "id": "2309.06339v1",
+  "title": "Unraveling biochemical spatial patterns: machine learning approaches to the inverse problem of Turing patterns",
+  "year": "2023",
+  "cat": "physics.bio-ph"
+ },
+ {
+  "id": "2108.08542v1",
+  "title": "Learning System Parameters from Turing Patterns",
+  "year": "2021",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.15773v1",
+  "title": "From Diffusion to Reaction-Diffusion: A Dynamical-Systems View of Oversmoothing in Hypergraph Neural Networks",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.13877v1",
+  "title": "AI-Augmented Adaptive Digital Twin Modeling for Brain Tumor Evolution Prediction and Treatment Scheduling",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.11110v1",
+  "title": "Neural Discovery of Memory and Nonlocal Kernels in Integro-Differential Equations with Constrained Kolmogorov--Arnold Networks",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.07623v1",
+  "title": "Higher-Order Geometric Updates for Levenberg-Marquardt Method via Riemann Normal Coordinates",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.05271v1",
+  "title": "Target-Guided Selective Reweighting for Physics-Informed Neural Network Inverse Problems: A Transfer Learning Approach",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.02715v1",
+  "title": "LiNO: Lifting based multiresolution neural operator",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.25185v1",
+  "title": "Neural operator-based digital twins for modeling amyloid-$\u03b2$ and tau propagation and treatment optimization in Alzheimer's disease",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.02427v1",
+  "title": "Spectral Audit of In-Context Operator Networks",
+  "year": "2026",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2607.23447v1",
+  "title": "PerturbPFN: Probing the Limits of Synthetic Priors in Drug Perturbation Modelling",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.22934v1",
+  "title": "Amortized Bayesian Causal Discovery of Extended Factor Graphs",
+  "year": "2026",
+  "cat": "stat.ML"
+ },
+ {
+  "id": "2607.18777v1",
+  "title": "PertReason: A Knowledge-Grounded Benchmark and Framework for Cell-State-Conditioned Mechanistic Reasoning of Perturbation Effects",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.19426v1",
+  "title": "Making Single-Cell Data Distillation Auditable: Traceable Real-Cell Coresets via Discrete Min-Max Selection",
+  "year": "2026",
+  "cat": "q-bio.GN"
+ },
+ {
+  "id": "2607.17671v1",
+  "title": "GeneSpeak-FP: Target and Compound Retrieval from Observed Cell-Level Perturbation Signatures",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.04595v1",
+  "title": "Score Distributions, Not Cells: Evaluating Single-Cell Perturbations Under Class Overlap",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.28459v1",
+  "title": "scKDGM: KAN-guided Dynamic Graph Masked Learning for Single-Cell RNA-seq Clustering",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.27752v1",
+  "title": "PerturbCellRL: Verifier-Guided Reinforcement Learning for Single-Cell Perturbation Prediction",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2607.03677v1",
+  "title": "Dynamics of Chemotactic Gliding-Aggregation in Myxobacteria on Bounded Domains: Stochastic Modeling, Analysis, and Deep Neural Network Simulations",
+  "year": "2026",
+  "cat": "math.AP"
+ },
+ {
+  "id": "2606.12658v1",
+  "title": "Physics-Informed Neural Networks for Chemotherapy Pharmacokinetics: Benchmarking the Clinical Estimator and Exposing Parameter Identifiability",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2602.15592v1",
+  "title": "Uni-Flow: a unified autoregressive-diffusion model for complex multiscale flows",
+  "year": "2026",
+  "cat": "physics.flu-dyn"
+ },
+ {
+  "id": "2511.15940v2",
+  "title": "Data-Driven Parameter Identification for Tumor Growth Models",
+  "year": "2025",
+  "cat": "math.AP"
+ },
+ {
+  "id": "2511.14497v1",
+  "title": "Solving Navier-Stokes Equations Using Data-free Physics-Informed Neural Networks With Hard Boundary Conditions",
+  "year": "2025",
+  "cat": "physics.flu-dyn"
+ },
+ {
+  "id": "2510.25368v1",
+  "title": "Position: Biology is the Challenge Physics-Informed ML Needs to Evolve",
+  "year": "2025",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2509.04402v1",
+  "title": "Learning neural representations for X-ray ptychography reconstruction with unknown probes",
+  "year": "2025",
+  "cat": "cs.CV"
+ },
+ {
+  "id": "2504.05248v1",
+  "title": "PINNverse: Accurate parameter estimation in differential equations from noisy data with constrained physics-informed neural networks",
+  "year": "2025",
+  "cat": "cs.LG"
+ }
+]

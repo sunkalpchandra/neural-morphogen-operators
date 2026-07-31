@@ -1,0 +1,151 @@
+{
+ "diffusion_to_reaction_diffusion_oversmoothing.pdf": {
+  "pages": 17,
+  "figures": 0,
+  "tables": 0,
+  "abstract_words": 0,
+  "abstract": "",
+  "sections": [
+   "0 Mitigated Oversmoothing",
+   "7 TABLE I",
+   "2 TABLE II",
+   "16 GREAD",
+   "14 RDGNN",
+   "19 Standard HGNNs",
+   "10 HyperGCN",
+   "18 HCHA",
+   "12 HNHN",
+   "20 UNIGCNII",
+   "8 Expressive HGNNs",
+   "7 AllDeepSets"
+  ]
+ },
+ "feast_attention_spatial_transcriptomics.pdf": {
+  "pages": 21,
+  "figures": 14,
+  "tables": 10,
+  "abstract_words": 0,
+  "abstract": "",
+  "sections": [
+   "3 Feature",
+   "7 Ours",
+   "32 Negative-aware Attention",
+   "6 FEAST",
+   "7 FEAST",
+   "8 GNAS",
+   "9 GNAS",
+   "10 Ground Truth",
+   "11 Ground Truth"
+  ]
+ },
+ "hypergraph_nn_spatial_domains.pdf": {
+  "pages": 5,
+  "figures": 0,
+  "tables": 0,
+  "abstract_words": 0,
+  "abstract": "",
+  "sections": []
+ },
+ "lattice_graph_ssl_spatial_omics.pdf": {
+  "pages": 17,
+  "figures": 6,
+  "tables": 3,
+  "abstract_words": 238,
+  "abstract": "Spatially resolved omics studies increasingly combine transcriptomic and epige- nomic assays, yet downstream analysis is often still performed using single- modality pipelines. We present LATTICE (Latent Alignment of Tissue-level and Transcriptomic Information for Cross-modal Embedding), a graph-based self- supervised framework that learns spot-level representations from harmonized mul- timodal features. LATTICE integrates five aligned modality blocks per Visium spot: Visium RNA, scMultiome RNA, scMultiome ATAC, spatial ATAC, and spatial CUT&Tag. These modalities capture spatial transcriptomic measurements, single-cell inferred regulatory activity, and in situ chromatin and histone states within a unified lattice representation. LATTICE constructs a spatial neighbor- hood graph and trains a TransformerConv encoder using masked reconstruction, cross-modal alignment, and spatial smoothness objectives. On a private 11-sample melanoma cohort from an anonymized clinical collaborator comprising 54,912 total spots, LATTICE demonstrated stable optimization behavior, reproducible embeddings across analysis seeds, and complete multimodal integration across all samples. Adding scMultiome RNA to Visium RNA alone substantially im- proved concordance with Space Ranger clusters across 11 runs (adjusted Rand index [ARI] +0.157, normalized mutual information [NMI] +0.143, and spatial contiguity",
+  "sections": [
+   "1 Introduction",
+   "2 Visium RNA",
+   "2 Related Work",
+   "4 Experiments",
+   "5 Conclusion"
+  ]
+ },
+ "learning_system_params_turing_patterns.pdf": {
+  "pages": 32,
+  "figures": 3,
+  "tables": 0,
+  "abstract_words": 188,
+  "abstract": "The Turing mechanism describes the emergence of spatial patterns due to spontaneous symmetry breaking in reaction-diffusion processes and underlies many developmental processes. Identifying Turing mechanisms in biological systems de\ufb01nes a challenging problem. This paper introduces an approach to the prediction of Turing parameter values from observed Turing patterns. The parame- ter values correspond to a parametrized system of reaction-diffusion equations that generate Turing patterns as steady state. The Gierer-Meinhardt model with four parameters is chosen as a case study. A novel invariant pattern representation based on resistance distance histograms is employed, along with Wasserstein kernels, in order to cope with the highly variable arrangement of local pattern structure that depends on the initial conditions which are assumed to be unknown. This enables to compute physically plausible distances between patterns, to compute clusters of patterns and, above all, model parameter prediction: for small training sets, classical state-of-the-art methods including operator-valued kernels outperform neural networks that are applied to raw pattern data, whereas for large training sets the latter are more accurate. Excellent predictions are obtained for single parameter values and reasonably accurate results for jointly predicting all parameter values.",
+  "sections": [
+   "1 Introduction",
+   "3 Extracting Features from Turing Patterns",
+   "4 Learning Parameters from Spatial Turing Patterns",
+   "5 Experiments and Discussion",
+   "6 Conclusion",
+   "1 Introduction",
+   "3 Extracting Features from Turing Patterns",
+   "4 Learning Parameters from Spatial Turing Patterns",
+   "5 Experiments and Discussion",
+   "6 Conclusion"
+  ]
+ },
+ "message_passing_neural_pde_solvers.pdf": {
+  "pages": 27,
+  "figures": 13,
+  "tables": 4,
+  "abstract_words": 190,
+  "abstract": "The numerical solution of partial differential equations (PDEs) is dif\ufb01cult, hav- ing led to a century of research so far. Recently, there have been pushes to build neural\u2013numerical hybrid solvers, which piggy-backs the modern trend towards fully end-to-end learned systems. Most works so far can only generalize over a subset of properties to which a generic solver would be faced, including: reso- lution, topology, geometry, boundary conditions, domain discretization regular- ity, dimensionality, etc. In this work, we build a solver, satisfying these proper- ties, where all the components are based on neural message passing, replacing all heuristically designed components in the computation graph with backprop- optimized neural function approximators. We show that neural message passing solvers representationally contain some classical methods, such as \ufb01nite differ- ences, \ufb01nite volumes, and WENO schemes. In order to encourage stability in training autoregressive models, we put forward a method that is based on the prin- ciple of zero-stability, posing stability as a domain adaptation problem. We val- idate our method on various \ufb02uid-like \ufb02ow problems, demonstrating fast, stable, and accurate performance across different domain topologies, equation parame- ters, discretizations, etc., in 1D and 2D.",
+  "sections": [
+   "1 INTRODUCTION",
+   "2 BACKGROUND AND RELATED WORK",
+   "3 METHOD",
+   "4 EXPERIMENTS",
+   "5 CONCLUSION",
+   "6 REPRODUCIBILITY STATEMENT",
+   "7 ETHICAL STATEMENT"
+  ]
+ },
+ "ml_biochemical_spatial_patterns.pdf": {
+  "pages": 17,
+  "figures": 5,
+  "tables": 0,
+  "abstract_words": 149,
+  "abstract": "The diffusion-driven Turing instability is a potential mechanism for spatial pattern formation in numerous biological and chemical systems. However, engineering these patterns and demonstrating that they are produced by this mechanism is challenging. To address this, we aim to solve the inverse problem in artificial and experimental Turing patterns. This task is challenging since high levels of noise corrupt the patterns and slight changes in initial conditions can lead to different patterns. We used both least squares to explore the problem and physics-informed neural networks to build a noise- robust method. We elucidate the functionality of our network in scenarios mimicking biological noise levels and showcase its application through a prototype involving an experimentally obtained chemical pattern. The findings reveal the significant promise of machine learning in steering the creation of synthetic patterns in bioengineering, thereby advancing our grasp of morphological intricacies within biological systems while acknowledging existing limitations.",
+  "sections": []
+ },
+ "neural_operator_discovery_trajectories.pdf": {
+  "pages": 56,
+  "figures": 0,
+  "tables": 1,
+  "abstract_words": 161,
+  "abstract": "Neural operators provide data-driven mappings for modeling dynamical systems. Extending them to families of systems typically requires explicit condition- ing variables such as physical parameters, geometries, or boundary conditions. In many real-world settings, these quantities are unobserved. Here, we formu- late neural operator discovery (NOD) as the problem of learning both shared solution operators and system-specific variation directly from heterogeneous trajectories without access to labeled governing factors. We introduce a factor- ized latent-conditioning formulation that jointly learns a neural operator and a low-dimensional latent representation through factorized prediction, trajectory- decoupled sampling, and dimension selection. Across diverse systems, the learned latent representation captures the intrinsic dimensionality of system variation and organizes system instances in a smooth and approximately invertible latent structure aligned with the underlying governing factors. This organization enables generalization to previously unseen system instances, including zero-shot extrap- olation across regimes and stable long-horizon prediction. These results establish an interpretable paradigm for operator learning in the absence of explicit factor supervision.",
+  "sections": [
+   "0 Minimum Error",
+   "17 Decoder",
+   "23 Supplementary Information",
+   "2 DenseNet",
+   "2 DenseNet",
+   "2 DenseNet",
+   "1 Point Transformer",
+   "4 Epoch"
+  ]
+ },
+ "position_biology_challenge_piml.pdf": {
+  "pages": 23,
+  "figures": 3,
+  "tables": 0,
+  "abstract_words": 189,
+  "abstract": "Physics-Informed Machine Learning (PIML) has successfully integrated mech- anistic understanding into machine learning, particularly in domains governed by well-known physical laws. This success has motivated efforts to apply PIML to biology, a field rich in dynamical systems but shaped by different constraints. Biological modeling, however, presents unique challenges: multi-faceted and un- certain prior knowledge, heterogeneous and noisy data, partial observability, and complex, high-dimensional networks. In this position paper, we argue that these challenges should not be seen as obstacles to PIML, but as catalysts for its evolution. We propose Biology-Informed Machine Learning (BIML): a princi- pled extension of PIML that retains its structural grounding while adapting to the practical realities of biology. Rather than replacing PIML, BIML retools its methods to operate under softer, probabilistic forms of prior knowledge. We outline four foundational pillars as a roadmap for this transition: uncertainty quan- tification, contextualization, constrained latent structure inference, and scalability. Foundation Models and Large Language Models will be key enablers, bridging human expertise with computational modeling. We conclude with concrete recom- mendations to build the BIML ecosystem and channel PIML-inspired innovation toward challenges of high scientific and societal rele",
+  "sections": [
+   "1 Introduction",
+   "2 Why Physics-Informed ML Falls Short in Biology",
+   "2 Physics",
+   "3 The Biology-Informed ML Paradigm",
+   "5 Foundation",
+   "4 Recommendations for a Successful Transition to BIML",
+   "5 Alternative Views",
+   "6 Discussion and Conclusion",
+   "7 Funding",
+   "8 Acknowledgements",
+   "10 References"
+  ]
+ },
+ "semanticst_spatial_graph_learning.pdf": {
+  "pages": 30,
+  "figures": 2,
+  "tables": 0,
+  "abstract_words": 260,
+  "abstract": "Spatial transcriptomics (ST) technologies enable gene expression profiling with spatial resolution, offering unprecedented insights into tissue organization and disease heterogeneity. However, current analysis methods often struggle with noisy data, limited scalability, and inadequate modelling of com- plex cellular relationships. We present SemanticST, a biologically informed, graph-based deep learning framework that models diverse cellular contexts through multi-semantic graph construction. SemanticST builds multiple context-specific graphs\u2014capturing spatial proximity, gene expression similarity, and tis- sue domain structure, and learns disentangled embeddings for each. These are fused using an attention- inspired strategy to yield a unified, biologically meaningful representation. A community-aware min-cut loss improves robustness over contrastive learning, particularly in sparse ST data. SemanticST supports mini-batch training, making it the first graph neural network scalable to large-scale datasets such as Xe- nium (500,000+ cells). Benchmarking across four platforms (Visium, Slide-seq, Stereo-seq, Xenium) and multiple human and mouse tissues shows consistent 10\u201320% gains in ARI, NMI, and trajectory fidelity over DeepST, GraphST, and IRIS. In re-analysis of breast cancer Xenium data, SemanticST revealed rare and clinically significant niches, including triple receptor-po",
+  "sections": []
+ }
+}

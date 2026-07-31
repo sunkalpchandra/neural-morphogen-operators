@@ -1,0 +1,52 @@
+[
+ {
+  "arxiv": "2202.03376",
+  "file": "papers/message_passing_neural_pde_solvers.pdf",
+  "why": "PDE/operator learning"
+ },
+ {
+  "arxiv": "2108.08542",
+  "file": "papers/learning_system_params_turing_patterns.pdf",
+  "why": "Turing patterns + learning"
+ },
+ {
+  "arxiv": "2309.06339",
+  "file": "papers/ml_biochemical_spatial_patterns.pdf",
+  "why": "ML for spatiotemporal reaction-diffusion"
+ },
+ {
+  "arxiv": "2510.25368",
+  "file": "papers/position_biology_challenge_piml.pdf",
+  "why": "position: PIML for biology"
+ },
+ {
+  "arxiv": "2607.15773",
+  "file": "papers/diffusion_to_reaction_diffusion_oversmoothing.pdf",
+  "why": "RD view of oversmoothing"
+ },
+ {
+  "arxiv": "2607.14410",
+  "file": "papers/lattice_graph_ssl_spatial_omics.pdf",
+  "why": "spatial omics graph SSL"
+ },
+ {
+  "arxiv": "2506.11491",
+  "file": "papers/semanticst_spatial_graph_learning.pdf",
+  "why": "spatial transcriptomics clustering"
+ },
+ {
+  "arxiv": "2410.19868",
+  "file": "papers/hypergraph_nn_spatial_domains.pdf",
+  "why": "hypergraph NN spatial domains"
+ },
+ {
+  "arxiv": "2603.25247",
+  "file": "papers/feast_attention_spatial_transcriptomics.pdf",
+  "why": "attention for ST"
+ },
+ {
+  "arxiv": "2607.23337",
+  "file": "papers/neural_operator_discovery_trajectories.pdf",
+  "why": "neural operator discovery"
+ }
+]

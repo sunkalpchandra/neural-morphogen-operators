@@ -18,6 +18,7 @@ from matplotlib.patches import Ellipse, FancyArrowPatch, FancyBboxPatch
 
 from ..data.preprocess import MORPHOGEN_PATHWAYS, pathway_gene_mask
 from ..evaluation.metrics import pearson_per_gene
+from ..models.baselines import DISPLAY_NAMES
 from .style import (
     CATEGORICAL, DIV, GRID, INK, INK_MUTED, INK_SECONDARY, LATENT, MODEL_COLORS,
     SEQ, WIDTH_FULL, WIDTH_HALF, add_colorbar, bar_with_error, panel_label,
@@ -107,7 +108,7 @@ def figure2_reconstruction(
 
     others = list(preds_other.items())
     ncol = 2 + len(others)
-    fig, axes = plt.subplots(len(gi), ncol, figsize=(WIDTH_FULL, 1.08 * len(gi)),
+    fig, axes = plt.subplots(len(gi), ncol, figsize=(WIDTH_FULL, 0.84 * len(gi)),
                              squeeze=False)
 
     for r_i, g in enumerate(gi):
@@ -180,7 +181,7 @@ def figure3_latent_fields(model, section, n_show: int = 6) -> plt.Figure:
     corr = np.array(corr) if corr else np.zeros((1, len(order)))
 
     nrow = 2
-    fig = plt.figure(figsize=(WIDTH_FULL, 2.55))
+    fig = plt.figure(figsize=(WIDTH_FULL, 2.35))
     gs = fig.add_gridspec(nrow, n_show, height_ratios=[1.0, 0.95], hspace=0.42, wspace=0.08)
 
     for i, c in enumerate(order):
@@ -238,7 +239,7 @@ def figure4_transfer(exp2: List[Dict], exp3: Optional[List[Dict]] = None) -> plt
     if exp3:
         panels.append(("Visium $\\rightarrow$ Xenium\n(cross-resolution)", exp3))
 
-    fig, axes = plt.subplots(1, len(panels), figsize=(WIDTH_FULL, 2.05), squeeze=False)
+    fig, axes = plt.subplots(1, len(panels), figsize=(WIDTH_FULL, 1.90), squeeze=False)
     order = ["oracle", "zero_shot", "decoder_finetune", "floor"]
     pretty = {"oracle": "in-domain oracle", "zero_shot": "zero-shot",
               "decoder_finetune": "decoder-only fine-tune", "floor": "training mean"}
@@ -290,7 +291,7 @@ def figure5_dynamics(model, section, channel: Optional[int] = None) -> plt.Figur
                                  for c in range(Z0.shape[0])]))
 
     show = [0, max(T // 3, 1), max(2 * T // 3, 2), T] if T >= 3 else list(range(T + 1))
-    fig = plt.figure(figsize=(WIDTH_FULL, 2.85))
+    fig = plt.figure(figsize=(WIDTH_FULL, 2.35))
     gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 1.05], hspace=0.55, wspace=0.62)
 
     fields = [traj[t].detach().cpu().numpy()[0, channel] for t in show]
@@ -462,4 +463,111 @@ def figure7_benchmark(records: List[Dict]) -> plt.Figure:
         if i > 0:
             axes[i].set_yticklabels([])
     fig.subplots_adjust(wspace=0.18)
+    return fig
+
+
+# --------------------------------------------------------------------------- #
+# Combined results panel (benchmark + ablation + control), for the main text
+# --------------------------------------------------------------------------- #
+
+
+def figure_results_panel(bench: List[Dict], abl: List[Dict], matched: Dict[str, float]) -> plt.Figure:
+    """Three-panel summary: benchmark, ablation deltas, matched-budget control.
+
+    Combining these into one float keeps three results on one page in a
+    9-page workshop format, where separate figures would not fit.
+    """
+    set_style()
+    import pandas as pd
+
+    fig, axes = plt.subplots(1, 3, figsize=(WIDTH_FULL, 2.10),
+                             gridspec_kw={"width_ratios": [1.15, 1.15, 0.8]})
+
+    # (a) benchmark Pearson
+    b = pd.DataFrame(bench).groupby("model")["pearson_mean"].agg(["mean", "std"]).reset_index()
+    b = b.sort_values("mean")
+    bar_with_error(axes[0], [DISPLAY_NAMES.get(m, m).replace(" (ours)", "*") for m in b["model"]],
+                   list(b["mean"]), list(np.nan_to_num(b["std"])),
+                   [MODEL_COLORS.get(m, INK_MUTED) for m in b["model"]],
+                   horizontal=True, value_fmt="{:.3f}", label_values=False)
+    axes[0].set_xlabel("Pearson $r$, held-out blocks")
+    axes[0].set_title("Masked reconstruction", fontsize=7.5, pad=4)
+    panel_label(axes[0], "a", dx=-0.72, dy=1.14)
+
+    # (b) ablation deltas
+    a = pd.DataFrame(abl).groupby("variant")["pearson_mean"].agg(["mean", "std"]).reset_index()
+    full = float(a.loc[a["variant"] == "full", "mean"].iloc[0])
+    keep = ["no_dynamics", "no_diffusion", "no_reaction", "no_pde", "no_bio_reg",
+            "isotropic_diffusion", "discrete_gnn"]
+    a = a[a["variant"].isin(keep)].copy()
+    a["delta"] = a["mean"] - full
+    a = a.sort_values("delta")
+    short = {"discrete_gnn": "discrete GNN", "no_bio_reg": "$-$ bio. regularisers",
+             "no_pde": "$-$ PDE terms", "isotropic_diffusion": "isotropic $D$",
+             "no_dynamics": "$-$ dynamics", "no_diffusion": "$-$ diffusion",
+             "no_reaction": "$-$ reaction"}
+    bar_with_error(axes[1], [short.get(v, ABLATION_LABELS.get(v, v)) for v in a["variant"]],
+                   list(a["delta"]), list(np.nan_to_num(a["std"])),
+                   [CATEGORICAL[1] if d < 0 else CATEGORICAL[2] for d in a["delta"]],
+                   horizontal=True, value_fmt="{:+.3f}")
+    axes[1].axvline(0, color=INK_SECONDARY, linewidth=0.7)
+    axes[1].set_xlabel("$\\Delta r$ vs. full (reduced budget)")
+    axes[1].set_title("Ablations", fontsize=7.5, pad=4)
+    panel_label(axes[1], "b", dx=-0.78, dy=1.14)
+
+    # (c) matched-budget control
+    names = list(matched.keys())
+    vals = [matched[k] for k in names]
+    cols = [MODEL_COLORS["nmo"] if "full" in k else CATEGORICAL[1] for k in names]
+    axes[2].bar(range(len(names)), vals, color=cols, width=0.62)
+    for i, v in enumerate(vals):
+        axes[2].text(i, v, f"{v:.3f}", ha="center", va="bottom", fontsize=6, color=INK_SECONDARY)
+    axes[2].set_xticks(range(len(names)))
+    axes[2].set_xticklabels(["full", "$-$dyn", "$-$rxn"][: len(names)], fontsize=6.5)
+    axes[2].set_ylim(min(vals) * 0.93, max(vals) * 1.06)
+    axes[2].set_ylabel("Pearson $r$")
+    axes[2].set_title("Matched budget", fontsize=7.5, pad=4)
+    axes[2].grid(axis="x", visible=False)
+    panel_label(axes[2], "c", dx=-0.42, dy=1.14)
+
+    fig.subplots_adjust(wspace=1.55)
+    return fig
+
+
+def figure_datasets(processed_dir="data/processed", keys=None) -> plt.Figure:
+    """Tissue-section overview: one panel per dataset, coloured by total counts.
+
+    Standard orientation figure for spatial-omics papers -- it shows at a glance
+    that the sections differ in geometry, sampling density and physical extent,
+    which is what the transfer experiments are actually varying.
+    """
+    import anndata as ad
+    set_style()
+    keys = keys or ["visium_mouse_brain", "visium_human_breast", "xenium_mouse_brain",
+                    "merfish_allen_40", "mosta_embryo_E9.5"]
+    titles = {"visium_mouse_brain": "Visium\nmouse brain",
+              "visium_human_breast": "Visium\nhuman breast",
+              "xenium_mouse_brain": "Xenium\nmouse brain",
+              "merfish_allen_40": "MERFISH\nmouse brain",
+              "mosta_embryo_E9.5": "Stereo-seq\nembryo E9.5"}
+    avail = [k for k in keys if (Path(processed_dir) / f"{k}.h5ad").exists()]
+    fig, axes = plt.subplots(1, len(avail), figsize=(WIDTH_FULL, 1.35))
+    axes = np.atleast_1d(axes)
+    for ax, k in zip(axes, avail):
+        a = ad.read_h5ad(Path(processed_dir) / f"{k}.h5ad")
+        xy = np.asarray(a.obsm["spatial_um"] if "spatial_um" in a.obsm else a.obsm["spatial"])
+        tot = np.asarray(a.X.sum(1)).ravel()
+        n = a.n_obs
+        s = float(np.clip(2200.0 / max(n, 1), 0.06, 3.0))
+        scatter_field(ax, xy, tot, s=s)
+        # equal aspect shrinks each axes box by a different amount; anchoring
+        # north keeps the panel titles on a common baseline
+        ax.set_anchor("N")
+        ext = (np.ptp(xy[:, 0]) / 1000.0, np.ptp(xy[:, 1]) / 1000.0)
+        ax.set_title(titles.get(k, k), fontsize=6.2, color=INK, pad=3, linespacing=1.2)
+        ax.text(0.5, -0.04, f"{n:,} loc · {a.n_vars} genes\n{ext[0]:.1f}$\\times${ext[1]:.1f} mm",
+                transform=ax.transAxes, ha="center", va="top",
+                fontsize=5.2, color=INK_SECONDARY, linespacing=1.25)
+        del a
+    fig.subplots_adjust(wspace=0.06, top=0.80, bottom=0.14)
     return fig
