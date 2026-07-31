@@ -77,6 +77,16 @@ def rasterise(
     Empty bins are filled with the global mean of that gene so SSIM is not
     dominated by background; the occupancy map is returned so callers can
     restrict comparisons to occupied pixels.
+
+    Caveat worth knowing when reading SSIM numbers
+    ----------------------------------------------
+    When a held-out split is rasterised, many bins receive no point and are
+    filled with the gene mean in *both* the prediction and the reference. Those
+    bins match trivially, so absolute SSIM values are inflated relative to a
+    fully-occupied image. The inflation is identical for every model, so SSIM
+    remains valid for *ranking* methods; it should not be read as an absolute
+    measure of image fidelity. ``evaluate_prediction`` picks the grid size from
+    the number of locations to keep occupancy reasonable.
     """
     values = np.atleast_2d(values.T).T if values.ndim == 1 else values
     lo, hi = coords.min(0), coords.max(0)
@@ -184,10 +194,16 @@ def evaluate_prediction(
     res["pearson_per_location"] = _nanmean(rp)
 
     if compute_ssim:
-        ip, occ = rasterise(coords, pred, grid)
-        it, _ = rasterise(coords, true, grid)
+        # Choose the lattice from the number of held-out locations so that bins
+        # are roughly singly occupied; a fixed fine grid would leave most bins
+        # empty and inflate SSIM (see rasterise docstring).
+        g = int(np.clip(np.sqrt(max(pred.shape[0], 1) / 1.5), 12, grid))
+        ip, occ = rasterise(coords, pred, g)
+        it, _ = rasterise(coords, true, g)
         s = ssim_images(ip, it)
         res["ssim_mean"] = _nanmean(s)
+        res["ssim_grid"] = int(g)
+        res["ssim_occupancy"] = float(occ.mean())
 
     W = spatial_weights(coords, knn)
     mi_p, mi_t = morans_i(pred, W), morans_i(true, W)

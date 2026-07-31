@@ -130,5 +130,27 @@
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.720806434152504,
     "morans_i_corr": 0.27793742229531
+  },
+  {
+    "section": "visium_mouse_brain",
+    "model": "autoencoder",
+    "display": "Autoencoder (non-spatial)",
+    "seed": 0,
+    "n_params": 575807,
+    "wall_s": 286.4,
+    "best_epoch": 424,
+    "pearson_mean": 0.22900480031967163,
+    "pearson_median": 0.20367497205734253,
+    "spearman_mean": 0.17842011153697968,
+    "rmse": 0.25521019101142883,
+    "mae": 0.1442747861146927,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.8614497780799866,
+    "ssim_mean": 0.6874588850395923,
+    "morans_i_pred": 0.9024282163815436,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.7280326066091023,
+    "morans_i_corr": 0.5337723571141246
   }
 ]

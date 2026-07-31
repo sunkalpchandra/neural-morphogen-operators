@@ -178,3 +178,20 @@ Python(83808) MallocStackLogging: can't turn off malloc stack logging because it
 [21:44:59] INFO      ep  400/500  loss 1.0525  val r 0.2475  rmse 0.2814
 [21:45:12] INFO      ep  425/500  loss 1.0666  val r 0.2478  rmse 0.2804
 [21:45:24] INFO      ep  450/500  loss 1.0670  val r 0.2474  rmse 0.2814
+[21:45:36] INFO      ep  475/500  loss 1.0738  val r 0.2477  rmse 0.2807
+[21:45:49] INFO      ep  500/500  loss 1.0740  val r 0.2477  rmse 0.2807
+Python(86578) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(86580) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:45:53] INFO      done in 282s | test r=0.2290 rmse=0.2552 ssim=0.6875
+[done] autoencoder seed 0: r=0.2290
+[21:45:55] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(86601) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(86602) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:45:55] INFO    training AutoencoderBaseline (575,807 params) on visium_mouse_brain for 500 epochs
+[21:46:07] INFO      ep   25/500  loss 1.4479  val r 0.1049  rmse 0.2952
+[21:46:23] INFO      ep   50/500  loss 1.3284  val r 0.1754  rmse 0.2921
+[21:46:36] INFO      ep   75/500  loss 1.2492  val r 0.1931  rmse 0.2856
+[21:46:50] INFO      ep  100/500  loss 1.1844  val r 0.2124  rmse 0.2868
+[21:47:03] INFO      ep  125/500  loss 1.1694  val r 0.2217  rmse 0.2871
+[21:47:16] INFO      ep  150/500  loss 1.1235  val r 0.2282  rmse 0.2873
+[21:47:31] INFO      ep  175/500  loss 1.1057  val r 0.2338  rmse 0.2839
