@@ -7,10 +7,11 @@
 \toprule
 model & params & Pearson $r$ $\uparrow$ & Spearman $\rho$ $\uparrow$ & RMSE $\downarrow$ & SSIM $\uparrow$ & $|\Delta I|$ $\downarrow$\\
 \midrule
-SpaGCN-style & 0.59M & 0.234\,\tiny{$\pm$ 0.001} & 0.184\,\tiny{$\pm$ 0.001} & 0.254\,\tiny{$\pm$ 0.001} & \textbf{0.690\,\tiny{$\pm$ 0.001}} & 0.738\,\tiny{$\pm$ 0.002} \\
+SpaGCN-style & 0.59M & 0.234\,\tiny{$\pm$ 0.001} & 0.184\,\tiny{$\pm$ 0.001} & 0.254\,\tiny{$\pm$ 0.001} & 0.690\,\tiny{$\pm$ 0.001} & 0.738\,\tiny{$\pm$ 0.002} \\
+STAGATE-style & 0.69M & 0.233\,\tiny{$\pm$ 0.002} & 0.184\,\tiny{$\pm$ 0.002} & 0.254\,\tiny{$\pm$ 0.001} & \textbf{0.690\,\tiny{$\pm$ 0.001}} & 0.738\,\tiny{$\pm$ 0.003} \\
 Graph Transformer & 0.83M & 0.230\,\tiny{$\pm$ 0.000} & 0.182\,\tiny{$\pm$ 0.001} & 0.255\,\tiny{$\pm$ 0.001} & 0.688\,\tiny{$\pm$ 0.000} & 0.723\,\tiny{$\pm$ 0.004} \\
 GNN (GCN) & 0.61M & 0.228\,\tiny{$\pm$ 0.001} & 0.181\,\tiny{$\pm$ 0.001} & 0.253\,\tiny{$\pm$ 0.001} & 0.689\,\tiny{$\pm$ 0.000} & 0.755\,\tiny{$\pm$ 0.002} \\
-Gaussian Process & 0.00M & 0.157 & 0.113 & 0.300 & 0.613 & \textbf{0.718} \\
+Gaussian Process & 0.00M & 0.156\,\tiny{$\pm$ 0.001} & 0.112\,\tiny{$\pm$ 0.004} & 0.295\,\tiny{$\pm$ 0.005} & 0.614\,\tiny{$\pm$ 0.003} & \textbf{0.719\,\tiny{$\pm$ 0.002}} \\
 \midrule
 NMO (ours) & 2.20M & \textbf{0.245} & \textbf{0.204} & \textbf{0.252} & 0.674 & 0.762 \\
 \bottomrule

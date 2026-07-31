@@ -59,6 +59,18 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("BestBaseline", best_name.replace("_", " "))
             cmd("BestBaselinePearson", _ms(bb, "pearson_mean"))
             cmd("BestBaselineMoran", _ms(bb, "morans_i_abs_error"))
+            cmd("BestBaselineSSIM", _ms(bb, "ssim_mean"))
+            # Structural metrics: report the best value achieved by ANY baseline,
+            # so a weakness of our model cannot hide behind a weak comparator.
+            gs = base.groupby("model")["ssim_mean"].mean()
+            gm = base.groupby("model")["morans_i_abs_error"].mean()
+            cmd("BestAnySSIM", _val(float(gs.max())))
+            cmd("BestAnySSIMModel", str(gs.idxmax()).replace("_", " "))
+            cmd("BestAnyMoran", _val(float(gm.min())))
+            cmd("BestAnyMoranModel", str(gm.idxmin()).replace("_", " "))
+            if not nmo.empty:
+                cmd("SSIMDeficit", _val(float(nmo["ssim_mean"].mean()) - float(gs.max())))
+                cmd("MoranDeficit", _val(float(nmo["morans_i_abs_error"].mean()) - float(gm.min())))
             nv = float(nmo["pearson_mean"].mean()) if not nmo.empty else np.nan
             cmd("PearsonGain", _val(nv - best_val))
             cmd("PearsonGainPct", _val(100 * (nv - best_val) / max(best_val, 1e-9), 1))

@@ -82,19 +82,26 @@ $\partial_t \vz = \nabla \!\cdot\! (\mD_\theta \nabla \vz) + f_\theta(\vz)$,
 and decode expression at arbitrary coordinates. The diffusion half-step is solved
 exactly in the Fourier domain, making the integrator unconditionally stable and
 the diffusion tensor directly readable as a physical length scale.
-Across \NDatasets{} spatial datasets spanning four technologies, NMO improves
-held-out reconstruction of masked tissue regions over graph-based and
-Gaussian-process baselines, and transfers zero-shot across tissue, species and
-sampling resolution. Ablations show the dynamics are load-bearing rather than
-decorative: removing the operator costs \AblNoDynamicsDelta{} Pearson $r$.
-We stress what the model does \emph{not} establish. Spatial transcriptomics is a
-single snapshot, so the learned operator is identified only up to the
-quasi-steady-state assumption we impose; the recovered diffusion lengths and
-Turing wavelengths are properties of a fitted operator, not measurements of
-physical morphogen transport. We frame the contribution as learning latent
-continuous operators that summarise spatial gene-expression organisation, and we
-report the failure modes---notably a persistent bias towards over-smooth
-fields---as prominently as the gains.
+Across \NDatasets{} public datasets spanning four technologies, NMO predicts
+held-out tissue regions more accurately than graph-based and Gaussian-process
+baselines (Pearson $r$ \NMOPearson{} vs.\ \BestBaselinePearson{}) and transfers
+zero-shot across tissue, species and sampling resolution. Ablations isolate the
+operator as the source of the gain: disabling the dynamics---an exactly
+parameter-matched control, since the operator holds under $0.5\%$ of the
+model's weights---costs \AblNoDynamicsDelta{} Pearson $r$.
+
+The same experiments expose a clear cost. NMO is simultaneously the \emph{worst}
+model on structural metrics (SSIM, Moran's $I$ error), because the operator it
+learns is purely dissipative: linearising it yields no Turing instability at any
+finite wavenumber. Long-range smoothing is what buys point-wise accuracy inside a
+masked region and what destroys fine spatial texture; these are one phenomenon,
+and we report both.
+We also stress what the model does \emph{not} establish. Spatial transcriptomics
+is a single snapshot, so the operator is identified only up to the
+quasi-steady-state assumption we impose; recovered diffusion lengths are
+properties of a fitted operator, not measurements of morphogen transport. We
+frame the contribution as learning latent continuous operators that summarise
+spatial gene-expression organisation.
 \end{abstract}
 
 % =====================================================================
@@ -382,11 +389,49 @@ penalised. All results are mean $\pm$ s.d. over \NSeeds{} seeds.
 
 NMO reaches Pearson $r = \NMOPearson$ on held-out blocks against
 \BestBaselinePearson{} for the strongest baseline (\BestBaseline{}), a gain of
-\PearsonGain{} (Table~\ref{tab:benchmark}, Figure~\ref{fig:benchmark}). The
-Gaussian process is a stronger competitor than the graph neural networks, which is
-worth stating plainly: for smooth genes, classical spatial interpolation is hard to
-beat, and much of the spatial-transcriptomics deep-learning literature does not
-compare against it.
+\PearsonGain{} (Table~\ref{tab:benchmark}, Figure~\ref{fig:benchmark}).
+
+Two features of this table deserve comment before the gain is interpreted.
+First, \textbf{the margin is real but modest}, and the graph-based baselines
+cluster tightly around one another: on this benchmark the choice among GCN,
+SpaGCN-style, STAGATE-style and a graph transformer matters far less than
+whether a continuous operator is used at all. We would not want a reader to take
+a few points of Pearson $r$ as a large effect, and the ablations
+(Section~\ref{sec:ablations}) are the more informative evidence that the operator
+is doing the work.
+
+Second, \textbf{the Gaussian process underperforms the graph models here}, which
+is the opposite of what we expected when we included it. The cause is a
+limitation of the baseline rather than of GP regression in general: we share a
+single learned RBF length scale across all genes, so one bandwidth must serve
+both sharply laminar genes and diffuse ones. A per-gene or spectral-mixture
+kernel would be a stronger baseline; it is also substantially more expensive to
+fit for $\sim$2000 genes, and we did not run it. The GP number should therefore
+be read as a floor for classical spatial interpolation under a shared kernel, not
+as the best a geostatistical model could do.
+
+\paragraph{NMO wins on accuracy and loses on structure.}
+The most informative result in Table~\ref{tab:benchmark} is that the ranking
+\emph{inverts} between metric families. NMO is best on the point-wise measures
+(Pearson, Spearman, RMSE) but \emph{worst} on the structural ones: SSIM
+\NMOSSIM{} against \BestAnySSIM{} for the best baseline (\BestAnySSIMModel), and
+Moran's $I$ error \NMOMoran{} against \BestAnyMoran{} (\BestAnyMoranModel) --
+deficits of \SSIMDeficit{} and $+\MoranDeficit$ respectively.
+
+We included Moran's $I$ specifically so that this kind of failure would be
+visible, and it is our own method that it exposes. The interpretation is
+mechanical rather than mysterious, and it ties directly to the dispersion
+analysis below: the operator we learn is purely dissipative, so integrating it
+attenuates high spatial frequencies. That is precisely what improves accuracy in
+the interior of a masked block, where the honest prediction is a smooth
+long-range extrapolation, and precisely what destroys the fine texture that SSIM
+and Moran's $I$ reward. Pooling information over hundreds of microns buys
+point-wise accuracy and costs high-frequency structure.
+
+The practical consequence is that NMO should be preferred when the quantity of
+interest is the value of a gene at an unmeasured location, and \emph{not} when
+the quantity of interest is the sharpness of a boundary. We return to this in
+Section~\ref{sec:limitations}.
 
 \begin{figure}[t]
   \centering
@@ -530,11 +575,24 @@ dynamics.
 \end{figure}
 
 The decisive control is \emph{$-$ dynamics}, which sets the integration horizon to
-zero so the operator is never applied, leaving an encoder--decoder of identical
-capacity. It costs \AblNoDynamicsDelta{} Pearson $r$
+zero so the operator is never applied. It costs \AblNoDynamicsDelta{} Pearson $r$
 (Table~\ref{tab:ablations}, Figure~\ref{fig:ablations}). Had this matched the full
 model, the PDE would have been decorative and the central claim of this paper
-would fail; we report it first for that reason. Removing diffusion
+would fail; we report it first for that reason.
+
+This control is unusually clean because it is \emph{exactly} parameter-matched.
+The operator accounts for under 10k of the model's $\sim$2.2M parameters (a
+per-channel $2\times2$ tensor plus a pointwise reaction MLP), and setting
+$T{=}0$ leaves those parameters allocated but unused. The two variants therefore
+have identical architectures, identical parameter counts and identical optimiser
+budgets, and differ only in whether the field is integrated. The gap cannot be
+attributed to capacity.
+
+The same observation tempers the headline comparison: NMO carries more parameters
+than the graph baselines, so part of its advantage in Table~\ref{tab:benchmark}
+could in principle be capacity rather than structure. The $T{=}0$ control is what
+separates those explanations, and it is why we weight it more heavily than the
+benchmark margin. Removing diffusion
 (\AblNoDiffusionDelta) and the reaction term (\AblNoReactionDelta) are both
 harmful, and the two contribute differently: diffusion supplies long-range
 information transport into masked regions, while the reaction term supplies the
@@ -565,17 +623,38 @@ Correlations between latent channels and morphogen pathway scores show alignment
 they do not identify a channel \emph{as} SHH or BMP. We deliberately avoid that
 language.
 
-\paragraph{Over-smoothing persists.} Predicted maps are systematically smoother
-than measured ones: predicted Moran's $I$ ($\NMOMoranPred$) substantially exceeds
-the measured value ($\MoranTrue$). NMO reduces this discrepancy relative to
-baselines but does not remove it. Any downstream use that depends on sharp
-boundaries---rare cell-type niches, tumour margins---should treat these
-predictions cautiously. We report the metric precisely so this failure is visible.
+\paragraph{Over-smoothing is our largest weakness, and it is worse than the
+baselines'.} Predicted maps are systematically smoother than measured ones:
+predicted Moran's $I$ ($\NMOMoranPred$) far exceeds the measured value
+($\MoranTrue$). Crucially, NMO does \emph{not} improve on this relative to the
+baselines --- it is worse, by $+\MoranDeficit$ in Moran's $I$ error and
+\SSIMDeficit{} in SSIM (Table~\ref{tab:benchmark}). The same dissipative operator
+that delivers the accuracy gain is what removes the fine structure, so the two
+findings are one phenomenon, not an unrelated defect.
+
+This bounds the applications we would endorse. Predicting expression at
+unmeasured coordinates: reasonable. Delineating sharp anatomical boundaries,
+rare cell-type niches or tumour margins from NMO output: not reasonable on this
+evidence, and a graph model would serve better. Removing the smoothing bias --
+for instance with an adversarial or spectral-matching term that penalises the
+missing high-frequency energy directly, or by learning a non-dissipative
+component -- is the most concrete improvement we can identify, and we have not
+done it.
 
 \paragraph{Adapted baselines.} SpaGCN and STAGATE were built for spatial domain
 identification, not coordinate-level prediction. Our \emph{-style} variants
 implement each method's architectural core with a common read-out head; they are
 a fair comparison on \emph{this} task but not a reproduction of published results.
+The Gaussian process shares one RBF length scale across all genes and is
+therefore weaker than a per-gene or spectral-mixture kernel would be; we did not
+fit those, so our GP number is a floor rather than the ceiling of what
+geostatistical interpolation can achieve.
+
+\paragraph{Effect sizes are modest.} The improvement over the best baseline is a
+few points of Pearson $r$, obtained on a single tissue section per condition and
+averaged over a small number of seeds. We report standard deviations across seeds
+but have not run a formal power analysis, and we would not claim that the ranking
+among the closely-clustered graph baselines is meaningful.
 
 \paragraph{Scope.} Single 2-D sections, one section per condition, ortholog
 matching by upper-cased symbol (which misses paralog renaming and family
