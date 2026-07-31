@@ -452,7 +452,7 @@ class MultiScaleGPBaseline(nn.Module):
     handicap.
     """
 
-    def __init__(self, n_genes: int, n_bands: int = 6, n_inducing: int = 1024,
+    def __init__(self, n_genes: int, n_bands: int = 6, n_inducing: int = 512,
                  jitter: float = 1e-3, **kw):
         super().__init__()
         self.n_inducing, self.jitter, self.n_bands = n_inducing, jitter, n_bands

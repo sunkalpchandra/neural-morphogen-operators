@@ -1,0 +1,22 @@
+[
+  {
+    "scheme": "strang-spectral",
+    "seed": 0,
+    "diverged": false,
+    "pearson_mean": 0.22177360951900482,
+    "pearson_median": 0.18545421957969666,
+    "spearman_mean": 0.18880918622016907,
+    "rmse": 0.25671857595443726,
+    "mae": 0.1474546492099762,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.859739363193512,
+    "ssim_mean": 0.3789813151178937,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127,
+    "morans_i_pred": 0.9700851537546995,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.7956895439822582,
+    "morans_i_corr": 0.44122979086437997
+  }
+]
