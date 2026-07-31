@@ -74,3 +74,60 @@
 [04:57:57] INFO      ep   25/150  loss 1.2598  val r 0.0704  rmse 0.3080
 [04:58:48] INFO      ep   50/150  loss 1.2602  val r 0.0730  rmse 0.3060
 [04:59:49] INFO      ep   75/150  loss 1.2485  val r 0.0697  rmse 0.3089
+[05:00:34] INFO      ep  100/150  loss 1.2394  val r 0.0752  rmse 0.3068
+[05:01:19] INFO      ep  125/150  loss 1.2104  val r 0.0650  rmse 0.3098
+[05:02:04] INFO      ep  150/150  loss 1.2702  val r 0.0755  rmse 0.3054
+[05:02:06] INFO      done in 292s | test r=0.0584 rmse=0.2993 ssim=0.2326
+[ok] visium_human_breast  gp_multiscale  s0  ARI 0.176/0.345 (ret 0.51)  nbr 0.200  markerAUC 0.799
+[05:02:10] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[05:02:11] INFO    training NeuralFieldBaseline (351,783 params) on visium_human_breast for 150 epochs
+[05:02:16] INFO      ep   25/150  loss 1.3996  val r 0.0437  rmse 0.3159
+[05:02:22] INFO      ep   50/150  loss 1.3234  val r 0.0381  rmse 0.3173
+[05:02:28] INFO      ep   75/150  loss 1.2785  val r 0.0327  rmse 0.3184
+[05:02:34] INFO      ep  100/150  loss 1.2570  val r 0.0316  rmse 0.3186
+[05:02:39] INFO      ep  125/150  loss 1.2294  val r 0.0310  rmse 0.3187
+[05:02:45] INFO      ep  150/150  loss 1.2604  val r 0.0311  rmse 0.3186
+[05:02:46] INFO      done in 35s | test r=0.0495 rmse=0.3065 ssim=0.2129
+[ok] visium_human_breast  neural_field   s0  ARI 0.025/0.345 (ret 0.07)  nbr 0.075  markerAUC 0.648
+[05:03:00] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[05:03:01] INFO    training NeuralMorphogenOperator (1,493,369 params) on xenium_mouse_brain for 150 epochs
+[05:03:28] INFO      ep   25/150  loss 1.4606  val r 0.1164  rmse 1.8862
+[05:03:58] INFO      ep   50/150  loss 1.3885  val r 0.1599  rmse 1.8610
+[05:04:34] INFO      ep   75/150  loss 1.3355  val r 0.1695  rmse 1.8171
+[05:05:02] INFO      ep  100/150  loss 1.3045  val r 0.1776  rmse 1.8043
+[05:05:35] INFO      ep  125/150  loss 1.2954  val r 0.1814  rmse 1.8006
+[05:06:06] INFO      ep  150/150  loss 1.2983  val r 0.1817  rmse 1.7998
+[05:06:07] INFO      done in 185s | test r=0.2084 rmse=1.7870 ssim=0.3107
+Traceback (most recent call last):
+  File "/Users/sunkalp/neural-morphogen-operators/experiments/exp9_biology.py", line 251, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/sunkalp/neural-morphogen-operators/experiments/exp9_biology.py", line 236, in main
+    res = analyze(model, sec, labels, tr.train_visible)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sunkalp/neural-morphogen-operators/experiments/exp9_biology.py", line 169, in analyze
+    res.update(domain_scores(t, p, lab))
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sunkalp/neural-morphogen-operators/experiments/exp9_biology.py", line 112, in domain_scores
+    out[f"ari_{name}"] = float(adjusted_rand_score(labels, km))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sunkalp/neural-morphogen-operators/.venv/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sunkalp/neural-morphogen-operators/.venv/lib/python3.12/site-packages/sklearn/metrics/cluster/_supervised.py", line 454, in adjusted_rand_score
+    (tn, fp), (fn, tp) = pair_confusion_matrix(labels_true, labels_pred)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sunkalp/neural-morphogen-operators/.venv/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sunkalp/neural-morphogen-operators/.venv/lib/python3.12/site-packages/sklearn/metrics/cluster/_supervised.py", line 255, in pair_confusion_matrix
+    labels_true, labels_pred = check_clusterings(labels_true, labels_pred)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sunkalp/neural-morphogen-operators/.venv/lib/python3.12/site-packages/sklearn/metrics/cluster/_supervised.py", line 45, in check_clusterings
+    labels_true = check_array(
+                  ^^^^^^^^^^^^
+  File "/Users/sunkalp/neural-morphogen-operators/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py", line 1087, in check_array
+    _assert_all_finite(
+  File "/Users/sunkalp/neural-morphogen-operators/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py", line 122, in _assert_all_finite
+    raise ValueError("Input contains NaN")
+ValueError: Input contains NaN

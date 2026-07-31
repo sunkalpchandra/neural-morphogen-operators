@@ -636,3 +636,120 @@ def figure_numerics(stability: List[Dict], cost: List[Dict],
         panel_label(ax, "c", dx=-0.36, dy=1.15)
     fig.subplots_adjust(wspace=0.85)
     return fig
+
+
+def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figure:
+    """Per-section paired view of the benchmark, plus effect sizes."""
+    set_style()
+    import pandas as pd
+    from ..evaluation.statistics import paired_comparison
+
+    df = pd.DataFrame([r for r in records if "pearson_mean" in r and not r.get("failed")])
+    per = df.groupby(["section", "model"])["pearson_mean"].mean().unstack("model")
+    others = [c for c in per.columns if c != reference]
+    fig, axes = plt.subplots(1, 3, figsize=(WIDTH_FULL, 2.15),
+                             gridspec_kw={"width_ratios": [1.15, 1.0, 1.0]})
+
+    # (a) NMO vs each baseline, one point per section
+    ax = axes[0]
+    for i, o in enumerate(others):
+        s = per[[reference, o]].dropna()
+        ax.scatter(s[o], s[reference], s=11, alpha=0.8,
+                   color=MODEL_COLORS.get(o, CATEGORICAL[i % 7]),
+                   label=DISPLAY_NAMES.get(o, o), linewidths=0)
+    lim = [float(np.nanmin(per.values)) * 0.95, float(np.nanmax(per.values)) * 1.05]
+    ax.plot(lim, lim, ls="--", lw=0.8, color=INK_SECONDARY)
+    ax.set_xlim(lim); ax.set_ylim(lim); ax.set_aspect("equal")
+    ax.set_xlabel("baseline Pearson $r$"); ax.set_ylabel("NMO Pearson $r$")
+    ax.set_title(f"Per-section, {len(per)} sections", fontsize=7.5, pad=4)
+    ax.legend(fontsize=4.8, loc="upper left", handletextpad=0.2, borderpad=0.2)
+    panel_label(ax, "a", dx=-0.26, dy=1.14)
+
+    # (b) paired difference with bootstrap CI
+    ax = axes[1]
+    res = paired_comparison(df, reference, "pearson_mean")
+    res = sorted(res, key=lambda r: r.mean_diff)
+    y = np.arange(len(res))
+    ax.errorbar([r.mean_diff for r in res], y,
+                xerr=[[r.mean_diff - r.ci_lo for r in res], [r.ci_hi - r.mean_diff for r in res]],
+                fmt="o", ms=4, color=CATEGORICAL[0], ecolor=INK_SECONDARY,
+                elinewidth=1.0, capsize=2, lw=0)
+    ax.axvline(0, color=INK_SECONDARY, lw=0.8, ls="--")
+    ax.set_yticks(y); ax.set_yticklabels(
+        [DISPLAY_NAMES.get(r.other, r.other) for r in res], fontsize=6)
+    ax.set_xlabel("$\\Delta r$ vs. NMO (95\\% CI)")
+    ax.set_title("Paired difference", fontsize=7.5, pad=4)
+    ax.grid(axis="y", visible=False)
+    panel_label(ax, "b", dx=-0.62, dy=1.14)
+
+    # (c) sections won
+    ax = axes[2]
+    ax.barh(y, [r.n_reference_wins / r.n_sections * 100 for r in res],
+            color=[CATEGORICAL[2] if r.n_reference_wins / r.n_sections > 0.5 else CATEGORICAL[1]
+                   for r in res], height=0.62)
+    ax.axvline(50, color=INK_SECONDARY, lw=0.8, ls="--")
+    for i, r in enumerate(res):
+        ax.text(r.n_reference_wins / r.n_sections * 100 + 2, i,
+                f"{r.n_reference_wins}/{r.n_sections}", va="center", fontsize=5.6,
+                color=INK_SECONDARY)
+    ax.set_yticks(y); ax.set_yticklabels([])
+    ax.set_xlim(0, 118); ax.set_xlabel("\\% sections NMO wins")
+    ax.set_title("Win rate", fontsize=7.5, pad=4)
+    ax.grid(axis="y", visible=False)
+    panel_label(ax, "c", dx=-0.10, dy=1.14)
+    fig.subplots_adjust(wspace=0.72)
+    return fig
+
+
+def figure_biology(records: List[Dict]) -> plt.Figure:
+    """Biological preservation across models."""
+    set_style()
+    import pandas as pd
+    df = pd.DataFrame([r for r in records if "ari_predicted" in r])
+    panels = [("ari_retention", "ARI retention $\\uparrow$"),
+              ("marker_auroc_predicted", "marker AUROC $\\uparrow$"),
+              ("neighborhood_preservation", "$k$-NN preservation $\\uparrow$"),
+              ("gearys_c_abs_error", "$|\\Delta$ Geary's $C|$ $\\downarrow$")]
+    panels = [(k, l) for k, l in panels if k in df.columns]
+    fig, axes = plt.subplots(1, len(panels), figsize=(WIDTH_FULL, 1.95))
+    for ax, (key, label) in zip(np.atleast_1d(axes), panels):
+        g = df.groupby("model")[key].agg(["mean", "std"])
+        asc = "error" in key
+        g = g.sort_values("mean", ascending=asc)
+        bar_with_error(ax, [DISPLAY_NAMES.get(m, m) for m in g.index],
+                       list(g["mean"]), list(np.nan_to_num(g["std"])),
+                       [MODEL_COLORS.get(m, INK_MUTED) for m in g.index],
+                       horizontal=True, value_fmt="{:.3f}", label_values=False)
+        ax.set_xlabel(label, fontsize=6.5)
+        ax.tick_params(labelsize=5.6)
+    for ax in np.atleast_1d(axes)[1:]:
+        ax.set_yticklabels([])
+    fig.subplots_adjust(wspace=0.15)
+    return fig
+
+
+def figure_robustness(records: List[Dict]) -> plt.Figure:
+    """Degradation curves under each corruption axis."""
+    set_style()
+    import pandas as pd
+    df = pd.DataFrame([r for r in records if "pearson_mean" in r and not r.get("failed")])
+    axes_list = [a for a in ["noise", "dropout", "density", "knn"] if a in set(df["axis"])]
+    fig, axs = plt.subplots(1, len(axes_list), figsize=(WIDTH_FULL, 1.85), squeeze=False)
+    labels = {"noise": "noise $\\sigma$", "dropout": "fraction dropped",
+              "density": "fraction retained", "knn": "$k$ neighbors"}
+    for ax, axis in zip(axs[0], axes_list):
+        d = df[df["axis"] == axis]
+        for m in sorted(d["model"].unique()):
+            g = d[d["model"] == m].groupby("level")["pearson_mean"].agg(["mean", "std"])
+            ax.errorbar(g.index, g["mean"], yerr=np.nan_to_num(g["std"]),
+                        marker="o", ms=3.2, lw=1.3, capsize=1.8,
+                        color=MODEL_COLORS.get(m, INK_MUTED),
+                        label=DISPLAY_NAMES.get(m, m), ecolor=INK_SECONDARY, elinewidth=0.7)
+        ax.set_xlabel(labels.get(axis, axis), fontsize=6.5)
+        if axis == "knn":
+            ax.set_xscale("log", base=2)
+        ax.tick_params(labelsize=5.6)
+    axs[0][0].set_ylabel("Pearson $r$", fontsize=6.5)
+    axs[0][-1].legend(fontsize=4.8, loc="best", handletextpad=0.3, borderpad=0.2)
+    fig.subplots_adjust(wspace=0.30)
+    return fig

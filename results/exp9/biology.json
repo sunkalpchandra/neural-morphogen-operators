@@ -562,5 +562,161 @@
         "pearson_flat": 0.7741768442222599
       }
     ]
+  },
+  {
+    "section": "visium_human_breast",
+    "model": "gp_multiscale",
+    "display": "GP, multi-bandwidth",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 9,
+    "ari_measured": 0.3448416010590571,
+    "nmi_measured": 0.5361452275297814,
+    "ari_predicted": 0.17641087765785726,
+    "nmi_predicted": 0.34731117814731516,
+    "ari_retention": 0.5115707534011982,
+    "marker_auroc_measured": 0.8439545012031776,
+    "marker_auroc_predicted": 0.7988082376991507,
+    "n_marker_tests": 35,
+    "neighborhood_preservation": 0.199529854254819,
+    "morans_i_measured": 0.0596144789055636,
+    "morans_i_predicted": 0.8360202740571108,
+    "gearys_c_measured": 0.856780567355679,
+    "gearys_c_predicted": 0.1283038731513563,
+    "gearys_c_abs_error": 0.7560658749251248,
+    "regions": [
+      {
+        "region": "1",
+        "n": 183,
+        "rmse": 0.2597062289714813,
+        "pearson_flat": 0.7856006033562922
+      },
+      {
+        "region": "2",
+        "n": 62,
+        "rmse": 0.23151984810829163,
+        "pearson_flat": 0.8050959480220363
+      },
+      {
+        "region": "3",
+        "n": 133,
+        "rmse": 0.35303133726119995,
+        "pearson_flat": 0.756138992960751
+      },
+      {
+        "region": "4",
+        "n": 95,
+        "rmse": 0.38079833984375,
+        "pearson_flat": 0.6831886982167704
+      },
+      {
+        "region": "5",
+        "n": 24,
+        "rmse": 0.2523828148841858,
+        "pearson_flat": 0.7918147407252905
+      },
+      {
+        "region": "6",
+        "n": 119,
+        "rmse": 0.2889249324798584,
+        "pearson_flat": 0.7669256469624521
+      },
+      {
+        "region": "7",
+        "n": 31,
+        "rmse": 0.23484371602535248,
+        "pearson_flat": 0.7889695917965867
+      },
+      {
+        "region": "8",
+        "n": 35,
+        "rmse": 0.24702008068561554,
+        "pearson_flat": 0.7825466814447282
+      },
+      {
+        "region": "9",
+        "n": 27,
+        "rmse": 0.30656492710113525,
+        "pearson_flat": 0.7671824223185216
+      }
+    ]
+  },
+  {
+    "section": "visium_human_breast",
+    "model": "neural_field",
+    "display": "Neural field (SIREN)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 9,
+    "ari_measured": 0.3448416010590571,
+    "nmi_measured": 0.5361452275297814,
+    "ari_predicted": 0.02520622424841235,
+    "nmi_predicted": 0.08273755729837397,
+    "ari_retention": 0.07309507951187005,
+    "marker_auroc_measured": 0.8439545012031776,
+    "marker_auroc_predicted": 0.6479235243336536,
+    "n_marker_tests": 35,
+    "neighborhood_preservation": 0.07512929007992478,
+    "morans_i_measured": 0.0596144789055636,
+    "morans_i_predicted": 0.5380578002692744,
+    "gearys_c_measured": 0.856780567355679,
+    "gearys_c_predicted": 0.4507855661003053,
+    "gearys_c_abs_error": 0.48849699437490857,
+    "regions": [
+      {
+        "region": "1",
+        "n": 183,
+        "rmse": 0.2705485224723816,
+        "pearson_flat": 0.7627170612619845
+      },
+      {
+        "region": "2",
+        "n": 62,
+        "rmse": 0.2396431416273117,
+        "pearson_flat": 0.7881815522702305
+      },
+      {
+        "region": "3",
+        "n": 133,
+        "rmse": 0.3670499324798584,
+        "pearson_flat": 0.738934750483212
+      },
+      {
+        "region": "4",
+        "n": 95,
+        "rmse": 0.3916766941547394,
+        "pearson_flat": 0.6604218132635864
+      },
+      {
+        "region": "5",
+        "n": 24,
+        "rmse": 0.26641029119491577,
+        "pearson_flat": 0.7651928378085155
+      },
+      {
+        "region": "6",
+        "n": 119,
+        "rmse": 0.2937113642692566,
+        "pearson_flat": 0.7584234984241742
+      },
+      {
+        "region": "7",
+        "n": 31,
+        "rmse": 0.24909549951553345,
+        "pearson_flat": 0.7621267229437027
+      },
+      {
+        "region": "8",
+        "n": 35,
+        "rmse": 0.25756633281707764,
+        "pearson_flat": 0.7640960396833333
+      },
+      {
+        "region": "9",
+        "n": 27,
+        "rmse": 0.31218501925468445,
+        "pearson_flat": 0.7611016717610564
+      }
+    ]
   }
 ]
