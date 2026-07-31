@@ -1,4 +1,4 @@
-.PHONY: help data download build experiments all-experiments exp1 exp2 exp3 exp4 exp5 exp6 figures paper clean-runs test reevaluate
+.PHONY: help data download build experiments all-experiments exp1 exp2 exp3 exp4 exp5 exp6 figures paper clean-runs test reevaluate finalize
 
 # Use the project venv when present, otherwise whatever python is on PATH
 # (conda users, CI, etc.). Override with `make PY=python3.11 ...`.
@@ -14,6 +14,7 @@ help:
 	@echo "make experiments      run experiments 1-6 serially (slower)"
 	@echo "make figures      regenerate figures, tables and paper/numbers.tex"
 	@echo "make paper        figures + compile the PDF"
+	@echo "make finalize     re-score, regenerate figures/tables/numbers, build PDF"
 	@echo "make test         fast end-to-end smoke test"
 	@echo ""
 	@echo "variables: SEEDS='$(SEEDS)'  EPOCHS=$(EPOCHS)  SECTION=$(SECTION)"
@@ -63,6 +64,10 @@ paper: figures
 # ---------------------------------------------------------------- misc
 test:
 	PYTHONPATH=. $(PY) -m pytest tests -q
+
+# Regenerate every derived artifact from run results, in dependency order.
+finalize:
+	./scripts/finalize.sh
 
 reevaluate:
 	PYTHONPATH=. $(PY) scripts/reevaluate.py --results results/exp1

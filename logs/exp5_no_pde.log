@@ -11,3 +11,9 @@
 [22:13:36] INFO      ep  225/300  loss 1.2207  val r 0.2606  rmse 0.2625
 [22:15:07] INFO      ep  250/300  loss 1.2060  val r 0.2607  rmse 0.2629
 [22:16:34] INFO      ep  275/300  loss 1.2252  val r 0.2610  rmse 0.2630
+[22:18:00] INFO      ep  300/300  loss 1.2174  val r 0.2610  rmse 0.2629
+[22:18:04] INFO      done in 1162s | test r=0.2297 rmse=0.2542 ssim=0.3841
+[done] no_pde seed 0: r=0.2297 rmse=0.2542
+[22:18:07] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[22:18:07] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 300 epochs
+[22:19:41] INFO      ep   25/300  loss 1.5240  val r 0.1327  rmse 0.2941

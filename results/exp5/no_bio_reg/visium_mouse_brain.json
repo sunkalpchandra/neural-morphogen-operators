@@ -1,0 +1,27 @@
+[
+  {
+    "variant": "no_bio_reg",
+    "seed": 0,
+    "section": "visium_mouse_brain",
+    "n_params": 2198304,
+    "best_epoch": 274,
+    "pearson_mean": 0.23005352914333344,
+    "pearson_median": 0.19433891773223877,
+    "spearman_mean": 0.19375932216644287,
+    "rmse": 0.254804402589798,
+    "mae": 0.1466434895992279,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.8622825145721436,
+    "ssim_mean": 0.38713526968653944,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127,
+    "morans_i_pred": 0.9607918418786614,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.7863962321062202,
+    "morans_i_corr": 0.44294624388978676,
+    "turing_unstable": false,
+    "growth_max": 0.5614744424819946,
+    "diffusion_length_um_mean": 388.3398742675781
+  }
+]
