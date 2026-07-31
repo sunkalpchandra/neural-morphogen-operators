@@ -19,3 +19,5 @@
 [22:18:45] INFO      ep   25/300  loss 1.5010  val r 0.1387  rmse 0.2920
 [22:20:23] INFO      ep   50/300  loss 1.3166  val r 0.2120  rmse 0.2777
 [22:21:52] INFO      ep   75/300  loss 1.2456  val r 0.2310  rmse 0.2730
+[22:24:08] INFO      ep  100/300  loss 1.2071  val r 0.2379  rmse 0.2715
+[22:27:10] INFO      ep  125/300  loss 1.1949  val r 0.2405  rmse 0.2701

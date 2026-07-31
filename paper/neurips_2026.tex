@@ -97,7 +97,7 @@ at most \BestGraphOverAE{} Pearson $r$ on this task while the continuous
 operator contributes \NMOOverAE{}. Ablations isolate the
 operator as the source of the gain: disabling the dynamics---an exactly
 parameter-matched control, since the operator holds under $0.5\%$ of the
-model's weights---costs \AblNoDynamicsDelta{} Pearson $r$.
+model's weights---costs \MatchedNoDynamicsDelta{} Pearson $r$ at matched budget.
 
 The same experiments expose a clear cost. The operator NMO learns is purely
 dissipative---linearising it yields no Turing instability at any finite
@@ -609,8 +609,9 @@ dynamics.
 \end{figure}
 
 The decisive control is \emph{$-$ dynamics}, which sets the integration horizon to
-zero so the operator is never applied. It costs \AblNoDynamicsDelta{} Pearson $r$
-(Table~\ref{tab:ablations}, Figure~\ref{fig:ablations}). Had this matched the full
+zero so the operator is never applied. It costs \MatchedNoDynamicsDelta{} Pearson $r$ at matched budget
+(Table~\ref{tab:ablations} and Figure~\ref{fig:ablations} show the full sweep at
+the reduced budget). Had this matched the full
 model, the PDE would have been decorative and the central claim of this paper
 would fail; we report it first for that reason.
 

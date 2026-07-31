@@ -1,0 +1,2 @@
+[22:28:53] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[22:28:56] INFO    training GNNBaseline (609,599 params) on visium_mouse_brain for 300 epochs
