@@ -48,5 +48,130 @@
   "arxiv": "2607.23337",
   "file": "papers/neural_operator_discovery_trajectories.pdf",
   "why": "neural operator discovery"
+ },
+ {
+  "arxiv": "2107.07562",
+  "file": "papers/fno_universal_approximation_error_bounds.pdf",
+  "why": "FNO approximation theory"
+ },
+ {
+  "arxiv": "2405.02221",
+  "file": "papers/fno_discretization_error.pdf",
+  "why": "discretisation error of FNO"
+ },
+ {
+  "arxiv": "2603.00819",
+  "file": "papers/operator_learning_theory_tour.pdf",
+  "why": "convergence rates for operator learning"
+ },
+ {
+  "arxiv": "2207.01546",
+  "file": "papers/cnn_operator_approximation_bounds.pdf",
+  "why": "operator approximation bounds"
+ },
+ {
+  "arxiv": "2606.17419",
+  "file": "papers/generalization_multi_input_operator.pdf",
+  "why": "generalisation for operator learning"
+ },
+ {
+  "arxiv": "1910.06525",
+  "file": "papers/modified_strang_splitting_parabolic.pdf",
+  "why": "Strang splitting, semilinear parabolic"
+ },
+ {
+  "arxiv": "2508.03992",
+  "file": "papers/strang_unconditional_energy_dissipation.pdf",
+  "why": "unconditional dissipation of Strang splitting"
+ },
+ {
+  "arxiv": "1504.00797",
+  "file": "papers/pattern_formation_anisotropic_diffusion.pdf",
+  "why": "Turing patterns under anisotropic diffusion"
+ },
+ {
+  "arxiv": "2004.04537",
+  "file": "papers/wellposedness_inverse_identification_nonlocal.pdf",
+  "why": "inverse identification, well-posedness"
+ },
+ {
+  "arxiv": "2510.10571",
+  "file": "papers/determining_nonlinear_balance_laws.pdf",
+  "why": "identifiability of nonlinear PDE terms"
+ },
+ {
+  "arxiv": "2601.10326",
+  "file": "papers/gradient_stability_nonlinear_pde_inference.pdf",
+  "why": "inference in nonlinear PDE models"
+ },
+ {
+  "arxiv": "2211.14208",
+  "file": "papers/gread_graph_reaction_diffusion.pdf",
+  "why": "reaction-diffusion GNNs"
+ },
+ {
+  "arxiv": "2106.10934",
+  "file": "papers/grand_graph_neural_diffusion.pdf",
+  "why": "graph neural diffusion"
+ },
+ {
+  "arxiv": "2402.15326",
+  "file": "papers/oversmoothing_diffusion_gnn.pdf",
+  "why": "oversmoothing in diffusion GNNs"
+ },
+ {
+  "arxiv": "2002.04461",
+  "file": "papers/trajectorynet_optimal_transport_cells.pdf",
+  "why": "dynamic OT for cell trajectories"
+ },
+ {
+  "arxiv": "2310.10649",
+  "file": "papers/wasserstein_lagrangian_flows.pdf",
+  "why": "Wasserstein Lagrangian flows"
+ },
+ {
+  "arxiv": "2505.13413",
+  "file": "papers/joint_velocity_growth_flow_matching.pdf",
+  "why": "single-cell dynamics via flow matching"
+ },
+ {
+  "arxiv": "2203.15706",
+  "file": "papers/stabilized_neural_odes_longtime.pdf",
+  "why": "stability of neural ODEs"
+ },
+ {
+  "arxiv": "2412.11301",
+  "file": "papers/semi_implicit_neural_odes.pdf",
+  "why": "semi-implicit neural ODEs"
+ },
+ {
+  "arxiv": "2110.08411",
+  "file": "papers/multigroup_gaussian_processes.pdf",
+  "why": "multi-group GPs for expression"
+ },
+ {
+  "arxiv": "2512.03497",
+  "file": "papers/cell_cell_communication_inference.pdf",
+  "why": "spatial cell-cell communication"
+ },
+ {
+  "arxiv": "2211.07241",
+  "file": "papers/range_of_cell_cell_communication.pdf",
+  "why": "tuning communication range"
+ },
+ {
+  "arxiv": "2504.13049",
+  "file": "papers/multimodal_singlecell_foundation.pdf",
+  "why": "single-cell foundation models"
+ },
+ {
+  "arxiv": "2410.05894",
+  "file": "papers/dimino_dimension_informed_operator.pdf",
+  "why": "dimension-informed neural operators"
+ },
+ {
+  "arxiv": "2504.00510",
+  "file": "papers/operator_learning_domain_decomposition.pdf",
+  "why": "geometry generalisation in operator learning"
  }
 ]

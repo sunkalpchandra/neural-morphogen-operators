@@ -83,7 +83,7 @@ def figure1_overview() -> plt.Figure:
 
 def figure2_reconstruction(
     section, pred_nmo: np.ndarray, preds_other: Dict[str, np.ndarray],
-    visible: np.ndarray, genes: Optional[Sequence[str]] = None, n_genes: int = 3,
+    visible: np.ndarray, genes: Optional[Sequence[str]] = None, n_genes: int = 2,
 ) -> plt.Figure:
     """Ground truth vs. predictions for a few well-reconstructed genes."""
     set_style()
@@ -98,7 +98,7 @@ def figure2_reconstruction(
         order = np.argsort(-np.nan_to_num(r, nan=-1))
         valid = order[np.isfinite(r[order])]
         if len(valid) >= n_genes:
-            quantiles = np.linspace(0, 0.75, n_genes)  # best -> lower quartile
+            quantiles = np.linspace(0, 0.6, n_genes)  # best -> lower quartile
             gi = np.array([valid[int(q * (len(valid) - 1))] for q in quantiles])
         else:
             gi = valid[:n_genes]

@@ -1,0 +1,68 @@
+{
+ "fno_universal_approximation_error_bounds": {
+  "pages": 61,
+  "envs": {
+   "Theorem": 48,
+   "Lemma": 19,
+   "Assumption": 1,
+   "Remark": 13
+  },
+  "abstract": ""
+ },
+ "fno_discretization_error": {
+  "pages": 24,
+  "envs": {
+   "Theorem": 19,
+   "Lemma": 6,
+   "Definition": 4,
+   "Remark": 1
+  },
+  "abstract": ""
+ },
+ "operator_learning_theory_tour": {
+  "pages": 13,
+  "envs": {
+   "Theorem": 13,
+   "Assumption": 4
+  },
+  "abstract": "This paper surveys recent developments at the intersection of operator learning, statistical learning theory, and approximation theory. First, it reviews error bounds for empirical risk minimization with a focus on holomorphic operators and neural network approximations. Next, it illustrates fundamental performance limits in terms of sample size by adopting a minimax perspective and considering various notions of reg"
+ },
+ "modified_strang_splitting_parabolic": {
+  "pages": 8,
+  "envs": {
+   "Proposition": 1
+  },
+  "abstract": "We consider applying the Strang splitting to semilinear parabolic problems. The key ingredients of the Strang splitting are the decomposition of the equation into several parts and the computation of approximate solutions by combining the time evolution of each split equation. However, when the Dirichlet boundary condition is imposed, order reduction could occur due to the incompatibility of the split equations with "
+ },
+ "strang_unconditional_energy_dissipation": {
+  "pages": 25,
+  "envs": {
+   "Theorem": 13,
+   "Lemma": 22,
+   "Remark": 1
+  },
+  "abstract": ""
+ },
+ "pattern_formation_anisotropic_diffusion": {
+  "pages": 8,
+  "envs": {},
+  "abstract": ""
+ },
+ "determining_nonlinear_balance_laws": {
+  "pages": 39,
+  "envs": {
+   "Theorem": 27,
+   "Lemma": 43,
+   "Definition": 8,
+   "Remark": 10
+  },
+  "abstract": "This paper introduces an operator-theoretic paradigm for solving inverse prob- lems in nonlinear balance laws, shifting the focus from identifying specific functional forms to recovering the input-output actions of the associated flux and source operators. It is established that a single local passive boundary observation suffices to uniquely determine realizations of these operators for systems posed on product-type"
+ },
+ "gread_graph_reaction_diffusion": {
+  "pages": 26,
+  "envs": {
+   "Theorem": 1
+  },
+  "abstract": ""
+ }
+}

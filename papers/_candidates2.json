@@ -1,0 +1,278 @@
+[
+ {
+  "id": "2207.01546v3",
+  "title": "Approximation bounds for convolutional neural networks in operator learning",
+  "year": "2022",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2410.05894v5",
+  "title": "DimINO: Dimension-Informed Neural Operator Learning",
+  "year": "2024",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2606.17419v1",
+  "title": "Generalization Guarantees for Multi-Input Neural Operator Learning in Sobolev Spaces",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2504.00510v2",
+  "title": "Operator Learning with Domain Decomposition for Geometry Generalization in PDE Solving",
+  "year": "2025",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2603.00819v2",
+  "title": "A short tour of operator learning theory: Convergence rates, statistical limits, and open questions",
+  "year": "2026",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2107.07562v1",
+  "title": "On universal approximation and error bounds for Fourier Neural Operators",
+  "year": "2021",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2405.02221v2",
+  "title": "Discretization Error of Fourier Neural Operators",
+  "year": "2024",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2512.14086v2",
+  "title": "Derivative-Informed Fourier Neural Operator: Universal Approximation and Applications to PDE-Constrained Optimization",
+  "year": "2025",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "1907.12747v1",
+  "title": "Iterative and Non-iterative Splitting approach of a stochastic Burgers' equation",
+  "year": "2019",
+  "cat": "math.NA"
+ },
+ {
+  "id": "1910.06525v1",
+  "title": "Modified Strang splitting for semilinear parabolic problems",
+  "year": "2019",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2508.03992v1",
+  "title": "Unconditional energy dissipation of Strang splitting for the matrix-valued Allen-Cahn equation",
+  "year": "2025",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2607.21006v1",
+  "title": "Choosing optimal Strang splitting estimators of nonlinear stochastic differential equation models",
+  "year": "2026",
+  "cat": "stat.ME"
+ },
+ {
+  "id": "2103.13193v1",
+  "title": "Practical Effects of Integrating Temperature with Strang Split Reactions",
+  "year": "2021",
+  "cat": "astro-ph.IM"
+ },
+ {
+  "id": "1504.00797v1",
+  "title": "Pattern formation for reactive species undergoing anisotropic diffusion",
+  "year": "2015",
+  "cat": "cond-mat.stat-mech"
+ },
+ {
+  "id": "2605.02352v1",
+  "title": "Geometric Quantum Physics Informed Neural Network",
+  "year": "2026",
+  "cat": "quant-ph"
+ },
+ {
+  "id": "2312.06711v1",
+  "title": "Physics Informed Neural Network for Option Pricing",
+  "year": "2023",
+  "cat": "q-fin.PR"
+ },
+ {
+  "id": "2004.08151v2",
+  "title": "Accelerating Physics-Informed Neural Network Training with Prior Dictionaries",
+  "year": "2020",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2402.10119v1",
+  "title": "Physics-Informed Neural Network Policy Iteration: Algorithms, Convergence, and Verification",
+  "year": "2024",
+  "cat": "eess.SY"
+ },
+ {
+  "id": "2601.10326v1",
+  "title": "On gradient stability in nonlinear PDE models and inference in interacting particle systems",
+  "year": "2026",
+  "cat": "math.ST"
+ },
+ {
+  "id": "2603.01729v1",
+  "title": "Multi-patient Inverse Estimation of Effective Membrane Diffusion Coefficients in Calcium-Citrate Hemodialysis",
+  "year": "2026",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2607.00378v1",
+  "title": "Radial Interaction Tomography: Recognizing Non-Transitive Evolutionary Games from One Range-Expansion Image",
+  "year": "2026",
+  "cat": "cs.CV"
+ },
+ {
+  "id": "2510.10571v1",
+  "title": "Determining nonlinear balance laws in product-type domains by a single local passive boundary observation",
+  "year": "2025",
+  "cat": "math.AP"
+ },
+ {
+  "id": "2004.04537v2",
+  "title": "Strong well-posedness and inverse identification problem of a non-local phase field tumor model with degenerate mobilities",
+  "year": "2020",
+  "cat": "math.AP"
+ },
+ {
+  "id": "2402.15326v2",
+  "title": "Understanding Oversmoothing in Diffusion-Based GNNs From the Perspective of Operator Semigroup Theory",
+  "year": "2024",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2211.14208v3",
+  "title": "GREAD: Graph Neural Reaction-Diffusion Networks",
+  "year": "2022",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2605.21247v3",
+  "title": "Graph Navier Stokes Networks",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2106.10934v2",
+  "title": "GRAND: Graph Neural Diffusion",
+  "year": "2021",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2602.05352v3",
+  "title": "Smoothness Errors in Dynamics Models and How to Avoid Them",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2605.16529v1",
+  "title": "Multiscale Supervised Unbalanced Optimal Transport Flow Matching",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2601.20606v1",
+  "title": "WFR-MFM: One-Step Inference for Dynamic Unbalanced Optimal Transport",
+  "year": "2026",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2002.04461v2",
+  "title": "TrajectoryNet: A Dynamic Optimal Transport Network for Modeling Cellular Dynamics",
+  "year": "2020",
+  "cat": "stat.ML"
+ },
+ {
+  "id": "2310.10649v3",
+  "title": "A Computational Framework for Solving Wasserstein Lagrangian Flows",
+  "year": "2023",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2505.13413v2",
+  "title": "Joint Velocity-Growth Flow Matching for Single-Cell Dynamics Modeling",
+  "year": "2025",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2212.10058v1",
+  "title": "Recognition and reconstruction of cell differentiation patterns with deep learning",
+  "year": "2022",
+  "cat": "q-bio.CB"
+ },
+ {
+  "id": "1902.04912v1",
+  "title": "Diffusion through nanopores in connected lipid bilayer networks",
+  "year": "2019",
+  "cat": "physics.bio-ph"
+ },
+ {
+  "id": "2211.07241v1",
+  "title": "Adjusting the range of cell-cell communication enables fine-tuning of cell fate patterns from checkerboard to engulfing",
+  "year": "2022",
+  "cat": "physics.bio-ph"
+ },
+ {
+  "id": "2512.03497v3",
+  "title": "Cell-cell Communication Inference and Analysis: Biological Mechanisms, Computational Approaches, and Future Opportunities",
+  "year": "2025",
+  "cat": "q-bio.QM"
+ },
+ {
+  "id": "2501.10740v2",
+  "title": "Improving the robustness of neural ODEs with minimal weight perturbation",
+  "year": "2025",
+  "cat": "math.NA"
+ },
+ {
+  "id": "2412.11301v1",
+  "title": "Semi-Implicit Neural Ordinary Differential Equations",
+  "year": "2024",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2203.15706v2",
+  "title": "Stabilized Neural Ordinary Differential Equations for Long-Time Forecasting of Dynamical Systems",
+  "year": "2022",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2505.02019v3",
+  "title": "Learning the Simplest Neural ODE",
+  "year": "2025",
+  "cat": "stat.ML"
+ },
+ {
+  "id": "2110.08411v1",
+  "title": "Multi-group Gaussian Processes",
+  "year": "2021",
+  "cat": "stat.ME"
+ },
+ {
+  "id": "2507.10039v1",
+  "title": "Towards Applying Large Language Models to Complement Single-Cell Foundation Models",
+  "year": "2025",
+  "cat": "cs.LG"
+ },
+ {
+  "id": "2507.06418v1",
+  "title": "PAST: A multimodal single-cell foundation model for histopathology and spatial transcriptomics in cancer",
+  "year": "2025",
+  "cat": "q-bio.QM"
+ },
+ {
+  "id": "2504.13049v1",
+  "title": "Multi-modal single-cell foundation models via dynamic token adaptation",
+  "year": "2025",
+  "cat": "q-bio.GN"
+ },
+ {
+  "id": "2607.19400v1",
+  "title": "Predictive single cell foundation model for gene regulation and aging with privacy-preserving tabular learning",
+  "year": "2026",
+  "cat": "cs.LG"
+ }
+]
