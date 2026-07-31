@@ -360,3 +360,7 @@ shard 2/3: 66 of 68 jobs remaining
 [04:57:57] INFO      ep  200/200  loss 1.2895  val r 0.1292  rmse 0.7857
 [04:57:57] INFO      done in 24s | test r=0.1614 rmse=0.8139 ssim=0.1881
 [30/66] merfish_allen_31       autoencoder        s1 r=0.1614 (95s)
+[04:59:41] INFO    section merfish_allen_36: 115675 locations x 503 genes, 1051422 edges, scale 5063 um/unit
+[04:59:41] INFO    training STAGATEStyleBaseline (286,871 params) on merfish_allen_36 for 200 epochs
+[04:59:50] INFO      ep   25/200  loss 1.3903  val r 0.0747  rmse 0.8502
+[04:59:56] INFO      ep   50/200  loss 1.3164  val r 0.1140  rmse 0.8421

@@ -72,3 +72,5 @@
 [04:57:11] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
 [04:57:12] INFO    training MultiScaleGPBaseline (12,540 params) on visium_human_breast for 150 epochs
 [04:57:57] INFO      ep   25/150  loss 1.2598  val r 0.0704  rmse 0.3080
+[04:58:48] INFO      ep   50/150  loss 1.2602  val r 0.0730  rmse 0.3060
+[04:59:49] INFO      ep   75/150  loss 1.2485  val r 0.0697  rmse 0.3089

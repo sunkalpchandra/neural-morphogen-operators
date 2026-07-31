@@ -182,3 +182,5 @@ shard 1/3: 67 of 68 jobs remaining
 [15/67] merfish_allen_14       autoencoder        s0 r=0.1356 (97s)
 [04:58:17] INFO    section merfish_allen_18: 44309 locations x 500 genes, 407488 edges, scale 4091 um/unit
 [04:58:17] INFO    training NeuralMorphogenOperator (1,590,389 params) on merfish_allen_18 for 200 epochs
+[04:58:58] INFO      ep   25/200  loss 1.4990  val r 0.0947  rmse 0.7660
+[04:59:40] INFO      ep   50/200  loss 1.4325  val r 0.1266  rmse 0.7619
