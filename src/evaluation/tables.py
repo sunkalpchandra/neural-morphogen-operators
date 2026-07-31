@@ -262,7 +262,9 @@ def table_ablations(records: List[Dict], out: Path) -> str:
     df = pd.DataFrame(records)
     if df.empty:
         return ""
-    metrics = [m for m in ("pearson_mean", "rmse", "ssim_mean") if m in df.columns]
+    # Pearson + delta only: RMSE and SSIM track Pearson almost exactly across
+    # these variants and cost half a page. Full metrics are in the results JSON.
+    metrics = [m for m in ("pearson_mean",) if m in df.columns]
     agg = df.groupby("variant")[metrics + ["n_params"]].agg(["mean", "std"])
     full = agg.loc["full", ("pearson_mean", "mean")] if "full" in agg.index else np.nan
 

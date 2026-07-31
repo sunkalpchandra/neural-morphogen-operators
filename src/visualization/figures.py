@@ -33,7 +33,7 @@ from .style import (
 def figure1_overview() -> plt.Figure:
     """Schematic of the encode -> evolve -> decode pipeline."""
     set_style()
-    fig, ax = plt.subplots(figsize=(WIDTH_FULL, 2.05))
+    fig, ax = plt.subplots(figsize=(WIDTH_FULL, 1.78))
     ax.set_xlim(0, 100); ax.set_ylim(-2, 34)
     ax.axis("off")
 

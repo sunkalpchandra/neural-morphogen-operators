@@ -45,3 +45,36 @@
 [01:29:38] INFO      ep   75/250  loss 1.3227  val r 0.2256  rmse 0.2728
 [01:29:56] INFO      ep  100/250  loss 1.2960  val r 0.2396  rmse 0.2702
 [01:30:21] INFO      ep  125/250  loss 1.2913  val r 0.2481  rmse 0.2667
+[01:30:42] INFO      ep  150/250  loss 1.2568  val r 0.2532  rmse 0.2656
+[01:31:02] INFO      ep  175/250  loss 1.2426  val r 0.2566  rmse 0.2644
+[01:31:22] INFO      ep  200/250  loss 1.2333  val r 0.2581  rmse 0.2645
+[01:31:42] INFO      ep  225/250  loss 1.2578  val r 0.2585  rmse 0.2644
+[01:32:00] INFO      ep  250/250  loss 1.2559  val r 0.2586  rmse 0.2644
+[01:32:01] INFO      done in 259s | test r=0.2293 rmse=0.2525 ssim=0.3885
+[01:32:02] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[01:32:02] INFO    training NeuralMorphogenOperator (2,201,384 params) on visium_human_breast for 250 epochs
+[01:32:43] INFO      ep   25/250  loss 1.5415  val r 0.0676  rmse 0.3126
+[01:33:13] INFO      ep   50/250  loss 1.5175  val r 0.0833  rmse 0.3094
+[01:33:47] INFO      ep   75/250  loss 1.5151  val r 0.0834  rmse 0.3054
+[01:34:15] INFO      ep  100/250  loss 1.4799  val r 0.0790  rmse 0.3086
+[01:34:44] INFO      ep  125/250  loss 1.4853  val r 0.0778  rmse 0.3130
+[01:35:25] INFO      ep  150/250  loss 1.4811  val r 0.0786  rmse 0.3176
+[01:35:58] INFO      ep  175/250  loss 1.4548  val r 0.0783  rmse 0.3201
+[01:36:27] INFO      ep  200/250  loss 1.4637  val r 0.0778  rmse 0.3209
+[01:36:57] INFO      ep  225/250  loss 1.4540  val r 0.0777  rmse 0.3217
+[01:37:31] INFO      ep  250/250  loss 1.4713  val r 0.0778  rmse 0.3219
+[01:37:33] INFO      done in 330s | test r=0.0893 rmse=0.3003 ssim=0.3864
+[perturb-seq] seed1 nmo: {'n_perturbations': 7, 'n_shared_genes': 339, 'mean_spearman': -0.011456945688427103, 'median_spearman': 0.0076420531503186805, 'mean_null_spearman': -0.017429341100237618, 'frac_positive': 0.5714285714285714, 'wilcoxon_p': 1.0, 'seed': 1, 'model': 'nmo', 'display': 'NMO (ours)'}
+[01:37:37] INFO    training STAGATEStyleBaseline (693,959 params) on visium_human_breast for 250 epochs
+[01:37:49] INFO      ep   25/250  loss 1.4391  val r 0.0493  rmse 0.3123
+[01:38:03] INFO      ep   50/250  loss 1.4009  val r 0.0705  rmse 0.3094
+[01:38:17] INFO      ep   75/250  loss 1.3985  val r 0.0763  rmse 0.3077
+[01:38:30] INFO      ep  100/250  loss 1.3595  val r 0.0803  rmse 0.3080
+[01:38:50] INFO      ep  125/250  loss 1.3657  val r 0.0840  rmse 0.3081
+[01:39:06] INFO      ep  150/250  loss 1.3598  val r 0.0861  rmse 0.3080
+[01:39:17] INFO      ep  175/250  loss 1.3296  val r 0.0870  rmse 0.3083
+[01:39:28] INFO      ep  200/250  loss 1.3397  val r 0.0875  rmse 0.3082
+[01:39:41] INFO      ep  225/250  loss 1.3286  val r 0.0876  rmse 0.3083
+[01:39:52] INFO      ep  250/250  loss 1.3491  val r 0.0875  rmse 0.3086
+[01:39:54] INFO      done in 136s | test r=0.1023 rmse=0.2919 ssim=0.4236
+[perturb-seq] seed1 stagate: {'n_perturbations': 7, 'n_shared_genes': 339, 'mean_spearman': 0.0101356148592108, 'median_spearman': 0.008993859769286124, 'mean_null_spearman': -0.01409355545229901, 'frac_positive': 0.7142857142857143, 'wilcoxon_p': 0.578125, 'seed': 1, 'model': 'stagate', 'display': 'STAGATE-style'}

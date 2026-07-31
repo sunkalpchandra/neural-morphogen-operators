@@ -22,5 +22,29 @@
     "seed": 0,
     "model": "stagate",
     "display": "STAGATE-style"
+  },
+  {
+    "n_perturbations": 7,
+    "n_shared_genes": 339,
+    "mean_spearman": -0.011456945688427103,
+    "median_spearman": 0.0076420531503186805,
+    "mean_null_spearman": -0.017429341100237618,
+    "frac_positive": 0.5714285714285714,
+    "wilcoxon_p": 1.0,
+    "seed": 1,
+    "model": "nmo",
+    "display": "NMO (ours)"
+  },
+  {
+    "n_perturbations": 7,
+    "n_shared_genes": 339,
+    "mean_spearman": 0.0101356148592108,
+    "median_spearman": 0.008993859769286124,
+    "mean_null_spearman": -0.01409355545229901,
+    "frac_positive": 0.7142857142857143,
+    "wilcoxon_p": 0.578125,
+    "seed": 1,
+    "model": "stagate",
+    "display": "STAGATE-style"
   }
 ]
