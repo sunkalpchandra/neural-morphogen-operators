@@ -1,3 +1,56 @@
 17 sections x 9 models x 2 seeds
 shard 3/4: 76 of 76 jobs remaining
 [04:13:13] INFO    section merfish_allen_01: 23376 locations x 500 genes, 214168 edges, scale 2353 um/unit
+[04:13:22] INFO    training GNNBaseline (203,796 params) on merfish_allen_01 for 200 epochs
+[04:13:54] INFO      ep   25/200  loss 1.4097  val r 0.1325  rmse 0.8538
+[04:14:25] INFO      ep   50/200  loss 1.3081  val r 0.1846  rmse 0.8439
+[04:14:37] INFO      ep   75/200  loss 1.2856  val r 0.1935  rmse 0.8238
+[04:14:50] INFO      ep  100/200  loss 1.2556  val r 0.1911  rmse 0.8102
+[04:15:03] INFO      ep  125/200  loss 1.2247  val r 0.1941  rmse 0.8050
+[04:15:16] INFO      ep  150/200  loss 1.2181  val r 0.1943  rmse 0.8036
+[04:15:30] INFO      ep  175/200  loss 1.2084  val r 0.1950  rmse 0.8029
+[04:15:40] INFO      ep  200/200  loss 1.2100  val r 0.1949  rmse 0.8029
+[04:15:42] INFO      done in 138s | test r=0.2476 rmse=0.7329 ssim=0.4052
+[1/76] merfish_allen_01       gnn                s1 r=0.2476 (169s)
+[04:15:55] INFO    section merfish_allen_01: 23376 locations x 500 genes, 214168 edges, scale 2353 um/unit
+Python(79389) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(79392) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[04:15:56] INFO    training STAGATEStyleBaseline (286,100 params) on merfish_allen_01 for 200 epochs
+[04:16:10] INFO      ep   25/200  loss 1.3971  val r 0.1282  rmse 0.8525
+[04:16:27] INFO      ep   50/200  loss 1.2691  val r 0.1825  rmse 0.8391
+[04:16:41] INFO      ep   75/200  loss 1.2333  val r 0.1932  rmse 0.8168
+[04:17:01] INFO      ep  100/200  loss 1.1954  val r 0.1963  rmse 0.8038
+[04:17:16] INFO      ep  125/200  loss 1.1645  val r 0.1980  rmse 0.8006
+[04:17:31] INFO      ep  150/200  loss 1.1499  val r 0.1982  rmse 0.7999
+[04:17:45] INFO      ep  175/200  loss 1.1380  val r 0.1983  rmse 0.7996
+[04:17:56] INFO      ep  200/200  loss 1.1390  val r 0.1983  rmse 0.7996
+[04:17:58] INFO      done in 121s | test r=0.2454 rmse=0.7297 ssim=0.4101
+[2/76] merfish_allen_01       stagate            s1 r=0.2454 (136s)
+[04:18:16] INFO    section merfish_allen_01: 23376 locations x 500 genes, 214168 edges, scale 2353 um/unit
+Python(80647) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(80650) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[04:18:18] INFO    training GPSpatialBaseline (3 params) on merfish_allen_01 for 200 epochs
+[04:18:37] INFO      ep   25/200  loss 1.1742  val r 0.1069  rmse 0.9697
+[04:18:57] INFO      ep   50/200  loss 1.1354  val r 0.0970  rmse 0.9761
+[04:19:13] INFO      ep   75/200  loss 1.1625  val r 0.0951  rmse 0.9690
+[04:19:37] INFO      ep  100/200  loss 1.1878  val r 0.0785  rmse 0.9608
+[04:19:59] INFO      ep  125/200  loss 1.1674  val r 0.1007  rmse 0.9841
+[04:20:09] INFO      ep  150/200  loss 1.1546  val r 0.0841  rmse 0.9732
+[04:20:35] INFO      ep  175/200  loss 1.1595  val r 0.0990  rmse 0.9635
+[04:20:55] INFO      ep  200/200  loss 1.1490  val r 0.1069  rmse 0.9684
+[04:20:56] INFO      done in 157s | test r=0.1161 rmse=0.8890 ssim=0.2271
+[3/76] merfish_allen_01       gp                 s1 r=0.1161 (178s)
+[04:21:06] INFO    section merfish_allen_01: 23376 locations x 500 genes, 214168 edges, scale 2353 um/unit
+Python(82082) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(82083) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[04:21:07] INFO    training NeuralFieldBaseline (147,060 params) on merfish_allen_01 for 200 epochs
+[04:21:12] INFO      ep   25/200  loss 1.2697  val r 0.1197  rmse 0.8482
+[04:21:17] INFO      ep   50/200  loss 1.1213  val r 0.1012  rmse 0.8464
+[04:21:21] INFO      ep   75/200  loss 1.0752  val r 0.0866  rmse 0.8508
+[04:21:27] INFO      ep  100/200  loss 1.0370  val r 0.0813  rmse 0.8565
+[04:21:32] INFO      ep  125/200  loss 0.9993  val r 0.0796  rmse 0.8597
+[04:21:39] INFO      ep  150/200  loss 0.9807  val r 0.0787  rmse 0.8616
+[04:21:45] INFO      ep  175/200  loss 0.9649  val r 0.0779  rmse 0.8622
+[04:21:49] INFO      ep  200/200  loss 0.9712  val r 0.0779  rmse 0.8623
+[04:21:50] INFO      done in 43s | test r=0.1731 rmse=0.8089 ssim=0.2410
+[4/76] merfish_allen_01       neural_field       s1 r=0.1731 (54s)

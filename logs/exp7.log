@@ -35,3 +35,6 @@ Consider using tensor.detach() first. (Triggered internally at /Users/runner/wor
 [04:11:39] INFO      ep   75/250  loss 1.3227  val r 0.2256  rmse 0.2728
 [04:12:11] INFO      ep  100/250  loss 1.2960  val r 0.2396  rmse 0.2702
 [04:12:45] INFO      ep  125/250  loss 1.2913  val r 0.2481  rmse 0.2667
+[04:15:54] INFO      ep  150/250  loss 1.2568  val r 0.2532  rmse 0.2656
+[04:17:47] INFO      ep  175/250  loss 1.2426  val r 0.2566  rmse 0.2644
+[04:20:36] INFO      ep  200/250  loss 1.2333  val r 0.2581  rmse 0.2645

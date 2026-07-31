@@ -1,3 +1,19 @@
-17 sections x 9 models x 2 seeds
-shard 2/4: 76 of 76 jobs remaining
-[04:13:13] INFO    section merfish_allen_01: 23376 locations x 500 genes, 214168 edges, scale 2353 um/unit
+17 sections x 6 models x 2 seeds
+shard 2/3: 66 of 68 jobs remaining
+[04:22:05] INFO    section merfish_allen_01: 23376 locations x 500 genes, 214168 edges, scale 2353 um/unit
+[04:22:07] INFO    training NeuralFieldBaseline (147,060 params) on merfish_allen_01 for 200 epochs
+[04:22:10] INFO      ep   25/200  loss 1.2854  val r 0.1475  rmse 0.8604
+[04:22:13] INFO      ep   50/200  loss 1.1617  val r 0.1229  rmse 0.8541
+[04:22:16] INFO      ep   75/200  loss 1.0741  val r 0.1181  rmse 0.8597
+[04:22:18] INFO      ep  100/200  loss 1.0505  val r 0.1134  rmse 0.8638
+[04:22:20] INFO      ep  125/200  loss 1.0087  val r 0.1077  rmse 0.8676
+[04:22:22] INFO      ep  150/200  loss 1.0018  val r 0.1051  rmse 0.8695
+[04:22:25] INFO      ep  175/200  loss 0.9918  val r 0.1039  rmse 0.8698
+[04:22:28] INFO      ep  200/200  loss 0.9713  val r 0.1035  rmse 0.8700
+[04:22:29] INFO      done in 22s | test r=0.1212 rmse=0.8339 ssim=0.1833
+[1/66] merfish_allen_01       neural_field       s0 r=0.1212 (30s)
+[04:22:36] INFO    section merfish_allen_01: 23376 locations x 500 genes, 214168 edges, scale 2353 um/unit
+[04:22:36] INFO    training AutoencoderBaseline (170,004 params) on merfish_allen_01 for 200 epochs
+[04:22:48] INFO      ep   25/200  loss 1.3978  val r 0.1373  rmse 0.8563
+[04:22:54] INFO      ep   50/200  loss 1.2926  val r 0.1816  rmse 0.8547
+[04:22:59] INFO      ep   75/200  loss 1.2932  val r 0.1940  rmse 0.8531
