@@ -37,6 +37,17 @@ each appears with its heading.
 \subsection{Dataset inventory}
 \inputtable{tab_datasets}
 
+\subsection{Null controls for the recovered diffusion length}
+\inputtable{tab_difflen_null}
+
+The rows above the rule refit the model on measured tissue under varied
+encoder and discretization settings; the rows below refit it on sections whose
+expression has been permuted across positions. The shuffled fits attain
+$r \approx 0$, as they must, and yet return a length scale within
+$\NullShuffledShift$\% of the untrained model's \NullInit\,$\mu$m. Measured
+tissue moves the same quantity by $\NullDataShift$\%. Section~\ref{sec:results}
+reports what this does and does not license.
+
 \subsection{Ablation sweep}
 Full sweep at the reduced budget; the two matched-budget controls are reported in
 Section~\ref{sec:ablations}.

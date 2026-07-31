@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Null controls for the recovered diffusion length. Every row refits the identical architecture at the identical budget on the primary section. Shuffling coordinates destroys all spatial structure while preserving every gene's marginal; those rows reach $r \approx 0$ yet recover the length scale of the \emph{untrained} model, so the quantity is close to its initialization rather than inferred from tissue. The bandwidth and lattice sweeps show why neither is the mechanism: the length is invariant in microns across a fourfold change in pitch while the same quantity in lattice cells moves by the same factor.}
+\label{tab:difflen_null}
+\begin{tabular}{lrrr}
+\toprule
+condition & length ($\mu$m) & length (cells) & held-out $r$\\
+\midrule
+measured tissue, $H{=}64$ & 374.6\,\tiny{$\pm$ 1.7} & 3.76 & 0.248 \\
+splat $\sigma = 0.5$ cells & 375.5\,\tiny{$\pm$ 0.9} & 3.77 & 0.247 \\
+splat $\sigma = 2$ cells & 377.7\,\tiny{$\pm$ 1.4} & 3.79 & 0.247 \\
+splat $\sigma = 4$ cells & 376.4\,\tiny{$\pm$ 0.7} & 3.77 & 0.247 \\
+lattice $H{=}32$ (pitch $199\,\mu$m) & 376.3\,\tiny{$\pm$ 0.2} & 1.89 & 0.245 \\
+lattice $H{=}128$ (pitch $50\,\mu$m) & 378.2\,\tiny{$\pm$ 5.6} & 7.58 & 0.243 \\
+\midrule
+\textbf{coordinates shuffled}, $H{=}64$ & 404.5\,\tiny{$\pm$ 0.1} & 4.06 & 0.004 \\
+\textbf{coordinates shuffled}, $H{=}128$ & 404.7\,\tiny{$\pm$ 0.1} & 8.12 & 0.004 \\
+\bottomrule
+\end{tabular}
+\end{table}

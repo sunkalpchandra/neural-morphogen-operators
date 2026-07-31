@@ -487,6 +487,11 @@ def build_all(results_root: str | Path = "results", out_dir: str | Path = "paper
         made["biology"] = table_biology(json.loads(bio.read_text()),
                                         out_dir / "tab_biology.tex")
 
+    nl = results_root / "exp11" / "difflen_null.json"
+    if nl.exists():
+        made["difflen_null"] = table_difflen_null(json.loads(nl.read_text()),
+                                                  out_dir / "tab_difflen_null.tex")
+
     rob = [x for f in sorted(results_root.glob("exp10/robustness_shard*.json"))
            for x in json.loads(Path(f).read_text())]
     if rob:
@@ -746,6 +751,53 @@ def table_robustness(records: List[Dict], out: Path) -> str:
         "(for \\emph{density}, decreasing fraction of the section retained).",
         "tab:robustness", "l" + "r" * n_lv,
         "model & " + " & ".join(f"L{i+1}" for i in range(n_lv)),
+    )
+    out.write_text(tex)
+    return tex
+
+
+def table_difflen_null(records: List[Dict], out: Path) -> str:
+    """Null controls for the recovered diffusion length."""
+    df = pd.DataFrame([r for r in records if not r.get("failed")])
+    if df.empty:
+        return ""
+    LABEL = {"baseline": "measured tissue, $H{=}64$",
+             "shuffled": "\\textbf{coordinates shuffled}, $H{=}64$",
+             "sigma0.5": "splat $\\sigma = 0.5$ cells",
+             "sigma2.0": "splat $\\sigma = 2$ cells",
+             "sigma4.0": "splat $\\sigma = 4$ cells",
+             "grid32": "lattice $H{=}32$ (pitch $199\\,\\mu$m)",
+             "grid128": "lattice $H{=}128$ (pitch $50\\,\\mu$m)",
+             "shuffled_grid128": "\\textbf{coordinates shuffled}, $H{=}128$"}
+    ORDER = ["baseline", "sigma0.5", "sigma2.0", "sigma4.0", "grid32", "grid128",
+             "shuffled", "shuffled_grid128"]
+    g = df.groupby("condition").agg(
+        um=("difflen_median_um", "mean"), um_sd=("difflen_median_um", "std"),
+        cells=("difflen_median_cells", "mean"), r=("pearson_mean", "mean"))
+    rows = []
+    for c in ORDER:
+        if c not in g.index:
+            continue
+        if c == "shuffled":
+            rows.append("\\midrule\n")
+        sd = g.loc[c, "um_sd"]
+        um = f"{g.loc[c,'um']:.1f}" + (f"\\,\\tiny{{$\\pm$ {sd:.1f}}}"
+                                       if np.isfinite(sd) and sd > 0 else "")
+        rows.append(f"{LABEL.get(c,c)} & {um} & {g.loc[c,'cells']:.2f} & "
+                    f"{g.loc[c,'r']:.3f} \\\\\n")
+    tex = _wrap(
+        "".join(rows),
+        "Null controls for the recovered diffusion length. Every row refits the "
+        "identical architecture at the identical budget on the primary section. "
+        "Shuffling coordinates destroys all spatial structure while preserving "
+        "every gene's marginal; those rows reach $r \\approx 0$ yet recover the "
+        "length scale of the \\emph{untrained} model, so the quantity is close to "
+        "its initialization rather than inferred from tissue. The bandwidth and "
+        "lattice sweeps show why neither is the mechanism: the length is invariant "
+        "in microns across a fourfold change in pitch while the same quantity in "
+        "lattice cells moves by the same factor.",
+        "tab:difflen_null", "lrrr",
+        "condition & length ($\\mu$m) & length (cells) & held-out $r$",
     )
     out.write_text(tex)
     return tex
