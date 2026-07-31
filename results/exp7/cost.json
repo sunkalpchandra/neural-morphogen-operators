@@ -1,0 +1,26 @@
+[
+  {
+    "scheme": "strang-spectral",
+    "n_steps": 4,
+    "rel_error": 0.008388366550207138,
+    "wall_s": 0.01708388328552246
+  },
+  {
+    "scheme": "euler-spectral",
+    "n_steps": 128,
+    "rel_error": 0.00233031646348536,
+    "wall_s": 0.26450300216674805
+  },
+  {
+    "scheme": "strang-fd5",
+    "n_steps": 32,
+    "rel_error": 0.0009139064932242036,
+    "wall_s": 0.13285398483276367
+  },
+  {
+    "scheme": "euler-fd5",
+    "n_steps": 64,
+    "rel_error": 0.006141907535493374,
+    "wall_s": 0.14522194862365723
+  }
+]

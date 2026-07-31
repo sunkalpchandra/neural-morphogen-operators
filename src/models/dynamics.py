@@ -160,13 +160,44 @@ class AnisotropicDiffusion(nn.Module):
         return torch.fft.irfft2(zf * mult, s=(H, W), norm="ortho")
 
     def laplacian(self, z: torch.Tensor) -> torch.Tensor:
-        """Spectral div(D grad z), used for the PDE-residual loss."""
+        """div(D grad z). Spectral by default; ``fd5`` selects a second-order
+        finite-difference stencil so that the spectral solve can be ablated."""
+        if getattr(self, "scheme", "spectral") == "fd5":
+            return self._laplacian_fd(z)
         B, C, H, W = z.shape
         q = self.quadratic_form(H, W, z.device, z.dtype).unsqueeze(0)
         zf = torch.fft.rfft2(z, norm="ortho")
         return torch.fft.irfft2(-q * zf, s=(H, W), norm="ortho")
 
+    def _laplacian_fd(self, z: torch.Tensor) -> torch.Tensor:
+        """Second-order finite-difference form of div(D grad z) on a periodic grid.
+
+        With D = [[a, b], [b, c]] per channel this is
+        a z_xx + 2b z_xy + c z_yy, evaluated with centred stencils. Grid spacing
+        is h = 2/H on the domain [-1, 1]^2.
+        """
+        B, C, H, W = z.shape
+        hx, hy = 2.0 / W, 2.0 / H
+        D = self.tensor().to(z.dtype)
+        zxx = (torch.roll(z, 1, -1) - 2 * z + torch.roll(z, -1, -1)) / hx ** 2
+        zyy = (torch.roll(z, 1, -2) - 2 * z + torch.roll(z, -1, -2)) / hy ** 2
+        zxy = (torch.roll(torch.roll(z, 1, -1), 1, -2)
+               - torch.roll(torch.roll(z, -1, -1), 1, -2)
+               - torch.roll(torch.roll(z, 1, -1), -1, -2)
+               + torch.roll(torch.roll(z, -1, -1), -1, -2)) / (4 * hx * hy)
+        a = D[:, 0, 0].view(1, -1, 1, 1); b = D[:, 0, 1].view(1, -1, 1, 1)
+        c = D[:, 1, 1].view(1, -1, 1, 1)
+        return a * zxx + 2 * b * zxy + c * zyy
+
     def forward(self, z: torch.Tensor, dt: float) -> torch.Tensor:
+        if getattr(self, "scheme", "spectral") == "fd5":
+            # explicit application of the finite-difference operator; this is
+            # where a CFL restriction reappears
+            out = z + dt * self._laplacian_fd(z)
+            if self.state_dependent:
+                m = 1.0 + torch.tanh(self.modulator(z))
+                out = out + dt * (m - 1.0) * self._laplacian_fd(z)
+            return out
         out = self.exp_step(z, dt)
         if self.state_dependent:
             # explicit correction for the state-dependent part:
@@ -272,6 +303,16 @@ class DynamicsConfig:
     use_diffusion: bool = True
     use_reaction: bool = True
     reaction_gain: float = 0.5
+    #: Time integrator. 'strang' is the exact-spectral scheme of the paper;
+    #: 'euler' applies the same right-hand side with explicit Euler, which is the
+    #: standard choice in learned-PDE work and is subject to a CFL restriction.
+    integrator: str = "strang"
+    #: Spatial discretisation of the diffusion term. 'spectral' uses the exact
+    #: Fourier symbol; 'fd5' uses a five-point finite-difference Laplacian, so
+    #: the ablation isolates the spectral solve from the operator itself.
+    laplacian: str = "spectral"
+    #: Fix the diffusion tensor at its initial value instead of learning it.
+    freeze_diffusion: bool = False
 
 
 class ReactionDiffusionOperator(nn.Module):
@@ -290,6 +331,11 @@ class ReactionDiffusionOperator(nn.Module):
             if cfg.use_diffusion
             else None
         )
+        if self.diffusion is not None:
+            self.diffusion.scheme = cfg.laplacian
+            if cfg.freeze_diffusion:
+                for p in self.diffusion.parameters():
+                    p.requires_grad_(False)
         self.reaction = (
             ReactionNetwork(
                 cfg.channels, cfg.reaction_hidden, cfg.reaction_layers, cfg.reaction_gain
@@ -310,6 +356,10 @@ class ReactionDiffusionOperator(nn.Module):
 
     def step(self, z: torch.Tensor, dt: Optional[float] = None) -> torch.Tensor:
         dt = self.cfg.dt if dt is None else dt
+        if self.cfg.integrator == "euler":
+            # Explicit Euler on the full right-hand side: the conventional choice
+            # in learned-PDE work, and subject to dt < O(h^2 / |D|).
+            return z + dt * self.time_derivative(z)
         if self.diffusion is None:
             return self._reaction_half(z, dt)
         z = self.diffusion(z, dt / 2)

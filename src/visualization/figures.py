@@ -571,3 +571,68 @@ def figure_datasets(processed_dir="data/processed", keys=None) -> plt.Figure:
         del a
     fig.subplots_adjust(wspace=0.06, top=0.80, bottom=0.14)
     return fig
+
+
+def figure_numerics(stability: List[Dict], cost: List[Dict],
+                    downstream: Optional[List[Dict]] = None) -> plt.Figure:
+    """Stability envelope, cost at matched accuracy, and downstream effect."""
+    set_style()
+    import pandas as pd
+    S = pd.DataFrame(stability); K = pd.DataFrame(cost)
+    order = ["strang-spectral", "euler-spectral", "strang-fd5", "euler-fd5"]
+    cols = {o: CATEGORICAL[i] for i, o in enumerate(order)}
+    n = 3 if downstream else 2
+    fig, axes = plt.subplots(1, n, figsize=(WIDTH_FULL, 1.95),
+                             gridspec_kw={"width_ratios": [1.25, 1.0] + ([0.95] if downstream else [])})
+
+    # (a) largest stable dt per scheme, against the CFL bound
+    ax = axes[0]
+    for i, o in enumerate(order):
+        s = S[S["scheme"] == o]
+        top = s[s["stable"]]["dt"].max() if s["stable"].any() else np.nan
+        ax.barh(i, top, color=cols[o], height=0.62)
+        ax.text(top * 1.15, i, f"{top:.3g}", va="center", fontsize=6, color=INK_SECONDARY)
+    cfl = float(S["cfl_limit"].iloc[0])
+    ax.axvline(cfl, color=INK_SECONDARY, ls="--", lw=0.8)
+    ax.text(cfl, len(order) - 0.35, " CFL bound", fontsize=5.6, color=INK_SECONDARY, va="top")
+    ax.set_xscale("log"); ax.set_yticks(range(len(order))); ax.set_yticklabels(order, fontsize=6.2)
+    ax.invert_yaxis(); ax.grid(axis="y", visible=False)
+    ax.set_xlabel("largest stable $\\Delta t$"); ax.set_title("Stability envelope", fontsize=7.5, pad=4)
+    panel_label(ax, "a", dx=-0.52, dy=1.15)
+
+    # (b) steps needed to reach a fixed accuracy
+    ax = axes[1]
+    base = K[K["scheme"] == "strang-spectral"]["n_steps"].iloc[0]
+    vals = [K[K["scheme"] == o]["n_steps"].iloc[0] for o in order]
+    ax.bar(range(len(order)), vals, color=[cols[o] for o in order], width=0.62)
+    for i, v in enumerate(vals):
+        if v: ax.text(i, v, f"{v/base:.0f}$\\times$", ha="center", va="bottom",
+                      fontsize=6, color=INK_SECONDARY)
+    ax.set_yscale("log"); ax.set_xticks(range(len(order)))
+    ax.set_xticklabels(["Str-sp", "Eul-sp", "Str-fd", "Eul-fd"], fontsize=6)
+    ax.set_ylabel("steps to rel. err $<10^{-2}$")
+    ax.set_title("Cost at matched accuracy", fontsize=7.5, pad=4)
+    ax.grid(axis="x", visible=False)
+    panel_label(ax, "b", dx=-0.30, dy=1.15)
+
+    # (c) downstream held-out reconstruction
+    if downstream:
+        D = pd.DataFrame([d for d in downstream if not d.get("diverged")])
+        ax = axes[2]
+        if not D.empty:
+            g = D.groupby("scheme")["pearson_mean"].agg(["mean", "std"]).reindex(order).dropna()
+            ax.bar(range(len(g)), g["mean"], yerr=np.nan_to_num(g["std"]),
+                   color=[cols[o] for o in g.index], width=0.62,
+                   error_kw=dict(ecolor=INK_SECONDARY, elinewidth=0.8, capsize=2))
+            for i, v in enumerate(g["mean"]):
+                ax.text(i, v, f"{v:.3f}", ha="center", va="bottom", fontsize=6, color=INK_SECONDARY)
+            ax.set_xticks(range(len(g)))
+            ax.set_xticklabels([o.split("-")[0][:3] + "-" + o.split("-")[1][:2] for o in g.index],
+                               fontsize=6)
+            ax.set_ylim(max(0, g["mean"].min() * 0.9), g["mean"].max() * 1.10)
+        ax.set_ylabel("Pearson $r$")
+        ax.set_title("Held-out accuracy", fontsize=7.5, pad=4)
+        ax.grid(axis="x", visible=False)
+        panel_label(ax, "c", dx=-0.36, dy=1.15)
+    fig.subplots_adjust(wspace=0.85)
+    return fig
