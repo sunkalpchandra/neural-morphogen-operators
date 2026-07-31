@@ -595,25 +595,21 @@ def table_multisection(records: List[Dict], out: Path,
     win_note = "; ".join(f"{DISPLAY_NAMES.get(k,k)}: {v.n_reference_wins}/{v.n_sections}"
                          for k, v in wins.items())
     pool_note = ("" if n_pool == n_sec else
-                 f" Rows are restricted to the {n_sec} sections on which every model "
-                 f"shown was run, so the means agree with Table~\\ref{{tab:paired}}.")
+                 f" Rows cover the {n_sec} sections every model shown was run on.")
     drop_note = ("" if not dropped else
                  " Excluded for incomplete coverage: "
                  + ", ".join(f"{DISPLAY_NAMES.get(m, m)} ({n}/{n_sec})"
                              for m, n in sorted(dropped.items())) + ".")
     wins_min = min(v.n_reference_wins for v in wins.values()) if wins else None
     win_short = ("" if wins_min is None else
-                 f" NRDO wins on Pearson $r$ in {wins_min}--"
-                 f"{max(v.n_reference_wins for v in wins.values())} of {n_sec} sections "
-                 f"against every comparator; the full record is in "
-                 f"Table~\\ref{{tab:paired}}.")
+                 f" Win record and effect sizes: Table~\\ref{{tab:paired}}.")
     header = "model & $n$ & " + " & ".join(metric_label(m) for m in metrics)
     tex = _wrap(
         "".join(rows),
         f"Masked spatial reconstruction across {n_sec} tissue sections spanning four "
-        f"technologies, mean $\\pm$ s.d. over sections, {n_seed} seeds each."
-        f"{pool_note}{drop_note} Stars are Holm-corrected Wilcoxon signed-rank $p$ "
-        f"against NRDO with the section as the unit of analysis "
+        f"technologies; mean $\\pm$ s.d. over sections, {n_seed} seeds each."
+        f"{pool_note}{drop_note} Stars: Holm-corrected Wilcoxon signed-rank $p$ "
+        f"against NRDO, section as the unit of analysis "
         f"($^{{*}}p<0.05$, $^{{**}}p<0.01$, $^{{***}}p<0.001$).{win_short}",
         "tab:multisection", "lr" + "r" * len(metrics), header,
     )

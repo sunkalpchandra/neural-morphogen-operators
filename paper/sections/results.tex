@@ -134,32 +134,32 @@ away from steady state, in line with Theorem~\ref{thm:identifiability}.
 
 \subsection{Transfer across tissue, species and resolution}
 
-Transfer is the weakest setting here, and we report it under the same
-held-out-block protocol as everything else. An earlier version conditioned the
-model on a random half of the target and scored the complement, which is not
-comparable: on the Xenium target the median distance from a scored location to
-the nearest visible one is \SplitXenRandom\,$\mu$m under a random split against
-\SplitXenBlock\,$\mu$m under blocks, so the random split admits exactly the
-neighbor leakage that motivated blocks in the first place. Under that protocol a
+Transfer is reported under the same held-out-block protocol as everything else.
+An earlier version conditioned on a random half of the target and scored the
+complement, which is not comparable: on the Xenium target the median distance
+from a scored location to the nearest visible one is \SplitXenRandom\,$\mu$m
+under a random split against \SplitXenBlock\,$\mu$m under blocks, so it admits
+exactly the neighbor leakage that motivated blocks. Under that protocol a
 zero-shot model appeared to beat models trained on the target; under blocks it
-does not, and the numbers below are the corrected ones.
+does not.
 
 Applied unchanged from adult mouse brain to human breast carcinoma, NRDO reaches
 \TissueZeroShot{} against a training-mean floor of \TissueFloor{} and an
-in-domain oracle of \TissueOracle{} --- that is, essentially no transfer.
+in-domain oracle of \TissueOracle{}. That is not weak transfer but none: the
+zero-shot operator is indistinguishable from, and nominally below, predicting the
+training mean. Decoder-only refitting recovers \TissueFineTune{}, about half the
+oracle.
 Cross-resolution is better but still poor: an operator fitted to 55\,$\mu$m
 Visium spots and evaluated on single-cell Xenium of the same organ reaches
 \ResZeroShot{} over \ResSharedGenes{} shared genes against an oracle of
-\ResOracle{}. The \TissueZeroShotBaselineName{} baseline transfers better in both
-settings. We attribute this to the mechanism that produces the in-domain gain:
-NRDO fits an operator whose fixed point is the source tissue, and relaxation
-toward that attractor is inappropriate when the target has a different
-architecture, whereas local message passing encodes less about the source.
+\ResOracle{}. Every baseline transfers better in both settings. We attribute this to the mechanism that produces the in-domain gain: NRDO fits an
+operator whose fixed point is the source tissue, and relaxing toward that
+attractor is inappropriate when the target has a different architecture, whereas
+local message passing encodes less about the source.
 Proposition~\ref{prop:nystrom} makes the distinction precise --- discretization
 invariance of the \emph{encoder} does not entail portability of the \emph{fitted}
-operator. Until $\mD_\theta$ is conditioned on tissue-level covariates the
-operator should be regarded as a within-section model. Full tables and the
-developmental-forecasting result are in Appendix~\ref{app:empirical}.
+operator. Full tables and the developmental-forecasting result are in
+Appendix~\ref{app:empirical}.
 
 \subsection{Counterfactual perturbation}
 \label{sec:results4}
@@ -196,19 +196,16 @@ so the smoothness belongs to the operator class rather than to the objective. We
 keep $\lambda = 0$ throughout.
 
 \paragraph{Robustness to sampling density.}
-Spatial transcriptomics is noisy and sampled at whatever density the assay
-provides, so we re-train every model under \RobAxes{} corruption axes applied
-identically to all of them (\RobRuns{} runs; Appendix~\ref{app:empirical},
-Table~\ref{tab:robustness}). On two axes NRDO is not the most robust: under
-multiplicative count noise every model retains about the same fraction
-(\RobNoiseNMO\% against \RobNoiseBest\% for \RobNoiseBestModel{}), and under
-random location dropout the graph baselines degrade slightly less. The exception
-is the axis the continuous formulation actually predicts. Subsampling the section
-to an eighth of its locations --- changing sampling density without changing
-anatomy --- NRDO retains \RobDensNMO\% of its full-density accuracy against
-\RobDensBest\% for the best baseline. A model defined on a field rather than on a
-lattice should survive exactly this perturbation, and it is the one setting where
-it clearly does.
+Re-training every model under \RobAxes{} corruption axes applied identically to
+all of them (\RobRuns{} runs; Appendix~\ref{app:empirical},
+Table~\ref{tab:robustness}), NRDO is not the most robust to count noise
+(\RobNoiseNMO\% retained against \RobNoiseBest\%) or to location dropout. The
+exception is the axis the continuous formulation predicts: subsampling to an
+eighth of the locations, which changes sampling density without changing anatomy,
+NRDO retains \RobDensNMO\% of its full-density accuracy against \RobDensBest\%
+for the best baseline. A model defined on a field rather than a lattice should
+survive exactly this perturbation, and it is the one setting where it clearly
+does.
 
 \paragraph{Is the benchmark's ordering the converged ordering?}
 Not exactly, and the direction favors us. Training every model to a shared

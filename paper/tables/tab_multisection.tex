@@ -1,14 +1,14 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{Masked spatial reconstruction across 17 tissue sections spanning four technologies, mean $\pm$ s.d. over sections, 2 seeds each. Excluded for incomplete coverage: Gaussian Process (1/17). Stars are Holm-corrected Wilcoxon signed-rank $p$ against NRDO with the section as the unit of analysis ($^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$). NRDO wins on Pearson $r$ in 13--17 of 17 sections against every comparator; the full record is in Table~\ref{tab:paired}.}
+\caption{Masked spatial reconstruction across 17 tissue sections spanning four technologies; mean $\pm$ s.d. over sections, 2 seeds each. Excluded for incomplete coverage: Gaussian Process (1/17), SpaGE-style (3/17), Tangram-style (3/17). Stars: Holm-corrected Wilcoxon signed-rank $p$ against NRDO, section as the unit of analysis ($^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$). Win record and effect sizes: Table~\ref{tab:paired}.}
 \label{tab:multisection}
 \begin{tabular}{lrrrrr}
 \toprule
 model & $n$ & Pearson $r$ $\uparrow$ & RMSE $\downarrow$ & SSIM $\uparrow$ & $|\Delta I|$ $\downarrow$\\
 \midrule
 STAGATE-style & 17 & 0.154\,\tiny{$\pm$ 0.048}$^{**}$ & 0.704\,\tiny{$\pm$ 0.360}$^{**}$ & 0.306\,\tiny{$\pm$ 0.037}$^{*}$ & 0.766\,\tiny{$\pm$ 0.041}$^{***}$ \\
-GNN (GCN) & 17 & 0.153\,\tiny{$\pm$ 0.048}$^{***}$ & 0.704\,\tiny{$\pm$ 0.358}$^{**}$ & 0.307\,\tiny{$\pm$ 0.041}$^{*}$ & 0.795\,\tiny{$\pm$ 0.042}$^{***}$ \\
+GNN (GCN) & 17 & 0.153\,\tiny{$\pm$ 0.048}$^{***}$ & 0.704\,\tiny{$\pm$ 0.358}$^{*}$ & 0.307\,\tiny{$\pm$ 0.041} & 0.795\,\tiny{$\pm$ 0.042}$^{***}$ \\
 Autoencoder (non-spatial) & 17 & 0.153\,\tiny{$\pm$ 0.047}$^{**}$ & 0.728\,\tiny{$\pm$ 0.374}$^{***}$ & 0.224\,\tiny{$\pm$ 0.037}$^{***}$ & 0.756\,\tiny{$\pm$ 0.044}$^{***}$ \\
 GP, multi-bandwidth & 17 & 0.123\,\tiny{$\pm$ 0.041}$^{***}$ & 0.716\,\tiny{$\pm$ 0.367}$^{***}$ & 0.291\,\tiny{$\pm$ 0.027}$^{**}$ & 0.777\,\tiny{$\pm$ 0.030}$^{***}$ \\
 Neural field (SIREN) & 17 & 0.106\,\tiny{$\pm$ 0.042}$^{***}$ & 0.725\,\tiny{$\pm$ 0.368}$^{***}$ & 0.235\,\tiny{$\pm$ 0.033}$^{***}$ & 0.625\,\tiny{$\pm$ 0.058}$^{***}$ \\
