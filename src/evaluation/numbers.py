@@ -78,6 +78,26 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             nv = float(nmo["pearson_mean"].mean()) if not nmo.empty else np.nan
             cmd("PearsonGain", _val(nv - best_val))
             cmd("PearsonGainPct", _val(100 * (nv - best_val) / max(best_val, 1e-9), 1))
+        # Does spatial message passing actually beat plain interpolation? The
+        # non-spatial autoencoder shares the same inverse-distance read-out head
+        # as every graph baseline, so the difference isolates message passing.
+        if (base["model"] == "autoencoder").any():
+            ae = float(base[base["model"] == "autoencoder"]["pearson_mean"].mean())
+            cmd("AEPearson", _val(ae))
+            graphs = ["gnn", "spagcn", "stagate", "graph_transformer"]
+            gd = {m: float(base[base["model"] == m]["pearson_mean"].mean()) - ae
+                  for m in graphs if (base["model"] == m).any()}
+            if gd:
+                cmd("BestGraphOverAE", _val(max(gd.values())))
+                cmd("WorstGraphOverAE", _val(min(gd.values())))
+                cmd("NGraphBelowAE", str(sum(1 for v in gd.values() if v < 0)))
+                cmd("NGraphModels", str(len(gd)))
+            if not nmo.empty:
+                nd = float(nmo["pearson_mean"].mean()) - ae
+                cmd("NMOOverAE", _val(nd))
+                if gd and max(gd.values()) > 1e-9:
+                    cmd("NMOvsGraphRatio", f"{nd / max(gd.values()):.1f}")
+
         # honest read-out of the over-smoothing diagnostic
         if "morans_i_pred" in e1.columns:
             cmd("NMOMoranPred", _ms(nmo, "morans_i_pred"))

@@ -87,7 +87,11 @@ tensor readable as a physical length scale.
 Across \NDatasets{} public datasets spanning four technologies, NMO predicts
 held-out tissue regions more accurately than graph-based and Gaussian-process
 baselines (Pearson $r$ \NMOPearson{} vs.\ \BestBaselinePearson{}) and transfers
-zero-shot across tissue, species and sampling resolution. Ablations isolate the
+zero-shot across tissue, species and sampling resolution. A control we did not
+expect to matter turns out to: a \emph{non-spatial} autoencoder sharing the same
+interpolation read-out reaches \AEPearson{}, so graph message passing contributes
+at most \BestGraphOverAE{} Pearson $r$ on this task while the continuous
+operator contributes \NMOOverAE{}. Ablations isolate the
 operator as the source of the gain: disabling the dynamics---an exactly
 parameter-matched control, since the operator holds under $0.5\%$ of the
 model's weights---costs \AblNoDynamicsDelta{} Pearson $r$.
@@ -155,6 +159,9 @@ It cannot, and we explain why in Section~\ref{sec:limitations}.
   contiguous tissue blocks rather than random spots, and report Moran's $I$ error
   alongside correlation so that a model which regresses towards a smooth mean is
   penalised rather than rewarded (Section~\ref{sec:setup}).
+\item \textbf{A control that reframes the comparison.} A non-spatial baseline
+  with the same interpolation head matches or beats most graph models, showing how
+  little message passing contributes on this task (Section~\ref{sec:setup}).
 \item \textbf{A falsifiable interpretability read-out.} Linearising the learned
   operator yields a dispersion relation whose sign and peak wavenumber state
   whether, and at what wavelength, the operator supports pattern formation
@@ -401,6 +408,31 @@ single learned RBF length scale is shared across all genes, so one bandwidth mus
 serve both laminar and diffuse genes. A per-gene or spectral-mixture kernel would
 be stronger but far costlier for $\sim$2000 genes; we did not run it, so this
 number is a floor for shared-kernel interpolation.
+
+\paragraph{Graph message passing barely beats plain interpolation.}
+The most informative row in Table~\ref{tab:benchmark} is the one we included as a
+floor. The non-spatial autoencoder sees no coordinates at all; it reaches
+\AEPearson{} purely because it shares the inverse-distance read-out head we give
+every graph baseline. The difference between it and a graph model is therefore a
+clean measure of what \emph{message passing} contributes, holding the
+interpolation head fixed.
+
+That contribution is close to nothing. Across the \NGraphModels{} graph models
+the margin over the non-spatial baseline spans \WorstGraphOverAE{} to
+\BestGraphOverAE{} Pearson $r$, and \NGraphBelowAE{} of them is actually
+\emph{worse} than using no spatial information at all. NMO gains \NMOOverAE{}
+over the same reference --- roughly \NMOvsGraphRatio$\times$ the best graph
+model's margin.
+
+We think this is the more consequential observation, and it reframes the
+contribution. The claim is not that a few points of Pearson $r$ separate a new
+architecture from established ones; it is that on a leakage-controlled
+coordinate-prediction task, the standard graph treatment of spatial
+transcriptomics extracts remarkably little beyond what distance-weighted
+interpolation already provides, and that a continuous operator is one thing that
+measurably does better. We would encourage the non-spatial-plus-interpolation
+control to be reported routinely in this literature; it is cheap, and it is
+sobering.
 
 \paragraph{One metric disagrees, and it is the one we added to catch ourselves.}
 NMO is best on Pearson, Spearman, RMSE \emph{and} SSIM (\NMOSSIM{} against
