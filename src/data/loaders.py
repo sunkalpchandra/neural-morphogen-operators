@@ -239,12 +239,25 @@ def load_xenium(raw_dir: Path, key: str = "xenium_mouse_brain") -> ad.AnnData:
         adata.obs["control_counts_matrix"] = np.asarray(adata[:, ~is_gene].X.sum(1)).ravel()
     adata = adata[:, is_gene].copy()
 
+    # Xenium writes Barcode as an integer while barcodes.tsv is read as text, so
+    # the index must be cast before joining -- otherwise reindex silently yields
+    # an all-NaN column and the reference clustering is lost.
     clust = d / "analysis" / "clustering" / "gene_expression_graphclust" / "clusters.csv"
+    if not clust.exists():
+        kms = sorted((d / "analysis" / "clustering").glob("gene_expression_kmeans_*_clusters"),
+                     key=lambda q: int(q.name.split("_")[-2]))
+        clust = (kms[len(kms) // 2] / "clusters.csv") if kms else clust
     if clust.exists():
-        cl = pd.read_csv(clust).set_index("Barcode")
-        adata.obs["xenium_cluster"] = (
-            cl.reindex(adata.obs_names)["Cluster"].astype("Int64").astype(str).values
-        )
+        cl = pd.read_csv(clust)
+        cl[cl.columns[0]] = cl[cl.columns[0]].astype(str)
+        cl = cl.set_index(cl.columns[0])
+        joined = cl.reindex(adata.obs_names)["Cluster"]
+        if joined.isna().all():
+            log.info(f"  [warn] {clust.parent.name} join produced no matches; dropping")
+        else:
+            adata.obs["xenium_cluster"] = joined.astype("Int64").astype(str).values
+            log.info(f"  reference clustering: {clust.parent.name}, "
+                     f"{joined.nunique()} clusters, {100*joined.notna().mean():.0f}% assigned")
 
     xy = cells[["x_centroid", "y_centroid"]].to_numpy(dtype=np.float32)
     return _finalise(

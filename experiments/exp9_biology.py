@@ -164,6 +164,12 @@ def analyze(model, sec, labels: np.ndarray, visible: torch.Tensor) -> Dict:
         held = np.ones(len(true), bool)
 
     t, p, lab, xy = true[held], pred[held], labels[held], coords[held]
+    # drop locations with missing reference labels and any non-finite predictions
+    ok = ~np.isin(lab, ["nan", "NaN", "None", "<NA>", ""])
+    ok &= np.isfinite(p).all(1) & np.isfinite(t).all(1)
+    if ok.sum() < 50:
+        return {"error": "too few usable locations after filtering"}
+    t, p, lab, xy = t[ok], p[ok], lab[ok], xy[ok]
     W = spatial_weights(xy, k=6)
     res: Dict = {}
     res.update(domain_scores(t, p, lab))
@@ -210,6 +216,16 @@ def main() -> int:
             print(f"[skip] {section}: no '{col}'"); adata.file.close(); continue
         labels_all = adata.obs[col].astype(str).to_numpy()
         adata.file.close()
+        # A join that silently failed upstream leaves an all-NaN column; scoring
+        # against it is meaningless, so the section is skipped with a message
+        # rather than crashing the sweep several sections later.
+        bad = np.isin(labels_all, ["nan", "NaN", "None", "<NA>", ""])
+        if bad.all() or len(np.unique(labels_all[~bad])) < 2:
+            print(f"[skip] {section}: '{col}' has no usable labels "
+                  f"({100*bad.mean():.0f}% missing)")
+            continue
+        if bad.any():
+            print(f"[note] {section}: {100*bad.mean():.1f}% of labels missing, excluded")
 
         for model_type in a.models:
             for seed in a.seeds:
@@ -233,7 +249,18 @@ def main() -> int:
                              is_nmo=(model_type == "nmo"))
                 tr.fit()
                 model.eval()
-                res = analyze(model, sec, labels, tr.train_visible)
+                try:
+                    res = analyze(model, sec, labels, tr.train_visible)
+                except Exception as exc:
+                    print(f"[FAIL] {section} {model_type} s{seed}: "
+                          f"{type(exc).__name__}: {exc}", flush=True)
+                    rows.append(dict(section=section, model=model_type, seed=seed,
+                                     failed=True, error=str(exc)[:140]))
+                    out_path.write_text(json.dumps(rows, indent=2, default=float))
+                    continue
+                if "error" in res:
+                    print(f"[skip] {section} {model_type} s{seed}: {res['error']}")
+                    continue
                 rows.append(dict(section=section, model=model_type,
                                  display=DISPLAY_NAMES.get(model_type, model_type),
                                  seed=seed, reference=ref_name, **res))

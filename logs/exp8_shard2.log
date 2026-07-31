@@ -441,3 +441,355 @@ shard 2/3: 66 of 68 jobs remaining
 [05:11:20] INFO      ep  125/200  loss 1.0034  val r 0.0430  rmse 0.7989
 [05:11:22] INFO      ep  150/200  loss 0.9825  val r 0.0433  rmse 0.7999
 [05:11:24] INFO      ep  175/200  loss 0.9571  val r 0.0429  rmse 0.8004
+[05:11:26] INFO      ep  200/200  loss 0.9535  val r 0.0432  rmse 0.8003
+[05:11:27] INFO      done in 15s | test r=0.0861 rmse=0.7772 ssim=0.2512
+[37/66] merfish_allen_40       neural_field       s0 r=0.0861 (91s)
+[05:12:31] INFO    section merfish_allen_40: 104461 locations x 502 genes, 953274 edges, scale 5106 um/unit
+[05:12:32] INFO    training AutoencoderBaseline (170,518 params) on merfish_allen_40 for 200 epochs
+[05:12:34] INFO      ep   25/200  loss 1.3865  val r 0.0771  rmse 0.7753
+[05:12:37] INFO      ep   50/200  loss 1.3521  val r 0.1208  rmse 0.7742
+[05:12:39] INFO      ep   75/200  loss 1.3076  val r 0.1372  rmse 0.7733
+[05:12:42] INFO      ep  100/200  loss 1.2497  val r 0.1464  rmse 0.7724
+[05:12:44] INFO      ep  125/200  loss 1.2732  val r 0.1510  rmse 0.7715
+[05:12:46] INFO      ep  150/200  loss 1.2746  val r 0.1534  rmse 0.7707
+[05:12:49] INFO      ep  175/200  loss 1.2691  val r 0.1538  rmse 0.7702
+[05:12:51] INFO      ep  200/200  loss 1.2625  val r 0.1539  rmse 0.7702
+[05:12:51] INFO      done in 19s | test r=0.1832 rmse=0.7753 ssim=0.2186
+[38/66] merfish_allen_40       autoencoder        s1 r=0.1832 (85s)
+[05:13:28] INFO    section merfish_allen_42: 75433 locations x 503 genes, 689006 edges, scale 5124 um/unit
+[05:13:28] INFO    training STAGATEStyleBaseline (286,871 params) on merfish_allen_42 for 200 epochs
+[05:13:33] INFO      ep   25/200  loss 1.4040  val r 0.0892  rmse 0.7902
+[05:13:37] INFO      ep   50/200  loss 1.2947  val r 0.1377  rmse 0.7833
+[05:13:41] INFO      ep   75/200  loss 1.2612  val r 0.1526  rmse 0.7734
+[05:13:45] INFO      ep  100/200  loss 1.1881  val r 0.1604  rmse 0.7647
+[05:13:49] INFO      ep  125/200  loss 1.1564  val r 0.1650  rmse 0.7605
+[05:13:53] INFO      ep  150/200  loss 1.1713  val r 0.1680  rmse 0.7588
+[05:13:57] INFO      ep  175/200  loss 1.1497  val r 0.1694  rmse 0.7580
+[05:14:01] INFO      ep  200/200  loss 1.1490  val r 0.1696  rmse 0.7579
+[05:14:01] INFO      done in 33s | test r=0.1837 rmse=0.7290 ssim=0.3273
+[39/66] merfish_allen_42       stagate            s0 r=0.1837 (70s)
+[05:14:36] INFO    section merfish_allen_42: 75433 locations x 503 genes, 689006 edges, scale 5124 um/unit
+[05:14:37] INFO    training GNNBaseline (204,567 params) on merfish_allen_42 for 200 epochs
+[05:14:41] INFO      ep   25/200  loss 1.4304  val r 0.0864  rmse 0.7748
+[05:14:44] INFO      ep   50/200  loss 1.3692  val r 0.1315  rmse 0.7703
+[05:14:47] INFO      ep   75/200  loss 1.3464  val r 0.1503  rmse 0.7627
+[05:14:54] INFO      ep  100/200  loss 1.2827  val r 0.1551  rmse 0.7530
+[05:14:59] INFO      ep  125/200  loss 1.2698  val r 0.1582  rmse 0.7483
+[05:15:03] INFO      ep  150/200  loss 1.2441  val r 0.1606  rmse 0.7468
+[05:15:06] INFO      ep  175/200  loss 1.2285  val r 0.1618  rmse 0.7465
+[05:15:10] INFO      ep  200/200  loss 1.2327  val r 0.1614  rmse 0.7466
+[05:15:10] INFO      done in 33s | test r=0.1814 rmse=0.7401 ssim=0.3119
+[40/66] merfish_allen_42       gnn                s1 r=0.1814 (69s)
+[05:15:47] INFO    section merfish_allen_42: 75433 locations x 503 genes, 689006 edges, scale 5124 um/unit
+[05:15:47] INFO    training NeuralFieldBaseline (147,447 params) on merfish_allen_42 for 200 epochs
+[05:15:48] INFO      ep   25/200  loss 1.2648  val r 0.1063  rmse 0.7867
+[05:15:50] INFO      ep   50/200  loss 1.1381  val r 0.1068  rmse 0.7825
+[05:15:52] INFO      ep   75/200  loss 1.0879  val r 0.0981  rmse 0.7838
+[05:15:53] INFO      ep  100/200  loss 1.0200  val r 0.0871  rmse 0.7886
+[05:15:55] INFO      ep  125/200  loss 0.9899  val r 0.0790  rmse 0.7917
+[05:15:56] INFO      ep  150/200  loss 0.9970  val r 0.0739  rmse 0.7936
+[05:15:58] INFO      ep  175/200  loss 0.9737  val r 0.0722  rmse 0.7943
+[05:16:00] INFO      ep  200/200  loss 0.9790  val r 0.0722  rmse 0.7944
+[05:16:00] INFO      done in 13s | test r=0.0952 rmse=0.7543 ssim=0.2315
+[41/66] merfish_allen_42       neural_field       s0 r=0.0952 (49s)
+[05:16:33] INFO    section merfish_allen_42: 75433 locations x 503 genes, 689006 edges, scale 5124 um/unit
+[05:16:34] INFO    training AutoencoderBaseline (170,775 params) on merfish_allen_42 for 200 epochs
+[05:16:36] INFO      ep   25/200  loss 1.4165  val r 0.0765  rmse 0.7778
+[05:16:38] INFO      ep   50/200  loss 1.3501  val r 0.1225  rmse 0.7767
+[05:16:40] INFO      ep   75/200  loss 1.3406  val r 0.1435  rmse 0.7760
+[05:16:42] INFO      ep  100/200  loss 1.3003  val r 0.1534  rmse 0.7751
+[05:16:45] INFO      ep  125/200  loss 1.3158  val r 0.1579  rmse 0.7743
+[05:16:47] INFO      ep  150/200  loss 1.2988  val r 0.1603  rmse 0.7736
+[05:16:49] INFO      ep  175/200  loss 1.2924  val r 0.1611  rmse 0.7732
+[05:16:51] INFO      ep  200/200  loss 1.2844  val r 0.1611  rmse 0.7732
+[05:16:52] INFO      done in 18s | test r=0.1880 rmse=0.7692 ssim=0.1669
+[42/66] merfish_allen_42       autoencoder        s1 r=0.1880 (52s)
+[05:17:43] INFO    section merfish_allen_50: 92787 locations x 501 genes, 843030 edges, scale 4411 um/unit
+[05:17:44] INFO    training STAGATEStyleBaseline (286,357 params) on merfish_allen_50 for 200 epochs
+[05:17:50] INFO      ep   25/200  loss 1.3984  val r 0.1023  rmse 0.8793
+[05:17:54] INFO      ep   50/200  loss 1.3188  val r 0.1565  rmse 0.8681
+[05:17:59] INFO      ep   75/200  loss 1.2651  val r 0.1755  rmse 0.8478
+[05:18:03] INFO      ep  100/200  loss 1.2271  val r 0.1809  rmse 0.8291
+[05:18:07] INFO      ep  125/200  loss 1.2053  val r 0.1808  rmse 0.8234
+[05:18:11] INFO      ep  150/200  loss 1.1742  val r 0.1814  rmse 0.8200
+[05:18:15] INFO      ep  175/200  loss 1.1694  val r 0.1816  rmse 0.8194
+[05:18:19] INFO      ep  200/200  loss 1.1713  val r 0.1816  rmse 0.8193
+[05:18:19] INFO      done in 35s | test r=0.1699 rmse=0.8390 ssim=0.3069
+[43/66] merfish_allen_50       stagate            s0 r=0.1699 (87s)
+[05:19:07] INFO    section merfish_allen_50: 92787 locations x 501 genes, 843030 edges, scale 4411 um/unit
+[05:19:07] INFO    training GNNBaseline (204,053 params) on merfish_allen_50 for 200 epochs
+[05:19:10] INFO      ep   25/200  loss 1.4460  val r 0.1098  rmse 0.8690
+[05:19:13] INFO      ep   50/200  loss 1.3500  val r 0.1465  rmse 0.8615
+[05:19:16] INFO      ep   75/200  loss 1.3446  val r 0.1574  rmse 0.8461
+[05:19:19] INFO      ep  100/200  loss 1.2929  val r 0.1568  rmse 0.8304
+[05:19:22] INFO      ep  125/200  loss 1.2722  val r 0.1594  rmse 0.8229
+[05:19:28] INFO      ep  150/200  loss 1.2558  val r 0.1612  rmse 0.8197
+[05:19:32] INFO      ep  175/200  loss 1.2490  val r 0.1618  rmse 0.8184
+[05:19:35] INFO      ep  200/200  loss 1.2554  val r 0.1615  rmse 0.8184
+[05:19:35] INFO      done in 28s | test r=0.1598 rmse=0.8353 ssim=0.3133
+[44/66] merfish_allen_50       gnn                s1 r=0.1598 (76s)
+[05:20:27] INFO    section merfish_allen_50: 92787 locations x 501 genes, 843030 edges, scale 4411 um/unit
+[05:20:27] INFO    training NeuralFieldBaseline (147,189 params) on merfish_allen_50 for 200 epochs
+[05:20:29] INFO      ep   25/200  loss 1.2721  val r 0.0862  rmse 0.8775
+[05:20:31] INFO      ep   50/200  loss 1.1525  val r 0.0698  rmse 0.8796
+[05:20:32] INFO      ep   75/200  loss 1.0747  val r 0.0619  rmse 0.8821
+[05:20:34] INFO      ep  100/200  loss 1.0215  val r 0.0563  rmse 0.8860
+[05:20:36] INFO      ep  125/200  loss 0.9951  val r 0.0504  rmse 0.8905
+[05:20:38] INFO      ep  150/200  loss 0.9599  val r 0.0478  rmse 0.8923
+[05:20:40] INFO      ep  175/200  loss 0.9508  val r 0.0476  rmse 0.8929
+[05:20:41] INFO      ep  200/200  loss 0.9602  val r 0.0475  rmse 0.8930
+[05:20:42] INFO      done in 14s | test r=0.1199 rmse=0.8716 ssim=0.2094
+[45/66] merfish_allen_50       neural_field       s0 r=0.1199 (66s)
+[05:21:34] INFO    section merfish_allen_50: 92787 locations x 501 genes, 843030 edges, scale 4411 um/unit
+[05:21:34] INFO    training AutoencoderBaseline (170,261 params) on merfish_allen_50 for 200 epochs
+[05:21:36] INFO      ep   25/200  loss 1.4239  val r 0.0949  rmse 0.8732
+[05:21:39] INFO      ep   50/200  loss 1.3195  val r 0.1337  rmse 0.8720
+[05:21:41] INFO      ep   75/200  loss 1.3243  val r 0.1392  rmse 0.8712
+[05:21:43] INFO      ep  100/200  loss 1.2928  val r 0.1421  rmse 0.8701
+[05:21:45] INFO      ep  125/200  loss 1.2842  val r 0.1444  rmse 0.8687
+[05:21:47] INFO      ep  150/200  loss 1.2717  val r 0.1461  rmse 0.8674
+[05:21:49] INFO      ep  175/200  loss 1.2678  val r 0.1464  rmse 0.8667
+[05:21:51] INFO      ep  200/200  loss 1.2748  val r 0.1464  rmse 0.8666
+[05:21:51] INFO      done in 17s | test r=0.1473 rmse=0.8708 ssim=0.2065
+[46/66] merfish_allen_50       autoencoder        s1 r=0.1473 (69s)
+[05:21:56] INFO    section mosta_embryo_E10.5: 18360 locations x 2099 genes, 148344 edges, scale 2629 um/unit
+[05:21:56] INFO    training STAGATEStyleBaseline (697,043 params) on mosta_embryo_E10.5 for 200 epochs
+[05:22:04] INFO      ep   25/200  loss 1.4792  val r 0.0179  rmse 0.2067
+[05:22:10] INFO      ep   50/200  loss 1.4404  val r 0.0335  rmse 0.2061
+[05:22:17] INFO      ep   75/200  loss 1.4297  val r 0.0392  rmse 0.2056
+[05:22:24] INFO      ep  100/200  loss 1.4104  val r 0.0412  rmse 0.2052
+[05:22:31] INFO      ep  125/200  loss 1.4065  val r 0.0422  rmse 0.2048
+[05:22:38] INFO      ep  150/200  loss 1.3888  val r 0.0430  rmse 0.2046
+[05:22:45] INFO      ep  175/200  loss 1.4297  val r 0.0430  rmse 0.2044
+[05:22:51] INFO      ep  200/200  loss 1.4133  val r 0.0431  rmse 0.2044
+[05:22:53] INFO      done in 55s | test r=0.0544 rmse=0.2080 ssim=0.2578
+[47/66] mosta_embryo_E10.5     stagate            s0 r=0.0544 (61s)
+[05:22:58] INFO    section mosta_embryo_E10.5: 18360 locations x 2099 genes, 148344 edges, scale 2629 um/unit
+[05:22:58] INFO    training GNNBaseline (614,739 params) on mosta_embryo_E10.5 for 200 epochs
+[05:23:05] INFO      ep   25/200  loss 1.5273  val r 0.0150  rmse 0.2045
+[05:23:11] INFO      ep   50/200  loss 1.4858  val r 0.0287  rmse 0.2039
+[05:23:17] INFO      ep   75/200  loss 1.4812  val r 0.0369  rmse 0.2032
+[05:23:24] INFO      ep  100/200  loss 1.4715  val r 0.0406  rmse 0.2025
+[05:23:31] INFO      ep  125/200  loss 1.4778  val r 0.0421  rmse 0.2019
+[05:23:37] INFO      ep  150/200  loss 1.4227  val r 0.0432  rmse 0.2014
+[05:23:43] INFO      ep  175/200  loss 1.4307  val r 0.0437  rmse 0.2012
+[05:23:49] INFO      ep  200/200  loss 1.4770  val r 0.0436  rmse 0.2012
+[05:23:51] INFO      done in 51s | test r=0.0513 rmse=0.2064 ssim=0.2352
+[48/66] mosta_embryo_E10.5     gnn                s1 r=0.0513 (58s)
+[05:23:56] INFO    section mosta_embryo_E10.5: 18360 locations x 2099 genes, 148344 edges, scale 2629 um/unit
+[05:23:56] INFO    training NeuralFieldBaseline (353,331 params) on mosta_embryo_E10.5 for 200 epochs
+[05:24:01] INFO      ep   25/200  loss 1.4153  val r 0.0318  rmse 0.2052
+[05:24:05] INFO      ep   50/200  loss 1.3508  val r 0.0280  rmse 0.2045
+[05:24:10] INFO      ep   75/200  loss 1.3285  val r 0.0276  rmse 0.2041
+[05:24:14] INFO      ep  100/200  loss 1.3031  val r 0.0246  rmse 0.2044
+[05:24:19] INFO      ep  125/200  loss 1.2977  val r 0.0229  rmse 0.2046
+[05:24:25] INFO      ep  150/200  loss 1.2796  val r 0.0224  rmse 0.2047
+[05:24:30] INFO      ep  175/200  loss 1.3179  val r 0.0220  rmse 0.2047
+[05:24:35] INFO      ep  200/200  loss 1.3015  val r 0.0219  rmse 0.2047
+[05:24:36] INFO      done in 38s | test r=0.0328 rmse=0.2100 ssim=0.2518
+[49/66] mosta_embryo_E10.5     neural_field       s0 r=0.0328 (45s)
+[05:24:41] INFO    section mosta_embryo_E10.5: 18360 locations x 2099 genes, 148344 edges, scale 2629 um/unit
+[05:24:41] INFO    training AutoencoderBaseline (580,947 params) on mosta_embryo_E10.5 for 200 epochs
+[05:24:47] INFO      ep   25/200  loss 1.5203  val r 0.0181  rmse 0.2046
+[05:24:53] INFO      ep   50/200  loss 1.4748  val r 0.0336  rmse 0.2045
+[05:24:58] INFO      ep   75/200  loss 1.4695  val r 0.0409  rmse 0.2045
+[05:25:04] INFO      ep  100/200  loss 1.4608  val r 0.0449  rmse 0.2044
+[05:25:09] INFO      ep  125/200  loss 1.4710  val r 0.0466  rmse 0.2043
+[05:25:15] INFO      ep  150/200  loss 1.4169  val r 0.0473  rmse 0.2043
+[05:25:22] INFO      ep  175/200  loss 1.4251  val r 0.0477  rmse 0.2043
+[05:25:27] INFO      ep  200/200  loss 1.4732  val r 0.0477  rmse 0.2043
+[05:25:28] INFO      done in 46s | test r=0.0507 rmse=0.2088 ssim=0.2354
+[50/66] mosta_embryo_E10.5     autoencoder        s1 r=0.0507 (53s)
+[05:25:30] INFO    section mosta_embryo_E9.5: 5898 locations x 2069 genes, 48040 edges, scale 1395 um/unit
+[05:25:30] INFO    training STAGATEStyleBaseline (689,333 params) on mosta_embryo_E9.5 for 200 epochs
+[05:25:39] INFO      ep   25/200  loss 1.4379  val r 0.0737  rmse 0.2712
+[05:25:46] INFO      ep   50/200  loss 1.4158  val r 0.1135  rmse 0.2681
+[05:25:54] INFO      ep   75/200  loss 1.3550  val r 0.1283  rmse 0.2630
+[05:26:01] INFO      ep  100/200  loss 1.3245  val r 0.1330  rmse 0.2588
+[05:26:08] INFO      ep  125/200  loss 1.3169  val r 0.1360  rmse 0.2573
+[05:26:16] INFO      ep  150/200  loss 1.3410  val r 0.1375  rmse 0.2570
+[05:26:24] INFO      ep  175/200  loss 1.3257  val r 0.1384  rmse 0.2568
+[05:26:31] INFO      ep  200/200  loss 1.3144  val r 0.1384  rmse 0.2569
+[05:26:32] INFO      done in 61s | test r=0.1203 rmse=0.2556 ssim=0.2688
+[51/66] mosta_embryo_E9.5      stagate            s0 r=0.1203 (63s)
+[05:26:33] INFO    section mosta_embryo_E9.5: 5898 locations x 2069 genes, 48040 edges, scale 1395 um/unit
+[05:26:34] INFO    training GNNBaseline (607,029 params) on mosta_embryo_E9.5 for 200 epochs
+[05:26:40] INFO      ep   25/200  loss 1.4555  val r 0.0673  rmse 0.2683
+[05:26:47] INFO      ep   50/200  loss 1.3968  val r 0.1082  rmse 0.2664
+[05:26:54] INFO      ep   75/200  loss 1.4144  val r 0.1207  rmse 0.2632
+[05:27:00] INFO      ep  100/200  loss 1.3670  val r 0.1253  rmse 0.2593
+[05:27:07] INFO      ep  125/200  loss 1.3757  val r 0.1287  rmse 0.2566
+[05:27:13] INFO      ep  150/200  loss 1.3545  val r 0.1299  rmse 0.2559
+[05:27:20] INFO      ep  175/200  loss 1.3492  val r 0.1306  rmse 0.2555
+[05:27:26] INFO      ep  200/200  loss 1.3569  val r 0.1308  rmse 0.2555
+[05:27:28] INFO      done in 53s | test r=0.1219 rmse=0.2585 ssim=0.2586
+[52/66] mosta_embryo_E9.5      gnn                s1 r=0.1219 (56s)
+[05:27:29] INFO    section mosta_embryo_E9.5: 5898 locations x 2069 genes, 48040 edges, scale 1395 um/unit
+[05:27:29] INFO    training NeuralFieldBaseline (349,461 params) on mosta_embryo_E9.5 for 200 epochs
+[05:27:34] INFO      ep   25/200  loss 1.3486  val r 0.0966  rmse 0.2692
+[05:27:38] INFO      ep   50/200  loss 1.3018  val r 0.0983  rmse 0.2660
+[05:27:42] INFO      ep   75/200  loss 1.2362  val r 0.0935  rmse 0.2648
+[05:27:46] INFO      ep  100/200  loss 1.2088  val r 0.0875  rmse 0.2648
+[05:27:51] INFO      ep  125/200  loss 1.2038  val r 0.0834  rmse 0.2651
+[05:27:56] INFO      ep  150/200  loss 1.2281  val r 0.0811  rmse 0.2654
+[05:28:01] INFO      ep  175/200  loss 1.2140  val r 0.0801  rmse 0.2655
+[05:28:09] INFO      ep  200/200  loss 1.2037  val r 0.0799  rmse 0.2655
+[05:28:10] INFO      done in 39s | test r=0.0921 rmse=0.2627 ssim=0.2608
+[53/66] mosta_embryo_E9.5      neural_field       s0 r=0.0921 (42s)
+[05:28:11] INFO    section mosta_embryo_E9.5: 5898 locations x 2069 genes, 48040 edges, scale 1395 um/unit
+[05:28:12] INFO    training AutoencoderBaseline (573,237 params) on mosta_embryo_E9.5 for 200 epochs
+[05:28:18] INFO      ep   25/200  loss 1.4509  val r 0.0688  rmse 0.2689
+[05:28:24] INFO      ep   50/200  loss 1.3907  val r 0.1093  rmse 0.2685
+[05:28:30] INFO      ep   75/200  loss 1.4142  val r 0.1231  rmse 0.2681
+[05:28:37] INFO      ep  100/200  loss 1.3764  val r 0.1299  rmse 0.2675
+[05:28:43] INFO      ep  125/200  loss 1.3938  val r 0.1325  rmse 0.2667
+[05:28:49] INFO      ep  150/200  loss 1.3749  val r 0.1339  rmse 0.2659
+[05:28:55] INFO      ep  175/200  loss 1.3725  val r 0.1343  rmse 0.2655
+[05:29:02] INFO      ep  200/200  loss 1.3791  val r 0.1344  rmse 0.2655
+[05:29:03] INFO      done in 50s | test r=0.1254 rmse=0.2680 ssim=0.2405
+[54/66] mosta_embryo_E9.5      autoencoder        s1 r=0.1254 (53s)
+[05:29:04] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[05:29:04] INFO    training STAGATEStyleBaseline (693,959 params) on visium_human_breast for 200 epochs
+[05:29:12] INFO      ep   25/200  loss 1.4430  val r 0.0506  rmse 0.3161
+[05:29:20] INFO      ep   50/200  loss 1.4220  val r 0.0719  rmse 0.3137
+[05:29:29] INFO      ep   75/200  loss 1.4219  val r 0.0752  rmse 0.3123
+[05:29:37] INFO      ep  100/200  loss 1.3939  val r 0.0774  rmse 0.3129
+[05:29:44] INFO      ep  125/200  loss 1.3595  val r 0.0790  rmse 0.3132
+[05:29:52] INFO      ep  150/200  loss 1.3765  val r 0.0806  rmse 0.3134
+[05:29:59] INFO      ep  175/200  loss 1.3652  val r 0.0817  rmse 0.3130
+[05:30:07] INFO      ep  200/200  loss 1.3504  val r 0.0816  rmse 0.3132
+[05:30:08] INFO      done in 63s | test r=0.0934 rmse=0.2971 ssim=0.2799
+[55/66] visium_human_breast    stagate            s0 r=0.0934 (65s)
+[05:30:08] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[05:30:09] INFO    training GNNBaseline (611,655 params) on visium_human_breast for 200 epochs
+[05:30:14] INFO      ep   25/200  loss 1.4507  val r 0.0546  rmse 0.3087
+[05:30:22] INFO      ep   50/200  loss 1.3862  val r 0.0820  rmse 0.3059
+[05:30:28] INFO      ep   75/200  loss 1.3833  val r 0.0926  rmse 0.3017
+[05:30:34] INFO      ep  100/200  loss 1.3692  val r 0.0933  rmse 0.3003
+[05:30:40] INFO      ep  125/200  loss 1.3703  val r 0.0963  rmse 0.2999
+[05:30:46] INFO      ep  150/200  loss 1.3632  val r 0.0973  rmse 0.3002
+[05:30:52] INFO      ep  175/200  loss 1.3681  val r 0.0976  rmse 0.3001
+[05:30:58] INFO      ep  200/200  loss 1.3630  val r 0.0976  rmse 0.3001
+[05:30:59] INFO      done in 50s | test r=0.0951 rmse=0.2966 ssim=0.2900
+[56/66] visium_human_breast    gnn                s1 r=0.0951 (51s)
+[05:31:00] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[05:31:00] INFO    training NeuralFieldBaseline (351,783 params) on visium_human_breast for 200 epochs
+[05:31:05] INFO      ep   25/200  loss 1.3546  val r 0.0488  rmse 0.3154
+[05:31:09] INFO      ep   50/200  loss 1.3035  val r 0.0420  rmse 0.3148
+[05:31:13] INFO      ep   75/200  loss 1.2875  val r 0.0382  rmse 0.3162
+[05:31:18] INFO      ep  100/200  loss 1.2549  val r 0.0361  rmse 0.3159
+[05:31:22] INFO      ep  125/200  loss 1.2205  val r 0.0353  rmse 0.3164
+[05:31:26] INFO      ep  150/200  loss 1.2348  val r 0.0345  rmse 0.3167
+[05:31:31] INFO      ep  175/200  loss 1.2258  val r 0.0339  rmse 0.3169
+[05:31:35] INFO      ep  200/200  loss 1.2103  val r 0.0338  rmse 0.3169
+[05:31:36] INFO      done in 35s | test r=0.0488 rmse=0.3112 ssim=0.2365
+[57/66] visium_human_breast    neural_field       s0 r=0.0488 (37s)
+[05:31:37] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[05:31:37] INFO    training AutoencoderBaseline (577,863 params) on visium_human_breast for 200 epochs
+[05:31:42] INFO      ep   25/200  loss 1.4420  val r 0.0531  rmse 0.3100
+[05:31:47] INFO      ep   50/200  loss 1.3769  val r 0.0843  rmse 0.3096
+[05:31:52] INFO      ep   75/200  loss 1.3800  val r 0.0934  rmse 0.3091
+[05:31:57] INFO      ep  100/200  loss 1.3704  val r 0.0969  rmse 0.3082
+[05:32:02] INFO      ep  125/200  loss 1.3731  val r 0.0980  rmse 0.3071
+[05:32:07] INFO      ep  150/200  loss 1.3662  val r 0.0983  rmse 0.3059
+[05:32:11] INFO      ep  175/200  loss 1.3693  val r 0.0984  rmse 0.3053
+[05:32:17] INFO      ep  200/200  loss 1.3643  val r 0.0984  rmse 0.3052
+[05:32:18] INFO      done in 40s | test r=0.0987 rmse=0.3083 ssim=0.2622
+[58/66] visium_human_breast    autoencoder        s1 r=0.0987 (42s)
+[05:32:18] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[05:32:18] INFO    training STAGATEStyleBaseline (691,903 params) on visium_mouse_brain for 200 epochs
+[05:32:25] INFO      ep   25/200  loss 1.3756  val r 0.1125  rmse 0.2935
+[05:32:32] INFO      ep   50/200  loss 1.3196  val r 0.1782  rmse 0.2850
+[05:32:39] INFO      ep   75/200  loss 1.2485  val r 0.2046  rmse 0.2813
+[05:32:46] INFO      ep  100/200  loss 1.1964  val r 0.2119  rmse 0.2831
+[05:32:53] INFO      ep  125/200  loss 1.1770  val r 0.2173  rmse 0.2837
+[05:33:00] INFO      ep  150/200  loss 1.1761  val r 0.2186  rmse 0.2849
+[05:33:06] INFO      ep  175/200  loss 1.1423  val r 0.2197  rmse 0.2848
+[05:33:13] INFO      ep  200/200  loss 1.1567  val r 0.2198  rmse 0.2847
+[05:33:14] INFO      done in 55s | test r=0.2247 rmse=0.2578 ssim=0.3389
+[59/66] visium_mouse_brain     stagate            s0 r=0.2247 (57s)
+[05:33:15] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[05:33:15] INFO    training GNNBaseline (609,599 params) on visium_mouse_brain for 200 epochs
+[05:33:21] INFO      ep   25/200  loss 1.4213  val r 0.1126  rmse 0.2925
+[05:33:27] INFO      ep   50/200  loss 1.3574  val r 0.1767  rmse 0.2877
+[05:33:34] INFO      ep   75/200  loss 1.2831  val r 0.1958  rmse 0.2797
+[05:33:40] INFO      ep  100/200  loss 1.2181  val r 0.2097  rmse 0.2794
+[05:33:46] INFO      ep  125/200  loss 1.1789  val r 0.2150  rmse 0.2804
+[05:33:52] INFO      ep  150/200  loss 1.1920  val r 0.2161  rmse 0.2811
+[05:33:58] INFO      ep  175/200  loss 1.1877  val r 0.2184  rmse 0.2818
+[05:34:04] INFO      ep  200/200  loss 1.1783  val r 0.2180  rmse 0.2815
+[05:34:05] INFO      done in 49s | test r=0.2095 rmse=0.2605 ssim=0.3164
+[60/66] visium_mouse_brain     gnn                s1 r=0.2095 (51s)
+[05:34:06] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[05:34:06] INFO    training NeuralFieldBaseline (350,751 params) on visium_mouse_brain for 200 epochs
+[05:34:10] INFO      ep   25/200  loss 1.2335  val r 0.1811  rmse 0.2880
+[05:34:15] INFO      ep   50/200  loss 1.1805  val r 0.1965  rmse 0.2821
+[05:34:19] INFO      ep   75/200  loss 1.1337  val r 0.1981  rmse 0.2806
+[05:34:25] INFO      ep  100/200  loss 1.0952  val r 0.1948  rmse 0.2808
+[05:34:30] INFO      ep  125/200  loss 1.0782  val r 0.1928  rmse 0.2807
+[05:34:34] INFO      ep  150/200  loss 1.0768  val r 0.1916  rmse 0.2805
+[05:34:39] INFO      ep  175/200  loss 1.0457  val r 0.1912  rmse 0.2805
+[05:34:43] INFO      ep  200/200  loss 1.0539  val r 0.1912  rmse 0.2804
+[05:34:44] INFO      done in 37s | test r=0.1845 rmse=0.2652 ssim=0.3141
+[61/66] visium_mouse_brain     neural_field       s0 r=0.1845 (39s)
+[05:34:45] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[05:34:45] INFO    training AutoencoderBaseline (575,807 params) on visium_mouse_brain for 200 epochs
+[05:34:50] INFO      ep   25/200  loss 1.4218  val r 0.1047  rmse 0.2934
+[05:34:56] INFO      ep   50/200  loss 1.3559  val r 0.1745  rmse 0.2906
+[05:35:01] INFO      ep   75/200  loss 1.2666  val r 0.1894  rmse 0.2831
+[05:35:06] INFO      ep  100/200  loss 1.1847  val r 0.2096  rmse 0.2836
+[05:35:11] INFO      ep  125/200  loss 1.1405  val r 0.2164  rmse 0.2838
+[05:35:16] INFO      ep  150/200  loss 1.1519  val r 0.2190  rmse 0.2834
+[05:35:22] INFO      ep  175/200  loss 1.1496  val r 0.2203  rmse 0.2846
+[05:35:27] INFO      ep  200/200  loss 1.1381  val r 0.2207  rmse 0.2839
+[05:35:28] INFO      done in 42s | test r=0.2133 rmse=0.2593 ssim=0.3218
+[62/66] visium_mouse_brain     autoencoder        s1 r=0.2133 (44s)
+[05:35:37] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[05:35:37] INFO    training STAGATEStyleBaseline (221,336 params) on xenium_mouse_brain for 200 epochs
+[05:35:41] INFO      ep   25/200  loss 1.3601  val r 0.1381  rmse 1.8829
+[05:35:44] INFO      ep   50/200  loss 1.2553  val r 0.1937  rmse 1.8596
+[05:35:47] INFO      ep   75/200  loss 1.1797  val r 0.2084  rmse 1.8228
+[05:35:50] INFO      ep  100/200  loss 1.1203  val r 0.2146  rmse 1.7888
+[05:35:53] INFO      ep  125/200  loss 1.0859  val r 0.2206  rmse 1.7769
+[05:35:57] INFO      ep  150/200  loss 1.0590  val r 0.2228  rmse 1.7736
+[05:36:00] INFO      ep  175/200  loss 1.0505  val r 0.2233  rmse 1.7724
+[05:36:03] INFO      ep  200/200  loss 1.0583  val r 0.2235  rmse 1.7722
+[05:36:03] INFO      done in 26s | test r=0.2218 rmse=1.7915 ssim=0.3282
+[63/66] xenium_mouse_brain     stagate            s0 r=0.2218 (35s)
+[05:36:12] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[05:36:12] INFO    training GNNBaseline (139,032 params) on xenium_mouse_brain for 200 epochs
+[05:36:15] INFO      ep   25/200  loss 1.3780  val r 0.0937  rmse 1.8927
+[05:36:17] INFO      ep   50/200  loss 1.2825  val r 0.1338  rmse 1.8818
+[05:36:20] INFO      ep   75/200  loss 1.2326  val r 0.1411  rmse 1.8612
+[05:36:22] INFO      ep  100/200  loss 1.1855  val r 0.1433  rmse 1.8433
+[05:36:25] INFO      ep  125/200  loss 1.1510  val r 0.1471  rmse 1.8356
+[05:36:27] INFO      ep  150/200  loss 1.1474  val r 0.1494  rmse 1.8326
+[05:36:29] INFO      ep  175/200  loss 1.1317  val r 0.1502  rmse 1.8319
+[05:36:32] INFO      ep  200/200  loss 1.1291  val r 0.1502  rmse 1.8319
+[05:36:32] INFO      done in 19s | test r=0.2216 rmse=1.7852 ssim=0.3821
+[64/66] xenium_mouse_brain     gnn                s1 r=0.2216 (29s)
+[05:36:41] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[05:36:41] INFO    training NeuralFieldBaseline (114,552 params) on xenium_mouse_brain for 200 epochs
+[05:36:42] INFO      ep   25/200  loss 1.2006  val r 0.1583  rmse 1.8543
+[05:36:43] INFO      ep   50/200  loss 1.0784  val r 0.1441  rmse 1.8384
+[05:36:45] INFO      ep   75/200  loss 0.9952  val r 0.1279  rmse 1.8402
+[05:36:46] INFO      ep  100/200  loss 0.9439  val r 0.1179  rmse 1.8453
+[05:36:47] INFO      ep  125/200  loss 0.9056  val r 0.1100  rmse 1.8514
+[05:36:47] INFO      ep  150/200  loss 0.8824  val r 0.1072  rmse 1.8542
+[05:36:48] INFO      ep  175/200  loss 0.8758  val r 0.1055  rmse 1.8558
+[05:36:49] INFO      ep  200/200  loss 0.8756  val r 0.1054  rmse 1.8560
+[05:36:50] INFO      done in 8s | test r=0.1823 rmse=1.8318 ssim=0.1921
+[65/66] xenium_mouse_brain     neural_field       s0 r=0.1823 (17s)
+[05:36:58] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[05:36:58] INFO    training AutoencoderBaseline (105,240 params) on xenium_mouse_brain for 200 epochs
+[05:37:00] INFO      ep   25/200  loss 1.3795  val r 0.0993  rmse 1.8985
+[05:37:01] INFO      ep   50/200  loss 1.2794  val r 0.1344  rmse 1.8964
+[05:37:03] INFO      ep   75/200  loss 1.2557  val r 0.1442  rmse 1.8953
+[05:37:04] INFO      ep  100/200  loss 1.2437  val r 0.1468  rmse 1.8945
+[05:37:06] INFO      ep  125/200  loss 1.2291  val r 0.1488  rmse 1.8938
+[05:37:07] INFO      ep  150/200  loss 1.2359  val r 0.1503  rmse 1.8934
+[05:37:09] INFO      ep  175/200  loss 1.2227  val r 0.1506  rmse 1.8932
+[05:37:11] INFO      ep  200/200  loss 1.2291  val r 0.1507  rmse 1.8931
+[05:37:11] INFO      done in 12s | test r=0.2288 rmse=1.8581 ssim=0.1980
+[66/66] xenium_mouse_brain     autoencoder        s1 r=0.2288 (21s)
+shard 2 complete: 69 records
