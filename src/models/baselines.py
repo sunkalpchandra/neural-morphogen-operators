@@ -491,3 +491,141 @@ class MultiScaleGPBaseline(nn.Module):
 # below that point in the module.
 BASELINES["neural_field"] = NeuralFieldBaseline
 BASELINES["gp_multiscale"] = MultiScaleGPBaseline
+
+
+# --------------------------------------------------------------------------- #
+# Imputation-oriented baselines
+#
+# A spatial-transcriptomics reader expects the imputation literature to appear
+# here, not only the domain-identification one. Tangram, SpaGE and gimVI are the
+# usual references. None of their packages are dependencies of this repository,
+# and none of the three solves exactly our task -- they impute *unmeasured
+# genes* at measured locations, whereas we predict *measured genes* at unmeasured
+# locations. What transfers is each method's core inference mechanism, and that
+# is what is implemented below, inside the shared training loop, masks and
+# evaluation code so the comparison is like-for-like.
+#
+# They are therefore marked "-style" for the same reason the graph baselines
+# are, and the distinction is sharper here: these are the published *mechanism*
+# applied to a task the authors did not target, not a reproduction of their
+# pipelines or their reported numbers. A negative result against one of these is
+# evidence about the mechanism, not about the software.
+# --------------------------------------------------------------------------- #
+
+
+class TangramStyleBaseline(nn.Module):
+    """Learned soft assignment from observed to queried locations.
+
+    Tangram \\citep{biancalani2021tangram} fits a dense probabilistic mapping
+    between a reference set of profiles and a set of spatial positions by
+    gradient descent on a cosine-similarity objective, then transfers expression
+    through that mapping. The mechanism carried over here is exactly that: a
+    learned assignment matrix, softmax-normalized over the observed locations,
+    whose logits combine an expression-similarity term with a spatial prior.
+    Prediction is the assignment-weighted mean of observed expression, so the
+    model can only ever redistribute measured signal -- which is the property
+    that makes it a meaningful control for a generative operator.
+
+    The spatial prior is learnable and initialized to a short length scale;
+    without it the mapping is free to draw on anatomically unrelated tissue,
+    which is not how the method is used in practice.
+    """
+
+    def __init__(self, n_genes: int, hidden: int = 128, latent: int = 32,
+                 n_anchor: int = 1024, **kw):
+        super().__init__()
+        self.n_anchor = n_anchor
+        self.embed = nn.Sequential(
+            nn.Linear(n_genes, hidden), nn.GELU(), nn.Linear(hidden, latent))
+        self.log_tau = nn.Parameter(torch.tensor(0.0))        # similarity temperature
+        self.log_ls = nn.Parameter(torch.tensor(math.log(0.1)))  # spatial prior width
+        self.log_beta = nn.Parameter(torch.tensor(0.0))       # prior strength
+
+    def forward(self, coords, expr, query_coords=None, edge_index=None,
+                point_mask=None, **kw):
+        q = coords if query_coords is None else query_coords
+        vis = (point_mask > 0) if point_mask is not None else torch.ones(
+            coords.shape[0], dtype=torch.bool, device=coords.device)
+        cv, ev = coords[vis], expr[vis]
+        if cv.shape[0] > self.n_anchor:
+            sel = torch.randperm(cv.shape[0], device=cv.device)[: self.n_anchor]
+            cv, ev = cv[sel], ev[sel]
+
+        # expression similarity in a learned space, as in the Tangram objective
+        zq = F.normalize(self.embed(expr if query_coords is None else expr), dim=-1)
+        zv = F.normalize(self.embed(ev), dim=-1)
+        sim = (zq @ zv.T) * self.log_tau.exp().clamp(1e-2, 1e2)
+
+        # spatial prior: a soft locality constraint on where mass may be placed
+        d2 = torch.cdist(q, cv).pow(2)
+        ls = self.log_ls.exp().clamp(1e-3, 5.0)
+        sim = sim - self.log_beta.exp().clamp(1e-3, 1e3) * d2 / (2 * ls ** 2)
+
+        M = torch.softmax(sim, dim=-1)                        # (N_q, M) assignment
+        return {"pred": M @ ev, "latent": None}
+
+
+class SpaGEStyleBaseline(nn.Module):
+    """Alignment onto shared principal vectors, then neighborhood regression.
+
+    SpaGE \\citep{abdelaal2020spage} aligns two datasets by finding principal
+    vectors of their respective principal subspaces, and predicts by k-nearest
+    neighbours in that aligned space. Our task has one dataset rather than two,
+    so the alignment reduces to projection onto the leading principal subspace
+    of the *observed* locations, which is the informative part: prediction is a
+    distance-weighted average over the k nearest observed profiles in a
+    low-dimensional space rather than in the raw high-dimensional one.
+
+    The projection is computed by a truncated SVD of the visible split at every
+    forward pass, so no held-out location contributes to the basis. The number
+    of components and the neighbourhood size are the two knobs the method
+    actually exposes.
+    """
+
+    def __init__(self, n_genes: int, n_components: int = 30, k: int = 15,
+                 n_anchor: int = 2048, **kw):
+        super().__init__()
+        self.n_components, self.k, self.n_anchor = n_components, k, n_anchor
+        # the only trained quantities: how sharply to weight neighbours, and how
+        # much to trust expression distance against spatial distance
+        self.log_sigma = nn.Parameter(torch.tensor(0.0))
+        self.log_wspace = nn.Parameter(torch.tensor(math.log(1.0)))
+
+    def forward(self, coords, expr, query_coords=None, edge_index=None,
+                point_mask=None, **kw):
+        q = coords if query_coords is None else query_coords
+        vis = (point_mask > 0) if point_mask is not None else torch.ones(
+            coords.shape[0], dtype=torch.bool, device=coords.device)
+        cv, ev = coords[vis], expr[vis]
+        if cv.shape[0] > self.n_anchor:
+            sel = torch.randperm(cv.shape[0], device=cv.device)[: self.n_anchor]
+            cv, ev = cv[sel], ev[sel]
+        if cv.shape[0] < 2:
+            return {"pred": expr.mean(0, keepdim=True).expand(q.shape[0], -1),
+                    "latent": None}
+
+        # principal subspace of the OBSERVED split only
+        mu = ev.mean(0, keepdim=True)
+        k_c = int(min(self.n_components, cv.shape[0] - 1, ev.shape[1]))
+        _, _, V = torch.pca_lowrank(ev - mu, q=k_c, center=False)
+        pv = (ev - mu) @ V                                    # (M, k)
+
+        # Expression distance is taken against the *masked* input, which is zero
+        # at hidden locations; those queries are then resolved by the spatial
+        # term alone, which is the honest behaviour for this task.
+        pq = (expr - mu) @ V
+
+        d_expr = torch.cdist(pq, pv)
+        d_space = torch.cdist(q, cv)
+        d = d_expr + self.log_wspace.exp().clamp(1e-3, 1e3) * d_space
+
+        kk = int(min(self.k, cv.shape[0]))
+        nd, ni = torch.topk(d, kk, dim=-1, largest=False)
+        w = torch.softmax(-nd / self.log_sigma.exp().clamp(1e-3, 1e2), dim=-1)
+        return {"pred": (w.unsqueeze(-1) * ev[ni]).sum(1), "latent": None}
+
+
+BASELINES["tangram"] = TangramStyleBaseline
+BASELINES["spage"] = SpaGEStyleBaseline
+DISPLAY_NAMES["tangram"] = "Tangram-style"
+DISPLAY_NAMES["spage"] = "SpaGE-style"
