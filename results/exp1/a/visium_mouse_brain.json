@@ -1,0 +1,24 @@
+[
+  {
+    "section": "visium_mouse_brain",
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "n_params": 2198304,
+    "wall_s": 1667.1,
+    "best_epoch": 299,
+    "pearson_mean": 0.24484214186668396,
+    "pearson_median": 0.2100832164287567,
+    "spearman_mean": 0.20359744131565094,
+    "rmse": 0.251777708530426,
+    "mae": 0.1451377272605896,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.8669193387031555,
+    "ssim_mean": 0.6738134555285756,
+    "morans_i_pred": 0.9367358684072914,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.7623402586348501,
+    "morans_i_corr": 0.41392369224888664
+  }
+]

@@ -1,0 +1,6 @@
+[21:21:31] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[21:21:34] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 400 epochs
+/Users/sunkalp/neural-morphogen-operators/src/training/trainer.py:156: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /Users/runner/work/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:823.)
+  return {k: float(v) for k, v in terms.items()}
+[21:23:16] INFO      ep   25/400  loss 1.5011  val r 0.1450  rmse 0.2944

@@ -21,3 +21,17 @@ Consider using tensor.detach() first. (Triggered internally at /Users/runner/wor
 [21:13:20] INFO      ep  400/500  loss 1.1652  val r 0.2632  rmse 0.2708
 [21:14:59] INFO      ep  425/500  loss 1.1744  val r 0.2635  rmse 0.2709
 [21:16:26] INFO      ep  450/500  loss 1.1762  val r 0.2637  rmse 0.2707
+[21:17:55] INFO      ep  475/500  loss 1.1814  val r 0.2633  rmse 0.2709
+[21:19:18] INFO      ep  500/500  loss 1.1797  val r 0.2633  rmse 0.2709
+[21:19:18] INFO      early stop at epoch 500 (best 0.2642)
+Python(71944) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(71946) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:19:25] INFO      done in 1660s | test r=0.2448 rmse=0.2518 ssim=0.6738
+[done] nmo seed 0: r=0.2448
+[21:19:27] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(71971) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(71973) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:19:28] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 500 epochs
+[21:20:47] INFO      ep   25/500  loss 1.5257  val r 0.1337  rmse 0.2942
+[21:22:30] INFO      ep   50/500  loss 1.3876  val r 0.1971  rmse 0.2829
+[21:25:14] INFO      ep   75/500  loss 1.3197  val r 0.2274  rmse 0.2722

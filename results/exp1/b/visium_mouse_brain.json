@@ -108,5 +108,27 @@
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7399067300201855,
     "morans_i_corr": 0.5251899122883366
+  },
+  {
+    "section": "visium_mouse_brain",
+    "model": "spagcn",
+    "display": "SpaGCN-style",
+    "seed": 2,
+    "n_params": 592832,
+    "wall_s": 312.6,
+    "best_epoch": 474,
+    "pearson_mean": 0.23416712880134583,
+    "pearson_median": 0.20792444050312042,
+    "spearman_mean": 0.18370048701763153,
+    "rmse": 0.2539500296115875,
+    "mae": 0.14325973391532898,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.8625179529190063,
+    "ssim_mean": 0.690412565896669,
+    "morans_i_pred": 0.9107636806198448,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.7363680708474035,
+    "morans_i_corr": 0.5321228232213736
   }
 ]
