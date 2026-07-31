@@ -174,6 +174,11 @@ def main() -> int:
                 figdir / "fig_numerics")
         made.append("fig_numerics")
 
+    sw = results / "exp13" / "spectral_sweep.json"
+    if sw.exists():
+        savefig(F.figure_spectral(json.loads(sw.read_text())), figdir / "fig_spectral")
+        made.append("fig_spectral")
+
     bio = results / "exp9" / "biology.json"
     if bio.exists():
         savefig(F.figure_biology(json.loads(bio.read_text())), figdir / "fig_biology")

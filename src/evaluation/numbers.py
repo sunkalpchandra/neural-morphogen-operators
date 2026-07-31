@@ -395,6 +395,42 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("NumSpeedup", f"{eul.iloc[0]/base:.0f}")
         cmd("NumStrangSteps", str(int(base)))
 
+    # ---- Experiment 13 : spectral matching --------------------------------- #
+    sj = Path(results_root) / "exp13" / "spectral_sweep.json"
+    if sj.exists():
+        S13 = pd.DataFrame([r for r in json.loads(sj.read_text()) if not r.get("failed")])
+        if not S13.empty:
+            S13["mode"] = (S13["mode"].fillna("full") if "mode" in S13.columns
+                           else "full")
+            gg = S13.groupby(["mode", "spectral_weight"])[
+                ["pearson_mean", "morans_i_abs_error", "morans_i_pred"]].mean()
+            base = gg.loc[("full", 0.0)] if ("full", 0.0) in gg.index else None
+            if base is not None:
+                cmd("SpecBaseR", _val(float(base["pearson_mean"])))
+                cmd("SpecBaseMoran", _val(float(base["morans_i_abs_error"])))
+            for mode, tag in [("full", "Full"), ("shape", "Shape")]:
+                sub = gg.loc[mode] if mode in gg.index.get_level_values(0) else None
+                if sub is None:
+                    continue
+                sub = sub[sub.index > 0] if mode == "full" else sub
+                if not len(sub):
+                    continue
+                best_w = sub["morans_i_abs_error"].idxmin()
+                cmd(f"Spec{tag}BestW", f"{best_w:g}")
+                cmd(f"Spec{tag}BestMoran", _val(float(sub.loc[best_w, "morans_i_abs_error"])))
+                cmd(f"Spec{tag}BestR", _val(float(sub.loc[best_w, "pearson_mean"])))
+                if base is not None:
+                    dr = float(sub.loc[best_w, "pearson_mean"]) - float(base["pearson_mean"])
+                    dm = float(sub.loc[best_w, "morans_i_abs_error"]) - float(base["morans_i_abs_error"])
+                    cmd(f"Spec{tag}DeltaR", _val(dr))
+                    cmd(f"Spec{tag}DeltaMoran", _val(dm))
+                    cmd(f"Spec{tag}PctR", f"{100 * dr / float(base['pearson_mean']):.0f}")
+                    cmd(f"Spec{tag}PctMoran", f"{100 * dm / float(base['morans_i_abs_error']):.0f}")
+            cmd("SpecMinIPred", _val(float(gg["morans_i_pred"].min())))
+            if "morans_i_true" in S13.columns:
+                cmd("SpecITrue", _val(float(S13["morans_i_true"].mean())))
+            cmd("SpecSeeds", str(int(S13.groupby(["mode", "spectral_weight"]).size().max())))
+
     # ---- Experiment 14 : converged single-section comparison --------------- #
     # Whether the benchmark's reduced-budget ordering is the converged ordering.
     cj = Path(results_root) / "exp14" / "converged.json"

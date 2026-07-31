@@ -5,7 +5,7 @@
 \label{tab:spectral}
 \begin{tabular}{lrrrrr}
 \toprule
-weight & Pearson $r$ $\uparrow$ & SSIM $\uparrow$ & $|\Delta I|$ $\downarrow$ & morans_i_pred & $|\Delta C|$ $\downarrow$\\
+weight & Pearson $r$ $\uparrow$ & SSIM $\uparrow$ & $|\Delta I|$ $\downarrow$ & $I_{\mathrm{pred}}$ & $|\Delta C|$ $\downarrow$\\
 \midrule
 \multicolumn{6}{l}{\emph{absolute spectrum, all bands}} \\
 \quad $\lambda = 0$ & 0.249\,\tiny{$\pm$ 0.005} & 0.405\,\tiny{$\pm$ 0.007} & 0.760\,\tiny{$\pm$ 0.004} & 0.934\,\tiny{$\pm$ 0.004} & 0.727\,\tiny{$\pm$ 0.003} \\
@@ -13,6 +13,12 @@ weight & Pearson $r$ $\uparrow$ & SSIM $\uparrow$ & $|\Delta I|$ $\downarrow$ & 
 \quad $\lambda = 0.01$ & 0.184\,\tiny{$\pm$ 0.007} & 0.368\,\tiny{$\pm$ 0.017} & 0.781\,\tiny{$\pm$ 0.018} & 0.955\,\tiny{$\pm$ 0.018} & 0.745\,\tiny{$\pm$ 0.010} \\
 \quad $\lambda = 0.1$ & 0.123\,\tiny{$\pm$ 0.004} & 0.405\,\tiny{$\pm$ 0.002} & 0.720\,\tiny{$\pm$ 0.001} & 0.894\,\tiny{$\pm$ 0.000} & 0.711\,\tiny{$\pm$ 0.000} \\
 \quad $\lambda = 1$ & 0.055\,\tiny{$\pm$ 0.007} & 0.401\,\tiny{$\pm$ 0.023} & 0.695\,\tiny{$\pm$ 0.003} & 0.869\,\tiny{$\pm$ 0.003} & 0.698\,\tiny{$\pm$ 0.003} \\
+\addlinespace
+\multicolumn{6}{l}{\emph{normalized spectrum, high band}} \\
+\quad $\lambda = 0.01$ & 0.210\,\tiny{$\pm$ 0.004} & 0.384\,\tiny{$\pm$ 0.001} & 0.710\,\tiny{$\pm$ 0.003} & 0.884\,\tiny{$\pm$ 0.003} & 0.702\,\tiny{$\pm$ 0.001} \\
+\quad $\lambda = 0.1$ & 0.169\,\tiny{$\pm$ 0.000} & 0.274\,\tiny{$\pm$ 0.000} & 0.717\,\tiny{$\pm$ 0.002} & 0.892\,\tiny{$\pm$ 0.002} & 0.707\,\tiny{$\pm$ 0.000} \\
+\quad $\lambda = 0.3$ & 0.135\,\tiny{$\pm$ 0.003} & 0.266\,\tiny{$\pm$ 0.001} & 0.712\,\tiny{$\pm$ 0.000} & 0.886\,\tiny{$\pm$ 0.000} & 0.703\,\tiny{$\pm$ 0.000} \\
+\quad $\lambda = 1$ & 0.102\,\tiny{$\pm$ 0.000} & 0.256\,\tiny{$\pm$ 0.002} & 0.721\,\tiny{$\pm$ 0.002} & 0.896\,\tiny{$\pm$ 0.002} & 0.709\,\tiny{$\pm$ 0.002} \\
 \bottomrule
 \end{tabular}
 \end{table}

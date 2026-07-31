@@ -106,6 +106,11 @@ _decl("physics", "DiffLenMedian", "DiffLenLo", "DiffLenHi", "TuringFrac",
 _decl("inventory", "NDatasets", "NSections", "TotalLocations", "NSpatialSections",
       "SpatialLocations", "NPerturbCells")
 _decl("architecture", "OpParams", "TotalParams", "OpParamPct")
+_decl("exp13", "SpecBaseR", "SpecBaseMoran", "SpecFullBestW", "SpecFullBestMoran",
+      "SpecFullBestR", "SpecFullDeltaR", "SpecFullDeltaMoran", "SpecFullPctR",
+      "SpecFullPctMoran", "SpecShapeBestW", "SpecShapeBestMoran", "SpecShapeBestR",
+      "SpecShapeDeltaR", "SpecShapeDeltaMoran", "SpecShapePctR",
+      "SpecShapePctMoran", "SpecMinIPred", "SpecITrue", "SpecSeeds")
 _decl("exp14", "ConvSeeds", "ConvSection", "ConvNMO", "ConvBest", "ConvBestModel",
       "ConvMinDz", "ConvMaxDz", "ConvWins", "ConvNPairs", "ConvGraphOverAE",
       "ConvNMOMoran", "ConvBestMoran", "ConvNMOWall", "ConvBaseWallLo",
@@ -133,6 +138,7 @@ SECTION_SCOPE: Dict[str, Set[str]] = {
     "Further results": {"exp7", "exp9", "exp2", "exp3", "exp4", "exp8"},
     "Ablations": {"exp5", "exp5_matched", "exp1", "exp8", "architecture"},
     "Convergence": {"exp14", "exp8"},
+    "Spectral matching": {"exp13", "exp8", "exp1"},
 }
 
 #: Deliberate, declared exceptions to the scope rule. A macro may be quoted

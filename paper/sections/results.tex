@@ -205,6 +205,54 @@ against Perturb-seq \citep{norman2019perturbseq} was underpowered
 
 % =====================================================================
 \else
+\subsection{Spectral matching: converting the weakness into a measurement}
+\label{sec:spectral}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_spectral.pdf}
+  \caption{\textbf{Spectral matching.} (a) The trade-off: up and to the left is
+  better. Points are labeled by weight $\lambda$; $\lambda = 0$ is the model used
+  everywhere else. (b) Predicted global autocorrelation against $\lambda$. No
+  weight of either form brings $I_{\mathrm{pred}}$ near the measured value.}
+  \label{fig:spectral}
+\end{figure}
+
+Section~\ref{sec:results} reports that our predicted fields are too smooth, and
+Section~\ref{sec:convergence} shows this is structural rather than an artifact of
+the training budget. The natural remedy is a term matching the radially averaged
+power spectrum of the predicted field to that of the measured field. We
+implement it, sweep its weight, and report the trade-off
+(Table~\ref{tab:spectral}, Fig.~\ref{fig:spectral}; \SpecSeeds{} seeds per
+point).
+
+The form of the term matters more than its weight. Matching the \emph{absolute}
+spectrum over all radial bands leaves an amplitude degree of freedom that the
+model can exploit without redistributing any energy across scales: a controlled
+check finds that this objective penalizes a purely rescaled field more heavily
+than a genuinely smoothed one. Its best setting reaches
+$|\Delta I| = \SpecFullBestMoran$, a $\SpecFullPctMoran\%$ improvement, but at
+$\SpecFullPctR\%$ of the Pearson $r$. Matching the spectrum \emph{normalized} by
+total power, over the upper half of the band only, removes that degree of
+freedom and penalizes exactly the frequencies a dissipative operator loses. At
+$\lambda = \SpecShapeBestW$ it attains $|\Delta I| = \SpecShapeBestMoran$ ---
+better than the absolute form achieves at any weight --- for
+$\SpecShapePctR\%$ of the accuracy rather than $\SpecFullPctR\%$. Larger weights
+do not help: the curve turns over, so this is an optimum rather than a point on
+a slope.
+
+We report the honest conclusion rather than the convenient one. Spectral
+matching does buy spatial fidelity, and the corrected form buys it roughly four
+times more cheaply than the naive one, but it does not solve the problem: across
+every weight and both forms the predicted autocorrelation bottoms out at
+$I_{\mathrm{pred}} = \SpecMinIPred$ against a measured $\SpecITrue$. Even when
+the term is weighted heavily enough to destroy predictive accuracy, the
+reconstruction does not approach the roughness of the data. We therefore keep
+$\lambda = 0$ for every other experiment in this paper and read this section as
+bounding the remedy rather than delivering it: the smoothness is a property of
+the operator class, and a loss term applied on top of it is the wrong place to
+fix it.
+
 \subsection{Convergence}
 \label{sec:convergence}
 

@@ -25,6 +25,17 @@ HIGHER_IS_BETTER = {
     "rmse": False, "mae": False, "morans_i_abs_error": False,
 }
 
+def metric_label(key: str) -> str:
+    """Display label for a metric, escaped if it has none.
+
+    An unlabelled key used to reach LaTeX verbatim, and the underscores in names
+    like ``morans_i_pred`` break math mode. Escaping by default turns a missing
+    label into a cosmetic problem instead of a failed build.
+    """
+    lab = METRIC_LABELS.get(key)
+    return lab if lab is not None else _esc(key)
+
+
 METRIC_LABELS = {
     "pearson_mean": r"Pearson $r$ $\uparrow$",
     "pearson_median": r"median $r$ $\uparrow$",
@@ -34,6 +45,8 @@ METRIC_LABELS = {
     "ssim_mean": r"SSIM $\uparrow$",
     "morans_i_abs_error": r"$|\Delta I|$ $\downarrow$",
     "gearys_c_abs_error": r"$|\Delta C|$ $\downarrow$",
+    "morans_i_pred": r"$I_{\mathrm{pred}}$",
+    "morans_i_true": r"$I_{\mathrm{true}}$",
     "gearys_c_pred": r"$C_{\mathrm{pred}}$",
     "gearys_c_true": r"$C_{\mathrm{true}}$",
     "morans_i_corr": r"$r(I)$ $\uparrow$",
@@ -173,7 +186,7 @@ def table_benchmark(
         rows.append(f"{_esc(name)} & {npar/1e6:.2f}M & " + " & ".join(cells) + " \\\\\n")
 
     n_seeds = int(df.groupby("model").size().max())
-    header = "model & params & " + " & ".join(METRIC_LABELS.get(m, m) for m in metrics)
+    header = "model & params & " + " & ".join(metric_label(m) for m in metrics)
     tex = _wrap(
         "".join(rows),
         f"Masked spatial reconstruction on {_esc(section_label)}. Contiguous tissue blocks "
@@ -223,7 +236,7 @@ def table_transfer(records: List[Dict], out: Path, caption: str, label: str) -> 
         rows.append("\\addlinespace\n")
 
     ns = int(df["n_shared_genes"].iloc[0]) if "n_shared_genes" in df.columns else 0
-    header = "model & & " + " & ".join(METRIC_LABELS.get(m, m) for m in metrics)
+    header = "model & & " + " & ".join(metric_label(m) for m in metrics)
     tex = _wrap(
         "".join(rows),
         caption + f" Shared gene vocabulary: {ns} genes. Mean $\\pm$ s.d. over seeds.",
@@ -284,7 +297,7 @@ def table_ablations(records: List[Dict], out: Path) -> str:
         rows.append(f"{ABLATION_TEX.get(v, _esc(v))} & {agg.loc[v, ('n_params','mean')]/1e6:.2f}M & "
                     + " & ".join(cells) + f" & {dcell} \\\\\n")
 
-    header = "variant & params & " + " & ".join(METRIC_LABELS.get(m, m) for m in metrics) \
+    header = "variant & params & " + " & ".join(metric_label(m) for m in metrics) \
              + r" & $\Delta r$"
     tex = _wrap(
         "".join(rows),
@@ -590,7 +603,7 @@ def table_multisection(records: List[Dict], out: Path,
                  " Excluded for incomplete coverage: "
                  + ", ".join(f"{DISPLAY_NAMES.get(m, m)} ({n}/{n_sec} sections)"
                              for m, n in sorted(dropped.items())) + ".")
-    header = "model & $n$ & " + " & ".join(METRIC_LABELS.get(m, m) for m in metrics)
+    header = "model & $n$ & " + " & ".join(metric_label(m) for m in metrics)
     tex = _wrap(
         "".join(rows),
         f"Masked spatial reconstruction across {n_sec} tissue sections spanning four "
@@ -843,7 +856,7 @@ def table_converged(records: List[Dict], out: Path) -> str:
                     + f" & {g.loc[m, ('wall_s','mean')]:.0f}\\,s & {dz} & {wins} \\\\\n")
     n_seed = int(df.groupby("model").size().max())
     sec = str(df["section"].iloc[0]) if "section" in df else ""
-    header = ("model & " + " & ".join(METRIC_LABELS.get(c, c) for c in cols)
+    header = ("model & " + " & ".join(metric_label(c) for c in cols)
               + " & wall & $d_z$ & wins")
     tex = _wrap(
         "".join(rows),
@@ -872,7 +885,8 @@ def table_spectral(records: List[Dict], out: Path) -> str:
     df = pd.DataFrame([r for r in records if not r.get("failed")])
     if df.empty:
         return ""
-    df["mode"] = df.get("mode", "full")
+    df["mode"] = (df["mode"].fillna("full") if "mode" in df.columns
+                  else "full")
     cols = [c for c in ["pearson_mean", "ssim_mean", "morans_i_abs_error",
                         "morans_i_pred", "gearys_c_abs_error"] if c in df.columns]
     g = df.groupby(["mode", "spectral_weight"])[cols].agg(["mean", "std"])
@@ -890,7 +904,7 @@ def table_spectral(records: List[Dict], out: Path) -> str:
                  for c in cols]
         rows.append(f"\\quad $\\lambda = {w:g}$ & " + " & ".join(cells) + " \\\\\n")
     n_seed = int(df.groupby(["mode", "spectral_weight"]).size().max())
-    header = "weight & " + " & ".join(METRIC_LABELS.get(c, c) for c in cols)
+    header = "weight & " + " & ".join(metric_label(c) for c in cols)
     tex = _wrap(
         "".join(rows),
         f"Spectral matching: the trade-off between reconstruction accuracy and "

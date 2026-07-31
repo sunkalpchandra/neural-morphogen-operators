@@ -8,23 +8,27 @@
 model & & Pearson $r$ $\uparrow$ & RMSE $\downarrow$ & SSIM $\uparrow$\\
 \midrule
 \multicolumn{5}{l}{\emph{source (in-domain)}} \\
-\quad STAGATE-style & & 0.212\,\tiny{$\pm$ 0.001} & 0.249\,\tiny{$\pm$ 0.000} & 0.358\,\tiny{$\pm$ 0.001} \\
-\quad NMO (ours) & & 0.209\,\tiny{$\pm$ 0.004} & 0.251\,\tiny{$\pm$ 0.003} & 0.365\,\tiny{$\pm$ 0.004} \\
+\quad STAGATE-style & & 0.214 & 0.249 & 0.363 \\
+\quad NRDO (ours) & & 0.211 & 0.255 & 0.365 \\
+\quad GNN (GCN) & & 0.206 & 0.250 & 0.360 \\
 \addlinespace
 \multicolumn{5}{l}{\emph{target (zero-shot)}} \\
-\quad STAGATE-style & & 0.093\,\tiny{$\pm$ 0.001} & 0.397\,\tiny{$\pm$ 0.002} & 0.266\,\tiny{$\pm$ 0.002} \\
-\quad NMO (ours) & & 0.033\,\tiny{$\pm$ 0.012} & 0.409\,\tiny{$\pm$ 0.005} & 0.219\,\tiny{$\pm$ 0.017} \\
+\quad STAGATE-style & & 0.076 & 0.402 & 0.280 \\
+\quad GNN (GCN) & & 0.062 & 0.419 & 0.247 \\
+\quad NRDO (ours) & & 0.002 & 0.515 & 0.158 \\
 \addlinespace
 \multicolumn{5}{l}{\emph{target (decoder-only fine-tune)}} \\
-\quad STAGATE-style & & 0.117\,\tiny{$\pm$ 0.007} & 0.393\,\tiny{$\pm$ 0.000} & 0.365\,\tiny{$\pm$ 0.003} \\
-\quad NMO (ours) & & 0.041\,\tiny{$\pm$ 0.019} & 0.406\,\tiny{$\pm$ 0.004} & 0.282\,\tiny{$\pm$ 0.017} \\
+\quad STAGATE-style & & 0.136 & 0.386 & 0.390 \\
+\quad GNN (GCN) & & 0.115 & 0.389 & 0.382 \\
+\quad NRDO (ours) & & 0.081 & 0.394 & 0.316 \\
 \addlinespace
 \multicolumn{5}{l}{\emph{target (in-domain oracle)}} \\
-\quad STAGATE-style & & 0.147\,\tiny{$\pm$ 0.001} & 0.375\,\tiny{$\pm$ 0.000} & 0.427\,\tiny{$\pm$ 0.001} \\
-\quad NMO (ours) & & 0.136\,\tiny{$\pm$ 0.001} & 0.397\,\tiny{$\pm$ 0.002} & 0.329\,\tiny{$\pm$ 0.003} \\
+\quad STAGATE-style & & 0.149 & 0.375 & 0.431 \\
+\quad GNN (GCN) & & 0.146 & 0.377 & 0.426 \\
+\quad NRDO (ours) & & 0.134 & 0.396 & 0.332 \\
 \addlinespace
 \multicolumn{5}{l}{\emph{target (training-mean floor)}} \\
-\quad mean & & -0.000\,\tiny{$\pm$ 0.000} & 0.404\,\tiny{$\pm$ 0.002} & 0.254\,\tiny{$\pm$ 0.001} \\
+\quad mean & & -0.000 & 0.408 & 0.342 \\
 \addlinespace
 \bottomrule
 \end{tabular}

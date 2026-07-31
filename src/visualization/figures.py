@@ -743,3 +743,71 @@ def figure_robustness(records: List[Dict]) -> plt.Figure:
     axs[0][-1].legend(fontsize=4.8, loc="best", handletextpad=0.3, borderpad=0.2)
     fig.subplots_adjust(wspace=0.30)
     return fig
+
+
+def figure_spectral(records: List[Dict]) -> plt.Figure:
+    """Accuracy against spatial fidelity as the spectral weight is swept.
+
+    Plotted as a trade-off curve rather than two line charts, because the
+    question is not how either metric behaves alone but what one costs the
+    other. Up and to the left is better: high correlation, low Moran's I error.
+    """
+    import pandas as pd
+    set_style()
+    df = pd.DataFrame([r for r in records if not r.get("failed")])
+    if df.empty:
+        return plt.figure()
+    df["mode"] = (df["mode"].fillna("full") if "mode" in df.columns
+                  else "full")
+    g = (df.groupby(["mode", "spectral_weight"])
+           [["pearson_mean", "morans_i_abs_error", "morans_i_pred", "morans_i_true"]]
+           .mean().reset_index())
+
+    fig, axes = plt.subplots(1, 2, figsize=(WIDTH_FULL, 2.0))
+    styles = {"full": ("o-", "absolute spectrum, all bands"),
+              "shape": ("s-", "normalized spectrum, high band")}
+
+    ax = axes[0]
+    for mode, sub in g.groupby("mode"):
+        sub = sub.sort_values("spectral_weight")
+        mk, lab = styles.get(mode, ("^-", mode))
+        ax.plot(sub["morans_i_abs_error"], sub["pearson_mean"], mk, ms=3.4, lw=1.0,
+                label=lab, alpha=0.9)
+        for _, r in sub.iterrows():
+            if r["spectral_weight"] > 0:
+                ax.annotate(f"{r['spectral_weight']:g}",
+                            (r["morans_i_abs_error"], r["pearson_mean"]),
+                            fontsize=4.6, color=INK_SECONDARY,
+                            xytext=(2.5, 2.5), textcoords="offset points")
+    base = g[g["spectral_weight"] == 0]
+    if len(base):
+        ax.scatter(base["morans_i_abs_error"], base["pearson_mean"], s=26,
+                   facecolors="none", edgecolors=INK, lw=0.9, zorder=5)
+        ax.annotate("$\\lambda=0$", (float(base["morans_i_abs_error"].iloc[0]),
+                                    float(base["pearson_mean"].iloc[0])),
+                    fontsize=5.2, color=INK, xytext=(3, -7),
+                    textcoords="offset points")
+    ax.set_xlabel("$|\\Delta I|$  (lower is better)")
+    ax.set_ylabel("Pearson $r$")
+    ax.set_title("Accuracy against spatial fidelity", fontsize=7, pad=4)
+    ax.legend(fontsize=4.8, frameon=False, loc="lower left")
+    panel_label(ax, "a", dx=-0.24, dy=1.10)
+
+    ax = axes[1]
+    it = float(g["morans_i_true"].mean())
+    for mode, sub in g.groupby("mode"):
+        sub = sub.sort_values("spectral_weight")
+        mk, lab = styles.get(mode, ("^-", mode))
+        ax.plot(np.maximum(sub["spectral_weight"], 3e-4), sub["morans_i_pred"],
+                mk, ms=3.4, lw=1.0, label=lab, alpha=0.9)
+    ax.axhline(it, color=CATEGORICAL[3], lw=0.9, ls="--")
+    ax.annotate(f"measured $I = {it:.2f}$", (3e-4, it), fontsize=5.0, color=CATEGORICAL[3],
+                xytext=(1, 3), textcoords="offset points")
+    ax.set_xscale("log")
+    ax.set_xlabel("spectral weight $\\lambda$  (0 plotted at left)")
+    ax.set_ylabel("$I_{\\mathrm{pred}}$")
+    ax.set_title("Predicted autocorrelation never reaches the data", fontsize=7, pad=4)
+    panel_label(ax, "b", dx=-0.24, dy=1.10)
+
+    fig.subplots_adjust(wspace=0.42, bottom=0.24, top=0.84)
+    return fig
