@@ -106,6 +106,10 @@ _decl("physics", "DiffLenMedian", "DiffLenLo", "DiffLenHi", "TuringFrac",
 _decl("inventory", "NDatasets", "NSections", "TotalLocations", "NSpatialSections",
       "SpatialLocations", "NPerturbCells")
 _decl("architecture", "OpParams", "TotalParams", "OpParamPct")
+_decl("exp14", "ConvSeeds", "ConvSection", "ConvNMO", "ConvBest", "ConvBestModel",
+      "ConvMinDz", "ConvMaxDz", "ConvWins", "ConvNPairs", "ConvGraphOverAE",
+      "ConvNMOMoran", "ConvBestMoran", "ConvNMOWall", "ConvBaseWallLo",
+      "ConvBaseWallHi", "ConvSlowdown")
 _decl("exp11", "NullBaseline", "NullShuffled", "NullShuffledR", "NullInit",
       "NullDataShift", "NullShuffledShift", "NullSigmaLo", "NullSigmaHi",
       "NullSigmaRange", "NullGridUmLo", "NullGridUmHi", "NullGridCellsLo",
@@ -128,6 +132,7 @@ SECTION_SCOPE: Dict[str, Set[str]] = {
     # workshop version drops, so it legitimately spans their sources.
     "Further results": {"exp7", "exp9", "exp2", "exp3", "exp4", "exp8"},
     "Ablations": {"exp5", "exp5_matched", "exp1", "exp8", "architecture"},
+    "Convergence": {"exp14", "exp8"},
 }
 
 #: Deliberate, declared exceptions to the scope rule. A macro may be quoted

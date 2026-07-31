@@ -395,6 +395,44 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("NumSpeedup", f"{eul.iloc[0]/base:.0f}")
         cmd("NumStrangSteps", str(int(base)))
 
+    # ---- Experiment 14 : converged single-section comparison --------------- #
+    # Whether the benchmark's reduced-budget ordering is the converged ordering.
+    cj = Path(results_root) / "exp14" / "converged.json"
+    if cj.exists():
+        C = pd.DataFrame([r for r in json.loads(cj.read_text()) if not r.get("failed")])
+        if not C.empty:
+            from .statistics import paired_comparison as _pc2
+            cmd("ConvSeeds", str(int(C.groupby("model").size().max())))
+            cmd("ConvSection", str(C["section"].iloc[0]).replace("_", r"\_"))
+            g = C.groupby("model")["pearson_mean"].mean()
+            cmd("ConvNMO", _ms(C[C["model"] == "nmo"], "pearson_mean"))
+            others = g.drop(index=["nmo"], errors="ignore")
+            if len(others):
+                top = others.idxmax()
+                cmd("ConvBest", _ms(C[C["model"] == top], "pearson_mean"))
+                cmd("ConvBestModel", DISPLAYNAMES.get(top, top))
+            res = _pc2(C, "nmo", "pearson_mean", section_col="seed")
+            if res:
+                cmd("ConvMinDz", f"{min(r.cohens_dz for r in res):.2f}")
+                cmd("ConvMaxDz", f"{max(r.cohens_dz for r in res):.2f}")
+                cmd("ConvWins", f"{min(r.n_reference_wins for r in res)}")
+                cmd("ConvNPairs", str(res[0].n_sections))
+            if "autoencoder" in g.index:
+                gm = [m for m in ("gnn", "stagate") if m in g.index]
+                if gm:
+                    cmd("ConvGraphOverAE",
+                        _val(max(float(g[m]) for m in gm) - float(g["autoencoder"])))
+            if "morans_i_abs_error" in C.columns:
+                mg = C.groupby("model")["morans_i_abs_error"].mean()
+                cmd("ConvNMOMoran", _val(float(mg["nmo"])))
+                cmd("ConvBestMoran", _val(float(mg.drop(index=["nmo"]).min())))
+            if "wall_s" in C.columns:
+                w = C.groupby("model")["wall_s"].mean()
+                cmd("ConvNMOWall", f"{float(w['nmo']):.0f}")
+                cmd("ConvBaseWallLo", f"{float(w.drop(index=['nmo']).min()):.0f}")
+                cmd("ConvBaseWallHi", f"{float(w.drop(index=['nmo']).max()):.0f}")
+                cmd("ConvSlowdown", f"{float(w['nmo']) / float(w.drop(index=['nmo']).max()):.1f}")
+
     # ---- Experiment 11 : diffusion-length null controls -------------------- #
     # The reported diffusion length is close to its own initialization. These
     # macros carry the controls that establish it, so the claim in the text is

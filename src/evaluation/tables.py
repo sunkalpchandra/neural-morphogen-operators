@@ -33,6 +33,9 @@ METRIC_LABELS = {
     "mae": r"MAE $\downarrow$",
     "ssim_mean": r"SSIM $\uparrow$",
     "morans_i_abs_error": r"$|\Delta I|$ $\downarrow$",
+    "gearys_c_abs_error": r"$|\Delta C|$ $\downarrow$",
+    "gearys_c_pred": r"$C_{\mathrm{pred}}$",
+    "gearys_c_true": r"$C_{\mathrm{true}}$",
     "morans_i_corr": r"$r(I)$ $\uparrow$",
     "pearson_per_location": r"$r_{\mathrm{loc}}$ $\uparrow$",
 }
@@ -487,6 +490,11 @@ def build_all(results_root: str | Path = "results", out_dir: str | Path = "paper
         made["biology"] = table_biology(json.loads(bio.read_text()),
                                         out_dir / "tab_biology.tex")
 
+    cv = results_root / "exp14" / "converged.json"
+    if cv.exists():
+        made["converged"] = table_converged(json.loads(cv.read_text()),
+                                            out_dir / "tab_converged.tex")
+
     nl = results_root / "exp11" / "difflen_null.json"
     if nl.exists():
         made["difflen_null"] = table_difflen_null(json.loads(nl.read_text()),
@@ -798,6 +806,57 @@ def table_difflen_null(records: List[Dict], out: Path) -> str:
         "lattice cells moves by the same factor.",
         "tab:difflen_null", "lrrr",
         "condition & length ($\\mu$m) & length (cells) & held-out $r$",
+    )
+    out.write_text(tex)
+    return tex
+
+
+def table_converged(records: List[Dict], out: Path) -> str:
+    """Converged single-section comparison, with wall-clock cost."""
+    df = pd.DataFrame([r for r in records if not r.get("failed")])
+    if df.empty:
+        return ""
+    from .statistics import paired_comparison
+    stats_by = {r.other: r for r in paired_comparison(df, "nmo", "pearson_mean",
+                                                      section_col="seed")}
+    cols = [c for c in ["pearson_mean", "rmse", "ssim_mean", "morans_i_abs_error",
+                        "gearys_c_abs_error"] if c in df.columns]
+    g = df.groupby("model")[cols + ["wall_s"]].agg(["mean", "std"])
+    order = sorted([m for m in g.index if m != "nmo"],
+                   key=lambda m: -g.loc[m, ("pearson_mean", "mean")])
+    order += ["nmo"] if "nmo" in g.index else []
+    rows = []
+    for m in order:
+        cells = [_fmt(g.loc[m, (c, "mean")], g.loc[m, (c, "std")], bold=(m == "nmo"))
+                 for c in cols]
+        st = stats_by.get(m)
+        dz = f"{st.cohens_dz:.2f}" if st is not None else "--"
+        wins = f"{st.n_reference_wins}/{st.n_sections}" if st is not None else "--"
+        if m == "nmo":
+            rows.append("\\midrule\n")
+        rows.append(f"{_esc(DISPLAY_NAMES.get(m, m))} & " + " & ".join(cells)
+                    + f" & {g.loc[m, ('wall_s','mean')]:.0f}\\,s & {dz} & {wins} \\\\\n")
+    n_seed = int(df.groupby("model").size().max())
+    sec = str(df["section"].iloc[0]) if "section" in df else ""
+    header = ("model & " + " & ".join(METRIC_LABELS.get(c, c) for c in cols)
+              + " & wall & $d_z$ & wins")
+    tex = _wrap(
+        "".join(rows),
+        f"Converged comparison on {_esc(sec)}: the full section, no subsampling, "
+        f"trained to a shared early-stopping criterion on held-out validation "
+        f"rather than to a fixed epoch count, {n_seed} seeds. $d_z$ and the win "
+        f"record are paired over seeds against NMO. This addresses whether the "
+        f"reduced-budget ordering of Table~\\ref{{tab:multisection}} is the "
+        f"converged ordering. It is not: at 200 epochs on this section NMO scores "
+        f"below the STAGATE-style baseline, and at convergence it scores above it, "
+        f"so the benchmark budget is conservative for NMO here rather than "
+        f"neutral. Two further points survive convergence --- the non-spatial "
+        f"autoencoder still matches the graph models, so their near-tie is a "
+        f"property of the task and not of undertraining; and NMO retains the "
+        f"largest error in Moran's $I$, so the over-smoothing is structural. Wall "
+        f"time is single-CPU and is reported because NMO is several times more "
+        f"expensive than every baseline.",
+        "tab:converged", "l" + "r" * (len(cols) + 3), header,
     )
     out.write_text(tex)
     return tex

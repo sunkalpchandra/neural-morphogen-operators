@@ -1,0 +1,15 @@
+[
+  {
+    "spectral_weight": 0.0,
+    "seed": 0,
+    "section": "visium_mouse_brain",
+    "pearson_mean": 0.24484214186668396,
+    "spearman_mean": 0.20359744131565094,
+    "rmse": 0.251777708530426,
+    "ssim_mean": 0.4003817468888413,
+    "morans_i_abs_error": 0.7623402586348501,
+    "morans_i_pred": 0.9367358684072914,
+    "morans_i_true": 0.17439560977244126,
+    "gearys_c_abs_error": 0.7293535096763268
+  }
+]
