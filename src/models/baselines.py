@@ -363,6 +363,8 @@ DISPLAY_NAMES = {
     "stagate": "STAGATE-style",
     "graph_transformer": "Graph Transformer",
     "gp": "Gaussian Process",
+    "neural_field": "Neural field (SIREN)",
+    "gp_multiscale": "GP, multi-bandwidth",
     "nmo": "NMO (ours)",
 }
 
@@ -371,3 +373,121 @@ def build_baseline(name: str, n_genes: int, **kw) -> nn.Module:
     if name not in BASELINES:
         raise KeyError(f"unknown baseline {name!r}; have {sorted(BASELINES)}")
     return BASELINES[name](n_genes=n_genes, **kw)
+
+
+# --------------------------------------------------------------------------- #
+# 7. Implicit neural field (coordinate MLP / SIREN-style)
+# --------------------------------------------------------------------------- #
+
+
+class Sine(nn.Module):
+    def __init__(self, w0: float = 30.0):
+        super().__init__()
+        self.w0 = w0
+
+    def forward(self, x):
+        return torch.sin(self.w0 * x)
+
+
+class NeuralFieldBaseline(nn.Module):
+    """Implicit neural representation of the expression field: gamma(x) -> g.
+
+    This is the control a reviewer asks for as soon as a paper claims that a
+    *continuous* representation beats a discrete graph: does the benefit come
+    from continuity per se, or from the operator? A coordinate network is
+    continuous by construction and is fitted to the visible spots exactly like
+    every other model, but it carries no dynamics and no notion of
+    neighbourhood.
+
+    The field sees coordinates only. It therefore cannot transfer to a new
+    section (there is nothing to condition on), which is itself informative: the
+    in-domain comparison isolates continuity, and the absence of a transfer
+    number marks the limitation of a pure INR for this task.
+
+    The Fourier bandwidth ``sigma`` was selected on validation over
+    {2, 4, 6} with and without the SIREN parametrisation, since an INR is
+    strongly bandwidth-sensitive on an extrapolation task and reporting an
+    untuned value would understate the baseline. sigma = 2 generalises best to
+    held-out blocks; larger bandwidths fit the visible spots and fail across the
+    gap.
+    """
+
+    def __init__(self, n_genes: int, hidden: int = 256, n_layers: int = 5,
+                 n_fourier: int = 64, sigma: float = 2.0, siren: bool = True, **kw):
+        super().__init__()
+        self.feat = FourierFeatures(2, n_features=n_fourier, sigma=sigma)
+        act = Sine if siren else nn.GELU
+        dims = [self.feat.dim_out] + [hidden] * n_layers
+        layers = []
+        for a, b in zip(dims[:-1], dims[1:]):
+            layers += [nn.Linear(a, b), act()]
+        layers += [nn.Linear(hidden, n_genes)]
+        self.net = nn.Sequential(*layers)
+        if siren:  # SIREN initialisation
+            with torch.no_grad():
+                for m in self.net:
+                    if isinstance(m, nn.Linear):
+                        b = math.sqrt(6.0 / m.in_features) / 30.0
+                        m.weight.uniform_(-b, b)
+
+    def forward(self, coords, expr, query_coords=None, edge_index=None, point_mask=None, **kw):
+        q = coords if query_coords is None else query_coords
+        return {"pred": self.net(self.feat(q)), "latent": None}
+
+
+# --------------------------------------------------------------------------- #
+# 8. Multi-bandwidth Gaussian process
+# --------------------------------------------------------------------------- #
+
+
+class MultiScaleGPBaseline(nn.Module):
+    """Exact GP regression with ``n_bands`` learned length scales.
+
+    The single-bandwidth GP of :class:`GPSpatialBaseline` is weak because one
+    length scale must serve both sharply laminar and diffuse genes. Here each of
+    ``n_bands`` bandwidths gets its own exact GP solve, and every gene is a
+    learned convex combination of the band predictions. Cost is ``n_bands``
+    Cholesky factorisations rather than one per gene, which keeps exact
+    inference tractable for ~2000 genes while removing the shared-bandwidth
+    handicap.
+    """
+
+    def __init__(self, n_genes: int, n_bands: int = 6, n_inducing: int = 1024,
+                 jitter: float = 1e-3, **kw):
+        super().__init__()
+        self.n_inducing, self.jitter, self.n_bands = n_inducing, jitter, n_bands
+        # bandwidths spread geometrically over the plausible range at init
+        self.log_ls = nn.Parameter(torch.linspace(math.log(0.02), math.log(0.5), n_bands))
+        self.log_amp = nn.Parameter(torch.zeros(n_bands))
+        self.log_noise = nn.Parameter(torch.full((n_bands,), math.log(0.3)))
+        self.mix = nn.Parameter(torch.zeros(n_genes, n_bands))
+
+    def _k(self, a, b, i):
+        d2 = torch.cdist(a, b).pow(2)
+        ls = self.log_ls[i].exp().clamp(1e-3, 5.0)
+        return self.log_amp[i].exp().clamp(1e-3, 100.0) * torch.exp(-0.5 * d2 / ls**2)
+
+    def forward(self, coords, expr, query_coords=None, edge_index=None, point_mask=None, **kw):
+        q = coords if query_coords is None else query_coords
+        vis = (point_mask > 0) if point_mask is not None else torch.ones(
+            coords.shape[0], dtype=torch.bool, device=coords.device)
+        cv, ev = coords[vis], expr[vis]
+        if cv.shape[0] > self.n_inducing:
+            sel = torch.randperm(cv.shape[0], device=cv.device)[: self.n_inducing]
+            cv, ev = cv[sel], ev[sel]
+
+        preds = []
+        eye = torch.eye(cv.shape[0], device=cv.device, dtype=cv.dtype)
+        for i in range(self.n_bands):
+            noise = self.log_noise[i].exp().clamp(1e-3, 10.0) ** 2 + self.jitter
+            L = torch.linalg.cholesky(self._k(cv, cv, i) + noise * eye)
+            preds.append(self._k(q, cv, i) @ torch.cholesky_solve(ev, L))
+        P = torch.stack(preds, -1)                       # (Q, G, bands)
+        w = torch.softmax(self.mix, dim=-1)              # (G, bands)
+        return {"pred": (P * w.unsqueeze(0)).sum(-1), "latent": None}
+
+
+# Registered here rather than in the dict above because the classes are defined
+# below that point in the module.
+BASELINES["neural_field"] = NeuralFieldBaseline
+BASELINES["gp_multiscale"] = MultiScaleGPBaseline
