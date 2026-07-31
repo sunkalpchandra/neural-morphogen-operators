@@ -1,0 +1,3 @@
+[21:03:26] INFO      loaded perturb_norman: 111668 cells x 33694 genes, 241 perturbation classes
+[21:03:26] INFO    preprocess[perturb_norman] 111668 x 33694
+[21:15:39] INFO      QC: 111668 -> 111659 obs (100.0% kept), 33694 -> 22613 genes

@@ -1,0 +1,29 @@
+/Users/sunkalp/neural-morphogen-operators/src/data/loaders.py:399: FutureWarning: `.layers.clear()` currently keeps `.X` (stored under the `None` key), but a future release may drop it. Pass `keep_x=True` to keep `.X` or `keep_x=False` to drop it and silence this warning.
+  adata.layers.clear()
+[21:13:28] INFO      loaded mosta_embryo: 5913 obs x 25568 vars, extent 1975 x 2650 um
+[21:13:28] INFO    preprocess[mosta_embryo] 5913 x 25568
+[21:13:32] INFO      QC: 5913 -> 5898 obs (99.7% kept), 25568 -> 23015 genes
+[21:14:23] INFO      gene selection: 2000 HVG + 69 forced morphogen genes -> 2069
+[21:14:27] INFO      coords: centre=[2939.4, -4929.6] um, scale=1395.4 um/unit
+[21:14:27] INFO      split (contiguous blocks, 8x8): {'train': 3981, 'val': 863, 'test': 1054}
+[21:14:40] INFO    [ok]   wrote data/processed/mosta_embryo_E9.5.h5ad  (5898 x 2069, 27.7 MB)
+/Users/sunkalp/neural-morphogen-operators/src/data/loaders.py:399: FutureWarning: `.layers.clear()` currently keeps `.X` (stored under the `None` key), but a future release may drop it. Pass `keep_x=True` to keep `.X` or `keep_x=False` to drop it and silence this warning.
+  adata.layers.clear()
+[21:14:47] INFO      loaded mosta_embryo: 18408 obs x 25201 vars, extent 3500 x 4950 um
+[21:14:47] INFO    preprocess[mosta_embryo] 18408 x 25201
+[21:15:04] INFO      QC: 18408 -> 18360 obs (99.7% kept), 25201 -> 23198 genes
+[21:15:15] INFO      gene selection: 2000 HVG + 99 forced morphogen genes -> 2099
+[21:15:21] INFO      coords: centre=[-4434.7, -5446.0] um, scale=2629.0 um/unit
+[21:15:21] INFO      split (contiguous blocks, 8x8): {'train': 11785, 'val': 2598, 'test': 3977}
+[21:15:52] INFO    [ok]   wrote data/processed/mosta_embryo_E10.5.h5ad  (18360 x 2099, 63.8 MB)
+[21:15:52] INFO    [skip] mosta stage E11.5_E1S1 not downloaded
+[21:15:52] INFO    [skip] mosta stage E12.5_E1S1 not downloaded
+[21:16:06] INFO    processed objects: 8
+[21:16:06] INFO      merfish_allen_31               91951 x   502  single cell
+[21:16:06] INFO      merfish_allen_40              104461 x   502  single cell
+[21:16:06] INFO      merfish_allen_50               92787 x   501  single cell
+[21:16:06] INFO      mosta_embryo_E10.5             18360 x  2099  bin50 (~25 um)
+[21:16:06] INFO      mosta_embryo_E9.5               5898 x  2069  bin50 (~25 um)
+[21:16:06] INFO      visium_human_breast             4869 x  2087  spot (multi-cell)
+[21:16:06] INFO      visium_mouse_brain              2691 x  2079  spot (multi-cell)
+[21:16:06] INFO      xenium_mouse_brain             36362 x   248  single cell

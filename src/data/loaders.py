@@ -331,9 +331,11 @@ def load_merfish_section(
 
 def _read_merfish_metadata(d: Path, section: str) -> pd.DataFrame:
     """Stream ``cell_metadata.csv`` (564 MB) keeping only one section."""
-    cache = d / f"_meta_{section}.parquet"
+    # Cached as gzipped CSV rather than parquet so the pipeline needs no
+    # pyarrow/fastparquet dependency; one section is only ~50k rows.
+    cache = d / f"_meta_{section}.csv.gz"
     if cache.exists():
-        return pd.read_parquet(cache).set_index("cell_label")
+        return pd.read_csv(cache, low_memory=False).set_index("cell_label")
 
     path = d / "cell_metadata.csv"
     if not path.exists():
@@ -353,7 +355,7 @@ def _read_merfish_metadata(d: Path, section: str) -> pd.DataFrame:
     meta = pd.concat(keep, ignore_index=True)
     idcol = "cell_label" if "cell_label" in meta.columns else meta.columns[0]
     meta = meta.rename(columns={idcol: "cell_label"})
-    meta.to_parquet(cache, index=False)
+    meta.to_csv(cache, index=False)
     return meta.set_index("cell_label")
 
 

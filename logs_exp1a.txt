@@ -1,0 +1,23 @@
+[20:51:38] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[20:51:38] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 500 epochs
+/Users/sunkalp/neural-morphogen-operators/src/training/trainer.py:156: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /Users/runner/work/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:823.)
+  return {k: float(v) for k, v in terms.items()}
+[20:53:02] INFO      ep   25/500  loss 1.5011  val r 0.1450  rmse 0.2944
+[20:54:33] INFO      ep   50/500  loss 1.3995  val r 0.2011  rmse 0.2839
+[20:55:50] INFO      ep   75/500  loss 1.3088  val r 0.2251  rmse 0.2730
+[20:57:14] INFO      ep  100/500  loss 1.3045  val r 0.2418  rmse 0.2704
+[20:58:35] INFO      ep  125/500  loss 1.2720  val r 0.2490  rmse 0.2662
+[20:59:46] INFO      ep  150/500  loss 1.2357  val r 0.2532  rmse 0.2668
+[21:01:04] INFO      ep  175/500  loss 1.2133  val r 0.2568  rmse 0.2655
+[21:02:30] INFO      ep  200/500  loss 1.2264  val r 0.2587  rmse 0.2653
+[21:03:55] INFO      ep  225/500  loss 1.2045  val r 0.2626  rmse 0.2647
+[21:05:18] INFO      ep  250/500  loss 1.1863  val r 0.2629  rmse 0.2660
+[21:07:09] INFO      ep  275/500  loss 1.1970  val r 0.2631  rmse 0.2673
+[21:08:26] INFO      ep  300/500  loss 1.1862  val r 0.2642  rmse 0.2666
+[21:09:36] INFO      ep  325/500  loss 1.2042  val r 0.2628  rmse 0.2690
+[21:10:42] INFO      ep  350/500  loss 1.1870  val r 0.2638  rmse 0.2691
+[21:11:52] INFO      ep  375/500  loss 1.1962  val r 0.2637  rmse 0.2698
+[21:13:20] INFO      ep  400/500  loss 1.1652  val r 0.2632  rmse 0.2708
+[21:14:59] INFO      ep  425/500  loss 1.1744  val r 0.2635  rmse 0.2709
+[21:16:26] INFO      ep  450/500  loss 1.1762  val r 0.2637  rmse 0.2707

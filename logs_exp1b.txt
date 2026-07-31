@@ -1,0 +1,137 @@
+[20:51:38] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[20:51:38] INFO    training GNNBaseline (609,599 params) on visium_mouse_brain for 500 epochs
+/Users/sunkalp/neural-morphogen-operators/src/training/trainer.py:156: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /Users/runner/work/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:823.)
+  return {k: float(v) for k, v in terms.items()}
+[20:51:52] INFO      ep   25/500  loss 1.4242  val r 0.1027  rmse 0.2940
+[20:52:06] INFO      ep   50/500  loss 1.3378  val r 0.1688  rmse 0.2878
+[20:52:18] INFO      ep   75/500  loss 1.2463  val r 0.1943  rmse 0.2816
+[20:52:33] INFO      ep  100/500  loss 1.2318  val r 0.2132  rmse 0.2857
+[20:52:48] INFO      ep  125/500  loss 1.1938  val r 0.2200  rmse 0.2839
+[20:53:07] INFO      ep  150/500  loss 1.1559  val r 0.2209  rmse 0.2874
+[20:53:22] INFO      ep  175/500  loss 1.1369  val r 0.2286  rmse 0.2846
+[20:53:40] INFO      ep  200/500  loss 1.1592  val r 0.2276  rmse 0.2842
+[20:53:55] INFO      ep  225/500  loss 1.1409  val r 0.2350  rmse 0.2829
+[20:54:09] INFO      ep  250/500  loss 1.1140  val r 0.2359  rmse 0.2830
+[20:54:25] INFO      ep  275/500  loss 1.1406  val r 0.2357  rmse 0.2870
+[20:54:39] INFO      ep  300/500  loss 1.1248  val r 0.2369  rmse 0.2824
+[20:54:53] INFO      ep  325/500  loss 1.1512  val r 0.2379  rmse 0.2843
+[20:55:07] INFO      ep  350/500  loss 1.1332  val r 0.2388  rmse 0.2840
+[20:55:21] INFO      ep  375/500  loss 1.1392  val r 0.2391  rmse 0.2838
+[20:55:35] INFO      ep  400/500  loss 1.0995  val r 0.2395  rmse 0.2839
+[20:55:48] INFO      ep  425/500  loss 1.1152  val r 0.2401  rmse 0.2839
+[20:56:04] INFO      ep  450/500  loss 1.1202  val r 0.2393  rmse 0.2842
+[20:56:20] INFO      ep  475/500  loss 1.1234  val r 0.2398  rmse 0.2840
+[20:56:37] INFO      ep  500/500  loss 1.1192  val r 0.2398  rmse 0.2840
+[20:56:44] INFO      done in 299s | test r=0.2288 rmse=0.2524 ssim=0.6883
+[done] gnn seed 0: r=0.2288
+[20:56:46] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[20:56:46] INFO    training GNNBaseline (609,599 params) on visium_mouse_brain for 500 epochs
+[20:57:04] INFO      ep   25/500  loss 1.4471  val r 0.1115  rmse 0.2943
+[20:57:17] INFO      ep   50/500  loss 1.3312  val r 0.1752  rmse 0.2892
+[20:57:30] INFO      ep   75/500  loss 1.2693  val r 0.1962  rmse 0.2811
+[20:57:42] INFO      ep  100/500  loss 1.2228  val r 0.2122  rmse 0.2843
+[20:58:03] INFO      ep  125/500  loss 1.2106  val r 0.2182  rmse 0.2852
+[20:58:18] INFO      ep  150/500  loss 1.1713  val r 0.2215  rmse 0.2859
+[20:58:29] INFO      ep  175/500  loss 1.1529  val r 0.2282  rmse 0.2830
+[20:58:41] INFO      ep  200/500  loss 1.1340  val r 0.2325  rmse 0.2860
+[20:58:59] INFO      ep  225/500  loss 1.1571  val r 0.2335  rmse 0.2867
+[20:59:13] INFO      ep  250/500  loss 1.1474  val r 0.2355  rmse 0.2838
+[20:59:26] INFO      ep  275/500  loss 1.1348  val r 0.2345  rmse 0.2849
+[20:59:36] INFO      ep  300/500  loss 1.1192  val r 0.2356  rmse 0.2851
+[20:59:45] INFO      ep  325/500  loss 1.1206  val r 0.2367  rmse 0.2865
+[20:59:56] INFO      ep  350/500  loss 1.1117  val r 0.2386  rmse 0.2848
+[21:00:10] INFO      ep  375/500  loss 1.1174  val r 0.2386  rmse 0.2855
+[21:00:22] INFO      ep  400/500  loss 1.1209  val r 0.2389  rmse 0.2846
+[21:00:37] INFO      ep  425/500  loss 1.1367  val r 0.2390  rmse 0.2850
+[21:00:56] INFO      ep  450/500  loss 1.1243  val r 0.2395  rmse 0.2845
+[21:01:14] INFO      ep  475/500  loss 1.1327  val r 0.2396  rmse 0.2847
+[21:01:27] INFO      ep  500/500  loss 1.0830  val r 0.2395  rmse 0.2847
+[21:01:32] INFO      done in 281s | test r=0.2277 rmse=0.2536 ssim=0.6890
+[done] gnn seed 1: r=0.2277
+[21:01:34] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[21:01:34] INFO    training GNNBaseline (609,599 params) on visium_mouse_brain for 500 epochs
+[21:01:48] INFO      ep   25/500  loss 1.4161  val r 0.1054  rmse 0.2943
+[21:02:10] INFO      ep   50/500  loss 1.3253  val r 0.1687  rmse 0.2888
+[21:02:22] INFO      ep   75/500  loss 1.2518  val r 0.1958  rmse 0.2813
+[21:02:36] INFO      ep  100/500  loss 1.2033  val r 0.2144  rmse 0.2829
+[21:02:49] INFO      ep  125/500  loss 1.1723  val r 0.2237  rmse 0.2823
+[21:03:09] INFO      ep  150/500  loss 1.1539  val r 0.2287  rmse 0.2829
+[21:03:24] INFO      ep  175/500  loss 1.1578  val r 0.2284  rmse 0.2856
+[21:03:39] INFO      ep  200/500  loss 1.1341  val r 0.2300  rmse 0.2836
+[21:03:51] INFO      ep  225/500  loss 1.1418  val r 0.2327  rmse 0.2844
+[21:04:11] INFO      ep  250/500  loss 1.1297  val r 0.2373  rmse 0.2833
+[21:04:25] INFO      ep  275/500  loss 1.1364  val r 0.2382  rmse 0.2846
+[21:04:41] INFO      ep  300/500  loss 1.1248  val r 0.2398  rmse 0.2827
+[21:04:57] INFO      ep  325/500  loss 1.1254  val r 0.2410  rmse 0.2836
+[21:05:13] INFO      ep  350/500  loss 1.1149  val r 0.2397  rmse 0.2828
+[21:05:27] INFO      ep  375/500  loss 1.1038  val r 0.2387  rmse 0.2850
+[21:05:42] INFO      ep  400/500  loss 1.1000  val r 0.2408  rmse 0.2851
+[21:06:03] INFO      ep  425/500  loss 1.1566  val r 0.2401  rmse 0.2843
+[21:06:19] INFO      ep  450/500  loss 1.1063  val r 0.2407  rmse 0.2844
+[21:06:38] INFO      ep  475/500  loss 1.1116  val r 0.2407  rmse 0.2845
+[21:06:58] INFO      ep  500/500  loss 1.0938  val r 0.2407  rmse 0.2845
+Python(65165) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(65176) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:07:08] INFO      done in 323s | test r=0.2269 rmse=0.2533 ssim=0.6891
+[done] gnn seed 2: r=0.2269
+[21:07:13] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(65209) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(65210) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:07:16] INFO    training SpaGCNStyleBaseline (592,832 params) on visium_mouse_brain for 500 epochs
+[21:07:32] INFO      ep   25/500  loss 1.4163  val r 0.1098  rmse 0.2936
+[21:07:46] INFO      ep   50/500  loss 1.3102  val r 0.1789  rmse 0.2859
+[21:08:00] INFO      ep   75/500  loss 1.2122  val r 0.2062  rmse 0.2820
+[21:08:13] INFO      ep  100/500  loss 1.1950  val r 0.2194  rmse 0.2852
+[21:08:28] INFO      ep  125/500  loss 1.1576  val r 0.2267  rmse 0.2847
+[21:08:41] INFO      ep  150/500  loss 1.1145  val r 0.2325  rmse 0.2860
+[21:08:54] INFO      ep  175/500  loss 1.0883  val r 0.2370  rmse 0.2855
+[21:09:08] INFO      ep  200/500  loss 1.1090  val r 0.2393  rmse 0.2857
+[21:09:20] INFO      ep  225/500  loss 1.0896  val r 0.2424  rmse 0.2826
+[21:09:33] INFO      ep  250/500  loss 1.0649  val r 0.2428  rmse 0.2828
+[21:09:44] INFO      ep  275/500  loss 1.0837  val r 0.2438  rmse 0.2842
+[21:09:55] INFO      ep  300/500  loss 1.0684  val r 0.2455  rmse 0.2827
+[21:10:09] INFO      ep  325/500  loss 1.0946  val r 0.2460  rmse 0.2840
+[21:10:24] INFO      ep  350/500  loss 1.0774  val r 0.2465  rmse 0.2836
+[21:10:40] INFO      ep  375/500  loss 1.0843  val r 0.2464  rmse 0.2826
+[21:10:50] INFO      ep  400/500  loss 1.0471  val r 0.2466  rmse 0.2826
+[21:11:01] INFO      ep  425/500  loss 1.0589  val r 0.2474  rmse 0.2829
+[21:11:11] INFO      ep  450/500  loss 1.0642  val r 0.2470  rmse 0.2829
+[21:11:26] INFO      ep  475/500  loss 1.0674  val r 0.2471  rmse 0.2828
+[21:11:41] INFO      ep  500/500  loss 1.0661  val r 0.2470  rmse 0.2829
+Python(67573) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(67574) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:11:45] INFO      done in 264s | test r=0.2334 rmse=0.2546 ssim=0.6890
+[done] spagcn seed 0: r=0.2334
+[21:11:46] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(67598) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(67599) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:11:47] INFO    training SpaGCNStyleBaseline (592,832 params) on visium_mouse_brain for 500 epochs
+[21:11:59] INFO      ep   25/500  loss 1.4415  val r 0.1124  rmse 0.2936
+[21:12:11] INFO      ep   50/500  loss 1.3062  val r 0.1826  rmse 0.2864
+[21:12:32] INFO      ep   75/500  loss 1.2341  val r 0.2095  rmse 0.2799
+[21:12:49] INFO      ep  100/500  loss 1.1871  val r 0.2231  rmse 0.2846
+[21:13:05] INFO      ep  125/500  loss 1.1736  val r 0.2306  rmse 0.2854
+[21:13:24] INFO      ep  150/500  loss 1.1288  val r 0.2355  rmse 0.2854
+[21:13:42] INFO      ep  175/500  loss 1.1115  val r 0.2396  rmse 0.2832
+[21:14:01] INFO      ep  200/500  loss 1.0897  val r 0.2406  rmse 0.2848
+[21:14:19] INFO      ep  225/500  loss 1.1104  val r 0.2420  rmse 0.2839
+[21:14:37] INFO      ep  250/500  loss 1.1012  val r 0.2437  rmse 0.2844
+[21:14:55] INFO      ep  275/500  loss 1.0862  val r 0.2436  rmse 0.2827
+[21:15:09] INFO      ep  300/500  loss 1.0705  val r 0.2437  rmse 0.2839
+[21:15:23] INFO      ep  325/500  loss 1.0697  val r 0.2441  rmse 0.2845
+[21:15:42] INFO      ep  350/500  loss 1.0607  val r 0.2454  rmse 0.2822
+[21:15:56] INFO      ep  375/500  loss 1.0654  val r 0.2442  rmse 0.2837
+[21:16:11] INFO      ep  400/500  loss 1.0672  val r 0.2450  rmse 0.2837
+[21:16:25] INFO      ep  425/500  loss 1.0850  val r 0.2450  rmse 0.2829
+[21:16:42] INFO      ep  450/500  loss 1.0697  val r 0.2446  rmse 0.2836
+[21:16:58] INFO      ep  475/500  loss 1.0822  val r 0.2446  rmse 0.2838
+[21:17:11] INFO      ep  500/500  loss 1.0330  val r 0.2447  rmse 0.2836
+Python(70690) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(70697) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:17:19] INFO      done in 325s | test r=0.2355 rmse=0.2533 ssim=0.6905
+[done] spagcn seed 1: r=0.2355
+[21:17:20] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(70720) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(70721) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:17:21] INFO    training SpaGCNStyleBaseline (592,832 params) on visium_mouse_brain for 500 epochs

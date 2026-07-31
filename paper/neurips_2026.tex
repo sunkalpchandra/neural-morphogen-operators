@@ -1,0 +1,569 @@
+\documentclass{article}
+
+% NeurIPS 2026 style. Use [final] for the camera-ready, [preprint] for arXiv.
+\usepackage{neurips_2026}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{xcolor}
+
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue!60!black}
+
+% Auto-generated numbers (src/evaluation/numbers.py). Never edit by hand.
+\input{numbers}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\vz}{\mathbf{z}}
+\newcommand{\vg}{\mathbf{g}}
+\newcommand{\vp}{\mathbf{p}}
+\newcommand{\vk}{\mathbf{k}}
+\newcommand{\mD}{\mathbf{D}}
+\newcommand{\mJ}{\mathbf{J}}
+
+\title{Neural Morphogen Operators: Learning Continuous\\
+       Reaction--Diffusion Dynamics from Spatial Transcriptomics}
+
+\author{%
+  Anonymous Author(s)\\
+  Affiliation\\
+  \texttt{email}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Machine learning for spatial transcriptomics has converged on a discrete view of
+tissue: expression is modelled on a graph whose nodes are the measured spots or
+cells. Developmental biology, by contrast, describes tissue as the product of
+\emph{continuous} spatial processes---morphogen gradients, diffusive signalling
+and local reaction networks. We ask whether a continuous operator of that form
+can be fitted directly to spatial expression data, and what it buys.
+We introduce \textbf{Neural Morphogen Operators} (NMO), which encode irregularly
+sampled expression into a continuous latent field, evolve that field under a
+learned anisotropic reaction--diffusion PDE
+$\partial_t \vz = \nabla \!\cdot\! (\mD_\theta \nabla \vz) + f_\theta(\vz)$,
+and decode expression at arbitrary coordinates. The diffusion half-step is solved
+exactly in the Fourier domain, making the integrator unconditionally stable and
+the diffusion tensor directly readable as a physical length scale.
+Across \NDatasets{} spatial datasets spanning four technologies, NMO improves
+held-out reconstruction of masked tissue regions over graph-based and
+Gaussian-process baselines, and transfers zero-shot across tissue, species and
+sampling resolution. Ablations show the dynamics are load-bearing rather than
+decorative: removing the operator costs \AblNoDynamicsDelta{} Pearson $r$.
+We stress what the model does \emph{not} establish. Spatial transcriptomics is a
+single snapshot, so the learned operator is identified only up to the
+quasi-steady-state assumption we impose; the recovered diffusion lengths and
+Turing wavelengths are properties of a fitted operator, not measurements of
+physical morphogen transport. We frame the contribution as learning latent
+continuous operators that summarise spatial gene-expression organisation, and we
+report the failure modes---notably a persistent bias towards over-smooth
+fields---as prominently as the gains.
+\end{abstract}
+
+% =====================================================================
+\section{Introduction}
+% =====================================================================
+
+Spatially resolved transcriptomics measures gene expression while retaining the
+physical coordinates of each measurement \citep{stahl2016visium,chen2015merfish}.
+The dominant computational treatments---spatial domain identification, clustering,
+imputation and denoising---represent a tissue section as a graph over the measured
+locations and apply message passing to it
+\citep{hu2021spagcn,dong2022stagate,palla2022squidpy}. This is effective and it
+matches how the data arrive. It also embeds a modelling commitment that is worth
+examining: the tissue \emph{is} the sampling lattice. Predictions exist only where
+a node exists, the learned function is tied to one sampling geometry, and nothing
+in the model corresponds to a mechanism.
+
+Developmental biology offers a different description. Tissue organisation is
+classically explained by continuous fields: morphogens are produced, diffuse,
+decay and interact, and cells read the resulting concentration landscape
+\citep{turing1952,wolpert1969positional,gierer1972theory}. Reaction--diffusion
+models of this kind quantitatively account for phenomena from digit patterning
+\citep{sheth2012hox} to Nodal/Lefty signalling \citep{muller2013nodal}, and
+morphogen gradients have measured length scales in the tens to hundreds of
+microns \citep{kicheva2007kinetics,yu2009fgf8}.
+
+This paper asks a narrow, testable question: \emph{can a continuous
+reaction--diffusion operator be fitted to spatial transcriptomics, and does the
+resulting model predict and transfer better than discrete alternatives?} We are
+deliberately not asking whether the fitted operator recovers the true biochemistry.
+It cannot, and we explain why in Section~\ref{sec:limitations}.
+
+\paragraph{Contributions.}
+\begin{enumerate}\itemsep2pt
+\item \textbf{A PDE-constrained neural operator for spatial omics.} NMO couples a
+  graph kernel-integral encoder (for irregular sampling) with a spectral
+  reaction--diffusion operator and a coordinate-free continuous decoder
+  (Section~\ref{sec:method}).
+\item \textbf{An unconditionally stable, interpretable integrator.} Diffusion is
+  applied exactly in the Fourier domain under Strang splitting, which removes the
+  CFL constraint entirely and makes the learned anisotropic tensor $\mD_\theta$
+  readable as a diffusion length in microns (Section~\ref{sec:operator}).
+\item \textbf{An honest formulation of the physics loss.} Because the integrator
+  is exact, a naive PDE residual is vacuous. We show the content-bearing
+  constraint is a \emph{steady-state} residual that asks the measured tissue to be
+  a fixed point of the operator (Section~\ref{sec:losses}).
+\item \textbf{Evaluation that resists leakage and over-smoothing.} We hold out
+  contiguous tissue blocks rather than random spots, and report Moran's $I$ error
+  alongside correlation so that a model which regresses towards a smooth mean is
+  penalised rather than rewarded (Section~\ref{sec:setup}).
+\item \textbf{A falsifiable interpretability read-out.} Linearising the learned
+  operator yields a dispersion relation whose sign and peak wavenumber state
+  whether, and at what wavelength, the operator supports pattern formation
+  (Section~\ref{sec:interpretability}).
+\end{enumerate}
+
+% =====================================================================
+\section{Related Work}
+% =====================================================================
+
+\paragraph{Neural operators.} Operator learning targets maps between function
+spaces rather than between finite vectors, giving (approximate) independence from
+the discretisation \citep{kovachki2023neuraloperator}. Fourier neural operators
+parameterise the kernel in the frequency domain \citep{li2021fno}; graph neural
+operators handle irregular meshes through kernel integration over neighbourhoods
+\citep{li2020gno}; DeepONet factorises the operator into branch and trunk
+networks \citep{lu2021deeponet}. We use the graph formulation for the irregular
+sampling and the spectral formulation for the dynamics, because the second is what
+makes the diffusion solve exact. Physics-informed networks impose PDE residuals as
+soft penalties \citep{raissi2019pinn}; neural ODEs learn continuous-time dynamics
+\citep{chen2018neuralode}. Our integrator follows classical exponential
+time-differencing and operator splitting \citep{cox2002etdrk,strang1968splitting}.
+
+\paragraph{Machine learning for spatial transcriptomics.} SpaGCN fuses expression,
+position and histology in a graph convolution \citep{hu2021spagcn}; STAGATE uses a
+spatially regularised graph attention autoencoder \citep{dong2022stagate}; SpatialDE
+and SPARK test genes for spatial variability
+\citep{svensson2018spatialde,sun2020spark}; DestVI models cell-type continua
+\citep{lopez2022destvi}. These methods are designed for domain identification and
+denoising, not for predicting expression at unmeasured coordinates, and we adapt
+them accordingly (Section~\ref{sec:setup}). Spateo models spatiotemporal structure
+in Stereo-seq embryos and is the closest work in spirit \citep{qiu2024spateo},
+though it targets 3-D reconstruction and vector-field morphometry rather than
+learning a PDE operator that can be transferred and perturbed.
+
+\paragraph{Pattern formation and learned dynamics in biology.} Reaction--diffusion
+theory provides the mechanistic vocabulary we borrow
+\citep{turing1952,kondo2010reaction,green2015morphogen}. RNA velocity infers
+short-horizon dynamics from splicing kinetics
+\citep{labella2019rnavelocity,bergen2020scvelo}; perturbation models such as scGen,
+CPA and GEARS predict transcriptional responses to genetic interventions
+\citep{lotfollahi2019scgen,lotfollahi2023cpa,roohani2024gears}. None of these
+carries an explicit spatial operator, which is the gap we address.
+
+% =====================================================================
+\section{Method}
+\label{sec:method}
+% =====================================================================
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig1_overview.pdf}
+  \caption{\textbf{Neural Morphogen Operator.} Irregularly sampled expression is
+  encoded into a continuous latent field, evolved under a learned anisotropic
+  reaction--diffusion PDE, and decoded at arbitrary coordinates. The decoder does
+  not receive coordinates, so all spatial structure must pass through the field
+  and hence through the operator.}
+  \label{fig:overview}
+\end{figure}
+
+Let a tissue section provide $N$ measurements $\{(\vp_i, \vg_i)\}_{i=1}^N$ with
+positions $\vp_i \in \R^2$ (isotropically normalised to $[-1,1]^2$) and expression
+$\vg_i \in \R^G$. We posit a latent field $\vz : \R^2 \to \R^C$ and factor the
+model as encode--evolve--decode (Figure~\ref{fig:overview}).
+
+\subsection{Spatial encoder}
+
+Irregular sampling is handled by $L$ kernel-integral layers on a $k$-NN graph
+\citep{li2020gno},
+\begin{equation}
+\vz_i^{(\ell+1)} = \sigma\!\Big( W \vz_i^{(\ell)}
+   + \tfrac{1}{|\mathcal{N}(i)|}\!\!\sum_{j \in \mathcal{N}(i)}\!\!
+     \kappa_\theta(\vp_j - \vp_i)\odot \vz_j^{(\ell)} \Big),
+\end{equation}
+where $\kappa_\theta$ maps a \emph{relative} displacement to a per-channel gain.
+Depending only on geometry, not on node identity, is what allows an encoder fitted
+to one lattice to be evaluated on another.
+
+The resulting features are then splatted onto a regular $H\times W$ lattice by a
+Nadaraya--Watson estimator with a learnable bandwidth, producing both a field and
+an \emph{occupancy} map $\omega$ recording where measurements actually exist. The
+occupancy channel matters: in the masked-region task the model must distinguish
+"tissue with no signal" from "no measurement here". A short stack of spectral
+(FNO) blocks \citep{li2021fno} then refines the field.
+
+\subsection{The morphogen operator}
+\label{sec:operator}
+
+The field evolves under
+\begin{equation}
+\frac{\partial \vz}{\partial t}
+  = \nabla \!\cdot\! \big(\mD_\theta \nabla \vz\big) + f_\theta(\vz),
+\label{eq:pde}
+\end{equation}
+with a per-channel symmetric positive-definite diffusion tensor
+$\mD_c = L_c L_c^\top + \varepsilon I$ ($L_c$ lower triangular, so positive
+definiteness is structural rather than penalised) and a pointwise reaction network
+$f_\theta$ implemented as $1\times1$ convolutions with a $\tanh$-bounded output and
+learnable per-channel gain.
+
+\paragraph{Exact spectral diffusion.} Equation~\eqref{eq:pde} is stiff: the
+diffusion operator has eigenvalues scaling as $-|\vk|^2$, so an explicit scheme
+needs $\Delta t = O(h^2/\|\mD\|)$. For constant-coefficient anisotropic diffusion
+the operator is diagonal in the Fourier basis, so the diffusive evolution over
+$\tau$ is available in closed form,
+\begin{equation}
+E_c(\tau) = \mathcal{F}^{-1}\,
+   \exp\!\big(-\vk^\top \mD_c \vk\, \tau\big)\, \mathcal{F}.
+\label{eq:expstep}
+\end{equation}
+We combine this with a midpoint reaction update under Strang splitting
+\citep{strang1968splitting},
+$\vz \leftarrow E(\tfrac{\Delta t}{2})\,\vz$;
+$\vz \leftarrow \vz + \Delta t\,\mathrm{RK2}[f_\theta](\vz)$;
+$\vz \leftarrow E(\tfrac{\Delta t}{2})\,\vz$,
+which is second-order accurate. Two consequences matter. First, since
+$\vk^\top \mD_c \vk \ge 0$, the multiplier in \eqref{eq:expstep} lies in $(0,1]$
+for every $\Delta t$: the diffusive channel is \textbf{unconditionally stable}
+regardless of what the optimiser does to $\theta$. Empirically, rollouts remain
+bounded for $10^3$ steps, two orders of magnitude beyond the training horizon.
+Second, $\mD_c$ is interpretable---its eigenvalues are squared diffusion lengths
+per unit pseudo-time, convertible to microns through the stored coordinate scale.
+
+\subsection{Decoder}
+
+Predictions are obtained by bilinear interpolation of the evolved field at any
+continuous coordinate followed by an MLP. \emph{The decoder receives no positional
+input.} This is a deliberate constraint: given coordinates, the decoder could
+memorise a coordinate-to-expression map and render the dynamics ornamental, and
+every ablation in Section~\ref{sec:ablations} would become uninterpretable.
+
+\subsection{Objectives}
+\label{sec:losses}
+
+The objective combines reconstruction (MSE plus a per-gene Pearson term, since
+correlation of the \emph{spatial pattern} is the quantity of scientific interest),
+a weak Dirichlet-energy smoothness prior, and three physics terms.
+
+\paragraph{What a physics loss can mean here.} Because the integrator solves
+\eqref{eq:pde} essentially exactly, the residual $\|\partial_t\vz - \mathrm{RHS}\|$
+evaluated along the model's own trajectory is zero up to splitting error. Imposing
+it would penalise the integrator, not the model. The constraint that carries content
+is that the \emph{measured configuration should be a near-stationary state} of the
+learned operator:
+\begin{equation}
+\mathcal{L}_{\mathrm{PDE}} = \big\| \nabla\!\cdot\!(\mD_\theta \nabla \vz_T)
+  + f_\theta(\vz_T) \big\|^2 .
+\label{eq:steady}
+\end{equation}
+This is the correct formalisation of the quasi-steady-state assumption for adult
+tissue, and it constrains $\mD_\theta$ and $f_\theta$ jointly.
+We add a \emph{mass} term penalising the spatial mean of $f_\theta(\vz)$---spectral
+diffusion conserves the $\vk=0$ mode exactly, so any drift in total latent mass is
+attributable to the reaction---and a \emph{Jacobian} hinge on
+$\|\partial f_\theta/\partial \vz\|_2$ that bounds the local Lipschitz constant,
+estimated by power iteration on sampled pixels. A splitting-consistency term keeps
+$\Delta t$ in the regime where the second-order scheme is faithful.
+
+\subsection{Interpretability: dispersion analysis}
+\label{sec:interpretability}
+
+Linearising \eqref{eq:pde} about a homogeneous state $\vz^*$ gives, for spatial
+mode $\vk$,
+$\partial_t \delta\vz_{\vk} = (\mJ(\vz^*) - \vk^\top\!\mD\vk)\,\delta\vz_{\vk}$
+with $\mJ = \partial f_\theta/\partial\vz|_{\vz^*}$. The quantity
+$\max\mathrm{Re}\,\mathrm{spec}(\mJ - |\vk|^2\mD)$ as a function of $|\vk|$ is the
+dispersion relation of the \emph{learned} operator: positive growth at finite
+$|\vk|$ with decay at $\vk=0$ is the classical Turing signature, and its peak
+identifies a characteristic wavelength. Because $\mD$ is anisotropic we maximise
+over orientations of $\vk$. This is a quantitative, falsifiable statement about
+what the model has inferred, not a post-hoc visualisation.
+
+% =====================================================================
+\section{Data}
+% =====================================================================
+
+We use \NDatasets{} processed spatial sections spanning four technologies plus one
+non-spatial perturbation dataset (Table~\ref{tab:datasets}). All are public. Raw
+sequencing reads are never used: we consume vendor count matrices, and the
+download pipeline records a SHA256 manifest for every artifact.
+
+\input{tables/tab_datasets}
+
+Every dataset passes through one QC policy (platform-specific count thresholds set
+from assay physics, not tuned), library-size normalisation, log transform, and
+highly-variable-gene selection that \emph{force-includes} all detected morphogen
+pathway genes so the interpretability analysis is not evaluated on a gene set that
+selection has already biased. Coordinates are normalised \textbf{isotropically}:
+$x$ and $y$ are divided by the same scale, because anisotropic rescaling would
+silently distort the Laplacian and make a learned diffusion coefficient
+meaningless. The scale factor is retained so physical units are recoverable.
+
+% =====================================================================
+\section{Experimental setup}
+\label{sec:setup}
+% =====================================================================
+
+\paragraph{Task.} Masked spatial reconstruction: contiguous tissue blocks are
+hidden from the encoder and every model must predict the full expression profile
+at those coordinates.
+
+\paragraph{Splits are contiguous, not random.} A random spot-level split leaks
+badly---neighbouring spots are highly correlated, so a held-out spot is trivially
+predicted from its immediate neighbours, and every method looks good. We partition
+each section into contiguous blocks on a coarse lattice and hold out whole blocks
+\citep{roberts2017crossvalidation}. Gene standardisation statistics are computed on
+the training split only.
+
+\paragraph{Baselines.} A non-spatial autoencoder (the floor), a GCN
+\citep{kipf2017gcn}, SpaGCN-style and STAGATE-style models
+\citep{hu2021spagcn,dong2022stagate}, a graph transformer
+\citep{vaswani2017attention}, and an exact Gaussian process with a learned RBF
+kernel \citep{rasmussen2006gp}. Since the graph methods were not designed to
+predict at unmeasured coordinates, we give each the same inverse-distance-weighted
+read-out head, which is the most favourable available choice for them. We mark
+these variants \emph{-style} and do not claim they reproduce the authors' published
+numbers on the authors' own tasks. Every model is driven by the identical training
+loop, masks, optimiser and evaluation code, so differences are attributable to the
+model.
+
+\paragraph{Metrics.} Per-gene Pearson and Spearman correlation across held-out
+locations; RMSE; SSIM \citep{wang2004ssim} on rasterised expression maps; and the
+absolute error in Moran's $I$ \citep{moran1950} between predicted and measured
+maps. The last is included because correlation and RMSE both reward a model that
+regresses towards a smooth mean, whereas destroying spatial structure should be
+penalised. All results are mean $\pm$ s.d. over \NSeeds{} seeds.
+
+% =====================================================================
+\section{Results}
+% =====================================================================
+
+\subsection{Masked spatial reconstruction}
+
+\input{tables/tab_benchmark}
+
+NMO reaches Pearson $r = \NMOPearson$ on held-out blocks against
+\BestBaselinePearson{} for the strongest baseline (\BestBaseline{}), a gain of
+\PearsonGain{} (Table~\ref{tab:benchmark}, Figure~\ref{fig:benchmark}). The
+Gaussian process is a stronger competitor than the graph neural networks, which is
+worth stating plainly: for smooth genes, classical spatial interpolation is hard to
+beat, and much of the spatial-transcriptomics deep-learning literature does not
+compare against it.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig2_reconstruction.pdf}
+  \caption{\textbf{Masked reconstruction.} Measured expression (left; held-out
+  locations outlined) against NMO and baseline predictions for representative
+  genes. Per-gene Pearson $r$ on held-out locations is annotated.}
+  \label{fig:reconstruction}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig7_benchmark.pdf}
+  \caption{\textbf{Benchmark summary} across four complementary metrics. Moran's
+  $I$ error (right) exposes over-smoothing that correlation alone does not.}
+  \label{fig:benchmark}
+\end{figure}
+
+\subsection{Learned fields and dynamics}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig3_latent_fields.pdf}
+  \caption{\textbf{Latent fields.} (a) Latent channels of the relaxed field.
+  (b) Correlation between each channel and canonical morphogen-pathway
+  expression scores. Pathway genes were force-retained during selection, so this
+  is a read-out of alignment, not of selection.}
+  \label{fig:latent}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig5_dynamics.pdf}
+  \caption{\textbf{Operator diagnostics.} (a) Relaxation of a latent channel.
+  (b) Learned anisotropic diffusion tensors as length-scale ellipses.
+  (c) Dispersion relation of the linearised operator. (d) Distribution of
+  diffusion lengths across channels.}
+  \label{fig:dynamics}
+\end{figure}
+
+The fitted operator has a median diffusion length of \DiffLenMedian{}\,$\mu$m
+(10--90th percentile \DiffLenLo--\DiffLenHi\,$\mu$m). This is the same order as
+measured morphogen gradient length scales
+\citep{kicheva2007kinetics,yu2009fgf8}. We regard this as a consistency check, not
+as a measurement: the model was fitted to a snapshot and the length scale is a
+property of the fitted operator under our normalisation, not an estimate of
+physical transport. Several latent channels correlate with canonical pathway
+scores (Figure~\ref{fig:latent}b), again a statement about alignment rather than
+mechanism.
+
+\subsection{Transfer across tissue, species and resolution}
+
+\input{tables/tab_transfer_tissue}
+
+Trained on adult mouse brain and applied unchanged to human breast carcinoma---a
+different species, organ and spatial architecture---NMO attains
+\TissueZeroShot{} zero-shot against a training-mean floor of \TissueFloor{} and an
+in-domain oracle of \TissueOracle{} (Table~\ref{tab:transfer_tissue},
+Figure~\ref{fig:transfer}). Refitting \emph{only} the decoder, with the encoder
+and operator frozen, recovers \TissueFineTune{}: the learned dynamics remain
+useful when the read-out is re-fitted, which is the concrete transfer claim.
+
+\input{tables/tab_transfer_resolution}
+
+The cross-resolution setting is the sharper test. An operator fitted to 55\,$\mu$m
+multi-cell Visium spots on a 100\,$\mu$m lattice is evaluated on single-cell
+Xenium sampling of the same organ. Because all Xenium panel genes are present in
+the raw Visium matrix, we rebuild the source with the panel force-included, giving
+a shared vocabulary of \ResSharedGenes{} genes rather than the much smaller
+HVG intersection.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig4_transfer.pdf}
+  \caption{\textbf{Transfer.} Zero-shot performance against the in-domain oracle
+  and the training-mean floor, across tissue/species (a) and sampling
+  resolution (b).}
+  \label{fig:transfer}
+\end{figure}
+
+\subsection{Counterfactual perturbation}
+
+\input{tables/tab_bead}
+
+We perform the computational analogue of a morphogen bead implant: inject the
+latent direction that maximally raises a pathway's decoded activity into a small
+disc, integrate the operator, and read out the spatial response. The design is
+split-half---the direction is defined from a random half of each pathway's genes
+and enrichment is scored on the held-out half---with a permutation null over
+matched random gene sets. \BeadNSig{} of \BeadNPathways{} pathways show
+significant held-out enrichment (Table~\ref{tab:bead}).
+
+\input{tables/tab_perturbseq}
+
+Separately, we ask whether the reaction module encodes real transcriptional
+coupling by comparing the model's counterfactual gene--gene responses against
+measured CRISPRa responses \citep{norman2019perturbseq}.
+\textbf{This is an out-of-context probe and we treat it as such}: Norman et al.\
+profiled non-spatial K562 cells, whereas our operator is fitted to tissue. We fit
+on the human breast section so at least species and a proliferative context are
+shared, report a permutation null, and report the same quantity for every
+baseline. The agreement is modest ($\rho = \PSRho$ against a null of \PSNull);
+we read it as weak evidence that the reaction network captures generic
+transcriptional coupling, and explicitly \emph{not} as validation of the spatial
+dynamics.
+
+% =====================================================================
+\section{Ablations}
+\label{sec:ablations}
+% =====================================================================
+
+\input{tables/tab_ablations}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig6_ablations.pdf}
+  \caption{\textbf{Ablations.} (a) Change in held-out Pearson $r$ when each
+  ingredient is removed. (b) Latent-width sweep.}
+  \label{fig:ablations}
+\end{figure}
+
+The decisive control is \emph{$-$ dynamics}, which sets the integration horizon to
+zero so the operator is never applied, leaving an encoder--decoder of identical
+capacity. It costs \AblNoDynamicsDelta{} Pearson $r$
+(Table~\ref{tab:ablations}, Figure~\ref{fig:ablations}). Had this matched the full
+model, the PDE would have been decorative and the central claim of this paper
+would fail; we report it first for that reason. Removing diffusion
+(\AblNoDiffusionDelta) and the reaction term (\AblNoReactionDelta) are both
+harmful, and the two contribute differently: diffusion supplies long-range
+information transport into masked regions, while the reaction term supplies the
+nonlinearity that prevents the field from collapsing to a smooth interpolant.
+Constraining $\mD$ to be isotropic costs \AblIsotropicDelta, indicating the
+anisotropy is used rather than merely available.
+
+% =====================================================================
+\section{Limitations}
+\label{sec:limitations}
+% =====================================================================
+
+We state these plainly because they bound what the results mean.
+
+\paragraph{One snapshot cannot identify a dynamical system.} Standard spatial
+transcriptomics measures a fixed tissue once. Many operators produce the same
+stationary field, so \eqref{eq:pde} is identified only up to the quasi-steady-state
+assumption we impose through \eqref{eq:steady} and up to the inductive bias of the
+architecture. Reported diffusion lengths and Turing wavelengths characterise the
+\emph{fitted operator}; they are not measurements of morphogen transport, and we
+have no way to falsify them against ground-truth kinetics in these data. The
+Stereo-seq developmental series is the only dataset here with a genuine temporal
+axis, and even there consecutive stages are different embryos, so cross-stage
+comparison is distributional rather than per-cell.
+
+\paragraph{Latent, not molecular.} The operator acts on a learned latent field.
+Correlations between latent channels and morphogen pathway scores show alignment;
+they do not identify a channel \emph{as} SHH or BMP. We deliberately avoid that
+language.
+
+\paragraph{Over-smoothing persists.} Predicted maps are systematically smoother
+than measured ones: predicted Moran's $I$ ($\NMOMoranPred$) substantially exceeds
+the measured value ($\MoranTrue$). NMO reduces this discrepancy relative to
+baselines but does not remove it. Any downstream use that depends on sharp
+boundaries---rare cell-type niches, tumour margins---should treat these
+predictions cautiously. We report the metric precisely so this failure is visible.
+
+\paragraph{Adapted baselines.} SpaGCN and STAGATE were built for spatial domain
+identification, not coordinate-level prediction. Our \emph{-style} variants
+implement each method's architectural core with a common read-out head; they are
+a fair comparison on \emph{this} task but not a reproduction of published results.
+
+\paragraph{Scope.} Single 2-D sections, one section per condition, ortholog
+matching by upper-cased symbol (which misses paralog renaming and family
+expansions), and modest compute (CPU-scale training). We have not tested 3-D
+volumes or multi-section registration.
+
+% =====================================================================
+\section{Discussion and Conclusion}
+% =====================================================================
+
+We set out to test whether the continuous, mechanistic description that
+developmental biology uses for tissue can be turned into a fitted operator on
+spatial transcriptomics, and whether that helps. On the evidence here it does:
+treating tissue as a field rather than a graph improves prediction at unmeasured
+coordinates, transfers across species and sampling resolution, and yields
+diagnostics---diffusion tensors, dispersion relations---that are quantitative and
+falsifiable rather than merely illustrative. The ablations indicate the dynamics
+carry real weight, and the exact spectral diffusion solve makes the operator both
+stable and physically readable.
+
+We are also clear about what has not been shown. No claim is made that the fitted
+operator recovers biochemical reality; a single snapshot cannot support that, and
+the honest framing is that NMO learns \emph{latent continuous operators that
+summarise spatial gene-expression organisation}. The most valuable next step is
+data that can break the identifiability barrier: dense developmental time series,
+or spatial data paired with targeted perturbation, would let the same framework be
+tested as a genuinely dynamical model rather than a structured summary.
+
+\paragraph{Reproducibility.} All datasets download automatically with a recorded
+SHA256 manifest; every table and figure in this paper is regenerated from run
+artifacts by a single command; configurations, seeds and checkpoints are released.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
