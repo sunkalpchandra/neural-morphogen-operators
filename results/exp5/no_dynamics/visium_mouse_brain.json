@@ -20,5 +20,27 @@
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7803063893717517,
     "morans_i_corr": 0.43030294183554235
+  },
+  {
+    "variant": "no_dynamics",
+    "seed": 1,
+    "section": "visium_mouse_brain",
+    "n_params": 2198304,
+    "best_epoch": 249,
+    "pearson_mean": 0.22602497041225433,
+    "pearson_median": 0.19520053267478943,
+    "spearman_mean": 0.17972445487976074,
+    "rmse": 0.26488545536994934,
+    "mae": 0.15101954340934753,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.85263592004776,
+    "ssim_mean": 0.35862261514403715,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127,
+    "morans_i_pred": 0.9570150689136785,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.7826194591412371,
+    "morans_i_corr": 0.420786453570892
   }
 ]

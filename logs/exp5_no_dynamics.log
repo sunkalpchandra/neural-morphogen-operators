@@ -27,3 +27,13 @@
 [22:24:58] INFO      ep  225/300  loss 1.2281  val r 0.2539  rmse 0.2699
 [22:26:47] INFO      ep  250/300  loss 1.2230  val r 0.2540  rmse 0.2700
 [22:29:13] INFO      ep  275/300  loss 1.2136  val r 0.2540  rmse 0.2702
+[22:32:54] INFO      ep  300/300  loss 1.2063  val r 0.2540  rmse 0.2703
+[22:33:06] INFO      done in 1166s | test r=0.2260 rmse=0.2649 ssim=0.3586
+[done] no_dynamics seed 1: r=0.2260 rmse=0.2649
+
+             pearson_mean                rmse  ... ssim_mean   n_params     
+                    mean       std      mean  ...       std       mean  std
+variant                                       ...                          
+no_dynamics     0.226586  0.000793  0.265893  ...   0.00484  2198304.0  0.0
+
+[1 rows x 8 columns]

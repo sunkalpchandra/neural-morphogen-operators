@@ -1,2 +1,9 @@
 [22:28:53] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
 [22:28:56] INFO    training GNNBaseline (609,599 params) on visium_mouse_brain for 300 epochs
+[22:29:42] INFO      ep   25/300  loss 1.4242  val r 0.1027  rmse 0.2940
+[22:30:04] INFO      ep   50/300  loss 1.3383  val r 0.1686  rmse 0.2878
+[22:30:50] INFO      ep   75/300  loss 1.2488  val r 0.1936  rmse 0.2815
+[22:31:36] INFO      ep  100/300  loss 1.2366  val r 0.2113  rmse 0.2851
+[22:32:52] INFO      ep  125/300  loss 1.1997  val r 0.2179  rmse 0.2838
+[22:33:14] INFO      ep  150/300  loss 1.1636  val r 0.2198  rmse 0.2862
+[22:33:56] INFO      ep  175/300  loss 1.1462  val r 0.2242  rmse 0.2856
