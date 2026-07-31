@@ -286,8 +286,11 @@ def table_ablations(records: List[Dict], out: Path) -> str:
         "Ablations on the mouse-brain Visium section. Each variant removes exactly one "
         "ingredient with all else held fixed. $\\Delta r$ is the change in held-out "
         "Pearson $r$ relative to the full model. The \\emph{$-$ dynamics} row is the "
-        "critical control: it disables the operator entirely ($T{=}0$), leaving an "
-        "encoder--decoder that never integrates the PDE.",
+        "critical control: it disables the operator entirely ($T{=}0$) while leaving "
+        "its parameters allocated, so the two rows are exactly parameter-matched. "
+        "\\textbf{This table uses a smaller training budget than "
+        "Table~\\ref{tab:benchmark}} (fewer epochs and seeds); it is internally "
+        "consistent, but absolute values are not comparable across the two tables.",
         "tab:ablations", "lr" + "r" * (len(metrics) + 1), header,
     )
     out.write_text(tex)

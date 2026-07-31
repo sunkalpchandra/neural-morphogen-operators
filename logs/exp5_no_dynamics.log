@@ -18,3 +18,4 @@
 [22:13:30] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 300 epochs
 [22:14:35] INFO      ep   25/300  loss 1.5620  val r 0.0820  rmse 0.2955
 [22:15:42] INFO      ep   50/300  loss 1.4316  val r 0.2001  rmse 0.2931
+[22:16:42] INFO      ep   75/300  loss 1.3616  val r 0.2273  rmse 0.2801
