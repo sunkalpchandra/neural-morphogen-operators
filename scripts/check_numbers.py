@@ -106,6 +106,10 @@ _decl("physics", "DiffLenMedian", "DiffLenLo", "DiffLenHi", "TuringFrac",
 _decl("inventory", "NDatasets", "NSections", "TotalLocations", "NSpatialSections",
       "SpatialLocations", "NPerturbCells")
 _decl("architecture", "OpParams", "TotalParams", "OpParamPct")
+_decl("exp11", "NullBaseline", "NullShuffled", "NullShuffledR", "NullInit",
+      "NullDataShift", "NullShuffledShift", "NullSigmaLo", "NullSigmaHi",
+      "NullSigmaRange", "NullGridUmLo", "NullGridUmHi", "NullGridCellsLo",
+      "NullGridCellsHi", "NullGridN")
 _decl("exp12", "SplitXenRandom", "SplitXenBlock", "SplitXenRatio",
       "SplitVisRandom", "SplitVisBlock", "SplitVisRatio")
 
@@ -117,7 +121,7 @@ SECTION_SCOPE: Dict[str, Set[str]] = {
     "The numerical machinery is load-bearing": {"exp7", "architecture"},
     "The reconstruction preserves tissue biology": {"exp9", "exp8"},
     "The reconstruction does not degrade tissue-level structure": {"exp9", "exp8"},
-    "Learned dynamics": {"physics", "exp5", "exp5_matched", "exp1"},
+    "Learned dynamics": {"physics", "exp5", "exp5_matched", "exp1", "exp11"},
     "Transfer across tissue, species and resolution": {"exp2", "exp3", "exp6", "exp12"},
     "Counterfactual perturbation": {"exp4", "physics"},
     # Short-build summary paragraph: it stands in for the subsections the

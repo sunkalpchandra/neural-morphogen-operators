@@ -128,16 +128,31 @@ pushed.
   \label{fig:dynamics}
 \end{figure}
 
+\paragraph{The recovered length scale is close to its own initialization.}
 On the primary section the fitted operator has a median diffusion length of
-\DiffLenMedian{}\,$\mu$m, with a 10--90th percentile range of
-\DiffLenLo--\DiffLenHi\,$\mu$m \emph{across the \DiffLenPerRun{} latent
-directions of a single fit} --- a spread over channels, not over tissues. That is
-the same order as measured morphogen gradients
-\citep{kicheva2007kinetics,yu2009fgf8}, which we offer as a consistency check
-rather than a measurement: the model was fitted to one stationary snapshot of
-\DiffLenSections{} section, and Proposition~\ref{prop:splat} establishes that
-the splatting kernel contributes diffusive smoothing of its own that this figure
-does not separate out. The anisotropy is
+\NullBaseline\,$\mu$m. An earlier version of this work noted that this is the
+same order as measured morphogen gradients \citep{kicheva2007kinetics,yu2009fgf8}.
+That observation does not survive a control, and we report the control instead.
+
+Refitting the identical architecture at the identical budget on
+\emph{coordinate-shuffled} sections --- expression permuted across positions, so
+every gene's marginal is preserved and no spatial structure remains --- recovers
+\NullShuffled\,$\mu$m, against \NullInit\,$\mu$m for the untrained model. The
+shuffled fit therefore moves the length scale by \NullShuffledShift\% from
+initialization while attaining $r = \NullShuffledR$, and real tissue moves it by
+\NullDataShift\%. The initialization is not incidental: it is
+$\sqrt{2\,D_{\mathrm{init}}\,\Delta t\,n_{\mathrm{steps}}}$ times the coordinate
+scale, fixed by the configuration before any data is seen. Fixing the splat
+bandwidth across \NullSigmaRange{} grid cells leaves the result between
+\NullSigmaLo{} and \NullSigmaHi\,$\mu$m, so the encoder kernel is not the
+mechanism either (Appendix~\ref{app:empirical}).
+
+We therefore withdraw the correspondence with measured gradient lengths: the
+median is largely a configuration constant, and agreement with a biological
+scale that a configuration choice also produces is not evidence. What the data
+do determine is the \emph{spread}: at initialization every channel carries an
+identical length scale, and training differentiates them across
+\DiffLenLo--\DiffLenHi\,$\mu$m. The anisotropy is
 used rather than merely available: constraining $\mD$ to be isotropic costs
 \AblIsotropicDelta{} Pearson $r$.
 

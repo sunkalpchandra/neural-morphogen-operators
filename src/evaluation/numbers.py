@@ -395,6 +395,55 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("NumSpeedup", f"{eul.iloc[0]/base:.0f}")
         cmd("NumStrangSteps", str(int(base)))
 
+    # ---- Experiment 11 : diffusion-length null controls -------------------- #
+    # The reported diffusion length is close to its own initialization. These
+    # macros carry the controls that establish it, so the claim in the text is
+    # bounded by the evidence rather than by how it was once phrased.
+    nj = Path(results_root) / "exp11" / "difflen_null.json"
+    if nj.exists():
+        N = pd.DataFrame([r for r in json.loads(nj.read_text()) if not r.get("failed")])
+        if not N.empty:
+            def _cond(name, key="difflen_median_um"):
+                sub = N[N["condition"] == name]
+                return float(sub[key].mean()) if len(sub) else np.nan
+
+            base = _cond("baseline")
+            shuf = _cond("shuffled")
+            cmd("NullBaseline", f"{base:.0f}" if np.isfinite(base) else r"\NA")
+            cmd("NullShuffled", f"{shuf:.0f}" if np.isfinite(shuf) else r"\NA")
+            if np.isfinite(shuf):
+                sub = N[N["condition"] == "shuffled"]
+                cmd("NullShuffledR", f"{float(sub['pearson_mean'].mean()):.3f}")
+            # the analytic initialization: sqrt(2 * D_init * dt * n_steps) * scale
+            try:
+                from ..models.nmo import build_nmo
+                from ..utils.common import Config as _C
+                _c = _C.load("configs/base.yaml")
+                _m = build_nmo(_c.model.to_dict(), n_genes=64)
+                _scale = float(N["pitch_um"].iloc[0]) * float(N["grid"].iloc[0]) / 2.0
+                _d0 = np.median(np.asarray(_m.diffusion_length_um(_scale)).ravel())
+                cmd("NullInit", f"{_d0:.0f}")
+                if np.isfinite(base):
+                    cmd("NullDataShift", f"{100 * (base - _d0) / _d0:+.1f}")
+                if np.isfinite(shuf):
+                    cmd("NullShuffledShift", f"{100 * (shuf - _d0) / _d0:+.2f}")
+            except Exception:
+                pass
+            sig = N[N["condition"].str.startswith("sigma")]
+            if len(sig):
+                cmd("NullSigmaLo", f"{sig['difflen_median_um'].min():.0f}")
+                cmd("NullSigmaHi", f"{sig['difflen_median_um'].max():.0f}")
+                cmd("NullSigmaRange", f"{sig['sigma_cells'].min():g}--{sig['sigma_cells'].max():g}")
+            grd = N[N["condition"].str.startswith("grid") | (N["condition"] == "baseline")]
+            grd = grd[~grd["condition"].str.contains("shuffled")]
+            if grd["grid"].nunique() > 1:
+                g = grd.groupby("grid")[["difflen_median_um", "difflen_median_cells"]].mean()
+                cmd("NullGridUmLo", f"{g['difflen_median_um'].min():.0f}")
+                cmd("NullGridUmHi", f"{g['difflen_median_um'].max():.0f}")
+                cmd("NullGridCellsLo", f"{g['difflen_median_cells'].min():.2f}")
+                cmd("NullGridCellsHi", f"{g['difflen_median_cells'].max():.2f}")
+                cmd("NullGridN", str(int(grd["grid"].nunique())))
+
     # ---- Experiment 12 : split geometry ---------------------------------- #
     # The transfer protocol scores a random complement while every other
     # experiment scores contiguous blocks. These macros carry the measured
