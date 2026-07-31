@@ -1,0 +1,566 @@
+[
+  {
+    "section": "visium_mouse_brain",
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 7,
+    "ari_measured": 0.4842114470703474,
+    "nmi_measured": 0.6298168704404742,
+    "ari_predicted": 0.21060674533636678,
+    "nmi_predicted": 0.3842214642324477,
+    "ari_retention": 0.43494788611589624,
+    "marker_auroc_measured": 0.8951512283372236,
+    "marker_auroc_predicted": 0.8111965287808752,
+    "n_marker_tests": 35,
+    "neighborhood_preservation": 0.2578042328042328,
+    "morans_i_measured": 0.21433199980120923,
+    "morans_i_predicted": 0.9760550335374368,
+    "gearys_c_measured": 0.766314450971548,
+    "gearys_c_predicted": 0.022217562792796335,
+    "gearys_c_abs_error": 0.7445990499286795,
+    "regions": [
+      {
+        "region": "1",
+        "n": 124,
+        "rmse": 0.22081218659877777,
+        "pearson_flat": 0.8740612498169434
+      },
+      {
+        "region": "2",
+        "n": 205,
+        "rmse": 0.3038860857486725,
+        "pearson_flat": 0.7917616884859334
+      },
+      {
+        "region": "3",
+        "n": 165,
+        "rmse": 0.2752683162689209,
+        "pearson_flat": 0.8205347755161142
+      },
+      {
+        "region": "4",
+        "n": 169,
+        "rmse": 0.2043885588645935,
+        "pearson_flat": 0.9013619573511343
+      },
+      {
+        "region": "5",
+        "n": 154,
+        "rmse": 0.32112443447113037,
+        "pearson_flat": 0.8087455241724624
+      },
+      {
+        "region": "6",
+        "n": 78,
+        "rmse": 0.1961122751235962,
+        "pearson_flat": 0.9090574246743376
+      },
+      {
+        "region": "7",
+        "n": 113,
+        "rmse": 0.23651650547981262,
+        "pearson_flat": 0.8839369351327012
+      }
+    ]
+  },
+  {
+    "section": "visium_mouse_brain",
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 7,
+    "ari_measured": 0.49071443463355335,
+    "nmi_measured": 0.6505623241866573,
+    "ari_predicted": 0.2047464104836299,
+    "nmi_predicted": 0.34581550769495356,
+    "ari_retention": 0.41724146679428054,
+    "marker_auroc_measured": 0.8960406881615971,
+    "marker_auroc_predicted": 0.790281664221856,
+    "n_marker_tests": 35,
+    "neighborhood_preservation": 0.2018842530282638,
+    "morans_i_measured": 0.19511846933606197,
+    "morans_i_predicted": 0.9128058754620701,
+    "gearys_c_measured": 0.779816585127634,
+    "gearys_c_predicted": 0.08628651376351196,
+    "gearys_c_abs_error": 0.6966333888514201,
+    "regions": [
+      {
+        "region": "1",
+        "n": 78,
+        "rmse": 0.22020436823368073,
+        "pearson_flat": 0.8726346877183974
+      },
+      {
+        "region": "2",
+        "n": 157,
+        "rmse": 0.29916131496429443,
+        "pearson_flat": 0.797847918548486
+      },
+      {
+        "region": "3",
+        "n": 121,
+        "rmse": 0.27320510149002075,
+        "pearson_flat": 0.8232061852189715
+      },
+      {
+        "region": "4",
+        "n": 133,
+        "rmse": 0.2106436789035797,
+        "pearson_flat": 0.8949903829262482
+      },
+      {
+        "region": "5",
+        "n": 115,
+        "rmse": 0.3361099362373352,
+        "pearson_flat": 0.7889196879349557
+      },
+      {
+        "region": "6",
+        "n": 52,
+        "rmse": 0.19526104629039764,
+        "pearson_flat": 0.9098371034165618
+      },
+      {
+        "region": "7",
+        "n": 87,
+        "rmse": 0.26332977414131165,
+        "pearson_flat": 0.8542544205260673
+      }
+    ]
+  },
+  {
+    "section": "visium_mouse_brain",
+    "model": "gnn",
+    "display": "GNN (GCN)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 7,
+    "ari_measured": 0.49071443463355335,
+    "nmi_measured": 0.6505623241866573,
+    "ari_predicted": 0.18635242111937356,
+    "nmi_predicted": 0.32076220586519844,
+    "ari_retention": 0.3797573659281785,
+    "marker_auroc_measured": 0.8960406881615971,
+    "marker_auroc_predicted": 0.7802661458413804,
+    "n_marker_tests": 35,
+    "neighborhood_preservation": 0.18896366083445487,
+    "morans_i_measured": 0.19511846933606197,
+    "morans_i_predicted": 0.9229669756027096,
+    "gearys_c_measured": 0.779816585127634,
+    "gearys_c_predicted": 0.07634810211627618,
+    "gearys_c_abs_error": 0.7060677356585536,
+    "regions": [
+      {
+        "region": "1",
+        "n": 78,
+        "rmse": 0.22520986199378967,
+        "pearson_flat": 0.8665315706857488
+      },
+      {
+        "region": "2",
+        "n": 157,
+        "rmse": 0.29521480202674866,
+        "pearson_flat": 0.8028811881253141
+      },
+      {
+        "region": "3",
+        "n": 121,
+        "rmse": 0.27090343832969666,
+        "pearson_flat": 0.8260439257320197
+      },
+      {
+        "region": "4",
+        "n": 133,
+        "rmse": 0.21275831758975983,
+        "pearson_flat": 0.8928831121583858
+      },
+      {
+        "region": "5",
+        "n": 115,
+        "rmse": 0.34418433904647827,
+        "pearson_flat": 0.7773181695611802
+      },
+      {
+        "region": "6",
+        "n": 52,
+        "rmse": 0.19841501116752625,
+        "pearson_flat": 0.9068496332749962
+      },
+      {
+        "region": "7",
+        "n": 87,
+        "rmse": 0.27254098653793335,
+        "pearson_flat": 0.8426883912162023
+      }
+    ]
+  },
+  {
+    "section": "visium_mouse_brain",
+    "model": "gp_multiscale",
+    "display": "GP, multi-bandwidth",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 7,
+    "ari_measured": 0.49071443463355335,
+    "nmi_measured": 0.6505623241866573,
+    "ari_predicted": 0.2306911929831609,
+    "nmi_predicted": 0.4207485987603907,
+    "ari_retention": 0.47011291435808733,
+    "marker_auroc_measured": 0.8960406881615971,
+    "marker_auroc_predicted": 0.8468047276128706,
+    "n_marker_tests": 35,
+    "neighborhood_preservation": 0.28757290264692686,
+    "morans_i_measured": 0.19511846933606197,
+    "morans_i_predicted": 0.8721951648092066,
+    "gearys_c_measured": 0.779816585127634,
+    "gearys_c_predicted": 0.10056863609548626,
+    "gearys_c_abs_error": 0.6837878301900048,
+    "regions": [
+      {
+        "region": "1",
+        "n": 78,
+        "rmse": 0.21860766410827637,
+        "pearson_flat": 0.8747484649883853
+      },
+      {
+        "region": "2",
+        "n": 157,
+        "rmse": 0.28737032413482666,
+        "pearson_flat": 0.8141854356871049
+      },
+      {
+        "region": "3",
+        "n": 121,
+        "rmse": 0.2588253319263458,
+        "pearson_flat": 0.8422021270129525
+      },
+      {
+        "region": "4",
+        "n": 133,
+        "rmse": 0.21115054190158844,
+        "pearson_flat": 0.8945087356139967
+      },
+      {
+        "region": "5",
+        "n": 115,
+        "rmse": 0.327467679977417,
+        "pearson_flat": 0.80165215070929
+      },
+      {
+        "region": "6",
+        "n": 52,
+        "rmse": 0.20166461169719696,
+        "pearson_flat": 0.9033591628218501
+      },
+      {
+        "region": "7",
+        "n": 87,
+        "rmse": 0.2522324025630951,
+        "pearson_flat": 0.8674373955455291
+      }
+    ]
+  },
+  {
+    "section": "visium_mouse_brain",
+    "model": "neural_field",
+    "display": "Neural field (SIREN)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 7,
+    "ari_measured": 0.49071443463355335,
+    "nmi_measured": 0.6505623241866573,
+    "ari_predicted": 0.14423758822596025,
+    "nmi_predicted": 0.23062112658852593,
+    "ari_retention": 0.2939338606040218,
+    "marker_auroc_measured": 0.8960406881615971,
+    "marker_auroc_predicted": 0.7611310172897183,
+    "n_marker_tests": 35,
+    "neighborhood_preservation": 0.11565724540152533,
+    "morans_i_measured": 0.19511846933606197,
+    "morans_i_predicted": 0.7138984965674241,
+    "gearys_c_measured": 0.779816585127634,
+    "gearys_c_predicted": 0.27753290817178256,
+    "gearys_c_abs_error": 0.5142108639469481,
+    "regions": [
+      {
+        "region": "1",
+        "n": 78,
+        "rmse": 0.228767991065979,
+        "pearson_flat": 0.86172637302148
+      },
+      {
+        "region": "2",
+        "n": 157,
+        "rmse": 0.29050132632255554,
+        "pearson_flat": 0.8092221353299073
+      },
+      {
+        "region": "3",
+        "n": 121,
+        "rmse": 0.266071617603302,
+        "pearson_flat": 0.8323220251471657
+      },
+      {
+        "region": "4",
+        "n": 133,
+        "rmse": 0.2168288379907608,
+        "pearson_flat": 0.8886007918689777
+      },
+      {
+        "region": "5",
+        "n": 115,
+        "rmse": 0.36043545603752136,
+        "pearson_flat": 0.7533178528101653
+      },
+      {
+        "region": "6",
+        "n": 52,
+        "rmse": 0.21361558139324188,
+        "pearson_flat": 0.8912147937043884
+      },
+      {
+        "region": "7",
+        "n": 87,
+        "rmse": 0.27911752462387085,
+        "pearson_flat": 0.8353469029273239
+      }
+    ]
+  },
+  {
+    "section": "visium_human_breast",
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 9,
+    "ari_measured": 0.3448416010590571,
+    "nmi_measured": 0.5361452275297814,
+    "ari_predicted": 0.1517155900307697,
+    "nmi_predicted": 0.3046252109643076,
+    "ari_retention": 0.43995732987212033,
+    "marker_auroc_measured": 0.8439545012031776,
+    "marker_auroc_predicted": 0.768684538436437,
+    "n_marker_tests": 35,
+    "neighborhood_preservation": 0.14555712270803947,
+    "morans_i_measured": 0.0596144789055636,
+    "morans_i_predicted": 0.964822051235482,
+    "gearys_c_measured": 0.856780567355679,
+    "gearys_c_predicted": 0.03572493929976721,
+    "gearys_c_abs_error": 0.8273192719307914,
+    "regions": [
+      {
+        "region": "1",
+        "n": 183,
+        "rmse": 0.2714000344276428,
+        "pearson_flat": 0.7618656158750374
+      },
+      {
+        "region": "2",
+        "n": 62,
+        "rmse": 0.23657439649105072,
+        "pearson_flat": 0.7953712697184804
+      },
+      {
+        "region": "3",
+        "n": 133,
+        "rmse": 0.34879040718078613,
+        "pearson_flat": 0.7645910235218488
+      },
+      {
+        "region": "4",
+        "n": 95,
+        "rmse": 0.38197603821754456,
+        "pearson_flat": 0.6811278402761773
+      },
+      {
+        "region": "5",
+        "n": 24,
+        "rmse": 0.2545689046382904,
+        "pearson_flat": 0.7876917204040711
+      },
+      {
+        "region": "6",
+        "n": 119,
+        "rmse": 0.2914223074913025,
+        "pearson_flat": 0.7627100436479988
+      },
+      {
+        "region": "7",
+        "n": 31,
+        "rmse": 0.24404098093509674,
+        "pearson_flat": 0.7707746177134521
+      },
+      {
+        "region": "8",
+        "n": 35,
+        "rmse": 0.25248897075653076,
+        "pearson_flat": 0.7731092770758099
+      },
+      {
+        "region": "9",
+        "n": 27,
+        "rmse": 0.3054836094379425,
+        "pearson_flat": 0.770990584002696
+      }
+    ]
+  },
+  {
+    "section": "visium_human_breast",
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 9,
+    "ari_measured": 0.3448416010590571,
+    "nmi_measured": 0.5361452275297814,
+    "ari_predicted": 0.15054258688633682,
+    "nmi_predicted": 0.3119053228020665,
+    "ari_retention": 0.4365557590035522,
+    "marker_auroc_measured": 0.8439545012031776,
+    "marker_auroc_predicted": 0.7828296384258561,
+    "n_marker_tests": 35,
+    "neighborhood_preservation": 0.1309826046074283,
+    "morans_i_measured": 0.0596144789055636,
+    "morans_i_predicted": 0.8804549293980589,
+    "gearys_c_measured": 0.856780567355679,
+    "gearys_c_predicted": 0.11724972178931432,
+    "gearys_c_abs_error": 0.7623492568953544,
+    "regions": [
+      {
+        "region": "1",
+        "n": 183,
+        "rmse": 0.2679763436317444,
+        "pearson_flat": 0.7680323103340493
+      },
+      {
+        "region": "2",
+        "n": 62,
+        "rmse": 0.23191161453723907,
+        "pearson_flat": 0.8019170275410454
+      },
+      {
+        "region": "3",
+        "n": 133,
+        "rmse": 0.34843817353248596,
+        "pearson_flat": 0.7627664790074662
+      },
+      {
+        "region": "4",
+        "n": 95,
+        "rmse": 0.3837483823299408,
+        "pearson_flat": 0.677535493154557
+      },
+      {
+        "region": "5",
+        "n": 24,
+        "rmse": 0.2473134845495224,
+        "pearson_flat": 0.8019440473057994
+      },
+      {
+        "region": "6",
+        "n": 119,
+        "rmse": 0.29408159852027893,
+        "pearson_flat": 0.7573857761132522
+      },
+      {
+        "region": "7",
+        "n": 31,
+        "rmse": 0.23803704977035522,
+        "pearson_flat": 0.7809708839535385
+      },
+      {
+        "region": "8",
+        "n": 35,
+        "rmse": 0.24910122156143188,
+        "pearson_flat": 0.7779110436164353
+      },
+      {
+        "region": "9",
+        "n": 27,
+        "rmse": 0.30558258295059204,
+        "pearson_flat": 0.7720900136813673
+      }
+    ]
+  },
+  {
+    "section": "visium_human_breast",
+    "model": "gnn",
+    "display": "GNN (GCN)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 9,
+    "ari_measured": 0.3448416010590571,
+    "nmi_measured": 0.5361452275297814,
+    "ari_predicted": 0.15387634826430713,
+    "nmi_predicted": 0.3000626718886466,
+    "ari_retention": 0.4462232740821618,
+    "marker_auroc_measured": 0.8439545012031776,
+    "marker_auroc_predicted": 0.7830384470561539,
+    "n_marker_tests": 35,
+    "neighborhood_preservation": 0.13953925716972262,
+    "morans_i_measured": 0.0596144789055636,
+    "morans_i_predicted": 0.9060101543465716,
+    "gearys_c_measured": 0.856780567355679,
+    "gearys_c_predicted": 0.09078654933604162,
+    "gearys_c_abs_error": 0.7825959174252248,
+    "regions": [
+      {
+        "region": "1",
+        "n": 183,
+        "rmse": 0.2637382745742798,
+        "pearson_flat": 0.7760531771337595
+      },
+      {
+        "region": "2",
+        "n": 62,
+        "rmse": 0.23438796401023865,
+        "pearson_flat": 0.7978440172671395
+      },
+      {
+        "region": "3",
+        "n": 133,
+        "rmse": 0.3521108329296112,
+        "pearson_flat": 0.7587384715375558
+      },
+      {
+        "region": "4",
+        "n": 95,
+        "rmse": 0.38287651538848877,
+        "pearson_flat": 0.6793291908165019
+      },
+      {
+        "region": "5",
+        "n": 24,
+        "rmse": 0.25194042921066284,
+        "pearson_flat": 0.7928034972700057
+      },
+      {
+        "region": "6",
+        "n": 119,
+        "rmse": 0.2888948619365692,
+        "pearson_flat": 0.7676394161114117
+      },
+      {
+        "region": "7",
+        "n": 31,
+        "rmse": 0.23402641713619232,
+        "pearson_flat": 0.7889732226267121
+      },
+      {
+        "region": "8",
+        "n": 35,
+        "rmse": 0.25037702918052673,
+        "pearson_flat": 0.7758882382170043
+      },
+      {
+        "region": "9",
+        "n": 27,
+        "rmse": 0.30473974347114563,
+        "pearson_flat": 0.7741768442222599
+      }
+    ]
+  }
+]

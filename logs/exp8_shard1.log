@@ -20,3 +20,165 @@ shard 1/3: 67 of 68 jobs remaining
 [04:27:32] INFO      ep  100/200  loss 1.1817  val r 0.1182  rmse 0.8317
 [04:27:52] INFO      ep  125/200  loss 1.1589  val r 0.1323  rmse 0.8299
 [04:28:08] INFO      ep  150/200  loss 1.1655  val r 0.1424  rmse 0.8236
+[04:28:23] INFO      ep  175/200  loss 1.1479  val r 0.1488  rmse 0.8225
+[04:28:40] INFO      ep  200/200  loss 1.1617  val r 0.1395  rmse 0.8208
+[04:28:41] INFO      done in 151s | test r=0.1794 rmse=0.7581 ssim=0.3295
+[2/67] merfish_allen_01       gp_multiscale      s1 r=0.1794 (157s)
+[04:28:45] INFO    section merfish_allen_01: 23376 locations x 500 genes, 214168 edges, scale 2353 um/unit
+[04:28:46] INFO    training AutoencoderBaseline (170,004 params) on merfish_allen_01 for 200 epochs
+[04:28:48] INFO      ep   25/200  loss 1.4140  val r 0.1295  rmse 0.8691
+[04:28:51] INFO      ep   50/200  loss 1.3409  val r 0.1912  rmse 0.8667
+[04:28:53] INFO      ep   75/200  loss 1.2980  val r 0.2039  rmse 0.8643
+[04:28:56] INFO      ep  100/200  loss 1.3159  val r 0.2069  rmse 0.8602
+[04:28:58] INFO      ep  125/200  loss 1.2765  val r 0.2082  rmse 0.8525
+[04:29:00] INFO      ep  150/200  loss 1.2737  val r 0.2081  rmse 0.8421
+[04:29:02] INFO      ep  175/200  loss 1.2522  val r 0.2081  rmse 0.8361
+[04:29:05] INFO      ep  200/200  loss 1.2255  val r 0.2082  rmse 0.8351
+[04:29:05] INFO      done in 19s | test r=0.2140 rmse=0.8215 ssim=0.2022
+[3/67] merfish_allen_01       autoencoder        s0 r=0.2140 (24s)
+[04:29:19] INFO    section merfish_allen_05: 45896 locations x 501 genes, 424364 edges, scale 3091 um/unit
+[04:29:19] INFO    training NeuralMorphogenOperator (1,590,774 params) on merfish_allen_05 for 200 epochs
+[04:29:42] INFO      ep   25/200  loss 1.5259  val r 0.1154  rmse 0.8154
+[04:30:02] INFO      ep   50/200  loss 1.4587  val r 0.1350  rmse 0.8026
+[04:30:22] INFO      ep   75/200  loss 1.3941  val r 0.1414  rmse 0.7986
+[04:30:41] INFO      ep  100/200  loss 1.3960  val r 0.1473  rmse 0.7951
+[04:31:00] INFO      ep  125/200  loss 1.3873  val r 0.1493  rmse 0.7942
+[04:31:18] INFO      ep  150/200  loss 1.4038  val r 0.1498  rmse 0.7934
+[04:31:35] INFO      ep  175/200  loss 1.3793  val r 0.1500  rmse 0.7939
+[04:31:52] INFO      ep  200/200  loss 1.3683  val r 0.1498  rmse 0.7939
+[04:31:52] INFO      done in 153s | test r=0.1765 rmse=0.7494 ssim=0.3526
+[4/67] merfish_allen_05       nmo                s1 r=0.1765 (167s)
+[04:32:06] INFO    section merfish_allen_05: 45896 locations x 501 genes, 424364 edges, scale 3091 um/unit
+[04:32:07] INFO    training GNNBaseline (204,053 params) on merfish_allen_05 for 200 epochs
+[04:32:10] INFO      ep   25/200  loss 1.4484  val r 0.0707  rmse 0.8240
+[04:32:13] INFO      ep   50/200  loss 1.3692  val r 0.0987  rmse 0.8199
+[04:32:16] INFO      ep   75/200  loss 1.3386  val r 0.1075  rmse 0.8144
+[04:32:19] INFO      ep  100/200  loss 1.3334  val r 0.1174  rmse 0.8107
+[04:32:24] INFO      ep  125/200  loss 1.2907  val r 0.1118  rmse 0.8113
+[04:32:27] INFO      ep  150/200  loss 1.2805  val r 0.1159  rmse 0.8110
+[04:32:30] INFO      ep  175/200  loss 1.2830  val r 0.1149  rmse 0.8117
+[04:32:33] INFO      ep  200/200  loss 1.2757  val r 0.1148  rmse 0.8118
+[04:32:34] INFO      done in 27s | test r=0.1273 rmse=0.7518 ssim=0.3088
+[5/67] merfish_allen_05       gnn                s0 r=0.1273 (42s)
+[04:32:49] INFO    section merfish_allen_05: 45896 locations x 501 genes, 424364 edges, scale 3091 um/unit
+[04:32:49] INFO    training MultiScaleGPBaseline (3,024 params) on merfish_allen_05 for 200 epochs
+[04:33:10] INFO      ep   25/200  loss 1.1887  val r 0.1029  rmse 0.8160
+[04:33:31] INFO      ep   50/200  loss 1.1646  val r 0.0846  rmse 0.8212
+[04:33:49] INFO      ep   75/200  loss 1.1332  val r 0.0613  rmse 0.8226
+[04:34:08] INFO      ep  100/200  loss 1.1550  val r 0.0771  rmse 0.8233
+[04:34:35] INFO      ep  125/200  loss 1.1506  val r 0.1110  rmse 0.8088
+[04:34:56] INFO      ep  150/200  loss 1.1784  val r 0.0851  rmse 0.8240
+[04:35:14] INFO      ep  175/200  loss 1.1558  val r 0.1205  rmse 0.8066
+[04:35:34] INFO      ep  200/200  loss 1.1422  val r 0.0715  rmse 0.8235
+[04:35:35] INFO      done in 165s | test r=0.1166 rmse=0.7780 ssim=0.3126
+[6/67] merfish_allen_05       gp_multiscale      s1 r=0.1166 (181s)
+[04:35:50] INFO    section merfish_allen_05: 45896 locations x 501 genes, 424364 edges, scale 3091 um/unit
+[04:35:51] INFO    training AutoencoderBaseline (170,261 params) on merfish_allen_05 for 200 epochs
+[04:35:54] INFO      ep   25/200  loss 1.4346  val r 0.0590  rmse 0.8259
+[04:35:57] INFO      ep   50/200  loss 1.3404  val r 0.0997  rmse 0.8248
+[04:36:00] INFO      ep   75/200  loss 1.3221  val r 0.1103  rmse 0.8240
+[04:36:03] INFO      ep  100/200  loss 1.3274  val r 0.1146  rmse 0.8232
+[04:36:06] INFO      ep  125/200  loss 1.2902  val r 0.1154  rmse 0.8221
+[04:36:09] INFO      ep  150/200  loss 1.2784  val r 0.1159  rmse 0.8211
+[04:36:12] INFO      ep  175/200  loss 1.2836  val r 0.1163  rmse 0.8204
+[04:36:15] INFO      ep  200/200  loss 1.2833  val r 0.1164  rmse 0.8203
+[04:36:16] INFO      done in 24s | test r=0.1185 rmse=0.7614 ssim=0.2472
+[7/67] merfish_allen_05       autoencoder        s0 r=0.1185 (41s)
+[04:36:29] INFO    section merfish_allen_10: 42070 locations x 503 genes, 388868 edges, scale 4637 um/unit
+[04:36:29] INFO    training NeuralMorphogenOperator (1,591,544 params) on merfish_allen_10 for 200 epochs
+[04:36:58] INFO      ep   25/200  loss 1.4965  val r 0.1359  rmse 0.6886
+[04:37:24] INFO      ep   50/200  loss 1.4689  val r 0.1677  rmse 0.6773
+[04:37:52] INFO      ep   75/200  loss 1.4367  val r 0.1678  rmse 0.6561
+[04:38:20] INFO      ep  100/200  loss 1.4111  val r 0.1631  rmse 0.6503
+[04:38:48] INFO      ep  125/200  loss 1.3979  val r 0.1615  rmse 0.6503
+[04:39:19] INFO      ep  150/200  loss 1.3837  val r 0.1597  rmse 0.6501
+[04:39:58] INFO      ep  175/200  loss 1.4040  val r 0.1614  rmse 0.6494
+[04:40:32] INFO      ep  200/200  loss 1.3946  val r 0.1608  rmse 0.6497
+[04:40:33] INFO      done in 243s | test r=0.1446 rmse=0.6710 ssim=0.2977
+[8/67] merfish_allen_10       nmo                s1 r=0.1446 (258s)
+[04:40:48] INFO    section merfish_allen_10: 42070 locations x 503 genes, 388868 edges, scale 4637 um/unit
+[04:40:49] INFO    training GNNBaseline (204,567 params) on merfish_allen_10 for 200 epochs
+[04:40:54] INFO      ep   25/200  loss 1.4210  val r 0.0998  rmse 0.6951
+[04:40:59] INFO      ep   50/200  loss 1.3500  val r 0.1450  rmse 0.6870
+[04:41:05] INFO      ep   75/200  loss 1.3172  val r 0.1525  rmse 0.6718
+[04:41:10] INFO      ep  100/200  loss 1.2864  val r 0.1530  rmse 0.6572
+[04:41:15] INFO      ep  125/200  loss 1.2733  val r 0.1523  rmse 0.6516
+[04:41:20] INFO      ep  150/200  loss 1.2392  val r 0.1514  rmse 0.6504
+[04:41:26] INFO      ep  175/200  loss 1.2366  val r 0.1512  rmse 0.6503
+[04:41:31] INFO      ep  200/200  loss 1.2478  val r 0.1512  rmse 0.6502
+[04:41:32] INFO      done in 43s | test r=0.1478 rmse=0.6921 ssim=0.3223
+[9/67] merfish_allen_10       gnn                s0 r=0.1478 (59s)
+[04:41:44] INFO    section merfish_allen_10: 42070 locations x 503 genes, 388868 edges, scale 4637 um/unit
+[04:41:45] INFO    training MultiScaleGPBaseline (3,036 params) on merfish_allen_10 for 200 epochs
+[04:42:03] INFO      ep   25/200  loss 1.2186  val r 0.0632  rmse 0.6849
+[04:42:22] INFO      ep   50/200  loss 1.2473  val r 0.0771  rmse 0.6891
+[04:42:44] INFO      ep   75/200  loss 1.2327  val r 0.0794  rmse 0.6826
+[04:43:01] INFO      ep  100/200  loss 1.2288  val r 0.0915  rmse 0.6850
+[04:43:21] INFO      ep  125/200  loss 1.2240  val r 0.1076  rmse 0.6713
+[04:43:41] INFO      ep  150/200  loss 1.2050  val r 0.0830  rmse 0.6859
+[04:44:01] INFO      ep  175/200  loss 1.2369  val r 0.0898  rmse 0.6803
+[04:44:22] INFO      ep  200/200  loss 1.2278  val r 0.0843  rmse 0.6845
+[04:44:23] INFO      done in 157s | test r=0.1142 rmse=0.6819 ssim=0.3066
+[10/67] merfish_allen_10       gp_multiscale      s1 r=0.1142 (171s)
+[04:44:40] INFO    section merfish_allen_10: 42070 locations x 503 genes, 388868 edges, scale 4637 um/unit
+[04:44:41] INFO    training AutoencoderBaseline (170,775 params) on merfish_allen_10 for 200 epochs
+[04:44:45] INFO      ep   25/200  loss 1.4091  val r 0.0854  rmse 0.7001
+[04:44:49] INFO      ep   50/200  loss 1.3337  val r 0.1267  rmse 0.6990
+[04:44:53] INFO      ep   75/200  loss 1.3140  val r 0.1405  rmse 0.6986
+[04:44:57] INFO      ep  100/200  loss 1.3038  val r 0.1442  rmse 0.6980
+[04:45:00] INFO      ep  125/200  loss 1.2934  val r 0.1452  rmse 0.6974
+[04:45:04] INFO      ep  150/200  loss 1.2609  val r 0.1452  rmse 0.6968
+[04:45:09] INFO      ep  175/200  loss 1.2632  val r 0.1451  rmse 0.6965
+[04:45:12] INFO      ep  200/200  loss 1.2701  val r 0.1452  rmse 0.6964
+[04:45:13] INFO      done in 32s | test r=0.1542 rmse=0.6994 ssim=0.2508
+[11/67] merfish_allen_10       autoencoder        s0 r=0.1542 (50s)
+[04:46:15] INFO    section merfish_allen_14: 94357 locations x 500 genes, 865018 edges, scale 4728 um/unit
+[04:46:16] INFO    training NeuralMorphogenOperator (1,590,389 params) on merfish_allen_14 for 200 epochs
+[04:46:44] INFO      ep   25/200  loss 1.5265  val r 0.0902  rmse 0.7179
+[04:47:19] INFO      ep   50/200  loss 1.4520  val r 0.1065  rmse 0.7089
+[04:47:58] INFO      ep   75/200  loss 1.4319  val r 0.1166  rmse 0.7012
+[04:48:33] INFO      ep  100/200  loss 1.4210  val r 0.1219  rmse 0.7013
+[04:49:13] INFO      ep  125/200  loss 1.4083  val r 0.1223  rmse 0.7026
+[04:49:53] INFO      ep  150/200  loss 1.3992  val r 0.1213  rmse 0.7033
+[04:50:29] INFO      ep  175/200  loss 1.3935  val r 0.1211  rmse 0.7040
+[04:50:59] INFO      ep  200/200  loss 1.3925  val r 0.1214  rmse 0.7039
+[04:50:59] INFO      done in 283s | test r=0.1442 rmse=0.7069 ssim=0.2911
+[12/67] merfish_allen_14       nmo                s1 r=0.1442 (346s)
+[04:52:00] INFO    section merfish_allen_14: 94357 locations x 500 genes, 865018 edges, scale 4728 um/unit
+[04:52:01] INFO    training GNNBaseline (203,796 params) on merfish_allen_14 for 200 epochs
+[04:52:06] INFO      ep   25/200  loss 1.4510  val r 0.0760  rmse 0.7154
+[04:52:11] INFO      ep   50/200  loss 1.3860  val r 0.1158  rmse 0.7109
+[04:52:17] INFO      ep   75/200  loss 1.3432  val r 0.1221  rmse 0.7049
+[04:52:21] INFO      ep  100/200  loss 1.3325  val r 0.1225  rmse 0.6994
+[04:52:26] INFO      ep  125/200  loss 1.3357  val r 0.1278  rmse 0.6974
+[04:52:30] INFO      ep  150/200  loss 1.2955  val r 0.1280  rmse 0.6976
+[04:52:35] INFO      ep  175/200  loss 1.2851  val r 0.1283  rmse 0.6979
+[04:52:40] INFO      ep  200/200  loss 1.2991  val r 0.1282  rmse 0.6980
+[04:52:41] INFO      done in 40s | test r=0.1204 rmse=0.6964 ssim=0.3282
+[13/67] merfish_allen_14       gnn                s0 r=0.1204 (102s)
+[04:53:43] INFO    section merfish_allen_14: 94357 locations x 500 genes, 865018 edges, scale 4728 um/unit
+[04:53:43] INFO    training MultiScaleGPBaseline (3,018 params) on merfish_allen_14 for 200 epochs
+[04:54:02] INFO      ep   25/200  loss 1.2418  val r 0.0746  rmse 0.7298
+[04:54:19] INFO      ep   50/200  loss 1.2002  val r 0.0681  rmse 0.7250
+[04:54:40] INFO      ep   75/200  loss 1.2122  val r 0.0795  rmse 0.7255
+[04:54:58] INFO      ep  100/200  loss 1.2231  val r 0.0739  rmse 0.7218
+[04:55:22] INFO      ep  125/200  loss 1.2199  val r 0.0654  rmse 0.7255
+[04:55:45] INFO      ep  150/200  loss 1.2112  val r 0.0671  rmse 0.7234
+[04:56:04] INFO      ep  175/200  loss 1.2119  val r 0.0708  rmse 0.7188
+[04:56:24] INFO      ep  200/200  loss 1.2118  val r 0.0530  rmse 0.7222
+[04:56:24] INFO      done in 160s | test r=0.0924 rmse=0.7265 ssim=0.2373
+[14/67] merfish_allen_14       gp_multiscale      s1 r=0.0924 (223s)
+[04:57:36] INFO    section merfish_allen_14: 94357 locations x 500 genes, 865018 edges, scale 4728 um/unit
+[04:57:36] INFO    training AutoencoderBaseline (170,004 params) on merfish_allen_14 for 200 epochs
+[04:57:39] INFO      ep   25/200  loss 1.4266  val r 0.0848  rmse 0.7166
+[04:57:43] INFO      ep   50/200  loss 1.3501  val r 0.1152  rmse 0.7157
+[04:57:46] INFO      ep   75/200  loss 1.3136  val r 0.1168  rmse 0.7155
+[04:57:49] INFO      ep  100/200  loss 1.3121  val r 0.1172  rmse 0.7152
+[04:57:52] INFO      ep  125/200  loss 1.3234  val r 0.1171  rmse 0.7148
+[04:57:55] INFO      ep  150/200  loss 1.2924  val r 0.1174  rmse 0.7144
+[04:57:58] INFO      ep  175/200  loss 1.2799  val r 0.1178  rmse 0.7142
+[04:58:01] INFO      ep  200/200  loss 1.2966  val r 0.1179  rmse 0.7141
+[04:58:01] INFO      done in 24s | test r=0.1356 rmse=0.7226 ssim=0.2631
+[15/67] merfish_allen_14       autoencoder        s0 r=0.1356 (97s)
+[04:58:17] INFO    section merfish_allen_18: 44309 locations x 500 genes, 407488 edges, scale 4091 um/unit
+[04:58:17] INFO    training NeuralMorphogenOperator (1,590,389 params) on merfish_allen_18 for 200 epochs

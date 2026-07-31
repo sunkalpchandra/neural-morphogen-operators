@@ -1,0 +1,74 @@
+[skip] visium_mouse_brain nmo s0
+[04:42:57] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[04:42:57] INFO    training STAGATEStyleBaseline (691,903 params) on visium_mouse_brain for 150 epochs
+[04:43:06] INFO      ep   25/150  loss 1.4142  val r 0.1187  rmse 0.2973
+[04:43:15] INFO      ep   50/150  loss 1.3140  val r 0.1880  rmse 0.2888
+[04:43:25] INFO      ep   75/150  loss 1.2621  val r 0.2136  rmse 0.2825
+[04:43:35] INFO      ep  100/150  loss 1.2226  val r 0.2233  rmse 0.2817
+[04:43:45] INFO      ep  125/150  loss 1.1922  val r 0.2253  rmse 0.2821
+[04:43:55] INFO      ep  150/150  loss 1.1991  val r 0.2259  rmse 0.2822
+[04:43:56] INFO      done in 58s | test r=0.2012 rmse=0.2589 ssim=0.2506
+[ok] visium_mouse_brain   stagate        s0  ARI 0.205/0.491 (ret 0.42)  nbr 0.202  markerAUC 0.790
+[04:44:00] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[04:44:01] INFO    training GNNBaseline (609,599 params) on visium_mouse_brain for 150 epochs
+[04:44:09] INFO      ep   25/150  loss 1.4275  val r 0.1046  rmse 0.2983
+[04:44:17] INFO      ep   50/150  loss 1.3516  val r 0.1696  rmse 0.2924
+[04:44:29] INFO      ep   75/150  loss 1.3085  val r 0.1939  rmse 0.2848
+[04:44:40] INFO      ep  100/150  loss 1.2702  val r 0.2053  rmse 0.2833
+[04:44:49] INFO      ep  125/150  loss 1.2388  val r 0.2086  rmse 0.2835
+[04:44:58] INFO      ep  150/150  loss 1.2471  val r 0.2096  rmse 0.2836
+[04:44:59] INFO      done in 57s | test r=0.1859 rmse=0.2618 ssim=0.2340
+[ok] visium_mouse_brain   gnn            s0  ARI 0.186/0.491 (ret 0.38)  nbr 0.189  markerAUC 0.780
+[04:45:04] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[04:45:04] INFO    training MultiScaleGPBaseline (12,492 params) on visium_mouse_brain for 150 epochs
+[04:45:58] INFO      ep   25/150  loss 1.0134  val r 0.2120  rmse 0.2708
+[04:46:38] INFO      ep   50/150  loss 1.0034  val r 0.2382  rmse 0.2659
+[04:47:27] INFO      ep   75/150  loss 1.0296  val r 0.2079  rmse 0.2719
+[04:48:19] INFO      ep  100/150  loss 1.0245  val r 0.2266  rmse 0.2688
+[04:49:15] INFO      ep  125/150  loss 1.0021  val r 0.2185  rmse 0.2698
+[04:50:13] INFO      ep  150/150  loss 0.9960  val r 0.2256  rmse 0.2683
+[04:50:15] INFO      done in 309s | test r=0.1946 rmse=0.2529 ssim=0.2759
+[ok] visium_mouse_brain   gp_multiscale  s0  ARI 0.231/0.491 (ret 0.47)  nbr 0.288  markerAUC 0.847
+[04:50:22] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[04:50:22] INFO    training NeuralFieldBaseline (350,751 params) on visium_mouse_brain for 150 epochs
+[04:50:29] INFO      ep   25/150  loss 1.2693  val r 0.1905  rmse 0.2926
+[04:50:36] INFO      ep   50/150  loss 1.1633  val r 0.2032  rmse 0.2866
+[04:50:42] INFO      ep   75/150  loss 1.1348  val r 0.2016  rmse 0.2849
+[04:50:48] INFO      ep  100/150  loss 1.1068  val r 0.1976  rmse 0.2847
+[04:50:53] INFO      ep  125/150  loss 1.0780  val r 0.1963  rmse 0.2846
+[04:50:59] INFO      ep  150/150  loss 1.0828  val r 0.1958  rmse 0.2846
+[04:51:00] INFO      done in 36s | test r=0.1671 rmse=0.2664 ssim=0.2242
+[ok] visium_mouse_brain   neural_field   s0  ARI 0.144/0.491 (ret 0.29)  nbr 0.116  markerAUC 0.761
+[04:51:05] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[04:51:05] INFO    training NeuralMorphogenOperator (2,201,384 params) on visium_human_breast for 150 epochs
+[04:51:46] INFO      ep   25/150  loss 1.5939  val r 0.0727  rmse 0.3169
+[04:52:19] INFO      ep   50/150  loss 1.5639  val r 0.0863  rmse 0.3144
+[04:52:50] INFO      ep   75/150  loss 1.5357  val r 0.0927  rmse 0.3092
+[04:53:30] INFO      ep  100/150  loss 1.5166  val r 0.0909  rmse 0.3077
+[04:54:07] INFO      ep  125/150  loss 1.4916  val r 0.0892  rmse 0.3079
+[04:54:43] INFO      ep  150/150  loss 1.5202  val r 0.0887  rmse 0.3079
+[04:54:45] INFO      done in 218s | test r=0.0969 rmse=0.2992 ssim=0.2351
+[ok] visium_human_breast  nmo            s0  ARI 0.152/0.345 (ret 0.44)  nbr 0.146  markerAUC 0.769
+[04:54:49] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[04:54:50] INFO    training STAGATEStyleBaseline (693,959 params) on visium_human_breast for 150 epochs
+[04:54:59] INFO      ep   25/150  loss 1.4945  val r 0.0548  rmse 0.3168
+[04:55:10] INFO      ep   50/150  loss 1.4535  val r 0.0787  rmse 0.3143
+[04:55:24] INFO      ep   75/150  loss 1.4251  val r 0.0828  rmse 0.3118
+[04:55:36] INFO      ep  100/150  loss 1.4063  val r 0.0827  rmse 0.3109
+[04:55:46] INFO      ep  125/150  loss 1.3806  val r 0.0838  rmse 0.3105
+[04:55:57] INFO      ep  150/150  loss 1.4130  val r 0.0837  rmse 0.3105
+[04:55:58] INFO      done in 67s | test r=0.0985 rmse=0.2966 ssim=0.2410
+[ok] visium_human_breast  stagate        s0  ARI 0.151/0.345 (ret 0.44)  nbr 0.131  markerAUC 0.783
+[04:56:02] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[04:56:02] INFO    training GNNBaseline (611,655 params) on visium_human_breast for 150 epochs
+[04:56:11] INFO      ep   25/150  loss 1.5015  val r 0.0481  rmse 0.3160
+[04:56:19] INFO      ep   50/150  loss 1.4685  val r 0.0712  rmse 0.3136
+[04:56:28] INFO      ep   75/150  loss 1.4430  val r 0.0791  rmse 0.3105
+[04:56:39] INFO      ep  100/150  loss 1.4266  val r 0.0819  rmse 0.3088
+[04:56:53] INFO      ep  125/150  loss 1.4025  val r 0.0815  rmse 0.3085
+[04:57:04] INFO      ep  150/150  loss 1.4356  val r 0.0814  rmse 0.3085
+[04:57:06] INFO      done in 62s | test r=0.0975 rmse=0.2962 ssim=0.2306
+[ok] visium_human_breast  gnn            s0  ARI 0.154/0.345 (ret 0.45)  nbr 0.140  markerAUC 0.783
+[04:57:11] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[04:57:12] INFO    training MultiScaleGPBaseline (12,540 params) on visium_human_breast for 150 epochs
+[04:57:57] INFO      ep   25/150  loss 1.2598  val r 0.0704  rmse 0.3080
