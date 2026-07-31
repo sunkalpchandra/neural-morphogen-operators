@@ -33,16 +33,14 @@ interpretable as a diffusion length in microns.
 \paragraph{Contributions.}
 We contribute (i) a PDE-constrained neural operator for spatial omics, coupling a
 graph kernel-integral encoder, a spectral reaction--diffusion operator and a
-coordinate-free continuous decoder (Section~\ref{sec:method}); (ii) an integrator
-that is unconditionally stable and second-order accurate, with structurally
-guaranteed positive-definite diffusion
-(Propositions~\ref{prop:contraction}--\ref{prop:bounded}); (iii) the observation
-that the conventional physics-informed residual is uninformative for an exactly
-integrated operator, and the steady-state constraint that replaces it
-(Proposition~\ref{prop:vacuity}); (iv) improved masked-region reconstruction
-across four spatial technologies, with the operator isolated as the source of the
-gain by an exactly parameter-matched control; and (v) a proof that a single
-stationary snapshot determines the reaction network only on a Lebesgue-null
-subset of latent space (Theorem~\ref{thm:identifiability}), which delimits what
-any method of this class can identify and predicts the outcome of our
-perturbation experiment.
+coordinate-free continuous decoder; (ii) an integrator that is unconditionally
+stable and second-order accurate with structurally positive-definite diffusion,
+together with the observation that the conventional physics-informed residual is
+uninformative for an exactly integrated operator and the steady-state constraint
+that replaces it (Propositions~\ref{prop:contraction}--\ref{prop:vacuity});
+(iii) improved masked-region reconstruction across four spatial technologies,
+with the operator isolated as the source by an exactly parameter-matched control;
+and (iv) a proof that a single stationary snapshot determines the reaction
+network only on a Lebesgue-null subset of latent space
+(Theorem~\ref{thm:identifiability}), which delimits what any method of this class
+can identify and predicts our perturbation result.

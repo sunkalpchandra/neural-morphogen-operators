@@ -8,24 +8,28 @@
 model & & Pearson $r$ $\uparrow$ & RMSE $\downarrow$ & SSIM $\uparrow$\\
 \midrule
 \multicolumn{5}{l}{\emph{source (in-domain)}} \\
-\quad STAGATE-style & & 0.214 & 0.249 & 0.363 \\
-\quad NRDO (ours) & & 0.211 & 0.255 & 0.365 \\
-\quad GNN (GCN) & & 0.206 & 0.250 & 0.360 \\
+\quad NRDO (ours) & & 0.214\,\tiny{$\pm$ 0.004} & 0.252\,\tiny{$\pm$ 0.004} & 0.369\,\tiny{$\pm$ 0.006} \\
+\quad STAGATE-style & & 0.214\,\tiny{$\pm$ 0.000} & 0.249\,\tiny{$\pm$ 0.000} & 0.362\,\tiny{$\pm$ 0.001} \\
+\quad GNN (GCN) & & 0.206\,\tiny{$\pm$ 0.001} & 0.250\,\tiny{$\pm$ 0.000} & 0.363\,\tiny{$\pm$ 0.004} \\
+\quad Gaussian Process & & 0.146\,\tiny{$\pm$ 0.002} & 0.291\,\tiny{$\pm$ 0.004} & 0.289\,\tiny{$\pm$ 0.003} \\
 \addlinespace
 \multicolumn{5}{l}{\emph{target (zero-shot)}} \\
-\quad STAGATE-style & & 0.076 & 0.402 & 0.280 \\
-\quad GNN (GCN) & & 0.062 & 0.419 & 0.247 \\
-\quad NRDO (ours) & & 0.002 & 0.515 & 0.158 \\
+\quad STAGATE-style & & 0.071\,\tiny{$\pm$ 0.006} & 0.403\,\tiny{$\pm$ 0.001} & 0.285\,\tiny{$\pm$ 0.008} \\
+\quad Gaussian Process & & 0.070\,\tiny{$\pm$ 0.004} & 0.453\,\tiny{$\pm$ 0.001} & 0.311\,\tiny{$\pm$ 0.008} \\
+\quad GNN (GCN) & & 0.056\,\tiny{$\pm$ 0.009} & 0.415\,\tiny{$\pm$ 0.006} & 0.250\,\tiny{$\pm$ 0.004} \\
+\quad NRDO (ours) & & -0.005\,\tiny{$\pm$ 0.010} & 0.504\,\tiny{$\pm$ 0.016} & 0.165\,\tiny{$\pm$ 0.009} \\
 \addlinespace
 \multicolumn{5}{l}{\emph{target (decoder-only fine-tune)}} \\
-\quad STAGATE-style & & 0.136 & 0.386 & 0.390 \\
-\quad GNN (GCN) & & 0.115 & 0.389 & 0.382 \\
-\quad NRDO (ours) & & 0.081 & 0.394 & 0.316 \\
+\quad STAGATE-style & & 0.129\,\tiny{$\pm$ 0.009} & 0.386\,\tiny{$\pm$ 0.001} & 0.387\,\tiny{$\pm$ 0.005} \\
+\quad GNN (GCN) & & 0.112\,\tiny{$\pm$ 0.005} & 0.390\,\tiny{$\pm$ 0.003} & 0.378\,\tiny{$\pm$ 0.006} \\
+\quad NRDO (ours) & & 0.067\,\tiny{$\pm$ 0.021} & 0.398\,\tiny{$\pm$ 0.005} & 0.300\,\tiny{$\pm$ 0.023} \\
+\quad Gaussian Process & & -- & -- & -- \\
 \addlinespace
 \multicolumn{5}{l}{\emph{target (in-domain oracle)}} \\
-\quad STAGATE-style & & 0.149 & 0.375 & 0.431 \\
-\quad GNN (GCN) & & 0.146 & 0.377 & 0.426 \\
-\quad NRDO (ours) & & 0.134 & 0.396 & 0.332 \\
+\quad STAGATE-style & & 0.149\,\tiny{$\pm$ 0.000} & 0.375\,\tiny{$\pm$ 0.000} & 0.433\,\tiny{$\pm$ 0.003} \\
+\quad GNN (GCN) & & 0.145\,\tiny{$\pm$ 0.001} & 0.377\,\tiny{$\pm$ 0.000} & 0.426\,\tiny{$\pm$ 0.001} \\
+\quad NRDO (ours) & & 0.136\,\tiny{$\pm$ 0.002} & 0.397\,\tiny{$\pm$ 0.002} & 0.329\,\tiny{$\pm$ 0.003} \\
+\quad Gaussian Process & & 0.068\,\tiny{$\pm$ 0.002} & 0.459\,\tiny{$\pm$ 0.001} & 0.301\,\tiny{$\pm$ 0.008} \\
 \addlinespace
 \multicolumn{5}{l}{\emph{target (training-mean floor)}} \\
 \quad mean & & -0.000 & 0.408 & 0.342 \\

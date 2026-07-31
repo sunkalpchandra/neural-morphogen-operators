@@ -3,26 +3,16 @@
 % =====================================================================
 
 The decisive control is \emph{$-$ dynamics}, which sets the integration horizon
-to zero so the operator is never applied. The sweep (Appendix~\ref{app:empirical}) uses a reduced budget at which the full model has
-not converged (\AblFull{} against \MatchedFull{}); since undertraining compresses
-every delta, we re-ran the two decisive variants at the benchmark budget
-(\MatchedSeeds{} seeds; Appendix~\ref{app:empirical}), obtaining
-\MatchedNoDynamics{} ($\MatchedNoDynamicsDelta$) for $T{=}0$ and
-\MatchedNoReaction{} ($\MatchedNoReactionDelta$) without the reaction. Disabling
-the operator therefore costs more than the entire margin over the best baseline.
-
-This control is exactly parameter-matched: the operator holds \OpParams{} of
-the model's \TotalParams{} parameters ($\OpParamPct\%$), and $T{=}0$ leaves them allocated but
-unused, so architecture, parameter count and optimizer budget are identical and
-the difference cannot be attributed to capacity. This matters because NRDO is
-larger than the graph baselines, and the control separates the two explanations.
-
-\iffullpaper
-Removing the biological regularizers or the PDE constraint terms changes held-out
-$r$ by \AblNoBioRegDelta{} and \AblNoPDEDelta{} respectively, both within seed
-noise: at the weights used here these terms are inert with respect to predictive
-accuracy, and their role is confined to constraining the form of the operator.
-Removing diffusion costs \AblNoDiffusionDelta{} and removing the reaction
-\AblNoReactionDelta{}; the two contribute differently, diffusion supplying
-long-range transport into masked regions and the reaction the nonlinearity that
-prevents collapse to a smooth interpolant (Appendix~\ref{app:empirical}).
+to zero so the operator is never applied. Re-run at the benchmark budget
+(\MatchedSeeds{} seeds) it gives \MatchedNoDynamics{}
+($\MatchedNoDynamicsDelta$), and removing the reaction gives
+\MatchedNoReaction{} ($\MatchedNoReactionDelta$): disabling the operator costs
+more than the entire margin over the best baseline. The control is exactly
+parameter-matched --- the operator holds \OpParams{} of the model's
+\TotalParams{} parameters ($\OpParamPct\%$), and $T{=}0$ leaves them allocated
+but unused --- so architecture, parameter count and optimizer budget are
+identical and the difference cannot be attributed to capacity. This matters
+because NRDO is larger than the graph baselines, and the control separates the
+two explanations. The full sweep, including the biological regularizers and the
+PDE constraint terms (both inert with respect to predictive accuracy at the
+weights used here), is in Appendix~\ref{app:empirical}.

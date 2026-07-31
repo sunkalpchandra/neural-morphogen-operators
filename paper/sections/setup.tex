@@ -26,11 +26,11 @@ training split only.
 \paragraph{Baselines.} A non-spatial autoencoder (the floor), a GCN
 \citep{kipf2017gcn}, SpaGCN-style and STAGATE-style models
 \citep{hu2021spagcn,dong2022stagate}, a graph transformer
-\citep{vaswani2017attention}, an exact GP and a multi-bandwidth GP
+\citep{vaswani2017attention}, exact and multi-bandwidth GPs
 \citep{rasmussen2006gp}, and an implicit neural field with Fourier features and
 SIREN activations \citep{tancik2020fourier}. The graph methods were not designed
 to predict at unmeasured coordinates, so each receives the same inverse-distance
-read-out head---the most favorable choice available---and is marked
+read-out head --- the most favorable choice available --- and is marked
 \emph{-style}, since these are not reproductions of the authors' pipelines. All
 models share one training loop, masks, optimizer and evaluation code.
 

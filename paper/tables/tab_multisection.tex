@@ -1,7 +1,7 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{Masked spatial reconstruction across 17 tissue sections spanning four technologies, mean $\pm$ s.d. over sections (2 seeds each, averaged within section). Excluded for incomplete coverage: Gaussian Process (1/17 sections). Stars give Holm-corrected Wilcoxon signed-rank $p$ for the paired comparison against NMO, with the section as the unit of analysis: $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Sections on which NMO wins on Pearson $r$ --- Autoencoder (non-spatial): 13/17; GNN (GCN): 16/17; GP, multi-bandwidth: 17/17; Neural field (SIREN): 17/17; STAGATE-style: 13/17.}
+\caption{Masked spatial reconstruction across 17 tissue sections spanning four technologies, mean $\pm$ s.d. over sections, 2 seeds each. Excluded for incomplete coverage: Gaussian Process (1/17). Stars are Holm-corrected Wilcoxon signed-rank $p$ against NRDO with the section as the unit of analysis ($^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$). NRDO wins on Pearson $r$ in 13--17 of 17 sections against every comparator; the full record is in Table~\ref{tab:paired}.}
 \label{tab:multisection}
 \begin{tabular}{lrrrrr}
 \toprule
