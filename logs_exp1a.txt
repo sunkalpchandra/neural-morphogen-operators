@@ -51,3 +51,16 @@ Python(71973) MallocStackLogging: can't turn off malloc stack logging because it
 [21:51:09] INFO      ep  425/500  loss 1.1886  val r 0.2736  rmse 0.2661
 [21:51:35] INFO      ep  450/500  loss 1.1761  val r 0.2736  rmse 0.2664
 [21:52:04] INFO      ep  475/500  loss 1.1879  val r 0.2735  rmse 0.2665
+[21:52:28] INFO      ep  500/500  loss 1.1504  val r 0.2735  rmse 0.2665
+Python(90562) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(90563) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:52:30] INFO      done in 1981s | test r=0.2522 rmse=0.2488 ssim=0.6798
+[done] nmo seed 1: r=0.2522
+[21:52:31] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(90574) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(90575) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:52:31] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 500 epochs
+[21:52:47] INFO      ep   25/500  loss 1.4849  val r 0.1577  rmse 0.2939
+[21:53:13] INFO      ep   50/500  loss 1.3740  val r 0.2044  rmse 0.2813
+[21:53:30] INFO      ep   75/500  loss 1.3002  val r 0.2259  rmse 0.2730
+[21:53:45] INFO      ep  100/500  loss 1.2719  val r 0.2452  rmse 0.2686

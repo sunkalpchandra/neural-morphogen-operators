@@ -20,5 +20,27 @@
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7623402586348501,
     "morans_i_corr": 0.41392369224888664
+  },
+  {
+    "section": "visium_mouse_brain",
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 1,
+    "n_params": 2198304,
+    "wall_s": 1982.6,
+    "best_epoch": 424,
+    "pearson_mean": 0.2521594762802124,
+    "pearson_median": 0.21801646053791046,
+    "spearman_mean": 0.20550869405269623,
+    "rmse": 0.24875085055828094,
+    "mae": 0.14349903166294098,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.8697283864021301,
+    "ssim_mean": 0.6797799824776952,
+    "morans_i_pred": 0.9312314027845154,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.7568357930120743,
+    "morans_i_corr": 0.4097527996205354
   }
 ]

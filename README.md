@@ -156,12 +156,18 @@ assumption and constrains `D` and `f` jointly.
 ## Experiments
 
 ```bash
+# Recommended: one job per ablation variant / transfer model, run through a
+# worker pool. Resumable — re-running skips completed (model, seed) pairs.
+WORKERS=6 EPOCHS=300 ./scripts/run_all.sh      # or: make all-experiments
+
+# Or individually
 python experiments/exp1_forecasting.py --section visium_mouse_brain --seeds 0 1 2
 python experiments/exp2_cross_tissue.py --source visium_mouse_brain --target visium_human_breast
 python experiments/exp3_resolution.py  --source visium_mouse_brain --targets xenium_mouse_brain
 python experiments/exp4_perturbation.py
 python experiments/exp5_ablations.py   --section visium_mouse_brain
-python experiments/make_figures.py     # figures + tables + inline numbers
+python experiments/exp6_development.py                 # E9.5 -> E10.5
+python experiments/make_figures.py                     # figures + tables + numbers
 ```
 
 | Experiment | Question |
@@ -171,6 +177,12 @@ python experiments/make_figures.py     # figures + tables + inline numbers
 | 3 · Cross-resolution | Visium spots → single-cell Xenium, zero-shot |
 | 4 · Counterfactual perturbation | In-silico morphogen "bead implant" + Perturb-seq probe |
 | 5 · Ablations | Which components are load-bearing? |
+| 6 · Developmental forecasting | Stereo-seq E9.5 → E10.5, the one genuine temporal axis |
+
+**Budgets are not uniform across experiments** (the benchmark uses more epochs
+and seeds than the ablations, which are internally consistent at a smaller
+budget). Each table caption states its own budget. Do not compare a number in
+one table against a number in another without checking.
 
 **Baselines** — non-spatial autoencoder, GCN, SpaGCN-style, STAGATE-style, graph
 transformer, and an exact Gaussian process. All share the identical training loop,
