@@ -1,0 +1,7 @@
+defaults: base.yaml
+experiment: {name: nmo_merfish}
+data: {section: merfish_allen_40, max_locations: 20000}
+model:
+  grid_size: 96
+  dynamics: {channels: 32}
+train: {epochs: 500}

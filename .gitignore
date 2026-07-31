@@ -1,0 +1,32 @@
+# Data (re-downloadable via `python -m src.data.download --all`)
+data/raw/
+data/processed/
+!data/raw/MANIFEST.json
+
+# Environments / caches
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+
+# Run artifacts
+results/**/runs/
+results/_smoke/
+results/_probe.json
+checkpoints/
+*.pt
+*.ckpt
+logs_download.txt
+.install.log
+_probe.py
+
+# LaTeX build products
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.synctex.gz
+paper/*.fdb_latexmk
+paper/*.fls

@@ -1,0 +1,3 @@
+defaults: base.yaml
+experiment: {name: nmo_visium_mouse}
+data: {section: visium_mouse_brain}

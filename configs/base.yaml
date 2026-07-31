@@ -1,0 +1,72 @@
+# Base configuration shared by every experiment.
+# Override on the command line with dotted paths, e.g.
+#   python -m src.training.train --config configs/nmo_visium_mouse.yaml \
+#          model.latent_channels=32 train.epochs=800
+
+experiment:
+  name: base
+  seed: 0
+  device: auto            # 'auto' -> cuda if present else cpu (MPS is slower for FFT)
+  out_dir: results
+
+data:
+  processed_dir: data/processed
+  section: visium_mouse_brain
+  knn_k: 8
+  standardise: true
+  stats_from: train        # normalisation statistics from the training split only
+  max_locations: null      # subsample very large sections (Xenium/MERFISH)
+
+model:
+  type: nmo
+  latent_channels: 32
+  grid_size: 64
+  encoder: gno             # {gno, fno, mlp}
+  gene_embed_dim: 128
+  encoder_hidden: 128
+  n_graph_layers: 3
+  knn_k: 8
+  n_fno_blocks: 2
+  fno_modes: 12
+  splat_sigma: 1.0
+  splat_radius: 2
+  decoder_hidden: 256
+  decoder_layers: 3
+  decoder_sees_coords: false   # see nmo.py: keeps the dynamics load-bearing
+  dropout: 0.0
+  dynamics:
+    channels: 32
+    dt: 0.05
+    n_steps: 8
+    reaction_hidden: 64
+    reaction_layers: 3
+    diffusion_init: 0.02
+    isotropic: false
+    state_dependent_diffusion: false
+    use_diffusion: true
+    use_reaction: true
+    reaction_gain: 0.5
+
+loss:
+  recon_mse: 1.0
+  recon_pearson: 0.5
+  smooth: 1.0e-3
+  pde: 1.0e-2
+  split: 1.0e-3
+  mass: 1.0e-3
+  jacobian: 1.0e-3
+  jacobian_max_norm: 3.0
+  aux_z0: 0.1
+
+train:
+  epochs: 600
+  lr: 3.0e-4
+  weight_decay: 1.0e-5
+  grad_clip: 1.0
+  warmup: 20
+  scheduler: cosine
+  eval_every: 25
+  patience: 200
+  train_mask_frac: 0.30
+  mask_kind: block
+  log_every: 50

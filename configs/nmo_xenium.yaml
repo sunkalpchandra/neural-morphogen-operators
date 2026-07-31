@@ -1,0 +1,7 @@
+defaults: base.yaml
+experiment: {name: nmo_xenium}
+data: {section: xenium_mouse_brain, max_locations: 20000}
+model:
+  grid_size: 96
+  dynamics: {channels: 32}
+train: {epochs: 500}

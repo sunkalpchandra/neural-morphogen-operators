@@ -1,0 +1,4 @@
+defaults: base.yaml
+experiment: {name: nmo_mosta}
+data: {section: mosta_embryo_E9.5}
+model: {grid_size: 64}

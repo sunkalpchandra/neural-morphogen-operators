@@ -1,0 +1,33 @@
+# Core numerics
+numpy>=1.26,<3
+scipy>=1.11
+pandas>=2.0
+
+# Deep learning
+torch>=2.2
+
+# Single-cell / spatial omics
+anndata>=0.10
+scanpy>=1.10
+scikit-misc>=0.3          # required for the seurat_v3 HVG flavour
+h5py>=3.10
+
+# Metrics / imaging
+scikit-learn>=1.4
+scikit-image>=0.22        # SSIM
+tifffile>=2024.1.30
+Pillow>=10.0
+
+# Plotting
+matplotlib>=3.8
+seaborn>=0.13
+
+# Graph utilities (optional; used only for reference clustering)
+igraph>=0.11
+leidenalg>=0.10
+networkx>=3.0
+
+# Infrastructure
+pyyaml>=6.0
+requests>=2.31
+tqdm>=4.66
