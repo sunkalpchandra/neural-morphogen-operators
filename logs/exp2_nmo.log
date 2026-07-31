@@ -1,0 +1,5 @@
+[00:18:52] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[00:18:53] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[00:18:53] INFO    aligned visium_mouse_brain <-> visium_human_breast: 390 shared genes
+shared vocabulary: 390 genes
+[00:18:59] INFO    training NeuralMorphogenOperator (1,548,039 params) on visium_mouse_brain for 250 epochs

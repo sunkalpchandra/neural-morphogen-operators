@@ -1,0 +1,5 @@
+[00:18:53] INFO    section mosta_embryo_E9.5: 5898 locations x 2069 genes, 48040 edges, scale 1395 um/unit
+[00:19:02] INFO    section mosta_embryo_E10.5: 18360 locations x 2099 genes, 148344 edges, scale 2629 um/unit
+[00:19:02] INFO    aligned mosta_embryo_E9.5 <-> mosta_embryo_E10.5: 563 shared genes
+mosta_embryo_E9.5 -> mosta_embryo_E10.5: 563 shared genes, 5898 -> 18360 locations
+[00:19:10] INFO    training NeuralMorphogenOperator (1,614,644 params) on mosta_embryo_E9.5 for 250 epochs

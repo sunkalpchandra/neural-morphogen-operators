@@ -1,0 +1,3 @@
+[warn] Perturb-seq object not available; running 4a only
+[00:19:11] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[00:19:12] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 250 epochs

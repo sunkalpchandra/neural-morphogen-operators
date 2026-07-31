@@ -1,0 +1,1 @@
+[stage B] 6 jobs, 3 workers, 00:18:45

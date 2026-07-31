@@ -20,3 +20,22 @@
 [23:30:15] INFO    training NeuralMorphogenOperator (2,198,240 params) on visium_mouse_brain for 300 epochs
 [23:30:53] INFO      ep   25/300  loss 1.5257  val r 0.1335  rmse 0.2942
 [23:31:36] INFO      ep   50/300  loss 1.3888  val r 0.1957  rmse 0.2832
+[23:32:13] INFO      ep   75/300  loss 1.3224  val r 0.2233  rmse 0.2734
+[23:32:54] INFO      ep  100/300  loss 1.2950  val r 0.2361  rmse 0.2720
+[23:33:30] INFO      ep  125/300  loss 1.2891  val r 0.2452  rmse 0.2687
+[23:39:20] INFO      ep  150/300  loss 1.2533  val r 0.2512  rmse 0.2676
+[23:40:02] INFO      ep  175/300  loss 1.2360  val r 0.2554  rmse 0.2667
+[23:40:39] INFO      ep  200/300  loss 1.2247  val r 0.2581  rmse 0.2671
+[23:41:12] INFO      ep  225/300  loss 1.2459  val r 0.2598  rmse 0.2665
+[23:41:49] INFO      ep  250/300  loss 1.2421  val r 0.2606  rmse 0.2660
+[23:44:30] INFO      ep  275/300  loss 1.2340  val r 0.2604  rmse 0.2661
+[23:50:09] INFO      ep  300/300  loss 1.2244  val r 0.2604  rmse 0.2663
+[23:50:11] INFO      done in 1195s | test r=0.2319 rmse=0.2536 ssim=0.3970
+[done] isotropic_diffusion seed 1: r=0.2319 rmse=0.2536
+
+                     pearson_mean                rmse  ... ssim_mean   n_params     
+                            mean       std      mean  ...       std       mean  std
+variant                                               ...                          
+isotropic_diffusion     0.229374  0.003576  0.255576  ...  0.006019  2198240.0  0.0
+
+[1 rows x 8 columns]

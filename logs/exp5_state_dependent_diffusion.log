@@ -18,3 +18,24 @@
 [done] state_dependent_diffusion seed 0: r=0.2333 rmse=0.2522
 [23:32:03] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
 [23:32:03] INFO    training NeuralMorphogenOperator (2,200,416 params) on visium_mouse_brain for 300 epochs
+[23:32:53] INFO      ep   25/300  loss 1.5148  val r 0.1589  rmse 0.2937
+[23:33:36] INFO      ep   50/300  loss 1.3818  val r 0.2041  rmse 0.2822
+[23:39:39] INFO      ep   75/300  loss 1.3215  val r 0.2257  rmse 0.2718
+[23:40:25] INFO      ep  100/300  loss 1.2950  val r 0.2393  rmse 0.2689
+[23:41:06] INFO      ep  125/300  loss 1.2878  val r 0.2448  rmse 0.2664
+[23:41:51] INFO      ep  150/300  loss 1.2500  val r 0.2496  rmse 0.2652
+[23:44:38] INFO      ep  175/300  loss 1.2320  val r 0.2524  rmse 0.2655
+[23:50:26] INFO      ep  200/300  loss 1.2199  val r 0.2545  rmse 0.2657
+[23:56:01] INFO      ep  225/300  loss 1.2403  val r 0.2554  rmse 0.2658
+[23:56:53] INFO      ep  250/300  loss 1.2362  val r 0.2554  rmse 0.2655
+[23:57:43] INFO      ep  275/300  loss 1.2279  val r 0.2551  rmse 0.2659
+[00:00:27] INFO      ep  300/300  loss 1.2181  val r 0.2550  rmse 0.2659
+[00:00:29] INFO      done in 1704s | test r=0.2394 rmse=0.2510 ssim=0.3987
+[done] state_dependent_diffusion seed 1: r=0.2394 rmse=0.2510
+
+                           pearson_mean            ...   n_params     
+                                  mean       std  ...       mean  std
+variant                                           ...                
+state_dependent_diffusion     0.236355  0.004289  ...  2200416.0  0.0
+
+[1 rows x 8 columns]

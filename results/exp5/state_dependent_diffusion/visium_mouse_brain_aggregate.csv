@@ -1,0 +1,4 @@
+,pearson_mean,pearson_mean,rmse,rmse,ssim_mean,ssim_mean,n_params,n_params
+,mean,std,mean,std,mean,std,mean,std
+variant,,,,,,,,
+state_dependent_diffusion,0.23635505884885788,0.00428916886912028,0.25159144401550293,0.0008963370272811834,0.39608993581287166,0.003726638422310265,2200416.0,0.0
