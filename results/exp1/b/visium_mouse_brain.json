@@ -174,5 +174,27 @@
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7403556320950025,
     "morans_i_corr": 0.5225847108464485
+  },
+  {
+    "section": "visium_mouse_brain",
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "seed": 2,
+    "n_params": 691903,
+    "wall_s": 481.3,
+    "best_epoch": 399,
+    "pearson_mean": 0.2339637130498886,
+    "pearson_median": 0.21026915311813354,
+    "spearman_mean": 0.1857575923204422,
+    "rmse": 0.2535804510116577,
+    "mae": 0.14316360652446747,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.862888753414154,
+    "ssim_mean": 0.6914361894791212,
+    "morans_i_pred": 0.9090478686447447,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.7346522588723037,
+    "morans_i_corr": 0.5209401306832891
   }
 ]

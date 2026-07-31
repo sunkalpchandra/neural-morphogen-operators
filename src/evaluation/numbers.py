@@ -15,7 +15,7 @@ from typing import Dict, List, Optional
 import numpy as np
 import pandas as pd
 
-from .tables import is_derived, load_json_glob
+from .tables import dedupe, is_derived, load_json_glob
 
 
 def _ms(df: pd.DataFrame, key: str) -> str:
@@ -80,8 +80,9 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("MoranTrue", _ms(nmo, "morans_i_true"))
 
     # ---- Experiment 2 / 3 : transfer ------------------------------------ #
-    for tag, pat in [("Tissue", "exp2/*.json"), ("Res", "exp3/*.json")]:
-        df = pd.DataFrame([r for r in load_json_glob(pat, results_root) if "setting" in r])
+    for tag, pat in [("Tissue", "exp2/**/*.json"), ("Res", "exp3/**/*.json")]:
+        df = pd.DataFrame(dedupe([r for r in load_json_glob(pat, results_root) if "setting" in r],
+                                 ["model", "seed", "setting", "target"]))
         if df.empty:
             continue
         for setting, suffix in [("zero_shot", "ZeroShot"), ("oracle", "Oracle"),
@@ -97,7 +98,8 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd(f"{tag}SharedGenes", str(int(df["n_shared_genes"].iloc[0])))
 
     # ---- Experiment 5 : ablations --------------------------------------- #
-    e5 = pd.DataFrame([r for r in load_json_glob("exp5/*.json", results_root) if "variant" in r])
+    e5 = pd.DataFrame(dedupe([r for r in load_json_glob("exp5/**/*.json", results_root) if "variant" in r],
+                             ["variant", "seed", "section"]))
     if not e5.empty:
         g = e5.groupby("variant")["pearson_mean"].agg(["mean", "std"])
         full = float(g.loc["full", "mean"]) if "full" in g.index else np.nan
@@ -143,13 +145,13 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("PatternWavelength", f"{np.median(wl):.0f}")
 
     # ---- Experiment 4 ---------------------------------------------------- #
-    bead = pd.DataFrame(load_json_glob("exp4/bead_implant.json", results_root))
+    bead = pd.DataFrame(load_json_glob("exp4/**/bead_implant.json", results_root))
     if not bead.empty:
         sig = bead.groupby("pathway")["p_value"].mean()
         cmd("BeadNSig", str(int((sig < 0.05).sum())))
         cmd("BeadNPathways", str(int(len(sig))))
         cmd("BeadWidth", f"{bead['response_halfwidth_um'].mean():.0f}")
-    ps = pd.DataFrame([r for r in load_json_glob("exp4/perturbseq_consistency.json", results_root)
+    ps = pd.DataFrame([r for r in load_json_glob("exp4/**/perturbseq_consistency.json", results_root)
                        if "error" not in r])
     if not ps.empty:
         n = ps[ps["model"] == "nmo"]

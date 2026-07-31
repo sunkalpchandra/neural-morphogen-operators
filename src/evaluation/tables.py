@@ -51,6 +51,24 @@ def load_json_glob(pattern: str, root: str | Path = ".") -> List[Dict]:
     return out
 
 
+def dedupe(records: List[Dict], keys: Sequence[str]) -> List[Dict]:
+    """Drop duplicate records sharing the same key tuple.
+
+    The transfer experiments are sharded one job per model, and each shard
+    independently recomputes the shared reference points (the training-mean
+    floor). Without this, the floor would be counted once per shard and its
+    across-seed standard deviation would be wrong.
+    """
+    seen, out = set(), []
+    for r in records:
+        k = tuple(str(r.get(x)) for x in keys)
+        if k in seen:
+            continue
+        seen.add(k)
+        out.append(r)
+    return out
+
+
 def _esc(s: str) -> str:
     return str(s).replace("_", r"\_").replace("&", r"\&").replace("%", r"\%")
 
@@ -374,25 +392,27 @@ def build_all(results_root: str | Path = "results", out_dir: str | Path = "paper
         made["benchmark"] = table_benchmark(exp1, out_dir / "tab_benchmark.tex", section_label=sect)
 
     for pattern, label, cap, name in [
-        ("exp2/*.json", "tab:transfer_tissue",
+        ("exp2/**/*.json", "tab:transfer_tissue",
          "Cross-tissue, cross-species transfer: adult mouse brain $\\rightarrow$ human breast carcinoma.",
          "tab_transfer_tissue.tex"),
-        ("exp3/*.json", "tab:transfer_resolution",
+        ("exp3/**/*.json", "tab:transfer_resolution",
          "Cross-resolution transfer: 55\\,$\\mu$m Visium spots $\\rightarrow$ single-cell Xenium.",
          "tab_transfer_resolution.tex"),
     ]:
         recs = [r for r in load_json_glob(pattern, results_root) if "setting" in r]
+        recs = dedupe(recs, ["model", "seed", "setting", "target"])
         if recs:
             made[label] = table_transfer(recs, out_dir / name, cap, label)
 
-    exp5 = [r for r in load_json_glob("exp5/*.json", results_root) if "variant" in r]
+    exp5 = [r for r in load_json_glob("exp5/**/*.json", results_root) if "variant" in r]
+    exp5 = dedupe(exp5, ["variant", "seed", "section"])
     if exp5:
         made["ablations"] = table_ablations(exp5, out_dir / "tab_ablations.tex")
 
-    bead = load_json_glob("exp4/bead_implant.json", results_root)
+    bead = load_json_glob("exp4/**/bead_implant.json", results_root)
     if bead:
         made["bead"] = table_bead(bead, out_dir / "tab_bead.tex")
-    ps = load_json_glob("exp4/perturbseq_consistency.json", results_root)
+    ps = load_json_glob("exp4/**/perturbseq_consistency.json", results_root)
     if ps:
         made["perturbseq"] = table_perturbseq(ps, out_dir / "tab_perturbseq.tex")
 

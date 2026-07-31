@@ -195,3 +195,57 @@ Python(86602) MallocStackLogging: can't turn off malloc stack logging because it
 [21:47:03] INFO      ep  125/500  loss 1.1694  val r 0.2217  rmse 0.2871
 [21:47:16] INFO      ep  150/500  loss 1.1235  val r 0.2282  rmse 0.2873
 [21:47:31] INFO      ep  175/500  loss 1.1057  val r 0.2338  rmse 0.2839
+[21:47:48] INFO      ep  200/500  loss 1.0825  val r 0.2357  rmse 0.2876
+[21:48:09] INFO      ep  225/500  loss 1.1053  val r 0.2399  rmse 0.2856
+[21:48:22] INFO      ep  250/500  loss 1.0942  val r 0.2427  rmse 0.2838
+[21:48:35] INFO      ep  275/500  loss 1.0825  val r 0.2438  rmse 0.2829
+[21:48:47] INFO      ep  300/500  loss 1.0620  val r 0.2443  rmse 0.2840
+[21:49:03] INFO      ep  325/500  loss 1.0635  val r 0.2450  rmse 0.2844
+[21:49:17] INFO      ep  350/500  loss 1.0541  val r 0.2469  rmse 0.2825
+[21:49:33] INFO      ep  375/500  loss 1.0620  val r 0.2468  rmse 0.2836
+[21:49:48] INFO      ep  400/500  loss 1.0666  val r 0.2471  rmse 0.2833
+[21:50:03] INFO      ep  425/500  loss 1.0827  val r 0.2472  rmse 0.2834
+[21:50:14] INFO      ep  450/500  loss 1.0681  val r 0.2474  rmse 0.2827
+[21:50:22] INFO      ep  475/500  loss 1.0821  val r 0.2474  rmse 0.2828
+[21:50:27] INFO      ep  500/500  loss 1.0267  val r 0.2474  rmse 0.2828
+Python(89315) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(89316) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:50:30] INFO      done in 272s | test r=0.2296 rmse=0.2559 ssim=0.6863
+[done] autoencoder seed 1: r=0.2296
+[21:50:31] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(89320) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(89321) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:50:31] INFO    training AutoencoderBaseline (575,807 params) on visium_mouse_brain for 500 epochs
+[21:50:36] INFO      ep   25/500  loss 1.4080  val r 0.1117  rmse 0.2949
+[21:50:41] INFO      ep   50/500  loss 1.3215  val r 0.1765  rmse 0.2908
+[21:50:46] INFO      ep   75/500  loss 1.2243  val r 0.2012  rmse 0.2843
+[21:50:52] INFO      ep  100/500  loss 1.1708  val r 0.2182  rmse 0.2871
+[21:50:57] INFO      ep  125/500  loss 1.1406  val r 0.2269  rmse 0.2847
+[21:51:02] INFO      ep  150/500  loss 1.1181  val r 0.2316  rmse 0.2851
+[21:51:07] INFO      ep  175/500  loss 1.1194  val r 0.2361  rmse 0.2844
+[21:51:12] INFO      ep  200/500  loss 1.0931  val r 0.2386  rmse 0.2833
+[21:51:18] INFO      ep  225/500  loss 1.0958  val r 0.2399  rmse 0.2851
+[21:51:23] INFO      ep  250/500  loss 1.0814  val r 0.2425  rmse 0.2832
+[21:51:28] INFO      ep  275/500  loss 1.0909  val r 0.2438  rmse 0.2842
+[21:51:34] INFO      ep  300/500  loss 1.0735  val r 0.2455  rmse 0.2826
+[21:51:40] INFO      ep  325/500  loss 1.0746  val r 0.2473  rmse 0.2812
+[21:51:45] INFO      ep  350/500  loss 1.0704  val r 0.2473  rmse 0.2818
+[21:51:51] INFO      ep  375/500  loss 1.0553  val r 0.2480  rmse 0.2818
+[21:51:57] INFO      ep  400/500  loss 1.0497  val r 0.2483  rmse 0.2820
+[21:52:02] INFO      ep  425/500  loss 1.1126  val r 0.2483  rmse 0.2819
+[21:52:08] INFO      ep  450/500  loss 1.0560  val r 0.2484  rmse 0.2818
+[21:52:13] INFO      ep  475/500  loss 1.0600  val r 0.2484  rmse 0.2820
+[21:52:19] INFO      ep  500/500  loss 1.0447  val r 0.2484  rmse 0.2820
+Python(90443) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(90444) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:52:22] INFO      done in 108s | test r=0.2302 rmse=0.2550 ssim=0.6870
+[done] autoencoder seed 2: r=0.2302
+
+                                                               pearson_mean  ... pearson_per_location
+                                                                       mean  ...                  std
+section            model             display                                 ...                     
+visium_mouse_brain autoencoder       Autoencoder (non-spatial)     0.229589  ...             0.000465
+                   gp                Gaussian Process              0.155901  ...             0.004786
+                   graph_transformer Graph Transformer             0.230298  ...             0.000680
+
+[3 rows x 18 columns]

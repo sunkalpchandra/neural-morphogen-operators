@@ -232,3 +232,23 @@ Python(84442) MallocStackLogging: can't turn off malloc stack logging because it
 [21:46:32] INFO      ep  275/500  loss 1.0907  val r 0.2453  rmse 0.2842
 [21:46:54] INFO      ep  300/500  loss 1.0730  val r 0.2455  rmse 0.2837
 [21:47:14] INFO      ep  325/500  loss 1.0719  val r 0.2458  rmse 0.2837
+[21:47:38] INFO      ep  350/500  loss 1.0645  val r 0.2457  rmse 0.2838
+[21:48:11] INFO      ep  375/500  loss 1.0527  val r 0.2455  rmse 0.2839
+[21:48:32] INFO      ep  400/500  loss 1.0475  val r 0.2468  rmse 0.2834
+[21:48:54] INFO      ep  425/500  loss 1.1041  val r 0.2465  rmse 0.2834
+[21:49:16] INFO      ep  450/500  loss 1.0537  val r 0.2465  rmse 0.2837
+[21:49:42] INFO      ep  475/500  loss 1.0606  val r 0.2465  rmse 0.2837
+[21:50:06] INFO      ep  500/500  loss 1.0465  val r 0.2465  rmse 0.2838
+Python(89107) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(89109) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:50:11] INFO      done in 476s | test r=0.2340 rmse=0.2536 ssim=0.6914
+[done] stagate seed 2: r=0.2340
+
+                                         pearson_mean  ... pearson_per_location
+                                                 mean  ...                  std
+section            model   display                     ...                     
+visium_mouse_brain gnn     GNN (GCN)         0.227804  ...             0.000688
+                   spagcn  SpaGCN-style      0.234356  ...             0.000535
+                   stagate STAGATE-style     0.233632  ...             0.000938
+
+[3 rows x 18 columns]

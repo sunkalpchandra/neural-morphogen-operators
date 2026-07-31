@@ -18,3 +18,9 @@ Consider using tensor.detach() first. (Triggered internally at /Users/runner/wor
 [21:44:28] INFO      ep  325/400  loss 1.2249  val r 0.2625  rmse 0.2679
 [21:45:48] INFO      ep  350/400  loss 1.2082  val r 0.2632  rmse 0.2674
 [21:47:04] INFO      ep  375/400  loss 1.2192  val r 0.2629  rmse 0.2680
+[21:48:34] INFO      ep  400/400  loss 1.1886  val r 0.2629  rmse 0.2680
+[21:48:40] INFO      done in 1622s | test r=0.2385 rmse=0.2552 ssim=0.6738
+[done] isotropic_diffusion seed 0: r=0.2385 rmse=0.2552
+[21:48:43] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[21:48:45] INFO    training NeuralMorphogenOperator (2,198,240 params) on visium_mouse_brain for 400 epochs
+[21:50:13] INFO      ep   25/400  loss 1.5257  val r 0.1335  rmse 0.2942
