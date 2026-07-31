@@ -165,6 +165,28 @@ def _nanmean(x: np.ndarray) -> float:
     return float(np.nanmean(x)) if np.isfinite(x).any() else float("nan")
 
 
+def gearys_c(values: np.ndarray, W) -> np.ndarray:
+    """Geary's C per gene. ``C < 1`` indicates positive spatial autocorrelation.
+
+    Reported alongside Moran's I because the two are sensitive to different
+    things: Moran's I to global structure, Geary's C to local differences. A
+    model that is globally smooth but locally correct scores differently on the
+    two, and a dissipative operator is exactly the case where that matters.
+    """
+    n = values.shape[0]
+    z = values - values.mean(0, keepdims=True)
+    denom = 2.0 * W.sum() * np.einsum("ng,ng->g", z, z) / max(n - 1, 1)
+    Wc = W.tocoo() if hasattr(W, "tocoo") else None
+    if Wc is None:
+        rows, cols = np.nonzero(W)
+        wv = np.asarray(W)[rows, cols]
+    else:
+        rows, cols, wv = Wc.row, Wc.col, Wc.data
+    diff = values[rows] - values[cols]
+    num = np.einsum("e,eg->g", wv, diff ** 2)
+    return num / np.maximum(denom, 1e-12)
+
+
 def evaluate_prediction(
     pred: np.ndarray,
     true: np.ndarray,
@@ -215,6 +237,11 @@ def evaluate_prediction(
     res["morans_i_corr"] = (
         float(np.corrcoef(mi_p[finite], mi_t[finite])[0, 1]) if finite.sum() > 2 else float("nan")
     )
+
+    gc_p, gc_t = gearys_c(pred, W), gearys_c(true, W)
+    res["gearys_c_pred"] = _nanmean(gc_p)
+    res["gearys_c_true"] = _nanmean(gc_t)
+    res["gearys_c_abs_error"] = _nanmean(np.abs(gc_p - gc_t))
     return res
 
 

@@ -138,7 +138,8 @@ class Trainer:
         )
 
         if self.is_nmo:
-            terms = self.criterion(out, s.expr, self.model.operator, eval_mask, vis)
+            terms = self.criterion(out, s.expr, self.model.operator, eval_mask, vis,
+                                   coords=s.coords)
             loss = terms["total"]
         else:
             l_mse = masked_mse(out["pred"], s.expr, eval_mask)

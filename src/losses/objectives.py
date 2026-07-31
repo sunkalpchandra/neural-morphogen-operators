@@ -141,6 +141,84 @@ def mass_conservation(operator, z: torch.Tensor) -> torch.Tensor:
     return f.mean(dim=(2, 3)).pow(2).mean()
 
 
+def _rasterize(coords: torch.Tensor, values: torch.Tensor, grid: int,
+               weight: Optional[torch.Tensor] = None) -> torch.Tensor:
+    """Nadaraya--Watson rasterization of scattered values onto a ``grid`` lattice.
+
+    Prediction and measurement are rasterized with the *same* accumulation, so
+    the sampling geometry, the irregular support and the empty cells are common
+    to both and cancel in any comparison between them. What remains is the model.
+    """
+    n, g = values.shape
+    idx = ((coords.clamp(-1, 1) + 1) * 0.5 * (grid - 1)).round().long()
+    flat = (idx[:, 1] * grid + idx[:, 0]).clamp(0, grid * grid - 1)
+
+    w = torch.ones(n, device=values.device, dtype=values.dtype) if weight is None else weight
+    num = torch.zeros(grid * grid, g, device=values.device, dtype=values.dtype)
+    num.index_add_(0, flat, values * w.unsqueeze(1))
+    den = torch.zeros(grid * grid, device=values.device, dtype=values.dtype)
+    den.index_add_(0, flat, w)
+    field = num / den.clamp_min(1e-8).unsqueeze(1)
+    return field.T.reshape(g, grid, grid)
+
+
+def _radial_spectrum(field: torch.Tensor, n_bins: int = 16) -> torch.Tensor:
+    """Radially averaged power spectrum of a ``(G, H, W)`` stack of maps.
+
+    Returns ``(n_bins,)``: the mean power in each annulus of the 2-D spectrum,
+    averaged over genes. Radial averaging is the right summary here because the
+    quantity of interest -- how much energy the reconstruction retains at each
+    spatial scale -- is isotropic, while the individual Fourier coefficients are
+    not comparable between a prediction and a measurement.
+    """
+    g, h, w = field.shape
+    f = torch.fft.rfft2(field - field.mean(dim=(1, 2), keepdim=True), norm="ortho")
+    power = (f.real ** 2 + f.imag ** 2).mean(0)                    # (H, W//2+1)
+
+    ky = torch.fft.fftfreq(h, device=field.device).abs().view(-1, 1)
+    kx = torch.fft.rfftfreq(w, device=field.device).view(1, -1)
+    k = torch.sqrt(ky ** 2 + kx ** 2)
+    k = k / k.max().clamp_min(1e-12)
+
+    edges = torch.linspace(0, 1, n_bins + 1, device=field.device)
+    bins = torch.bucketize(k.reshape(-1), edges[1:-1].contiguous())
+    out = torch.zeros(n_bins, device=field.device, dtype=power.dtype)
+    cnt = torch.zeros(n_bins, device=field.device, dtype=power.dtype)
+    out.index_add_(0, bins, power.reshape(-1))
+    cnt.index_add_(0, bins, torch.ones_like(power.reshape(-1)))
+    return out / cnt.clamp_min(1.0)
+
+
+def spectral_match(pred: torch.Tensor, target: torch.Tensor, coords: torch.Tensor,
+                   mask: Optional[torch.Tensor] = None, grid: int = 64,
+                   n_bins: int = 16, n_genes: int = 128,
+                   generator: Optional[torch.Generator] = None) -> torch.Tensor:
+    """Penalize the *missing high-frequency energy* of the reconstruction.
+
+    A dissipative operator attenuates high spatial frequencies, which is exactly
+    what Moran's $I$ detects and what correlation does not: a prediction can
+    track the smooth part of a gene's pattern and still lose every sharp
+    boundary. This term compares the radially averaged power spectrum of the
+    predicted field with that of the measured field, in log space so that the
+    high-$k$ bins -- orders of magnitude weaker than the low-$k$ ones, and the
+    ones actually at issue -- are not swamped.
+
+    Genes are subsampled per step; the estimate is stochastic but unbiased over
+    training, and the full rasterization of two thousand genes every step is not
+    affordable on CPU.
+    """
+    n, g = pred.shape
+    if n_genes and n_genes < g:
+        sel = torch.randperm(g, device=pred.device, generator=generator)[:n_genes]
+        pred, target = pred[:, sel], target[:, sel]
+
+    fp = _rasterize(coords, pred, grid, mask)
+    ft = _rasterize(coords, target, grid, mask)
+    sp = _radial_spectrum(fp, n_bins)
+    st = _radial_spectrum(ft, n_bins)
+    return F.mse_loss(torch.log(sp + 1e-8), torch.log(st + 1e-8))
+
+
 def jacobian_stability(operator, z: torch.Tensor, max_norm: float = 3.0, n_iter: int = 3) -> torch.Tensor:
     """Hinge penalty on ||df/dz||_2 above ``max_norm``.
 
@@ -171,6 +249,12 @@ class LossWeights:
     # weight on decoding the *pre-relaxation* field; a small value keeps the
     # encoder well conditioned without letting the model bypass the operator
     aux_z0: float = 0.1
+    # spectral matching: penalize the high-frequency energy a dissipative
+    # operator discards. Off by default; Section 5 sweeps it.
+    spectral: float = 0.0
+    spectral_grid: int = 64
+    spectral_bins: int = 16
+    spectral_genes: int = 128
 
 
 class NMOLoss(nn.Module):
@@ -187,6 +271,7 @@ class NMOLoss(nn.Module):
         operator,
         eval_mask: Optional[torch.Tensor] = None,
         train_mask: Optional[torch.Tensor] = None,
+        coords: Optional[torch.Tensor] = None,
     ) -> Dict[str, torch.Tensor]:
         """
         out         : dict from ``NeuralMorphogenOperator.forward``
@@ -234,6 +319,13 @@ class NMOLoss(nn.Module):
             l_jac = jacobian_stability(operator, zT, w.jacobian_max_norm)
             loss = loss + w.jacobian * l_jac
             terms["jacobian"] = l_jac.detach()
+
+        if w.spectral > 0 and coords is not None:
+            l_spec = spectral_match(pred, target, coords, eval_mask,
+                                    grid=w.spectral_grid, n_bins=w.spectral_bins,
+                                    n_genes=w.spectral_genes)
+            loss = loss + w.spectral * l_spec
+            terms["spectral"] = l_spec.detach()
 
         terms["total"] = loss
         return terms
