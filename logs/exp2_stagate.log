@@ -31,3 +31,47 @@ shared vocabulary: 390 genes
 [00:54:11] INFO      ep  175/250  loss 1.2629  val r 0.1175  rmse 0.4049
 [00:54:23] INFO      ep  200/250  loss 1.2448  val r 0.1176  rmse 0.4045
 [00:54:41] INFO      ep  225/250  loss 1.2571  val r 0.1176  rmse 0.4049
+[00:54:58] INFO      ep  250/250  loss 1.2599  val r 0.1177  rmse 0.4048
+[00:54:59] INFO      done in 145s | test r=0.1462 rmse=0.3752 ssim=0.4260
+[00:55:00] INFO    training STAGATEStyleBaseline (257,830 params) on visium_mouse_brain for 250 epochs
+[00:55:09] INFO      ep   25/250  loss 1.4382  val r 0.1252  rmse 0.2915
+[00:55:18] INFO      ep   50/250  loss 1.3133  val r 0.1940  rmse 0.2858
+[00:55:25] INFO      ep   75/250  loss 1.2374  val r 0.2111  rmse 0.2773
+[00:55:34] INFO      ep  100/250  loss 1.2004  val r 0.2184  rmse 0.2780
+[00:55:43] INFO      ep  125/250  loss 1.1761  val r 0.2237  rmse 0.2793
+[00:55:51] INFO      ep  150/250  loss 1.1325  val r 0.2269  rmse 0.2800
+[00:56:04] INFO      ep  175/250  loss 1.1208  val r 0.2293  rmse 0.2798
+[00:56:12] INFO      ep  200/250  loss 1.1070  val r 0.2300  rmse 0.2805
+[00:56:22] INFO      ep  225/250  loss 1.1401  val r 0.2305  rmse 0.2804
+[00:56:30] INFO      ep  250/250  loss 1.1641  val r 0.2305  rmse 0.2805
+[00:56:31] INFO      done in 90s | test r=0.2111 rmse=0.2491 ssim=0.3573
+[zero-shot] stagate seed 1: r=0.0936
+[00:56:32] INFO    training STAGATEStyleBaseline (71,046 params) on visium_human_breast for 80 epochs
+[00:56:44] INFO      ep   25/80  loss 1.3769  val r 0.0517  rmse 0.4115
+[00:56:56] INFO      ep   50/80  loss 1.3376  val r 0.0672  rmse 0.4100
+[00:57:07] INFO      ep   75/80  loss 1.3594  val r 0.0707  rmse 0.4094
+[00:57:12] INFO      ep   80/80  loss 1.3367  val r 0.0707  rmse 0.4094
+[00:57:13] INFO      done in 39s | test r=0.1119 rmse=0.3924 ssim=0.3632
+[00:57:13] INFO    training STAGATEStyleBaseline (257,830 params) on visium_human_breast for 250 epochs
+[00:57:30] INFO      ep   25/250  loss 1.4121  val r 0.0848  rmse 0.4096
+[00:57:46] INFO      ep   50/250  loss 1.3344  val r 0.1031  rmse 0.4036
+[00:58:04] INFO      ep   75/250  loss 1.3231  val r 0.1075  rmse 0.4024
+[00:58:23] INFO      ep  100/250  loss 1.2733  val r 0.1105  rmse 0.4033
+[00:58:40] INFO      ep  125/250  loss 1.2727  val r 0.1137  rmse 0.4027
+[00:58:56] INFO      ep  150/250  loss 1.2847  val r 0.1158  rmse 0.4028
+[00:59:16] INFO      ep  175/250  loss 1.2339  val r 0.1165  rmse 0.4042
+[00:59:31] INFO      ep  200/250  loss 1.2520  val r 0.1172  rmse 0.4044
+[00:59:49] INFO      ep  225/250  loss 1.2243  val r 0.1176  rmse 0.4039
+[01:00:06] INFO      ep  250/250  loss 1.2489  val r 0.1176  rmse 0.4040
+[01:00:07] INFO      done in 173s | test r=0.1473 rmse=0.3751 ssim=0.4278
+
+                           pearson_mean                ... ssim_mean          
+                                  mean           std  ...      mean       std
+setting          model                                ...                    
+decoder_finetune stagate  1.165223e-01  6.594428e-03  ...  0.365457  0.003219
+floor            mean    -5.154678e-09  3.693110e-08  ...  0.254131  0.000770
+oracle           stagate  1.467622e-01  7.883252e-04  ...  0.426907  0.001273
+source_in_domain stagate  2.115317e-01  5.824589e-04  ...  0.358109  0.001117
+zero_shot        stagate  9.263723e-02  1.377549e-03  ...  0.265579  0.001753
+
+[5 rows x 6 columns]

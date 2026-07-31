@@ -89,8 +89,7 @@ the Fourier domain makes the integrator unconditionally stable and the diffusion
 tensor readable as a physical length scale.
 Across \NDatasets{} public datasets spanning four technologies, NMO predicts
 held-out tissue regions more accurately than graph-based and Gaussian-process
-baselines (Pearson $r$ \NMOPearson{} vs.\ \BestBaselinePearson{}) and transfers
-zero-shot across tissue, species and sampling resolution. A control we did not
+baselines (Pearson $r$ \NMOPearson{} vs.\ \BestBaselinePearson{}). A control we did not
 expect to matter turns out to: a \emph{non-spatial} autoencoder sharing the same
 interpolation read-out reaches \AEPearson{}, so graph message passing contributes
 at most \BestGraphOverAE{} Pearson $r$ on this task while the continuous
@@ -106,8 +105,14 @@ spatially autocorrelated, and Moran's $I$ error is the one metric on which NMO i
 the \emph{worst} model tested. A pre-registered split-half perturbation test also
 \emph{fails}: perturbing the latent direction aligned with one half of a
 morphogen pathway does not preferentially move the held-out half
-($\BeadNSig/\BeadNPathways$ pathways significant). Latent channels correlate
-with pathway activity, but that correlation does not survive a causal test.
+($\BeadNSig/\BeadNPathways$ pathways significant). And the operator
+\textbf{transfers worse than the graph baseline it beats in-domain} --- by
+\ResZeroShotRatio$\times$ across sampling resolution and
+\TissueZeroShotRatio$\times$ across tissue --- so what it learns is
+tissue-specific rather than a portable prior. We report these four negatives
+alongside the gains; on this evidence the continuous-operator view helps
+in-domain prediction and does not yet deliver the transfer or interpretability
+its framing invites.
 We also stress what the model does \emph{not} establish. Spatial transcriptomics
 is a single snapshot, so the operator is identified only up to the
 quasi-steady-state assumption we impose; recovered diffusion lengths are
@@ -167,6 +172,9 @@ It cannot, and we explain why in Section~\ref{sec:limitations}.
 \item \textbf{A control that reframes the comparison.} A non-spatial baseline
   with the same interpolation head matches or beats most graph models, showing how
   little message passing contributes on this task (Section~\ref{sec:setup}).
+\item \textbf{Four negative results, reported as results.} No Turing
+  instability; worst-in-class spatial autocorrelation; a failed split-half
+  perturbation test; and worse transfer than the baseline we beat in-domain.
 \item \textbf{A falsifiable interpretability read-out.} Linearising the learned
   operator yields a dispersion relation whose sign and peak wavenumber state
   whether, and at what wavelength, the operator supports pattern formation
@@ -521,20 +529,41 @@ instability would require observing tissue away from steady state.
 
 \inputtable{tab_transfer_tissue}
 
-Trained on adult mouse brain and applied unchanged to human breast carcinoma---a
-different species, organ and spatial architecture---NMO attains
-\TissueZeroShot{} zero-shot against a training-mean floor of \TissueFloor{} and an
-in-domain oracle of \TissueOracle{} (Table~\ref{tab:transfer_tissue},
-Figure~\ref{fig:transfer}). Refitting \emph{only} the decoder, with the encoder
-and operator frozen, recovers \TissueFineTune{}: the learned dynamics remain
-useful when the read-out is re-fitted, which is the concrete transfer claim.
+\paragraph{The operator transfers worse than the baseline it beats in-domain.}
+This is the clearest negative result in the paper. Trained on adult mouse brain
+and applied unchanged to human breast carcinoma --- a different species, organ
+and spatial architecture --- NMO attains \TissueZeroShot{} zero-shot against a
+training-mean floor of \TissueFloor{} and an in-domain oracle of
+\TissueOracle{}. It is above the floor, so something transfers. But
+\TissueZeroShotBaselineName{} reaches \TissueZeroShotBaseline{} in the same
+setting: \TissueZeroShotRatio$\times$ better than the model that beat it
+in-domain (Table~\ref{tab:transfer_tissue}, Figure~\ref{fig:transfer}).
+Refitting only the decoder does not close the gap (\TissueFineTune{} against
+the baseline's stronger fine-tuned result).
 
-The cross-resolution setting is the sharper test. An operator fitted to 55\,$\mu$m
-multi-cell Visium spots on a 100\,$\mu$m lattice is evaluated on single-cell
-Xenium sampling of the same organ. Because all Xenium panel genes are present in
-the raw Visium matrix, we rebuild the source with the panel force-included, giving
-a shared vocabulary of \ResSharedGenes{} genes rather than the much smaller
-HVG intersection.
+The cross-resolution setting repeats the pattern rather than rescuing it. An
+operator fitted to 55\,$\mu$m multi-cell Visium spots on a 100\,$\mu$m lattice,
+evaluated on single-cell Xenium sampling of the \emph{same organ}, reaches
+\ResZeroShot{} against \ResZeroShotBaseline{} for the same baseline --- again
+about \ResZeroShotRatio$\times$ worse (Appendix~\ref{app:resolution}). Because
+all Xenium panel genes are present in the raw Visium matrix we rebuild the source
+with the panel force-included, giving a shared vocabulary of \ResSharedGenes{}
+genes rather than the much smaller HVG intersection, so the gap is not an artefact
+of a thin gene overlap.
+
+We had expected the opposite. The motivation for a continuous operator is
+precisely that it is defined on the field rather than on a sampling lattice, and
+we predicted this would pay off under changes of geometry. It does not. The
+explanation we find most plausible --- and we flag it as a hypothesis, not a
+demonstration --- is that the advantage and the failure share a cause. NMO wins
+in-domain by fitting an operator whose fixed point \emph{is} this tissue: a
+particular anisotropic diffusion tensor and reaction field tuned to one
+anatomy. Relaxation towards that attractor is exactly wrong when the target has a
+different architecture, whereas a graph model's local message passing carries
+much less about the source and so degrades more gracefully. On this evidence the
+learned operator is a tissue-specific summary, not a portable prior, and claims
+about neural operators generalising across discretisations should not be assumed
+to extend to biological transfer without being tested.
 
 \begin{figure}[t]
   \centering
@@ -747,9 +776,19 @@ averaged over a small number of seeds. We report standard deviations across seed
 but have not run a formal power analysis, and we would not claim that the ranking
 among the closely-clustered graph baselines is meaningful.
 
+\paragraph{The operator is tissue-specific, which undercuts the motivation.}
+Discretisation-invariance was the reason to prefer an operator over a graph, and
+under transfer the graph baseline wins by \TissueZeroShotRatio$\times$
+(cross-tissue) and \ResZeroShotRatio$\times$ (cross-resolution). Whatever NMO
+gains in-domain it appears to gain by specialising. Until that is fixed --- for
+instance by fitting a shared operator across several tissues, or by conditioning
+$\mD_\theta$ on tissue-level covariates --- the method should be understood as a
+within-section model.
+
 \paragraph{Scope.} Single 2-D sections, one per condition; ortholog matching by
 upper-cased symbol (missing paralog renaming and family expansions); CPU-scale
-compute. No 3-D volumes or multi-section registration.
+compute. No 3-D volumes or multi-section registration. Transfer used two models
+and two seeds, fewer than the main benchmark.
 
 % =====================================================================
 \section{Discussion and Conclusion}
@@ -757,13 +796,22 @@ compute. No 3-D volumes or multi-section registration.
 
 We asked whether the continuous description developmental biology uses for
 tissue can be turned into a fitted operator on spatial transcriptomics, and
-whether that helps. On this evidence it does: treating tissue as a field rather
-than a graph improves prediction at unmeasured coordinates, transfers across
-species and resolution, and yields quantitative, falsifiable diagnostics ---
-diffusion tensors and dispersion relations. The parameter-matched ablation shows
-the dynamics carry real weight, and the spectral solve makes the operator both
-stable and physically readable. It also costs high-frequency structure, and one
-of our diagnostics says so.
+whether that helps. The answer is a qualified yes with a clear boundary.
+In-domain it helps: treating tissue as a field rather than a graph improves
+prediction at unmeasured coordinates, the parameter-matched $T{=}0$ control
+costs more than the entire margin over the best baseline, and on the one dataset
+with a real time axis integrating the operator forward beats persistence. The
+spectral solve makes the operator stable and physically readable.
+
+Outside that boundary the results are negative, and we think they are the more
+useful half of the paper. The operator does not transfer --- the graph baseline
+it beats in-domain wins by \TissueZeroShotRatio--\ResZeroShotRatio$\times$ under
+transfer. It is dissipative rather than pattern-forming, with no Turing band. Its
+fields are the most over-smoothed of any model tested. And a falsifiable test of
+the pathway interpretation fails outright. A reader should take from this that
+the continuous-operator framing buys in-domain accuracy by specialising to one
+tissue, and that its more ambitious promises --- portability, mechanism ---
+remain unearned.
 
 We claim no recovery of biochemical reality; a snapshot cannot support that, and
 the honest framing is that NMO learns \emph{latent continuous operators

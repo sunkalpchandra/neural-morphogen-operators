@@ -1,0 +1,26 @@
+[
+  {
+    "n_perturbations": 7,
+    "n_shared_genes": 339,
+    "mean_spearman": -0.024335421851099,
+    "median_spearman": 0.011526570870828524,
+    "mean_null_spearman": -0.0003061289434073054,
+    "frac_positive": 0.5714285714285714,
+    "wilcoxon_p": 0.6875,
+    "seed": 0,
+    "model": "nmo",
+    "display": "NMO (ours)"
+  },
+  {
+    "n_perturbations": 7,
+    "n_shared_genes": 339,
+    "mean_spearman": 0.010665169970581038,
+    "median_spearman": 0.015189023687333337,
+    "mean_null_spearman": 0.0215662283121622,
+    "frac_positive": 0.5714285714285714,
+    "wilcoxon_p": 0.6875,
+    "seed": 0,
+    "model": "stagate",
+    "display": "STAGATE-style"
+  }
+]

@@ -56,3 +56,24 @@ shared vocabulary: 390 genes
 [00:53:02] INFO    training NeuralMorphogenOperator (1,548,039 params) on visium_human_breast for 250 epochs
 [00:53:52] INFO      ep   25/250  loss 1.5185  val r 0.1118  rmse 0.4102
 [00:54:36] INFO      ep   50/250  loss 1.4656  val r 0.1290  rmse 0.4051
+[00:55:34] INFO      ep   75/250  loss 1.4534  val r 0.1194  rmse 0.3966
+[00:56:39] INFO      ep  100/250  loss 1.4108  val r 0.1079  rmse 0.4006
+[00:57:39] INFO      ep  125/250  loss 1.4123  val r 0.1072  rmse 0.4058
+[00:58:41] INFO      ep  150/250  loss 1.4251  val r 0.1082  rmse 0.4110
+[00:59:39] INFO      ep  175/250  loss 1.3835  val r 0.1068  rmse 0.4130
+[01:00:33] INFO      ep  200/250  loss 1.3992  val r 0.1065  rmse 0.4146
+[01:01:30] INFO      ep  225/250  loss 1.3758  val r 0.1056  rmse 0.4149
+[01:02:41] INFO      ep  250/250  loss 1.3970  val r 0.1057  rmse 0.4151
+[01:02:41] INFO      early stop at epoch 250 (best 0.1290)
+[01:02:43] INFO      done in 579s | test r=0.1366 rmse=0.3981 ssim=0.3271
+
+                         pearson_mean                ... ssim_mean          
+                                mean           std  ...      mean       std
+setting          model                              ...                    
+decoder_finetune nmo    4.135651e-02  1.875916e-02  ...  0.281828  0.016727
+floor            mean  -5.154678e-09  3.693110e-08  ...  0.254131  0.000770
+oracle           nmo    1.355170e-01  1.497583e-03  ...  0.329277  0.003120
+source_in_domain nmo    2.085564e-01  3.746012e-03  ...  0.364574  0.004163
+zero_shot        nmo    3.304103e-02  1.166347e-02  ...  0.218617  0.017232
+
+[5 rows x 6 columns]

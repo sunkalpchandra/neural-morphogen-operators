@@ -1,0 +1,62 @@
+[01:00:35] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[01:00:35] INFO    section visium_mouse_brain__panel_xenium_mouse_brain: 2691 locations x 2177 genes, 23006 edges, scale 3191 um/unit
+[01:00:35] INFO    aligned visium_mouse_brain__panel_xenium_mouse_brain <-> xenium_mouse_brain: 248 shared genes
+visium_mouse_brain -> xenium_mouse_brain: 248 shared genes, 2691 source locations, 8000 target locations
+[01:00:41] INFO    training STAGATEStyleBaseline (221,336 params) on visium_mouse_brain__panel_xenium_mouse_brain for 250 epochs
+[01:00:48] INFO      ep   25/250  loss 1.3849  val r 0.1356  rmse 0.2826
+[01:00:55] INFO      ep   50/250  loss 1.2880  val r 0.1951  rmse 0.2782
+[01:01:02] INFO      ep   75/250  loss 1.2186  val r 0.2134  rmse 0.2712
+[01:01:12] INFO      ep  100/250  loss 1.1843  val r 0.2221  rmse 0.2668
+[01:01:21] INFO      ep  125/250  loss 1.1611  val r 0.2293  rmse 0.2660
+[01:01:29] INFO      ep  150/250  loss 1.1161  val r 0.2328  rmse 0.2660
+[01:01:36] INFO      ep  175/250  loss 1.1161  val r 0.2347  rmse 0.2657
+[01:01:43] INFO      ep  200/250  loss 1.1092  val r 0.2353  rmse 0.2656
+[01:01:56] INFO      ep  225/250  loss 1.1034  val r 0.2357  rmse 0.2656
+[01:02:10] INFO      ep  250/250  loss 1.1062  val r 0.2358  rmse 0.2656
+[01:02:10] INFO      done in 89s | test r=0.2434 rmse=0.2473 ssim=0.3629
+[zero-shot] xenium_mouse_brain stagate seed 0: r=0.2819
+[01:02:13] INFO    training STAGATEStyleBaseline (221,336 params) on xenium_mouse_brain for 250 epochs
+[01:02:48] INFO      ep   25/250  loss 1.3624  val r 0.1342  rmse 1.8869
+[01:03:34] INFO      ep   50/250  loss 1.2580  val r 0.1859  rmse 1.8605
+[01:04:06] INFO      ep   75/250  loss 1.1779  val r 0.1993  rmse 1.8191
+[01:04:36] INFO      ep  100/250  loss 1.1038  val r 0.2068  rmse 1.7948
+[01:04:59] INFO      ep  125/250  loss 1.0613  val r 0.2120  rmse 1.7882
+[01:05:22] INFO      ep  150/250  loss 1.0445  val r 0.2148  rmse 1.7858
+[01:05:47] INFO      ep  175/250  loss 1.0330  val r 0.2167  rmse 1.7848
+[01:06:13] INFO      ep  200/250  loss 1.0289  val r 0.2173  rmse 1.7845
+[01:07:02] INFO      ep  225/250  loss 1.0251  val r 0.2178  rmse 1.7841
+[01:07:53] INFO      ep  250/250  loss 1.0276  val r 0.2179  rmse 1.7841
+[01:07:55] INFO      done in 340s | test r=0.2552 rmse=1.7617 ssim=0.5685
+[01:08:01] INFO    training STAGATEStyleBaseline (221,336 params) on visium_mouse_brain__panel_xenium_mouse_brain for 250 epochs
+[01:08:11] INFO      ep   25/250  loss 1.3928  val r 0.1156  rmse 0.2830
+[01:08:19] INFO      ep   50/250  loss 1.3112  val r 0.1888  rmse 0.2794
+[01:08:26] INFO      ep   75/250  loss 1.2432  val r 0.2133  rmse 0.2734
+[01:08:38] INFO      ep  100/250  loss 1.1895  val r 0.2219  rmse 0.2675
+[01:08:46] INFO      ep  125/250  loss 1.1483  val r 0.2277  rmse 0.2660
+[01:08:53] INFO      ep  150/250  loss 1.1197  val r 0.2328  rmse 0.2652
+[01:09:01] INFO      ep  175/250  loss 1.1084  val r 0.2355  rmse 0.2648
+[01:09:13] INFO      ep  200/250  loss 1.1100  val r 0.2366  rmse 0.2649
+[01:09:22] INFO      ep  225/250  loss 1.1212  val r 0.2372  rmse 0.2647
+[01:09:34] INFO      ep  250/250  loss 1.1077  val r 0.2372  rmse 0.2647
+[01:09:35] INFO      done in 93s | test r=0.2414 rmse=0.2486 ssim=0.3647
+[zero-shot] xenium_mouse_brain stagate seed 1: r=0.2818
+[01:09:36] INFO    training STAGATEStyleBaseline (221,336 params) on xenium_mouse_brain for 250 epochs
+[01:10:10] INFO      ep   25/250  loss 1.3713  val r 0.1172  rmse 1.8855
+[01:10:56] INFO      ep   50/250  loss 1.2551  val r 0.1842  rmse 1.8629
+[01:11:54] INFO      ep   75/250  loss 1.1759  val r 0.2027  rmse 1.8248
+[01:12:20] INFO      ep  100/250  loss 1.1040  val r 0.2109  rmse 1.7963
+[01:13:12] INFO      ep  125/250  loss 1.0691  val r 0.2170  rmse 1.7868
+[01:13:49] INFO      ep  150/250  loss 1.0503  val r 0.2211  rmse 1.7828
+[01:14:47] INFO      ep  175/250  loss 1.0326  val r 0.2231  rmse 1.7817
+[01:15:24] INFO      ep  200/250  loss 1.0265  val r 0.2239  rmse 1.7813
+[01:15:53] INFO      ep  225/250  loss 1.0200  val r 0.2240  rmse 1.7812
+[01:16:47] INFO      ep  250/250  loss 1.0225  val r 0.2241  rmse 1.7812
+[01:16:48] INFO      done in 430s | test r=0.2562 rmse=1.7589 ssim=0.5703
+
+                           pearson_mean                    rmse          
+                                  mean           std      mean       std
+setting          model                                                  
+floor            mean     9.346206e-08  2.489930e-08  1.871548  0.000297
+oracle           stagate  2.556919e-01  6.990476e-04  1.760316  0.001932
+source_in_domain stagate  2.423812e-01  1.458091e-03  0.247961  0.000873
+zero_shot        stagate  2.818769e-01  6.551728e-05  1.765339  0.000517

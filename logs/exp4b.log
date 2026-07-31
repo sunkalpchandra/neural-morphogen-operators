@@ -1,0 +1,42 @@
+[00:55:22] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[00:55:22] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 250 epochs
+[00:56:28] INFO      ep   25/250  loss 1.5011  val r 0.1450  rmse 0.2944
+[00:57:31] INFO      ep   50/250  loss 1.4005  val r 0.2009  rmse 0.2841
+[00:58:35] INFO      ep   75/250  loss 1.3114  val r 0.2232  rmse 0.2735
+[00:59:35] INFO      ep  100/250  loss 1.3098  val r 0.2399  rmse 0.2708
+[01:00:32] INFO      ep  125/250  loss 1.2817  val r 0.2463  rmse 0.2671
+[01:01:31] INFO      ep  150/250  loss 1.2506  val r 0.2486  rmse 0.2678
+[01:02:48] INFO      ep  175/250  loss 1.2360  val r 0.2511  rmse 0.2662
+[01:04:09] INFO      ep  200/250  loss 1.2580  val r 0.2525  rmse 0.2655
+[01:05:02] INFO      ep  225/250  loss 1.2461  val r 0.2527  rmse 0.2658
+[01:05:48] INFO      ep  250/250  loss 1.2319  val r 0.2529  rmse 0.2657
+[01:05:50] INFO      done in 626s | test r=0.2218 rmse=0.2567 ssim=0.3790
+[01:05:51] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[01:05:51] INFO    training NeuralMorphogenOperator (2,201,384 params) on visium_human_breast for 250 epochs
+[01:08:18] INFO      ep   25/250  loss 1.5422  val r 0.0675  rmse 0.3130
+[01:10:04] INFO      ep   50/250  loss 1.5283  val r 0.0817  rmse 0.3100
+[01:12:20] INFO      ep   75/250  loss 1.5023  val r 0.0847  rmse 0.3054
+[01:14:49] INFO      ep  100/250  loss 1.4778  val r 0.0790  rmse 0.3095
+[01:16:55] INFO      ep  125/250  loss 1.4803  val r 0.0778  rmse 0.3147
+[01:19:09] INFO      ep  150/250  loss 1.4625  val r 0.0762  rmse 0.3191
+[01:19:56] INFO      ep  175/250  loss 1.4564  val r 0.0777  rmse 0.3205
+[01:20:45] INFO      ep  200/250  loss 1.4568  val r 0.0773  rmse 0.3215
+[01:21:46] INFO      ep  225/250  loss 1.4564  val r 0.0777  rmse 0.3217
+[01:22:29] INFO      ep  250/250  loss 1.4605  val r 0.0778  rmse 0.3218
+[01:22:31] INFO      done in 998s | test r=0.0929 rmse=0.3003 ssim=0.3883
+[perturb-seq] seed0 nmo: {'n_perturbations': 7, 'n_shared_genes': 339, 'mean_spearman': -0.024335421851099, 'median_spearman': 0.011526570870828524, 'mean_null_spearman': -0.0003061289434073054, 'frac_positive': 0.5714285714285714, 'wilcoxon_p': 0.6875, 'seed': 0, 'model': 'nmo', 'display': 'NMO (ours)'}
+[01:22:35] INFO    training STAGATEStyleBaseline (693,959 params) on visium_human_breast for 250 epochs
+[01:23:01] INFO      ep   25/250  loss 1.4432  val r 0.0530  rmse 0.3122
+[01:23:18] INFO      ep   50/250  loss 1.4175  val r 0.0738  rmse 0.3094
+[01:23:40] INFO      ep   75/250  loss 1.3894  val r 0.0763  rmse 0.3083
+[01:24:15] INFO      ep  100/250  loss 1.3636  val r 0.0801  rmse 0.3089
+[01:24:36] INFO      ep  125/250  loss 1.3669  val r 0.0828  rmse 0.3089
+[01:25:06] INFO      ep  150/250  loss 1.3456  val r 0.0840  rmse 0.3098
+[01:25:37] INFO      ep  175/250  loss 1.3384  val r 0.0856  rmse 0.3096
+[01:26:04] INFO      ep  200/250  loss 1.3389  val r 0.0859  rmse 0.3097
+[01:26:48] INFO      ep  225/250  loss 1.3384  val r 0.0862  rmse 0.3095
+[01:27:28] INFO      ep  250/250  loss 1.3427  val r 0.0862  rmse 0.3095
+[01:27:31] INFO      done in 293s | test r=0.1028 rmse=0.2917 ssim=0.4249
+[perturb-seq] seed0 stagate: {'n_perturbations': 7, 'n_shared_genes': 339, 'mean_spearman': 0.010665169970581038, 'median_spearman': 0.015189023687333337, 'mean_null_spearman': 0.0215662283121622, 'frac_positive': 0.5714285714285714, 'wilcoxon_p': 0.6875, 'seed': 0, 'model': 'stagate', 'display': 'STAGATE-style'}
+[01:27:40] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[01:27:40] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 250 epochs

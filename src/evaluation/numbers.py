@@ -118,6 +118,17 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
         if not zs.empty:
             g = zs.groupby("model")["pearson_mean"].mean().sort_values(ascending=False)
             cmd(f"{tag}ZeroShotBest", str(g.index[0]).replace("_", " "))
+            # Baseline comparison under transfer -- reported because NMO loses it.
+            base = g.drop(index=[i for i in g.index if i in ("nmo", "mean")], errors="ignore")
+            if len(base):
+                cmd(f"{tag}ZeroShotBaseline", _ms(
+                    zs[zs["model"] == base.index[0]], "pearson_mean"))
+                cmd(f"{tag}ZeroShotBaselineName",
+                    str(base.index[0]).replace("_", " ") + "-style")
+                if (zs["model"] == "nmo").any():
+                    nv = float(zs[zs["model"] == "nmo"]["pearson_mean"].mean())
+                    cmd(f"{tag}ZeroShotGap", _val(nv - float(base.iloc[0])))
+                    cmd(f"{tag}ZeroShotRatio", f"{float(base.iloc[0]) / max(nv, 1e-9):.1f}")
         if "n_shared_genes" in df.columns:
             cmd(f"{tag}SharedGenes", str(int(df["n_shared_genes"].iloc[0])))
 
