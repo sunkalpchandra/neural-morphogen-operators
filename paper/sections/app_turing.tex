@@ -1,0 +1,84 @@
+\section{Linear stability and Turing analysis}
+\label{app:turing}
+% =====================================================================
+
+Let $\vz^\star\in\R^C$ be a spatially homogeneous equilibrium, so
+$f_\theta(\vz^\star)=0$, and write $\mJ := \nabla f_\theta(\vz^\star)$.
+Linearising \eqref{eq:operator} about $\vz^\star$ and expanding the perturbation
+in the basis \eqref{eq:fourier} gives, for each $\vk$, the finite-dimensional
+system
+\begin{equation}
+\frac{\dd}{\dd t}\,\delta\hat{\vz}(\vk)
+  \;=\; M(\vk)\,\delta\hat{\vz}(\vk),
+\qquad
+M(\vk) \;:=\; \mJ - \mathrm{diag}\big(q_1(\vk),\dots,q_C(\vk)\big),
+\label{eq:linearised}
+\end{equation}
+with $q_c$ as in \eqref{eq:symbol}. Define the growth rate
+$\mu(\vk) := \max\mathrm{Re}\,\mathrm{spec}\,M(\vk)$ and its angular maximum
+$\mu^\star(k) := \max_{|\vk|=k}\mu(\vk)$; the latter is required because
+anisotropy makes $q_c$ direction-dependent.
+
+\begin{definition}[Turing instability]
+\label{def:turing}
+The operator exhibits a \emph{diffusion-driven (Turing) instability} at
+$\vz^\star$ if $\mu^\star(0)<0$ and $\mu^\star(k)>0$ for some $k>0$.
+\end{definition}
+
+The first condition states that the reaction alone is stable; the second that
+diffusion destabilises a band of finite wavelengths. The selected wavelength is
+$\lambda^\star = 2\pi/k^\star$ with $k^\star = \arg\max_k \mu^\star(k)$,
+converted to microns by the stored coordinate scale.
+
+\begin{proposition}[Pure diffusion cannot pattern]
+\label{prop:nopattern}
+If $f_\theta\equiv0$ then $\mu^\star(k) = -\min_c \min_{|\vk|=k} q_c(\vk) \le
+-\lambda_{\min}(\mD)k^2 \le 0$, strictly decreasing in $k$. No Turing
+instability exists.
+\end{proposition}
+
+\begin{proof}
+$M(\vk)=-\mathrm{diag}(q_c(\vk))$ is diagonal with real non-positive entries;
+its largest eigenvalue is $-\min_c q_c(\vk)$, and $q_c(\vk)\ge\lambda_{\min}|\vk|^2$
+by Lemma~\ref{lem:symbol}.
+\end{proof}
+
+\begin{proposition}[Two-channel criterion]
+\label{prop:twochannel}
+Let $C=2$ with isotropic tensors $\mD_c = d_c I$, $\mJ = \begin{psmallmatrix}
+a & b \\ c & d\end{psmallmatrix}$, and write $\sigma=|\vk|^2$. Then
+$\mu(\vk)>0$ for some $\sigma>0$ while $\mu(0)<0$ if and only if
+\begin{equation}
+a+d<0, \qquad ad-bc>0, \qquad d_2 a + d_1 d > 2\sqrt{d_1 d_2 (ad-bc)} .
+\label{eq:turingcond}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+$M$ has trace $a+d-(d_1+d_2)\sigma$ and determinant
+$h(\sigma) := d_1d_2\sigma^2 - (d_2a+d_1d)\sigma + (ad-bc)$. The first two
+conditions give stability at $\sigma=0$; the trace is then negative for all
+$\sigma>0$, so instability requires $h(\sigma)<0$ for some $\sigma>0$. The
+minimum of the convex parabola $h$ is attained at
+$\sigma^\star=(d_2a+d_1d)/(2d_1d_2)$ and is negative precisely under the third
+condition.
+\end{proof}
+
+Condition~\eqref{eq:turingcond} requires the two channels to have
+\emph{unequal} diffusivities of opposite-signed feedback---the classical
+short-range-activation / long-range-inhibition requirement. The operators fitted
+in Section~\ref{sec:results} satisfy the first two conditions but not the third:
+the dispersion curve is monotonically decreasing
+(Fig.~\ref{fig:dynamics}c), and $\mu^\star(k)<0$ for all $k>0$ in every run.
+
+\begin{remark}[Why the negative result is expected]
+The training objective \eqref{eq:steady} rewards making the \emph{observed}
+configuration stationary. A Turing-unstable operator does the opposite: it
+renders the homogeneous state unstable so that structure grows spontaneously.
+Since the observed field is treated as a fixed point rather than as the outcome
+of an instability, the fitted operator is driven toward dissipativity. Detecting
+pattern-forming instability would require observations away from steady state,
+consistent with Corollary~\ref{cor:ident}.
+\end{remark}
+
+% =====================================================================

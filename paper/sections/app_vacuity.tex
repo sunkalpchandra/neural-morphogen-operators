@@ -1,0 +1,46 @@
+\section{Vacuity of the along-trajectory residual}
+\label{app:vacuity}
+% =====================================================================
+
+Physics-informed training conventionally penalizes the PDE residual evaluated on
+the model's own trajectory. The following makes precise why that penalty is
+uninformative for the present architecture, and motivates the steady-state
+formulation adopted instead.
+
+\begin{proposition}[The trajectory residual is an integrator diagnostic]
+\label{prop:vacuity}
+Define $R_{\Delta t}(\vz;\theta) := \Delta t^{-1}\big(S_{\Delta t}\vz - \vz\big)
+- \big(\mathcal{A}_{\mD}\vz + f_\theta(\vz)\big)$. Then for every
+$\theta$ in a bounded parameter set and every sufficiently regular $\vz$,
+\begin{equation}
+\|R_{\Delta t}(\vz;\theta)\| \;=\; \Delta t \cdot
+\Big\| \tfrac{1}{2}\big[\mathcal{A}_{\mD},\,\mathcal{F}_\theta\big]\vz \Big\|
+\;+\; O(\Delta t^2),
+\label{eq:residual}
+\end{equation}
+where $\mathcal{F}_\theta \vz := f_\theta(\vz)$ and $[\cdot,\cdot]$ is the
+commutator. In particular $R_{\Delta t}\to0$ as $\Delta t\to0$ \emph{uniformly in
+$\theta$}, and $R_{\Delta t}$ does not depend on the observed data.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Expanding $S_{\Delta t}$ by BCH and subtracting the exact generator leaves the
+leading commutator term at order $\Delta t$; all data-dependent quantities cancel
+because $S_{\Delta t}$ and the generator are evaluated at the same state $\vz$.
+\end{proof}
+
+Two consequences follow. First, minimizing
+$\|R_{\Delta t}\|^2$ cannot fit the model to observations, since the observations
+do not appear in \eqref{eq:residual}; it drives $\theta$ toward operators whose
+diffusive and reactive parts commute, an inductive bias unrelated to the data.
+Second, the gradient signal it supplies is $O(\Delta t)$ and therefore vanishes
+in the very limit in which the discretization is most faithful. The empirical
+scaling is confirmed in Table~\ref{tab:theory} (observed order $1.00$).
+
+The constraint retained instead is the \emph{steady-state} residual
+\eqref{eq:steady}, which asks that the measured configuration be a fixed point of
+the learned operator. This does involve the data, through $\vz_T$, and it
+constrains $\mD_\theta$ and $f_\theta$ jointly: the set of pairs satisfying it is
+a proper subset of parameter space, characterized next.
+
+% =====================================================================

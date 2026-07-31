@@ -1,0 +1,67 @@
+\section{Non-identifiability from a single snapshot}
+\label{app:identifiability}
+% =====================================================================
+
+The following records the central epistemic limitation of the setting: an
+operator fitted to one stationary field is determined only on a measure-zero
+subset of its own domain. The argument is elementary --- a $C^1$ image of a
+two-dimensional domain cannot fill $\R^C$ once $C\ge3$, so the stationarity
+constraint simply says nothing off that image --- and we state it as a theorem
+for its consequence rather than for its difficulty. That consequence is sharp and
+is not, in our reading, generally acknowledged in this literature: it means every
+counterfactual an operator of this class produces is a statement about the
+architecture, not about the data, and it predicts in advance the null result of
+Section~\ref{sec:results4}.
+
+\begin{theorem}[Latent-space non-identifiability]
+\label{thm:identifiability}
+Let $\vz^\star \in C^2(\Omega;\R^C)$ with $\Omega\subset\R^2$ open, and suppose
+$C \ge 3$. Fix any $\mD\in(\mathcal{S}_{++}^2)^C$ and define the admissible set
+\begin{equation}
+\mathcal{F}(\mD,\vz^\star) := \Big\{\, f\in C^1(\R^C;\R^C) \;:\;
+  \mathcal{A}_{\mD}\vz^\star(x) + f\big(\vz^\star(x)\big)=0
+  \;\;\forall x\in\Omega \,\Big\}.
+\end{equation}
+If $\mathcal{F}(\mD,\vz^\star)\ne\emptyset$ then it is an infinite-dimensional
+affine subset of $C^1(\R^C;\R^C)$. Specifically, for every
+$\varphi\in C^1(\R^C;\R^C)$ vanishing on $\mathcal{R}:=\vz^\star(\Omega)$ and
+every $f\in\mathcal{F}$, one has $f+\varphi\in\mathcal{F}$, and the space of such
+$\varphi$ is infinite-dimensional.
+\end{theorem}
+
+\begin{proof}
+The constraint restricts $f$ only through its values on
+$\mathcal{R}=\vz^\star(\Omega)$; hence $f+\varphi$ satisfies it whenever
+$\varphi|_{\mathcal{R}}\equiv0$. It remains to show that the space of such
+$\varphi$ is infinite-dimensional. Since $\vz^\star$ is $C^1$ on a
+$2$-dimensional domain, $\mathcal{R}$ is a countable union of Lipschitz images of
+compact subsets of $\R^2$ and therefore has Hausdorff dimension at most $2$. As
+$C\ge3$, $\dim_H(\mathcal{R}) \le 2 < C$, so $\mathcal{R}$ is Lebesgue-null in
+$\R^C$ and has empty interior. Its complement therefore contains an open ball
+$B$; choosing countably many disjoint balls $B_i\subset B$ and bump functions
+$\varphi_i\in C_c^\infty(B_i;\R^C)$ yields a linearly independent family, all
+vanishing on $\mathcal{R}$.
+\end{proof}
+
+\begin{corollary}[What a stationarity fit can determine]
+\label{cor:ident}
+Under the hypotheses of Theorem~\ref{thm:identifiability}, the steady-state loss
+\eqref{eq:steady} constrains $f_\theta$ only on $\mathcal{R}$, a set of Lebesgue
+measure zero in $\R^C$. Any statement about $f_\theta$ off $\mathcal{R}$---in
+particular any counterfactual obtained by displacing the latent state away from
+the observed manifold---is determined by the inductive bias of the architecture
+and the regularizers, not by the data.
+\end{corollary}
+
+Corollary~\ref{cor:ident} has a direct experimental consequence. The in-silico
+perturbation of Section~\ref{sec:results4} displaces $\vz$ along a latent
+direction and integrates forward; by construction this evaluates $f_\theta$ at
+states off $\mathcal{R}$, where Theorem~\ref{thm:identifiability} shows the data
+exert no constraint. The null outcome reported there is therefore consistent
+with the theory rather than merely an empirical disappointment: a single
+stationary snapshot does not contain the information such a counterfactual would
+require. Breaking the degeneracy requires observations that visit a
+$C$-dimensional neighborhood of $\mathcal{R}$---dense temporal sampling, or
+interventional data.
+
+% =====================================================================

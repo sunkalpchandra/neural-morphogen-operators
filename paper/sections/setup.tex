@@ -1,0 +1,64 @@
+\section{Experimental setup}
+\label{sec:setup}
+% =====================================================================
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_datasets.pdf}
+  \caption{\textbf{Processed spatial sections}, colored by total counts per
+  location. Five representative sections of the \NSpatialSections{} in the pool;
+  they differ in assay, sampling density, gene panel and physical extent, with
+  per-panel counts printed beneath each. Full inventory in
+  Appendix~\ref{app:empirical}.}
+  \label{fig:datasets}
+\end{figure}
+
+\paragraph{Data.} We use \NDatasets{} public datasets spanning four spatial
+technologies (\NSpatialSections{} tissue sections, \SpatialLocations{} measured
+locations; Fig.~\ref{fig:datasets}), plus one non-spatial perturbation screen
+(\NPerturbCells{} dissociated cells) used only in
+Section~\ref{sec:results4}. Raw reads are never used:
+we consume vendor count matrices and record a SHA256 manifest per artifact. One
+QC policy is applied throughout, then library-size normalization, log transform,
+and HVG selection that \emph{force-includes} every detected morphogen-pathway
+gene, so the interpretability analysis is not evaluated on a set that selection
+has already biased. Coordinates are normalized \textbf{isotropically}: anisotropic
+rescaling would distort the Laplacian and make a learned diffusion coefficient
+meaningless.
+
+\paragraph{Task and splits.} Masked spatial reconstruction: contiguous tissue
+blocks are hidden from the encoder and every model predicts expression at those
+coordinates. Random spot-level splits leak, since a held-out spot is trivially
+predicted from its correlated neighbors, so we hold out whole contiguous blocks
+\citep{roberts2017crossvalidation} and compute standardization statistics on the
+training split only.
+
+\paragraph{Baselines.} A non-spatial autoencoder (the floor), a GCN
+\citep{kipf2017gcn}, SpaGCN-style and STAGATE-style models
+\citep{hu2021spagcn,dong2022stagate}, a graph transformer
+\citep{vaswani2017attention}, an exact GP and a multi-bandwidth GP
+\citep{rasmussen2006gp}, and an implicit neural field with Fourier features and
+SIREN activations \citep{tancik2020fourier}. The graph methods were not designed
+to predict at unmeasured coordinates, so each receives the same inverse-distance
+read-out head---the most favorable choice available---and is marked
+\emph{-style}, since these are not reproductions of the authors' pipelines. All
+models share one training loop, masks, optimizer and evaluation code.
+
+\paragraph{Metrics.} Per-gene Pearson and Spearman across held-out locations,
+RMSE, SSIM \citep{wang2004ssim} on rasterized maps, and absolute error in Moran's
+$I$ \citep{moran1950}, the last included because correlation and RMSE both reward
+regression toward a smooth mean.
+
+\paragraph{Two scopes, kept distinct.} Results are reported at two scales and we
+label every number with the one it belongs to. The \emph{benchmark} spans
+\MSSections{} sections at \MSSeeds{} seeds under a reduced budget, and is the
+basis for every claim about generality (Section~\ref{sec:results},
+Table~\ref{tab:multisection}); the \emph{primary section}
+(\DiffLenSection{}) is run at the full budget with \NSeeds{} seeds and carries
+the diagnostics that need a converged fit --- the learned operator, the
+ablations and the physics read-outs (Appendix~\ref{app:empirical},
+Table~\ref{tab:benchmark}). The two are not interchangeable: absolute scores are
+higher on the primary section, and a value from one is never quoted in support
+of a claim about the other.
+
+% =====================================================================

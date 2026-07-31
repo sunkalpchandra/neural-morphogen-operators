@@ -1,0 +1,77 @@
+\section{Discretization invariance of the encoder}
+\label{app:discretization}
+% =====================================================================
+
+The encoder must map measurements on an arbitrary point set to a field. Let
+$\mu$ be the sampling measure on $\Omega$ and consider the kernel-integral
+operator
+\begin{equation}
+(\mathcal{K}v)(x) \;=\; \int_\Omega \kappa_\theta(y-x)\odot v(y)\,\dd\mu(y),
+\label{eq:kernelint}
+\end{equation}
+of which the graph layer is the empirical counterpart
+$(\mathcal{K}_N v)(x_i) = |\mathcal{N}(i)|^{-1}\sum_{j\in\mathcal{N}(i)}
+\kappa_\theta(x_j-x_i)\odot v(x_j)$.
+
+\begin{proposition}[Monte-Carlo consistency]
+\label{prop:nystrom}
+If $\{x_j\}_{j=1}^N$ are i.i.d.\ draws from $\mu$ and
+$\kappa_\theta\odot v \in L^2(\mu)$, then for each $x$,
+$\E\big[(\mathcal{K}_Nv)(x)\big] = (\mathcal{K}v)(x)$ and
+$\mathrm{Var}\big[(\mathcal{K}_Nv)(x)\big] = O(N^{-1})$; consequently
+$\|\mathcal{K}_N v - \mathcal{K}v\|_{L^2(\mu)} = O_P(N^{-1/2})$.
+\end{proposition}
+
+\begin{proof}
+The empirical operator is a sample mean of i.i.d.\ terms with finite second
+moment; unbiasedness and the $O(N^{-1})$ variance are immediate, and the norm
+bound follows by Chebyshev and Fubini.
+\end{proof}
+
+Proposition~\ref{prop:nystrom} is the sense in which the encoder is
+discretization-invariant: the population operator \eqref{eq:kernelint} depends on
+the geometry through $\kappa_\theta(y-x)$ alone and not on the sampling pattern,
+and the empirical operator converges to it as the sampling density increases,
+whatever the lattice. \textbf{This is an asymptotic statement about the encoder,
+and it is worth emphasising that it does not imply transfer of the fitted
+operator.} The transfer experiments of
+Section~\ref{sec:results} show empirically that it does not: $\mD_\theta$ and
+$f_\theta$ are fitted to one tissue's stationary field, and
+Theorem~\ref{thm:identifiability} indicates they are unconstrained away from that
+field's range. Discretization invariance of the \emph{architecture} and
+portability of the \emph{fit} are distinct properties, and only the former is
+established here.
+
+\begin{proposition}[Splatting consistency]
+\label{prop:splat}
+Let $w_\sigma(r)=e^{-r^2/2\sigma^2}$ and define the Nadaraya--Watson field
+$F_\sigma(u) = \sum_i w_\sigma(\|u-x_i\|)v_i / \sum_i w_\sigma(\|u-x_i\|)$. If
+$v_i = v(x_i)$ for $v\in C^2$ and the sampling density $p$ is bounded away from
+zero, then $F_\sigma(u) = v(u) + O(\sigma^2) + O_P((N\sigma^2)^{-1/2})$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Standard kernel-regression bias--variance decomposition in two dimensions: the
+bias term is $\tfrac{\sigma^2}{2}\big(\Delta v + 2\nabla v\cdot\nabla\log p\big)
++o(\sigma^2)$ and the variance is $O((N\sigma^2)^{-1})$.
+\end{proof}
+
+The learnable bandwidth $\sigma$ therefore trades a smoothing bias against
+sampling noise. Since the bias term is proportional to $\Delta v$, splatting
+contributes a further diffusive smoothing on top of the operator---a mechanism
+that plausibly compounds the over-smoothing reported in
+Section~\ref{sec:results}, and one that the present work does not disentangle.
+
+\subsection*{Complexity}
+\label{app:complexity}
+
+Let $N$ be the number of measured locations, $G$ genes, $C$ latent channels,
+$H\times W$ the lattice, $E$ the number of graph edges and $T$ the integration
+horizon. The costs per forward pass are: gene projection $O(NGd)$; graph layers
+$O(LEd)$; splatting $O(Nr^2C)$ for radius $r$; spectral blocks
+$O(BCHW\log HW)$; operator $O(TCHW\log HW)$; decoding $O(NCd + NGd)$. The
+operator term is therefore linear in the horizon and quasi-linear in the lattice,
+and for the configurations used here ($C{=}32$, $H{=}W{=}64$, $T{=}8$) it is
+under $4\%$ of the forward cost---consistent with the parameter count of
+Section~\ref{sec:ablations}, where the operator holds $0.43\%$ of the weights yet
+accounts for the entire margin over the strongest baseline.

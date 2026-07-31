@@ -1,0 +1,43 @@
+% =====================================================================
+%  Neural Morphogen Operators -- WORKSHOP version.
+%
+%  Assembled from the SAME sources as neurips_2026.tex (sections/), with
+%  \fullpaperfalse dropping the material there is no room for. There is no
+%  forked copy of any claim, so the two builds cannot disagree: fixing a
+%  number in sections/ fixes it in both, and `make check-numbers` audits one
+%  set of sources rather than two.
+%
+%  Kept, per the venue's emphasis: the method, the exactly parameter-matched
+%  control, Propositions 10 and 11, the main benchmark table, the limitations.
+%  Everything dropped is signposted in the text rather than silently omitted.
+% =====================================================================
+\newif\iffullpaper
+\fullpaperfalse
+
+\input{preamble}
+
+\begin{document}
+
+\maketitle
+
+\input{sections/abstract}
+\input{sections/intro}
+\input{sections/method}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/ablations}
+\input{sections/limitations}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\iffullpaper\else
+\newpage
+\appendix
+% The two propositions the short version leans on are stated with their proofs;
+% the remaining theory lives in the archival version.
+\input{sections/app_vacuity}
+\input{sections/app_identifiability}
+\fi
+
+\end{document}

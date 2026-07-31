@@ -1,0 +1,45 @@
+\section{Limitations}
+\label{sec:limitations}
+% =====================================================================
+
+A limitation intrinsic to the setting is that a single stationary snapshot cannot
+identify a dynamical system. Theorem~\ref{thm:identifiability} makes this precise:
+for $C\ge3$ the stationarity constraint determines $f_\theta$ only on the range
+$\mathcal{R}=\vz^\star(\Omega)$, a Lebesgue-null set, so counterfactuals that
+displace $\vz$ off $\mathcal{R}$ are governed by the architecture rather than the
+data. Reported diffusion lengths accordingly characterize the fitted operator
+rather than physical morphogen transport, and ``morphogen'' names the operator
+class---anisotropic reaction--diffusion---rather than a validated claim about
+signaling. Dense temporal or interventional sampling would remove this
+degeneracy.
+
+We note that the predicted fields are smoother than the measurements, and that on
+Moran's $I$ error NMO trails the baselines it leads on the other metrics. This is
+a known consequence of diffusion-based architectures
+\citep{grand2021,gread2022} and bounds the applications we would recommend:
+prediction at unmeasured coordinates is well supported, delineation of sharp
+boundaries less so. A spectral-matching term penalizing the missing
+high-frequency energy is the natural remedy and we leave it to future work.
+
+The benchmark's statistical resolution is limited by the number of independent
+specimens rather than by the number of sections. Twelve of \MSSections{} sections
+come from one brain, leaving \MSSpecPairs{} independent specimens, at which the
+smallest attainable Wilcoxon $p$ is $\MSSpecMinP$. Against the continuous
+baselines this is enough: NMO wins on every specimen, which is the strongest
+result the design admits. Against the graph baselines it is not
+($d_z = \MSSpecGraphDz$, NMO ahead on \MSSpecWins{} of \MSSpecPairs{}); the
+section-level separation there rests substantially on correlated sections of one
+brain, and additional independent tissues --- not additional sections --- are
+what would settle it. We regard this as the single most informative experiment
+left undone.
+
+Transfer remains the weakest setting. NMO retains a substantial fraction of
+in-domain performance zero-shot, but the STAGATE-style baseline transfers better,
+and until $\mD_\theta$ is conditioned on tissue-level covariates the operator is
+best regarded as a within-section model. Finally, the \emph{-style} baselines
+implement each method's architectural core with a common read-out head and are
+not reproductions of published pipelines; the benchmark uses a reduced epoch
+budget and subsampled sections so that \MSRuns{} runs were feasible on CPU, which
+lowers all models' absolute scores; and scope is limited to single 2-D sections.
+
+\iffullpaper\else\label{endofmain}\fi

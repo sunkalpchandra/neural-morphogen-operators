@@ -42,6 +42,7 @@ from typing import Dict, List, Optional, Set, Tuple
 ROOT = Path(__file__).resolve().parents[1]
 PAPER = ROOT / "paper"
 TEX = PAPER / "neurips_2026.tex"
+SECTIONS = PAPER / "sections"
 
 # --------------------------------------------------------------------------- #
 # 1. Macro provenance registry
@@ -119,6 +120,9 @@ SECTION_SCOPE: Dict[str, Set[str]] = {
     "Learned dynamics": {"physics", "exp5", "exp5_matched", "exp1"},
     "Transfer across tissue, species and resolution": {"exp2", "exp3", "exp6", "exp12"},
     "Counterfactual perturbation": {"exp4", "physics"},
+    # Short-build summary paragraph: it stands in for the subsections the
+    # workshop version drops, so it legitimately spans their sources.
+    "Further results": {"exp7", "exp9", "exp2", "exp3", "exp4", "exp8"},
     "Ablations": {"exp5", "exp5_matched", "exp1", "exp8", "architecture"},
 }
 
@@ -193,8 +197,25 @@ def check_freshness(rep: Report, results: Path) -> None:
 # 3. Scope: macro provenance vs. the section that quotes it
 # --------------------------------------------------------------------------- #
 
+def _sources() -> str:
+    """The manuscript body, assembled from the modular sources.
+
+    Since the split into ``paper/sections/``, the driver files contain only
+    ``\\input`` lines; the claims live in the sources, and both the full and the
+    workshop build read the same ones. Auditing the sources therefore audits
+    both builds at once, which is the property the split was for.
+    """
+    parts = []
+    for name in ["abstract", "intro", "related", "method", "setup", "results",
+                 "ablations", "limitations", "discussion"]:
+        f = SECTIONS / f"{name}.tex"
+        if f.exists():
+            parts.append(f"%%SECTIONFILE {name}\n" + f.read_text())
+    return "\n".join(parts) if parts else TEX.read_text().split(r"\label{endofmain}")[0]
+
+
 def _main_body(tex: str) -> str:
-    return tex.split(r"\label{endofmain}")[0]
+    return _sources()
 
 
 def check_scope(rep: Report) -> None:

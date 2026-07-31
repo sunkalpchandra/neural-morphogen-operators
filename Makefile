@@ -1,4 +1,4 @@
-.PHONY: help data download build experiments all-experiments exp1 exp2 exp3 exp4 exp5 exp6 figures paper clean-runs test reevaluate finalize check-numbers
+.PHONY: workshop papers help data download build experiments all-experiments exp1 exp2 exp3 exp4 exp5 exp6 figures paper clean-runs test reevaluate finalize check-numbers
 
 # Use the project venv when present, otherwise whatever python is on PATH
 # (conda users, CI, etc.). Override with `make PY=python3.11 ...`.
@@ -58,8 +58,22 @@ exp6:
 figures:
 	PYTHONPATH=. $(PY) experiments/make_figures.py --section $(SECTION)
 
+# Two builds from one set of sources under paper/sections/. Neither is a fork:
+# `workshop` sets \fullpaperfalse, which the sources read to drop material.
 paper: figures
 	cd paper && (tectonic neurips_2026.tex || latexmk -pdf neurips_2026.tex)
+
+workshop: figures
+	cd paper && (tectonic workshop.tex || latexmk -pdf workshop.tex)
+
+# Both builds, with the page count each one lands on.
+papers: paper workshop
+	@for t in neurips_2026 workshop; do \
+	  aux=paper/$$t.aux; \
+	  main=$$(grep -o 'endofmain}{{[^}]*}{[0-9]*}' $$aux 2>/dev/null | grep -o '{[0-9]*}$$' | tr -d '{}'); \
+	  last=$$(grep -o 'lastpage}{{[^}]*}{[0-9]*}' $$aux 2>/dev/null | grep -o '{[0-9]*}$$' | tr -d '{}'); \
+	  echo "$$t: main content ends p$${main:-?}, $${last:-?} pages total"; \
+	done
 
 # ---------------------------------------------------------------- misc
 test:

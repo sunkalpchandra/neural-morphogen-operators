@@ -1,0 +1,90 @@
+\section{Notation and function-space setting}
+\label{app:notation}
+% =====================================================================
+
+Throughout, $\Omega = [-1,1]^2$ is identified with the flat torus
+$\mathbb{T}^2 = (\R/2\Z)^2$, so that the spectral operators below are exact
+rather than approximate. Let $L^2(\Omega;\R^C)$ carry the inner product
+$\langle u,v\rangle = \int_\Omega u(x)^\top v(x)\,\dd x$ and norm
+$\|u\| = \langle u,u\rangle^{1/2}$. The Fourier transform is
+\begin{equation}
+\hat{u}(\vk) = \tfrac{1}{|\Omega|}\int_\Omega u(x)\,e^{-\mathrm{i}\vk\cdot x}\dd x,
+\qquad
+u(x) = \sum_{\vk\in\Lambda} \hat{u}(\vk)\,e^{\mathrm{i}\vk\cdot x},
+\qquad
+\Lambda = (\pi\Z)^2 ,
+\label{eq:fourier}
+\end{equation}
+with Parseval identity $\|u\|^2 = |\Omega|\sum_{\vk\in\Lambda}|\hat u(\vk)|^2$.
+The lowest non-zero wavenumber on $\Omega$ is $|\vk|_{\min} = \pi$.
+
+Let $\mathcal{S}_{++}^2$ denote the cone of symmetric positive-definite
+$2\times2$ matrices. A \emph{diffusion tensor field} is a tuple
+$\mD = (\mD_1,\dots,\mD_C) \in (\mathcal{S}_{++}^2)^C$, acting channelwise. The
+\emph{reaction field} is a map $f_\theta \in C^1(\R^C;\R^C)$ applied pointwise,
+$(f_\theta u)(x) = f_\theta(u(x))$.
+
+\begin{definition}[Morphogen operator]
+\label{def:operator}
+For $\mD \in (\mathcal{S}_{++}^2)^C$ and $f_\theta \in C^1(\R^C;\R^C)$ the
+\emph{morphogen operator} is the semilinear evolution equation
+\begin{equation}
+\partial_t \vz = \mathcal{A}_{\mD}\,\vz + f_\theta(\vz),
+\qquad
+(\mathcal{A}_{\mD}\vz)_c := \nabla\!\cdot\!\big(\mD_c \nabla \vz_c\big),
+\label{eq:operator}
+\end{equation}
+on $\Omega$ with periodic boundary conditions and initial datum
+$\vz(\cdot,0)=\vz_0 \in L^2$.
+\end{definition}
+
+Equation~\eqref{eq:operator} is the classical semilinear parabolic form: a
+strongly elliptic second-order generator plus a globally Lipschitz, bounded
+perturbation. Existence and uniqueness of a mild solution on $[0,\infty)$ is
+standard, following from Propositions~\ref{prop:contraction} and~\ref{prop:reaction}.
+
+% =====================================================================
+\subsection*{Spectral representation}
+\label{app:spectral}
+
+\begin{lemma}[Fourier symbol]
+\label{lem:symbol}
+For each channel $c$, $\mathcal{A}_{\mD_c}$ is diagonal in the basis
+\eqref{eq:fourier} with symbol
+\begin{equation}
+\widehat{\mathcal{A}_{\mD_c} u}(\vk) \;=\; -\,q_c(\vk)\,\hat{u}(\vk),
+\qquad
+q_c(\vk) := \vk^\top \mD_c \vk \;\ge\; \lambda_{\min}(\mD_c)\,|\vk|^2 \;\ge\; 0 .
+\label{eq:symbol}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Writing $\mD_c=(d_{ij})$ and $u = e^{\mathrm{i}\vk\cdot x}$,
+$\nabla u = \mathrm{i}\vk\,u$, hence $\mD_c\nabla u = \mathrm{i}\,\mD_c\vk\,u$
+and $\nabla\!\cdot\!(\mD_c \nabla u) = \mathrm{i}\vk \cdot (\mathrm{i}\mD_c\vk)u
+= -(\vk^\top \mD_c\vk)\,u$. The inequality is the Rayleigh bound for symmetric
+$\mD_c$.
+\end{proof}
+
+Consequently the diffusion semigroup admits the closed form used in the
+implementation,
+\begin{equation}
+\big(e^{\tau \mathcal{A}_{\mD}}u\big)^{\wedge}(\vk) \;=\;
+  e^{-q_c(\vk)\tau}\,\hat{u}_c(\vk),
+\label{eq:semigroup}
+\end{equation}
+which is evaluated by a pair of FFTs at cost $O(CHW\log HW)$ per half-step. No
+spatial discretization of $\nabla\!\cdot\!(\mD\nabla\cdot)$ is ever formed, so the
+diffusive update carries no truncation error beyond the spectral representation
+of $\vz$ itself.
+
+\begin{remark}
+Isotropic $\mD_c=d_cI$ gives a rotation-invariant symbol $d_c|\vk|^2$; the
+general case has elliptical level sets aligned with the eigenvectors of $\mD_c$,
+permitting different decay lengths along and across an anatomical axis. The
+isotropy ablation of Section~\ref{sec:ablations} measures whether this freedom is
+used.
+\end{remark}
+
+% =====================================================================

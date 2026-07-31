@@ -1,0 +1,36 @@
+\section{Related Work}
+% =====================================================================
+
+\textbf{Neural operators} learn maps between function spaces, giving approximate
+independence from the discretization, with approximation and discretization-error
+theory now well developed \citep{kovachki2023neuraloperator}. Fourier neural
+operators parameterize the kernel spectrally \citep{li2021fno}, graph neural
+operators integrate a kernel over neighborhoods on irregular meshes
+\citep{li2020gno}, DeepONet factorizes into branch and trunk networks
+\citep{lu2021deeponet}, and message-passing solvers learn the stencil itself
+\citep{brandstetter2022message}. We adopt the graph form for irregular sampling
+and the spectral form for the dynamics, the latter rendering the diffusion solve
+exact; our integrator follows exponential time-differencing and operator
+splitting \citep{cox2002etdrk,strang1968splitting} rather than soft PDE-residual
+penalties \citep{raissi2019pinn} or neural ODEs \citep{chen2018neuralode}.
+
+\textbf{Machine learning for spatial transcriptomics} is dominated by graph
+models built for domain identification and denoising rather than prediction at
+unmeasured coordinates---SpaGCN \citep{hu2021spagcn}, STAGATE
+\citep{dong2022stagate}, SpatialDE/SPARK
+\citep{svensson2018spatialde,sun2020spark}, DestVI \citep{lopez2022destvi}---which
+is why we adapt them for our task (Section~\ref{sec:setup}). Spateo
+\citep{qiu2024spateo} is closest in spirit but targets 3-D reconstruction rather
+than a perturbable operator.
+
+\textbf{Reaction--diffusion formulations} supply our vocabulary
+\citep{turing1952,kondo2010reaction,green2015morphogen} and have recently been
+used to design and analyze graph networks, where the diffusive term is understood
+to drive over-smoothing and a reactive term to counteract it
+\citep{grand2021,gread2022}. Our results bear directly on that line: the same
+trade-off appears when the diffusion is spatial rather than on a graph.
+RNA velocity \citep{bergen2020scvelo} and perturbation models
+\citep{lotfollahi2019scgen,roohani2024gears} model dynamics or interventions but
+carry no explicit spatial operator, which is the gap we address.
+
+% =====================================================================

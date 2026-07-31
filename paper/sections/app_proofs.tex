@@ -1,0 +1,124 @@
+\section{Structural guarantees: proofs}
+\label{app:proofs}
+% =====================================================================
+
+\begin{proposition}[Structural positive-definiteness]
+\label{prop:spd}
+Let $L_c$ be lower triangular with $\mathrm{diag}(L_c)=\mathrm{softplus}(\ell_c)$
+and let $\mD_c := L_cL_c^\top + \varepsilon I$ with $\varepsilon>0$. Then
+$\mD_c \in \mathcal{S}_{++}^2$ with $\lambda_{\min}(\mD_c)\ge\varepsilon$, for
+every value of the unconstrained parameters.
+\end{proposition}
+
+\begin{proof}
+$L_cL_c^\top$ is symmetric positive semi-definite, so for any $v\ne0$,
+$v^\top \mD_c v = \|L_c^\top v\|^2 + \varepsilon\|v\|^2 \ge \varepsilon\|v\|^2$.
+Symmetry is immediate. Hence the spectrum lies in $[\varepsilon,\infty)$.
+\end{proof}
+
+Definiteness is thus a property of the parametrization rather than of the
+optimizer's trajectory: no penalty enforces it and no projection is required.
+
+\begin{proposition}[Unconditional $L^2$ contraction]
+\label{prop:contraction}
+For every $\tau \ge 0$ and every $\mD \in (\mathcal{S}_{++}^2)^C$,
+$\|e^{\tau\mathcal{A}_{\mD}}u\| \le \|u\|$, with equality iff $u$ is
+spatially constant. In particular the diffusive half-step imposes no
+Courant--Friedrichs--Lewy restriction on $\Delta t$.
+\end{proposition}
+
+\begin{proof}
+By Parseval and \eqref{eq:semigroup},
+$\|e^{\tau\mathcal{A}}u\|^2 = |\Omega|\sum_{\vk,c} e^{-2q_c(\vk)\tau}
+|\hat u_c(\vk)|^2 \le |\Omega|\sum_{\vk,c}|\hat u_c(\vk)|^2 = \|u\|^2$, since
+$q_c(\vk)\ge0$ gives $e^{-2q_c\tau}\in(0,1]$. Equality forces
+$e^{-2q_c(\vk)\tau}=1$ wherever $\hat u_c(\vk)\ne0$; for $\tau>0$ this requires
+$q_c(\vk)=0$, and by Lemma~\ref{lem:symbol} with $\lambda_{\min}\ge\varepsilon>0$
+this holds only at $\vk=0$.
+\end{proof}
+
+An explicit scheme applied to \eqref{eq:operator} is stable only for
+$\Delta t \lesssim h^2/\lambda_{\max}(\mD)$, a constraint coupling the step size
+to \emph{learned} parameters and hence violable mid-training as $\mD_\theta$
+adapts. The exponential update removes it entirely.
+
+\begin{proposition}[Exact conservation of the mean]
+\label{prop:mass}
+$\int_\Omega (e^{\tau\mathcal{A}_{\mD}}u)_c \,\dd x = \int_\Omega u_c\,\dd x$
+for all $\tau\ge0$ and all $c$.
+\end{proposition}
+
+\begin{proof}
+The integral equals $|\Omega|\hat u_c(0)$, and by \eqref{eq:semigroup} the mode
+$\vk=0$ is multiplied by $e^{-q_c(0)\tau}=e^0=1$.
+\end{proof}
+
+Because the diffusive half-step is exactly conservative, any drift in
+$\int\vz$ is attributable to $f_\theta$ alone, which is what licenses the mass
+penalty of Section~\ref{sec:method}.
+
+\begin{proposition}[Uniform bound on the reaction]
+\label{prop:reaction}
+Let $f_\theta(u) = g \odot \tanh(h_\theta(u))$ with $g\in\R_{>0}^C$. Then
+$\|f_\theta(u)\|_\infty \le \|g\|_\infty$ for all $u$, and $f_\theta$ is globally
+Lipschitz with constant $L_f = \|g\|_\infty \,\mathrm{Lip}(h_\theta)$.
+\end{proposition}
+
+\begin{proof}
+$|\tanh|\le1$ channelwise gives the first claim. For the second,
+$\|\nabla_u f_\theta\| = \|\mathrm{diag}(g)\,\mathrm{diag}(1-\tanh^2)\,
+\nabla_u h_\theta\| \le \|g\|_\infty \|\nabla_u h_\theta\|$ since
+$0<1-\tanh^2\le1$.
+\end{proof}
+
+\begin{proposition}[Second-order accuracy of the split step]
+\label{prop:order}
+Let $S_{\Delta t} := e^{\frac{\Delta t}{2}\mathcal{A}}\circ R_{\Delta t}\circ
+e^{\frac{\Delta t}{2}\mathcal{A}}$, where $R_{\Delta t}$ is the explicit midpoint
+update for $\dot{\vz}=f_\theta(\vz)$. For $\vz_0$ sufficiently regular the local
+error is $O(\Delta t^3)$ and the error after $n=T/\Delta t$ steps is
+$O(\Delta t^2)$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Strang splitting of $e^{\Delta t(\mathcal{A}+\mathcal{F})}$ has local error
+$\tfrac{\Delta t^3}{24}\big([\mathcal{A},[\mathcal{A},\mathcal{F}]]
+- 2[\mathcal{F},[\mathcal{F},\mathcal{A}]]\big)+O(\Delta t^5)$ by the
+Baker--Campbell--Hausdorff expansion, and the midpoint rule contributes a further
+$O(\Delta t^3)$ local error. Summation over $n$ steps with the stability of
+Proposition~\ref{prop:contraction} gives the global rate.
+\end{proof}
+
+The predicted rate is confirmed numerically in Table~\ref{tab:theory}, which
+reports an observed order of $2.00$ over a four-fold refinement.
+
+\begin{proposition}[Uniform bound on the fluctuation component]
+\label{prop:bounded}
+Write $\vz = \bar{\vz} + \vz'$ where $\bar{\vz}$ is the spatial mean and
+$\vz'$ has zero mean. Let $\rho := e^{-\Delta t\,\lambda_{\min}(\mD)\pi^2}<1$ and
+$L := \Delta t\,\|g\|_\infty |\Omega|^{1/2}$. Then the iterates
+$\vz_{n+1}=S_{\Delta t}\vz_n$ satisfy
+\begin{equation}
+\|\vz_n'\| \;\le\; \rho^{\,n}\|\vz_0'\| + \frac{L}{1-\rho}
+\;\xrightarrow[n\to\infty]{}\; \frac{L}{1-\rho},
+\label{eq:bounded}
+\end{equation}
+and $\|\bar{\vz}_n\| \le \|\bar{\vz}_0\| + nL$.
+\end{proposition}
+
+\begin{proof}
+On the zero-mean subspace every active wavenumber satisfies $|\vk|\ge\pi$, so by
+Lemma~\ref{lem:symbol} the two half-steps contract $\vz'$ by at least
+$e^{-\Delta t \lambda_{\min}\pi^2}=\rho$ in total. The reaction step adds at most
+$\Delta t\|f_\theta\|\le L$ in $L^2$ by Proposition~\ref{prop:reaction}. Hence
+$\|\vz_{n+1}'\|\le\rho\|\vz_n'\|+L$, and \eqref{eq:bounded} follows by summing the
+geometric series. The mean is untouched by diffusion
+(Proposition~\ref{prop:mass}) and receives at most $L$ per step.
+\end{proof}
+
+This is stronger than absence of blow-up: the non-constant part possesses a
+bounded absorbing set whose radius is independent of $n$ and of the initial
+condition, and only the spatial mean can drift---the mode the mass penalty
+controls.
+
+% =====================================================================
