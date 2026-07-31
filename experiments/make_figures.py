@@ -156,6 +156,51 @@ def main() -> int:
         savefig(F.figure6_ablations(exp5), figdir / "fig6_ablations")
         made.append("fig6_ablations")
 
+    # ---- Figures for the headline results --------------------------------- #
+    # These were previously generated ad hoc and were not reachable from any
+    # entry point, so `make figures` left five of the paper's nine figures
+    # stale. They are driven from the run artifacts here like everything else.
+    exp8 = [x for f in sorted(results.glob("exp8/results_shard*.json"))
+            for x in json.loads(Path(f).read_text())]
+    if exp8:
+        savefig(F.figure_multisection(exp8), figdir / "fig_multisection")
+        made.append("fig_multisection")
+
+    st, ct = results / "exp7" / "stability.json", results / "exp7" / "cost.json"
+    if st.exists() and ct.exists():
+        down = results / "exp7" / "downstream.json"
+        savefig(F.figure_numerics(json.loads(st.read_text()), json.loads(ct.read_text()),
+                                  json.loads(down.read_text()) if down.exists() else None),
+                figdir / "fig_numerics")
+        made.append("fig_numerics")
+
+    bio = results / "exp9" / "biology.json"
+    if bio.exists():
+        savefig(F.figure_biology(json.loads(bio.read_text())), figdir / "fig_biology")
+        made.append("fig_biology")
+
+    rob = [x for f in sorted(results.glob("exp10/robustness_shard*.json"))
+           for x in json.loads(Path(f).read_text())]
+    if rob:
+        savefig(F.figure_robustness(rob), figdir / "fig_robustness")
+        made.append("fig_robustness")
+
+    try:
+        savefig(F.figure_datasets(cfg.data.processed_dir), figdir / "fig_datasets")
+        made.append("fig_datasets")
+    except Exception as e:
+        print(f"[warn] fig_datasets: {e}")
+
+    m5 = dedupe([r for r in load_json_glob("exp5_matched/**/*.json", results) if "variant" in r],
+                ["variant", "seed", "section"])
+    if exp1 and exp5:
+        matched = {}
+        for v in {r["variant"] for r in m5}:
+            vals = [r["pearson_mean"] for r in m5 if r["variant"] == v]
+            matched[v] = float(np.mean(vals)) if vals else float("nan")
+        savefig(F.figure_results_panel(exp1, exp5, matched), figdir / "fig_results_panel")
+        made.append("fig_results_panel")
+
     # ---- Tables + inline numbers ----------------------------------------- #
     tabs = build_all(results, "paper/tables")
     numbers_mod.build(results, "paper/numbers.tex")

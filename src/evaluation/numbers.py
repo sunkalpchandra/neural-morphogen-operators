@@ -104,6 +104,23 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("NMOMoranPred", _ms(nmo, "morans_i_pred"))
             cmd("MoranTrue", _ms(nmo, "morans_i_true"))
 
+    # ---- operator parameter share --------------------------------------- #
+    # Quoted in the parameter-matched control. Hard-coding these in the prose
+    # let them drift from the architecture; they are derived here instead.
+    try:
+        from ..models.nmo import build_nmo
+        from ..utils.common import Config as _Cfg
+        _c = _Cfg.load("configs/base.yaml")
+        _sec_genes = 2079            # visium_mouse_brain, the section of Table 1
+        _m = build_nmo(_c.model.to_dict(), n_genes=_sec_genes)
+        _tot = sum(p.numel() for p in _m.parameters())
+        _dyn = sum(p.numel() for n, p in _m.named_parameters() if n.startswith("operator."))
+        cmd("OpParams", f"{_dyn:,}".replace(",", "{,}"))
+        cmd("TotalParams", f"{_tot:,}".replace(",", "{,}"))
+        cmd("OpParamPct", f"{100 * _dyn / _tot:.2f}")
+    except Exception:
+        pass
+
     # ---- Experiment 2 / 3 : transfer ------------------------------------ #
     for tag, pat in [("Tissue", "exp2/**/*.json"), ("Res", "exp3/**/*.json")]:
         df = pd.DataFrame(dedupe([r for r in load_json_glob(pat, results_root) if "setting" in r],
@@ -189,6 +206,17 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("DiffLenMedian", f"{np.median(dl):.0f}")
             cmd("DiffLenLo", f"{np.percentile(dl, 10):.0f}")
             cmd("DiffLenHi", f"{np.percentile(dl, 90):.0f}")
+            # Scope of that spread: it is across latent channels of one section,
+            # not across sections or tissues, and the prose must say so.
+            per_run = [np.asarray(p["diffusion_length_um"]).ravel().size
+                       for p in phys if p.get("diffusion_length_um")]
+            cmd("DiffLenN", str(int(dl.size)))
+            cmd("DiffLenPerRun", str(int(per_run[0])) if per_run else r"\NA")
+            secs = {str(p.get("checkpoint", "")).split("/runs/")[-1].split("__")[0]
+                    for p in phys if p.get("checkpoint")}
+            secs.discard("")
+            cmd("DiffLenSections", str(len(secs)) if secs else r"\NA")
+            cmd("DiffLenSection", (sorted(secs)[0].replace("_", r"\_")) if secs else r"\NA")
         wl = [p["pattern_wavelength_um"] for p in phys if p.get("pattern_wavelength_um")]
         cmd("TuringFrac", f"{100*np.mean([bool(p['turing_unstable']) for p in phys]):.0f}")
         cmd("NPhysicsRuns", str(len(phys)))
@@ -245,22 +273,63 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
     if ms:
         from .statistics import paired_comparison as _pc
         m8 = pd.DataFrame(ms)
-        cmd("MSSections", str(int(m8["section"].nunique())))
         cmd("MSRuns", str(len(m8)))
+        cmd("MSSeeds", str(int(m8.groupby(["section", "model"]).size().max())))
         per = m8.groupby(["section", "model"])["pearson_mean"].mean().unstack("model")
-        cmd("MSNMOPearson", _val(float(per["nmo"].mean())))
+        # Every aggregate is taken over the sections on which NMO actually ran.
+        # Averaging each model over whatever sections it happens to cover makes
+        # the marginal means incomparable and disagree with the paired test.
+        matched = per.dropna(subset=["nmo"])
+        cmd("MSSections", str(int(len(matched))))
+        cmd("MSPool", str(int(per.shape[0])))
+        cmd("MSNMOPearson", _val(float(matched["nmo"].mean())))
         res = _pc(m8, "nmo", "pearson_mean")
         if res:
             best = min(res, key=lambda r: r.mean_diff)          # closest competitor
+            worst = max(res, key=lambda r: r.mean_diff)         # weakest comparator
             cmd("MSBestBaseline", DISPLAYNAMES.get(best.other, best.other))
-            cmd("MSBestBaselinePearson", _val(float(per[best.other].mean())))
+            cmd("MSBestBaselinePearson", _val(float(matched[best.other].mean())))
             cmd("MSMinDelta", _val(best.mean_diff))
+            cmd("MSWeakest", DISPLAYNAMES.get(worst.other, worst.other))
+            cmd("MSWeakestPearson", _val(float(matched[worst.other].mean())))
+            cmd("MSMaxDelta", _val(worst.mean_diff))            # A9: the weakest model's gap
             cmd("MSMinDz", f"{best.cohens_dz:.2f}")
             cmd("MSMaxHolm", f"{max(r.p_holm for r in res):.1g}")
             cmd("MSMinWins", f"{min(r.n_reference_wins for r in res)}")
             cmd("MSNPairs", str(res[0].n_sections))
             cmd("MSNBaselines", str(len(res)))
             cmd("MSAllSig", "yes" if all(r.p_holm < 0.05 for r in res) else "no")
+
+        # Structural metrics at the benchmark's own scope. The single-section
+        # equivalents (\NMOSSIM, \BestAnySSIM, ...) describe results/exp1 and
+        # must not be quoted in prose about this benchmark.
+        for key, tag, lower_better in [("ssim_mean", "SSIM", False),
+                                       ("morans_i_abs_error", "Moran", True),
+                                       ("rmse", "RMSE", True)]:
+            if key not in m8.columns:
+                continue
+            pm = m8.groupby(["section", "model"])[key].mean().unstack("model").loc[matched.index]
+            cmd(f"MSNMO{tag}", _val(float(pm["nmo"].mean())))
+            others = pm.drop(columns=["nmo"], errors="ignore").mean()
+            others = others.dropna()
+            if len(others):
+                bi = others.idxmin() if lower_better else others.idxmax()
+                cmd(f"MSBestAny{tag}", _val(float(others[bi])))
+                cmd(f"MSBestAny{tag}Model", DISPLAYNAMES.get(bi, bi))
+                cmd(f"MS{tag}Delta", _val(float(pm["nmo"].mean()) - float(others[bi])))
+
+        # Message-passing isolation, recomputed at this benchmark's scope.
+        if "autoencoder" in matched.columns:
+            ae = float(matched["autoencoder"].mean())
+            cmd("MSAEPearson", _val(ae))
+            gd = {m: float(matched[m].mean()) - ae
+                  for m in ["gnn", "spagcn", "stagate", "graph_transformer"]
+                  if m in matched.columns}
+            if gd:
+                cmd("MSBestGraphOverAE", _val(max(gd.values())))
+                cmd("MSWorstGraphOverAE", _val(min(gd.values())))
+                cmd("MSNGraphModels", str(len(gd)))
+            cmd("MSNMOOverAE", _val(float(matched["nmo"].mean()) - ae))
         # Specimen-level (conservative) analysis: serial sections of one brain
         # are not independent samples, so this is the defensible unit.
         from .statistics import by_specimen as _bs, min_attainable_p as _map
@@ -291,11 +360,23 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             for k, nm in [("ari_retention", "BioARIRet"), ("marker_auroc_predicted", "BioMarker"),
                           ("neighborhood_preservation", "BioKNN")]:
                 if k in b.columns:
-                    cmd(nm, _val(float(g[k].mean().get("nmo", np.nan))))
+                    # These margins are a fraction of their own spread, so the
+                    # dispersion travels with every quoted mean.
+                    cmd(nm, _ms(b[b["model"] == "nmo"], k))
+                    cmd(nm + "Mean", _val(float(g[k].mean().get("nmo", np.nan))))
                     others = g[k].mean().drop(index=["nmo"], errors="ignore")
                     if len(others):
-                        cmd(nm + "Best", _val(float(others.max())))
-                        cmd(nm + "BestModel", DISPLAYNAMES.get(others.idxmax(), others.idxmax()))
+                        top = others.idxmax()
+                        cmd(nm + "Best", _ms(b[b["model"] == top], k))
+                        cmd(nm + "BestMean", _val(float(others.max())))
+                        cmd(nm + "BestModel", DISPLAYNAMES.get(top, top))
+                        # margin expressed in units of the pooled s.d. across
+                        # sections: the honest read of how large it is.
+                        sd = float(pd.concat([b[b["model"] == "nmo"][k],
+                                              b[b["model"] == top][k]]).std())
+                        gap = float(g[k].mean().get("nmo", np.nan)) - float(others.max())
+                        cmd(nm + "Gap", _val(gap))
+                        cmd(nm + "GapSD", _val(gap / sd, 2) if sd > 0 else r"\NA")
 
     # ---- Experiment 7 : numerics ----------------------------------------- #
     sp_ = Path(results_root) / "exp7" / "stability.json"
@@ -314,6 +395,19 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("NumSpeedup", f"{eul.iloc[0]/base:.0f}")
         cmd("NumStrangSteps", str(int(base)))
 
+    # ---- Experiment 12 : split geometry ---------------------------------- #
+    # The transfer protocol scores a random complement while every other
+    # experiment scores contiguous blocks. These macros carry the measured
+    # difficulty gap so the caveat in the results is not asserted from memory.
+    gj = Path(results_root) / "exp12" / "split_geometry.json"
+    if gj.exists():
+        G = {r["section"]: r for r in json.loads(gj.read_text())}
+        for key, tag in [("xenium_mouse_brain", "Xen"), ("visium_mouse_brain", "Vis")]:
+            if key in G:
+                cmd(f"Split{tag}Random", f"{G[key]['random_median_um']:.1f}")
+                cmd(f"Split{tag}Block", f"{G[key]['block_median_um']:.1f}")
+                cmd(f"Split{tag}Ratio", f"{G[key]['ratio']:.1f}")
+
     # ---- dataset inventory ---------------------------------------------- #
     sp = Path(processed_summary)
     if sp.exists():
@@ -325,6 +419,16 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
         cmd("NDatasets", str(len(families)))
         cmd("NSections", str(len(s)))
         cmd("TotalLocations", f"{sum(v['n_obs'] for v in s.values()):,}".replace(",", "{,}"))
+        # The Perturb-seq screen is dissociated single cells, not a tissue
+        # section; folding it into a "sections"/"locations" count overstates the
+        # spatial inventory, so the spatial-only totals are emitted separately.
+        sp_only = {k: v for k, v in s.items() if not k.startswith("perturb_")}
+        cmd("NSpatialSections", str(len(sp_only)))
+        cmd("SpatialLocations",
+            f"{sum(v['n_obs'] for v in sp_only.values()):,}".replace(",", "{,}"))
+        cmd("NPerturbCells",
+            f"{sum(v['n_obs'] for k, v in s.items() if k.startswith('perturb_')):,}"
+            .replace(",", "{,}"))
 
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)

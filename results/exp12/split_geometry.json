@@ -1,0 +1,38 @@
+[
+  {
+    "section": "xenium_mouse_brain",
+    "n_obs": 15000,
+    "coord_scale_um": 3001.492031278485,
+    "random_median_um": 19.528175340761393,
+    "random_p90_um": 36.01778255718316,
+    "random_n_scored": 7500,
+    "block_median_um": 116.59804523674137,
+    "block_p90_um": 296.1667530052033,
+    "block_n_scored": 2555,
+    "ratio": 5.97075984837994
+  },
+  {
+    "section": "visium_mouse_brain",
+    "n_obs": 2691,
+    "coord_scale_um": 3191.39218281406,
+    "random_median_um": 100.40666673664741,
+    "random_p90_um": 100.73005059286102,
+    "random_n_scored": 1346,
+    "block_median_um": 265.69429630411094,
+    "block_p90_um": 439.6494621325852,
+    "block_n_scored": 567,
+    "ratio": 2.6461818217807167
+  },
+  {
+    "section": "visium_human_breast",
+    "n_obs": 4869,
+    "coord_scale_um": 3405.613454891196,
+    "random_median_um": 100.36693625795947,
+    "random_p90_um": 100.46213068260664,
+    "random_n_scored": 2435,
+    "block_median_um": 266.3058903237507,
+    "block_p90_um": 557.9117535920644,
+    "block_n_scored": 1004,
+    "ratio": 2.653322899478579
+  }
+]

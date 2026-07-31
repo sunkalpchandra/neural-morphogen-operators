@@ -465,6 +465,33 @@ def build_all(results_root: str | Path = "results", out_dir: str | Path = "paper
     if dev:
         made["development"] = table_development(dev, out_dir / "tab_development.tex")
 
+    # The tables carrying the headline results. These are defined below
+    # ``build_all`` in this module and were previously unreachable from any
+    # entry point, so ``make figures`` silently left them stale; they are
+    # dispatched by name here to keep the definition order irrelevant.
+    ms = [x for f in sorted(results_root.glob("exp8/results_shard*.json"))
+          for x in json.loads(Path(f).read_text())]
+    if ms:
+        made["multisection"] = table_multisection(ms, out_dir / "tab_multisection.tex")
+        made["paired"] = table_paired_stats(ms, out_dir / "tab_paired.tex")
+
+    st = results_root / "exp7" / "stability.json"
+    ct = results_root / "exp7" / "cost.json"
+    if st.exists() and ct.exists():
+        made["numerics"] = table_numerics(json.loads(st.read_text()),
+                                          json.loads(ct.read_text()),
+                                          out_dir / "tab_numerics.tex")
+
+    bio = results_root / "exp9" / "biology.json"
+    if bio.exists():
+        made["biology"] = table_biology(json.loads(bio.read_text()),
+                                        out_dir / "tab_biology.tex")
+
+    rob = [x for f in sorted(results_root.glob("exp10/robustness_shard*.json"))
+           for x in json.loads(Path(f).read_text())]
+    if rob:
+        made["robustness"] = table_robustness(rob, out_dir / "tab_robustness.tex")
+
     return made
 
 
@@ -496,7 +523,19 @@ def table_multisection(records: List[Dict], out: Path,
         return ""
     metrics = [m for m in metrics if m in df.columns]
     per_section = df.groupby(["section", "model"])[list(metrics)].mean().reset_index()
-    agg = per_section.groupby("model")[list(metrics)].agg(["mean", "std"])
+
+    # Every row must be averaged over the SAME sections, or the marginal means are
+    # not comparable to each other and disagree with the paired test in
+    # Table~\ref{tab:paired}. Restrict to the sections on which the reference ran,
+    # and drop any model that does not cover enough of them to be tested at all;
+    # a model present on one section is not a benchmarked row.
+    ref_sections = set(per_section.loc[per_section["model"] == reference, "section"])
+    cov = per_section[per_section["section"].isin(ref_sections)].groupby("model")["section"].nunique()
+    keep = [m for m in cov.index if cov[m] >= max(3, int(0.9 * len(ref_sections)))]
+    dropped = {m: int(cov.get(m, 0)) for m in cov.index if m not in keep}
+    matched = per_section[per_section["section"].isin(ref_sections)
+                          & per_section["model"].isin(keep)]
+    agg = matched.groupby("model")[list(metrics)].agg(["mean", "std"])
 
     stats_by = {m: {r.other: r for r in paired_comparison(df, reference, m)} for m in metrics}
     order = [m for m in agg.index if m != reference]
@@ -515,23 +554,35 @@ def table_multisection(records: List[Dict], out: Path,
             cells.append(val)
         if model == reference:
             rows.append("\\midrule\n")
-        rows.append(f"{_esc(DISPLAY_NAMES.get(model, model))} & " + " & ".join(cells) + " \\\\\n")
+        rows.append(f"{_esc(DISPLAY_NAMES.get(model, model))} & {int(cov[model])} & "
+                    + " & ".join(cells) + " \\\\\n")
 
-    n_sec = per_section["section"].nunique()
+    n_sec = len(ref_sections)
+    n_pool = per_section["section"].nunique()
     n_seed = int(df.groupby(["section", "model"]).size().max())
     wins = stats_by["pearson_mean"]
     win_note = "; ".join(f"{DISPLAY_NAMES.get(k,k)}: {v.n_reference_wins}/{v.n_sections}"
-                         for k, v in list(wins.items())[:4])
-    header = "model & " + " & ".join(METRIC_LABELS.get(m, m) for m in metrics)
+                         for k, v in wins.items())
+    pool_note = ("" if n_pool == n_sec else
+                 f" The processed pool contains {n_pool} sections; rows are restricted to "
+                 f"the {n_sec} on which every model shown was run, so the marginal means "
+                 f"are directly comparable and agree with the paired test of "
+                 f"Table~\\ref{{tab:paired}}.")
+    drop_note = ("" if not dropped else
+                 " Excluded for incomplete coverage: "
+                 + ", ".join(f"{DISPLAY_NAMES.get(m, m)} ({n}/{n_sec} sections)"
+                             for m, n in sorted(dropped.items())) + ".")
+    header = "model & $n$ & " + " & ".join(METRIC_LABELS.get(m, m) for m in metrics)
     tex = _wrap(
         "".join(rows),
         f"Masked spatial reconstruction across {n_sec} tissue sections spanning four "
         f"technologies, mean $\\pm$ s.d. over sections ({n_seed} seeds each, averaged "
-        f"within section). Stars give Holm-corrected Wilcoxon signed-rank $p$ for the "
+        f"within section).{pool_note}{drop_note} Stars give Holm-corrected Wilcoxon "
+        f"signed-rank $p$ for the "
         f"paired comparison against NMO, with the section as the unit of analysis: "
         f"$^{{*}}p<0.05$, $^{{**}}p<0.01$, $^{{***}}p<0.001$. Sections on which NMO "
         f"wins on Pearson $r$ --- {win_note}.",
-        "tab:multisection", "l" + "r" * len(metrics), header,
+        "tab:multisection", "lr" + "r" * len(metrics), header,
     )
     out.write_text(tex)
     return tex
@@ -620,26 +671,49 @@ def table_numerics(stability: List[Dict], cost: List[Dict], out: Path) -> str:
         return ""
     base = K[K["scheme"] == "strang-spectral"]["n_steps"].iloc[0]
     cfl = float(S["cfl_limit"].iloc[0])
-    rows = []
+    grid_max = float(S["dt"].max())
+    rows, censored = [], []
     for name in ["strang-spectral", "euler-spectral", "strang-fd5", "euler-fd5"]:
         s = S[S["scheme"] == name]
         top = s[s["stable"]]["dt"].max() if s["stable"].any() else float("nan")
+        # A scheme that never destabilized within the sweep is right-censored:
+        # the reported step is the top of the grid, not a measured threshold.
+        cens = bool(s["stable"].all()) and np.isclose(top, grid_max)
+        if cens:
+            censored.append(name)
+        pre = r"$\ge$" if cens else ""
+        # Two significant figures: the ratio is below 1 for three of the four
+        # schemes, and a zero-decimal format collapsed them all to "0x"/"1x".
+        ratio = f"{top/cfl:.2g}" if np.isfinite(top) else "--"
         k = K[K["scheme"] == name]
         n = k["n_steps"].iloc[0] if len(k) else None
-        rows.append(f"{_esc(name)} & {top:.3g} & {top/cfl:.0f}$\\times$ & "
-                    f"{int(n) if n else '--'} & {n/base:.0f}$\\times$ \\\\\n"
-                    if n else f"{_esc(name)} & {top:.3g} & {top/cfl:.0f}$\\times$ & -- & -- \\\\\n")
+        err = float(k["rel_error"].iloc[0]) if len(k) and "rel_error" in k else float("nan")
+        errs = f"{err:.1e}" if np.isfinite(err) else "--"
+        rows.append(f"{_esc(name)} & {pre}{top:.3g} & {pre}{ratio}$\\times$ & "
+                    f"{int(n) if n else '--'} & {errs} & "
+                    f"{n/base:.0f}$\\times$ \\\\\n"
+                    if n else
+                    f"{_esc(name)} & {pre}{top:.3g} & {pre}{ratio}$\\times$ & -- & -- & -- \\\\\n")
+    cens_note = (
+        f" \\textbf{{{', '.join(censored)} never destabilized within the sweep}} "
+        f"($\\Delta t \\le {grid_max:.3g}$), so its entry is a lower bound set by the "
+        f"grid rather than a measured threshold, consistent with the unconditional "
+        f"stability of Proposition~\\ref{{prop:contraction}}."
+        if censored else "")
     tex = _wrap(
         "".join(rows),
         f"Numerical behavior of the integrator variants. The largest stable step is "
-        f"measured by sweeping $\\Delta t$ and testing boundedness over 300 steps; the "
+        f"measured by sweeping $\\Delta t$ over $[10^{{-4}}, {grid_max:.3g}]$ and testing "
+        f"boundedness over 300 steps; the "
         f"CFL reference is $h^2/(4\\lambda_{{\\max}}) = {cfl:.4g}$ for the explicit "
-        f"five-point Laplacian. Cost is the number of steps required to integrate a "
-        f"fixed horizon to relative error $<10^{{-2}}$, relative to the exponential "
-        f"scheme. The empirical limit for \\texttt{{euler-fd5}} tracks the CFL bound, "
-        f"confirming the analysis.",
-        "tab:numerics", "lrrrr",
-        r"scheme & largest stable $\Delta t$ & vs.\ CFL & steps to $10^{-2}$ & cost",
+        f"five-point Laplacian.{cens_note} Cost is the number of steps required to "
+        f"integrate a fixed horizon to relative error $<10^{{-2}}$, relative to the "
+        f"exponential scheme; the achieved error is reported alongside, since the step "
+        f"grid is coarse and the schemes do not land on the same accuracy. The empirical "
+        f"limit for \\texttt{{euler-fd5}} tracks the CFL bound, confirming the analysis.",
+        "tab:numerics", "lrrrrr",
+        r"scheme & largest stable $\Delta t$ & vs.\ CFL & steps to $10^{-2}$ "
+        r"& achieved err.\ & cost",
     )
     out.write_text(tex)
     return tex

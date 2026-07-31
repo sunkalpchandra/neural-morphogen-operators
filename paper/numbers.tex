@@ -27,6 +27,9 @@
 \newcommand{\NMOvsGraphRatio}{3.6}
 \newcommand{\NMOMoranPred}{\ensuremath{0.936 \pm 0.004}}
 \newcommand{\MoranTrue}{\ensuremath{0.174}}
+\newcommand{\OpParams}{9{,}536}
+\newcommand{\TotalParams}{2{,}198{,}336}
+\newcommand{\OpParamPct}{0.43}
 \newcommand{\TissueZeroShot}{\ensuremath{0.033 \pm 0.012}}
 \newcommand{\TissueOracle}{\ensuremath{0.136 \pm 0.001}}
 \newcommand{\TissueFloor}{\ensuremath{-0.000 \pm 0.000}}
@@ -70,6 +73,10 @@
 \newcommand{\DiffLenMedian}{374}
 \newcommand{\DiffLenLo}{295}
 \newcommand{\DiffLenHi}{478}
+\newcommand{\DiffLenN}{192}
+\newcommand{\DiffLenPerRun}{64}
+\newcommand{\DiffLenSections}{1}
+\newcommand{\DiffLenSection}{visium\_mouse\_brain}
 \newcommand{\TuringFrac}{0}
 \newcommand{\NPhysicsRuns}{3}
 \newcommand{\GrowthAtZero}{1.18}
@@ -90,42 +97,85 @@
 \newcommand{\DevNMOBestHorizon}{16}
 \newcommand{\DevNMOZero}{0.082}
 \newcommand{\DevBeatsPersistence}{yes}
+\newcommand{\MSRuns}{198}
+\newcommand{\MSSeeds}{2}
 \newcommand{\MSSections}{17}
-\newcommand{\MSRuns}{190}
-\newcommand{\MSNMOPearson}{0.161}
+\newcommand{\MSPool}{17}
+\newcommand{\MSNMOPearson}{0.168}
 \newcommand{\MSBestBaseline}{STAGATE-style}
 \newcommand{\MSBestBaselinePearson}{0.154}
-\newcommand{\MSMinDelta}{0.017}
-\newcommand{\MSMinDz}{1.00}
+\newcommand{\MSMinDelta}{0.015}
+\newcommand{\MSWeakest}{Neural field (SIREN)}
+\newcommand{\MSWeakestPearson}{0.106}
+\newcommand{\MSMaxDelta}{0.062}
+\newcommand{\MSMinDz}{0.88}
 \newcommand{\MSMaxHolm}{0.003}
-\newcommand{\MSMinWins}{12}
-\newcommand{\MSNPairs}{15}
+\newcommand{\MSMinWins}{13}
+\newcommand{\MSNPairs}{17}
 \newcommand{\MSNBaselines}{5}
 \newcommand{\MSAllSig}{yes}
+\newcommand{\MSNMOSSIM}{0.320}
+\newcommand{\MSBestAnySSIM}{0.307}
+\newcommand{\MSBestAnySSIMModel}{GNN (GCN)}
+\newcommand{\MSSSIMDelta}{0.013}
+\newcommand{\MSNMOMoran}{0.853}
+\newcommand{\MSBestAnyMoran}{0.625}
+\newcommand{\MSBestAnyMoranModel}{Neural field (SIREN)}
+\newcommand{\MSMoranDelta}{0.229}
+\newcommand{\MSNMORMSE}{0.697}
+\newcommand{\MSBestAnyRMSE}{0.704}
+\newcommand{\MSBestAnyRMSEModel}{GNN (GCN)}
+\newcommand{\MSRMSEDelta}{-0.007}
+\newcommand{\MSAEPearson}{0.153}
+\newcommand{\MSBestGraphOverAE}{0.001}
+\newcommand{\MSWorstGraphOverAE}{0.000}
+\newcommand{\MSNGraphModels}{2}
+\newcommand{\MSNMOOverAE}{0.016}
 \newcommand{\MSSpecimens}{5}
-\newcommand{\MSSpecPairs}{3}
-\newcommand{\MSSpecMinP}{0.25}
-\newcommand{\MSSpecGraphDz}{0.45--0.58}
-\newcommand{\MSSpecGraphDelta}{0.006}
-\newcommand{\MSSpecContDz}{1.86}
-\newcommand{\MSSpecContDelta}{0.034}
-\newcommand{\MSSpecWins}{2}
+\newcommand{\MSSpecPairs}{5}
+\newcommand{\MSSpecMinP}{0.06}
+\newcommand{\MSSpecGraphDz}{0.32--0.81}
+\newcommand{\MSSpecGraphDelta}{0.004}
+\newcommand{\MSSpecContDz}{2.37}
+\newcommand{\MSSpecContDelta}{0.035}
+\newcommand{\MSSpecWins}{3}
 \newcommand{\BioSections}{4}
-\newcommand{\BioARIRet}{0.518}
-\newcommand{\BioARIRetBest}{0.495}
+\newcommand{\BioARIRet}{\ensuremath{0.518 \pm 0.276}}
+\newcommand{\BioARIRetMean}{0.518}
+\newcommand{\BioARIRetBest}{\ensuremath{0.495 \pm 0.318}}
+\newcommand{\BioARIRetBestMean}{0.495}
 \newcommand{\BioARIRetBestModel}{GNN (GCN)}
-\newcommand{\BioMarker}{0.779}
-\newcommand{\BioMarkerBest}{0.775}
+\newcommand{\BioARIRetGap}{0.023}
+\newcommand{\BioARIRetGapSD}{0.08}
+\newcommand{\BioMarker}{\ensuremath{0.779 \pm 0.027}}
+\newcommand{\BioMarkerMean}{0.779}
+\newcommand{\BioMarkerBest}{\ensuremath{0.775 \pm 0.086}}
+\newcommand{\BioMarkerBestMean}{0.775}
 \newcommand{\BioMarkerBestModel}{GP, multi-bandwidth}
-\newcommand{\BioKNN}{0.228}
-\newcommand{\BioKNNBest}{0.221}
+\newcommand{\BioMarkerGap}{0.004}
+\newcommand{\BioMarkerGapSD}{0.08}
+\newcommand{\BioKNN}{\ensuremath{0.228 \pm 0.082}}
+\newcommand{\BioKNNMean}{0.228}
+\newcommand{\BioKNNBest}{\ensuremath{0.221 \pm 0.059}}
+\newcommand{\BioKNNBestMean}{0.221}
 \newcommand{\BioKNNBestModel}{GP, multi-bandwidth}
+\newcommand{\BioKNNGap}{0.007}
+\newcommand{\BioKNNGapSD}{0.10}
 \newcommand{\NumStableDt}{0.501}
 \newcommand{\NumCFL}{0.01215}
 \newcommand{\NumCFLRatio}{41}
 \newcommand{\NumEulerSteps}{128}
 \newcommand{\NumSpeedup}{32}
 \newcommand{\NumStrangSteps}{4}
+\newcommand{\SplitXenRandom}{19.5}
+\newcommand{\SplitXenBlock}{116.6}
+\newcommand{\SplitXenRatio}{6.0}
+\newcommand{\SplitVisRandom}{100.4}
+\newcommand{\SplitVisBlock}{265.7}
+\newcommand{\SplitVisRatio}{2.6}
 \newcommand{\NDatasets}{6}
 \newcommand{\NSections}{18}
 \newcommand{\TotalLocations}{1{,}080{,}453}
+\newcommand{\NSpatialSections}{17}
+\newcommand{\SpatialLocations}{968{,}794}
+\newcommand{\NPerturbCells}{111{,}659}

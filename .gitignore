@@ -34,3 +34,6 @@ paper/*.fls
 # Reference PDFs (54 MB) -- re-downloadable from the arXiv IDs in
 # papers/_downloaded.json; the survey itself is recorded in papers/README.md
 papers/*.pdf
+
+# session logs from ad-hoc runs
+logs_*.txt

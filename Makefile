@@ -1,4 +1,4 @@
-.PHONY: help data download build experiments all-experiments exp1 exp2 exp3 exp4 exp5 exp6 figures paper clean-runs test reevaluate finalize
+.PHONY: help data download build experiments all-experiments exp1 exp2 exp3 exp4 exp5 exp6 figures paper clean-runs test reevaluate finalize check-numbers
 
 # Use the project venv when present, otherwise whatever python is on PATH
 # (conda users, CI, etc.). Override with `make PY=python3.11 ...`.
@@ -64,6 +64,11 @@ paper: figures
 # ---------------------------------------------------------------- misc
 test:
 	PYTHONPATH=. $(PY) -m pytest tests -q
+
+# Fail when the manuscript and the run artifacts disagree. Run after every
+# prose edit and before every commit; it is also the CI gate.
+check-numbers:
+	PYTHONPATH=. $(PY) scripts/check_numbers.py --results results
 
 # Regenerate every derived artifact from run results, in dependency order.
 finalize:

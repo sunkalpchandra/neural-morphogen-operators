@@ -1,16 +1,16 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{Numerical behavior of the integrator variants. The largest stable step is measured by sweeping $\Delta t$ and testing boundedness over 300 steps; the CFL reference is $h^2/(4\lambda_{\max}) = 0.01215$ for the explicit five-point Laplacian. Cost is the number of steps required to integrate a fixed horizon to relative error $<10^{-2}$, relative to the exponential scheme. The empirical limit for \texttt{euler-fd5} tracks the CFL bound, confirming the analysis.}
+\caption{Numerical behavior of the integrator variants. The largest stable step is measured by sweeping $\Delta t$ over $[10^{-4}, 0.501]$ and testing boundedness over 300 steps; the CFL reference is $h^2/(4\lambda_{\max}) = 0.01215$ for the explicit five-point Laplacian. \textbf{strang-spectral never destabilized within the sweep} ($\Delta t \le 0.501$), so its entry is a lower bound set by the grid rather than a measured threshold, consistent with the unconditional stability of Proposition~\ref{prop:contraction}. Cost is the number of steps required to integrate a fixed horizon to relative error $<10^{-2}$, relative to the exponential scheme; the achieved error is reported alongside, since the step grid is coarse and the schemes do not land on the same accuracy. The empirical limit for \texttt{euler-fd5} tracks the CFL bound, confirming the analysis.}
 \label{tab:numerics}
-\begin{tabular}{lrrrr}
+\begin{tabular}{lrrrrr}
 \toprule
-scheme & largest stable $\Delta t$ & vs.\ CFL & steps to $10^{-2}$ & cost\\
+scheme & largest stable $\Delta t$ & vs.\ CFL & steps to $10^{-2}$ & achieved err.\ & cost\\
 \midrule
-strang-spectral & 0.501 & 41$\times$ & 4 & 1$\times$ \\
-euler-spectral & 0.00302 & 0$\times$ & 128 & 32$\times$ \\
-strang-fd5 & 0.0166 & 1$\times$ & 32 & 8$\times$ \\
-euler-fd5 & 0.0094 & 1$\times$ & 64 & 16$\times$ \\
+strang-spectral & $\ge$0.501 & $\ge$41$\times$ & 4 & 8.4e-03 & 1$\times$ \\
+euler-spectral & 0.00302 & 0.25$\times$ & 128 & 2.3e-03 & 32$\times$ \\
+strang-fd5 & 0.0166 & 1.4$\times$ & 32 & 9.1e-04 & 8$\times$ \\
+euler-fd5 & 0.0094 & 0.77$\times$ & 64 & 6.1e-03 & 16$\times$ \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -42,7 +42,7 @@ def check_spd(seed: int = 0) -> None:
     with torch.no_grad():                       # hostile parameters
         d.l_diag.uniform_(-60, 60); d.l_off.uniform_(-60, 60)
     ev = torch.linalg.eigvalsh(d.tensor())
-    record("P1", "$\\lambda_{\\min}(\\mD_c)$", f"$\\ge \\varepsilon = {d.eps:g}$",
+    record("\\ref{prop:spd}", "$\\lambda_{\\min}(\\mD_c)$", f"$\\ge \\varepsilon = {d.eps:g}$",
            f"{float(ev.min()):.3e}", bool(ev.min() >= d.eps - 1e-12))
 
 
@@ -53,7 +53,7 @@ def check_contraction(seed: int = 0) -> None:
     z = torch.randn(1, 4, 32, 32)
     worst = max(float(d.exp_step(z, dt).norm() / z.norm())
                 for dt in [1e-3, 1e-2, 1e-1, 1.0, 1e1, 1e3])
-    record("P2", "$\\sup_{\\Delta t}\\;\\|E(\\Delta t)u\\|/\\|u\\|$", "$\\le 1$",
+    record("\\ref{prop:contraction}", "$\\sup_{\\Delta t}\\;\\|E(\\Delta t)u\\|/\\|u\\|$", "$\\le 1$",
            f"{worst:.10f}", worst <= 1 + 1e-12)
 
 
@@ -64,7 +64,7 @@ def check_mass(seed: int = 0) -> None:
     z = torch.randn(1, 4, 32, 32)
     err = max(float((d.exp_step(z, dt).mean((2, 3)) - z.mean((2, 3))).abs().max())
               for dt in [0.05, 1.0, 50.0])
-    record("P3", "$\\max_c |\\Delta \\int_\\Omega u_c|$", "$0$ (exact)", f"{err:.2e}", err < 1e-14)
+    record("\\ref{prop:mass}", "$\\max_c |\\Delta \\int_\\Omega u_c|$", "$0$ (exact)", f"{err:.2e}", err < 1e-14)
 
 
 def check_reaction_bound(seed: int = 0) -> None:
@@ -77,7 +77,7 @@ def check_reaction_bound(seed: int = 0) -> None:
     g = net.log_gain.exp().detach()
     f = net(torch.randn(1, 4, 64, 64) * 20).detach()
     slack = float((g - f.abs().amax(dim=(0, 2, 3))).min())
-    record("P4", "$\\min_c (g_c - \\|f_c\\|_\\infty)$", "$\\ge 0$", f"{slack:.2e}", slack >= -1e-12)
+    record("\\ref{prop:reaction}", "$\\min_c (g_c - \\|f_c\\|_\\infty)$", "$\\ge 0$", f"{slack:.2e}", slack >= -1e-12)
 
 
 def check_splitting_order(seed: int = 0) -> None:
@@ -102,7 +102,7 @@ def check_splitting_order(seed: int = 0) -> None:
         errs.append(float((z - ref).norm() / ref.norm()))
     orders = [math.log2(errs[i - 1] / errs[i]) for i in range(1, len(errs))]
     mean = sum(orders) / len(orders)
-    record("P5", "observed order of $S_{\\Delta t}$", "$2$", f"{mean:.2f}", abs(mean - 2) < 0.15)
+    record("\\ref{prop:order}", "observed order of $S_{\\Delta t}$", "$2$", f"{mean:.2f}", abs(mean - 2) < 0.15)
 
 
 def check_residual_order(seed: int = 0) -> None:
@@ -120,7 +120,7 @@ def check_residual_order(seed: int = 0) -> None:
             errs.append(float((((op.step(z0, dt) - z0) / dt) - op.time_derivative(z0)).norm()))
     orders = [math.log2(errs[i - 1] / errs[i]) for i in range(1, len(errs))]
     mean = sum(orders) / len(orders)
-    record("P7", "observed order of $\\|R_{\\Delta t}\\|$", "$1$", f"{mean:.2f}", abs(mean - 1) < 0.1)
+    record("\\ref{prop:vacuity}", "observed order of $\\|R_{\\Delta t}\\|$", "$1$", f"{mean:.2f}", abs(mean - 1) < 0.1)
 
 
 def check_bounded_orbit(seed: int = 0) -> None:
@@ -145,7 +145,7 @@ def check_bounded_orbit(seed: int = 0) -> None:
             if n > 50:
                 zp = z - z.mean((2, 3), keepdim=True)
                 worst = max(worst, float(zp.norm()) * math.sqrt(vol / (H * W)))
-    record("P6", "$\\sup_n \\|\\vz_n'\\|$ vs.\\ analytic bound",
+    record("\\ref{prop:bounded}", "$\\sup_n \\|\\vz_n'\\|$ vs.\\ analytic bound",
            f"$\\le {bound:.1f}$", f"{worst:.1f}", worst <= bound)
 
 
@@ -161,7 +161,7 @@ def emit_table(out: Path) -> None:
         "perturbed parameters; the script that produces this table is released "
         "with the code.}\n\\label{tab:theory}\n"
         "\\begin{tabular}{llllc}\n\\toprule\n"
-        "claim & quantity & predicted & observed & \\\\\n\\midrule\n"
+        "proposition & quantity & predicted & observed & \\\\\n\\midrule\n"
         + rows + "\\bottomrule\n\\end{tabular}\n\\end{table}\n")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(tex)
