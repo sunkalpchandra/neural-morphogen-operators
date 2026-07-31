@@ -17,7 +17,10 @@ SEEDS="${SEEDS:-0 1}"
 LOGDIR=logs; mkdir -p $LOGDIR
 
 echo "[wait] for exp1 to release cores..."
-while pgrep -f exp1_forecasting > /dev/null; do sleep 20; done
+# Match the script filename *with extension* so this loop cannot be fooled by
+# another shell whose command line merely mentions the experiment name (an
+# interactive monitor, a grep, this script itself).
+while pgrep -f 'exp1_forecasting\.py' > /dev/null; do sleep 20; done
 echo "[go] $(date +%H:%M:%S)  workers=$WORKERS epochs=$EPOCHS seeds='$SEEDS'"
 
 JOBS=$(mktemp)
