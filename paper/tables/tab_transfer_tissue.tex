@@ -1,0 +1,27 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Cross-tissue, cross-species transfer: adult mouse brain $\rightarrow$ human breast carcinoma. Shared gene vocabulary: 390 genes. Mean $\pm$ s.d. over seeds.}
+\label{tab:transfer_tissue}
+\begin{tabular}{llrrr}
+\toprule
+model & & Pearson $r$ $\uparrow$ & RMSE $\downarrow$ & SSIM $\uparrow$\\
+\midrule
+\multicolumn{5}{l}{\emph{source (in-domain)}} \\
+\quad NMO (ours) & & 0.206 & 0.253 & 0.362 \\
+\addlinespace
+\multicolumn{5}{l}{\emph{target (zero-shot)}} \\
+\quad NMO (ours) & & 0.041 & 0.405 & 0.231 \\
+\addlinespace
+\multicolumn{5}{l}{\emph{target (decoder-only fine-tune)}} \\
+\quad NMO (ours) & & 0.055 & 0.403 & 0.294 \\
+\addlinespace
+\multicolumn{5}{l}{\emph{target (in-domain oracle)}} \\
+\quad NMO (ours) & & 0.134 & 0.396 & 0.331 \\
+\addlinespace
+\multicolumn{5}{l}{\emph{target (training-mean floor)}} \\
+\quad mean & & -0.000 & 0.402 & 0.254 \\
+\addlinespace
+\bottomrule
+\end{tabular}
+\end{table}

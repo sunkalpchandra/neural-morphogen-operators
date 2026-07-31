@@ -32,3 +32,22 @@ Python(61085) MallocStackLogging: can't turn off malloc stack logging because it
 [00:47:39] INFO      ep  175/250  loss 1.3399  val r 0.1917  rmse 0.3516
 [00:48:49] INFO      ep  200/250  loss 1.3472  val r 0.1928  rmse 0.3512
 [00:49:48] INFO      ep  225/250  loss 1.3254  val r 0.1926  rmse 0.3514
+[00:50:37] INFO      ep  250/250  loss 1.3470  val r 0.1927  rmse 0.3514
+[00:50:38] INFO      done in 668s | test r=0.1743 rmse=0.3516 ssim=0.5281
+[forecast] seed1 T= 0: field r=0.0820
+[forecast] seed1 T= 2: field r=0.0889
+[forecast] seed1 T= 4: field r=0.0918
+[forecast] seed1 T= 8: field r=0.0941
+[forecast] seed1 T=16: field r=0.0939
+[forecast] seed1 T=32: field r=0.0877
+
+                              mean       std  count
+model       horizon                               
+mean        NaN      1.208586e-15       NaN      1
+nmo         0.0      8.164944e-02  0.000555      2
+            2.0      8.861633e-02  0.000440      2
+            4.0      9.165015e-02  0.000282      2
+            8.0      9.423056e-02  0.000180      2
+            16.0     9.455002e-02  0.000875      2
+            32.0     8.952562e-02  0.002543      2
+persistence NaN      6.397607e-02       NaN      1

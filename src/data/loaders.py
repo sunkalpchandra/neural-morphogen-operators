@@ -454,14 +454,30 @@ def load_perturb_norman(raw_dir: Path, key: str = "perturb_norman") -> ad.AnnDat
     guides = ident[guide_col].astype(str).fillna("NA")
     adata.obs["guide_identity"] = guides.values
     # 'A_B_1' style identities -> perturbed gene set; NTC/control markers vary.
+    import re as _re
+
+    # Norman et al. name their non-targeting guides NegCtrl0, NegCtrl1,
+    # NegCtrl10, ... and pair them with a real gene to encode a *single*
+    # perturbation (e.g. "KLF1_NegCtrl0"). Matching only bare NEG/CTRL/NTC
+    # therefore misclassifies every control cell as perturbed and leaves the
+    # dataset with no control group at all.
+    _CTRL = _re.compile(r"^(NEGCTRL|NEGATIVECTRL|NTC|CTRL|CONTROL|NONTARGET\w*)\d*$")
+
+    def _is_control_token(tok: str) -> bool:
+        return bool(_CTRL.match(tok.upper()))
+
     def _norm(g: str) -> str:
         if g in ("nan", "NA", ""):
             return "unassigned"
-        parts = [p for p in g.split("_") if p and not p.isdigit()]
-        parts = [p for p in parts if p.lower() not in ("nan",)]
-        if all(p.upper() in ("NEG", "CTRL", "NTC", "CONTROL") for p in parts) or not parts:
+        # identities look like "A_B__A_B"; take one half then split on "_"
+        g = g.split("__")[0]
+        parts = [p for p in g.split("_") if p and p.lower() != "nan"]
+        if not parts:
+            return "unassigned"
+        targets = [p for p in parts if not _is_control_token(p)]
+        if not targets:
             return "control"
-        return "+".join(sorted(set(parts)))
+        return "+".join(sorted(set(targets)))
 
     adata.obs["perturbation"] = [_norm(g) for g in guides.values]
     adata.obs["n_perturbed"] = [

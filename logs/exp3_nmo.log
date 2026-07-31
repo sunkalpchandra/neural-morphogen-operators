@@ -6,3 +6,13 @@ visium_mouse_brain -> xenium_mouse_brain: 248 shared genes, 2691 source location
 [00:49:22] INFO      ep   25/250  loss 1.4644  val r 0.1725  rmse 0.2829
 [00:49:51] INFO      ep   50/250  loss 1.3722  val r 0.2151  rmse 0.2751
 [00:50:23] INFO      ep   75/250  loss 1.2917  val r 0.2323  rmse 0.2641
+[00:50:48] INFO      ep  100/250  loss 1.2768  val r 0.2469  rmse 0.2604
+[00:51:15] INFO      ep  125/250  loss 1.2641  val r 0.2547  rmse 0.2590
+[00:51:44] INFO      ep  150/250  loss 1.2316  val r 0.2574  rmse 0.2585
+[00:52:12] INFO      ep  175/250  loss 1.2350  val r 0.2597  rmse 0.2580
+[00:52:49] INFO      ep  200/250  loss 1.2287  val r 0.2606  rmse 0.2576
+[00:53:26] INFO      ep  225/250  loss 1.2237  val r 0.2613  rmse 0.2576
+[00:54:00] INFO      ep  250/250  loss 1.2273  val r 0.2613  rmse 0.2576
+[00:54:00] INFO      done in 319s | test r=0.2621 rmse=0.2443 ssim=0.3895
+[zero-shot] xenium_mouse_brain nmo seed 0: r=0.1279
+[00:54:02] INFO    training NeuralMorphogenOperator (1,493,369 params) on xenium_mouse_brain for 250 epochs

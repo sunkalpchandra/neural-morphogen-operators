@@ -285,6 +285,9 @@ def main() -> int:
     p.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
     p.add_argument("--epochs", type=int, default=500)
     p.add_argument("--pathways", nargs="+", default=["SHH", "WNT", "BMP", "FGF"])
+    p.add_argument("--skip-bead", action="store_true",
+                   help="run only 4b (Perturb-seq consistency); 4a results are kept")
+    p.add_argument("--skip-perturbseq", action="store_true", help="run only 4a")
     p.add_argument("--out-dir", default="results/exp4")
     p.add_argument("overrides", nargs="*", default=[])
     a = p.parse_args()
@@ -294,6 +297,12 @@ def main() -> int:
     out = Path(a.out_dir); out.mkdir(parents=True, exist_ok=True)
     bead_results: List[Dict] = []
     ps_results: List[Dict] = []
+    # Preserve results already on disk so a partial re-run does not discard them
+    bead_path, ps_path = out / "bead_implant.json", out / "perturbseq_consistency.json"
+    if a.skip_bead and bead_path.exists():
+        bead_results = json.loads(bead_path.read_text())
+    if a.skip_perturbseq and ps_path.exists():
+        ps_results = json.loads(ps_path.read_text())
 
     norman = load_norman_lfc(Path(cfg.data.processed_dir))
     if norman is None:
@@ -308,17 +317,18 @@ def main() -> int:
         tcfg = TrainConfig(**{**cfg.train.to_dict(), "seed": seed, "epochs": a.epochs})
         Trainer(model, sec, tcfg, LossWeights(**cfg.loss.to_dict()), logger, device, True).fit()
 
-        for pw in a.pathways:
+        for pw in ([] if a.skip_bead else a.pathways):
             r = run_bead_experiment(model, sec, pw, seed=seed)
             if r:
                 r.update({"seed": seed, "section": a.bead_section, "model": "nmo"})
                 bead_results.append(r)
                 print(f"[bead] seed{seed} {pw}: held-out rank {r['held_out_mean_rank_pct']:.1f}% "
                       f"(null {r['null_mean_rank_pct']:.1f}%), p={r['p_value']:.3f}", flush=True)
-        (out / "bead_implant.json").write_text(json.dumps(bead_results, indent=2, default=float))
+        if not a.skip_bead:
+            (out / "bead_implant.json").write_text(json.dumps(bead_results, indent=2, default=float))
 
         # ---- 4b : Perturb-seq consistency on the human section
-        if norman is not None:
+        if norman is not None and not a.skip_perturbseq:
             lfc, ngenes = norman
             sec_h = load_section(Path(cfg.data.processed_dir) / f"{a.perturbseq_section}.h5ad",
                                  device=device)

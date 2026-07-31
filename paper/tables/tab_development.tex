@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Developmental forecasting on Stereo-seq: the E9.5 field is encoded, integrated forward for $T$ operator steps, and scored against the measured E10.5 field. \textbf{Consecutive stages are different embryos}, so there is no cell-to-cell correspondence and the comparison is made at the level of the rasterised field after isotropic normalisation to a common frame; it inherits the error of that coarse registration. \emph{Persistence} predicts E10.5 $=$ E9.5 and is the reference the operator must beat for its dynamics to carry temporal information.}
+\label{tab:development}
+\begin{tabular}{llrrr}
+\toprule
+model & horizon & field $r$ $\uparrow$ & field RMSE $\downarrow$ & genes with $r>0$\\
+\midrule
+Persistence (no dynamics) & -- & 0.064 & 0.346 & 61\% \\
+Spatial-mean predictor & -- & 0.000 & 0.257 & 4\% \\
+\midrule
+NMO & $T{=}0$ & 0.082\,\tiny{$\pm$ 0.001} & 0.320 & 74\% \\
+NMO & $T{=}2$ & 0.089\,\tiny{$\pm$ 0.000} & 0.305 & 72\% \\
+NMO & $T{=}4$ & 0.092\,\tiny{$\pm$ 0.000} & 0.297 & 73\% \\
+NMO & $T{=}8$ & 0.094\,\tiny{$\pm$ 0.000} & 0.289 & 72\% \\
+NMO & $T{=}16$ & 0.095\,\tiny{$\pm$ 0.001} & 0.283 & 72\% \\
+NMO & $T{=}32$ & 0.090\,\tiny{$\pm$ 0.003} & 0.285 & 70\% \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,33 @@
+[00:50:53] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[00:50:54] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[00:50:54] INFO    aligned visium_mouse_brain <-> visium_human_breast: 390 shared genes
+shared vocabulary: 390 genes
+[00:50:57] INFO    training STAGATEStyleBaseline (257,830 params) on visium_mouse_brain for 250 epochs
+[00:51:03] INFO      ep   25/250  loss 1.4081  val r 0.1193  rmse 0.2916
+[00:51:10] INFO      ep   50/250  loss 1.2989  val r 0.1889  rmse 0.2865
+[00:51:17] INFO      ep   75/250  loss 1.2045  val r 0.2088  rmse 0.2799
+[00:51:23] INFO      ep  100/250  loss 1.2191  val r 0.2164  rmse 0.2800
+[00:51:29] INFO      ep  125/250  loss 1.1930  val r 0.2209  rmse 0.2806
+[00:51:36] INFO      ep  150/250  loss 1.1493  val r 0.2245  rmse 0.2819
+[00:51:42] INFO      ep  175/250  loss 1.1229  val r 0.2256  rmse 0.2820
+[00:51:49] INFO      ep  200/250  loss 1.1417  val r 0.2265  rmse 0.2819
+[00:51:55] INFO      ep  225/250  loss 1.1402  val r 0.2267  rmse 0.2818
+[00:52:00] INFO      ep  250/250  loss 1.1158  val r 0.2267  rmse 0.2817
+[00:52:01] INFO      done in 64s | test r=0.2119 rmse=0.2495 ssim=0.3589
+[zero-shot] stagate seed 0: r=0.0917
+[00:52:02] INFO    training STAGATEStyleBaseline (71,046 params) on visium_human_breast for 80 epochs
+[00:52:10] INFO      ep   25/80  loss 1.3691  val r 0.0565  rmse 0.4096
+[00:52:18] INFO      ep   50/80  loss 1.3447  val r 0.0700  rmse 0.4091
+[00:52:30] INFO      ep   75/80  loss 1.3498  val r 0.0727  rmse 0.4088
+[00:52:32] INFO      ep   80/80  loss 1.3414  val r 0.0727  rmse 0.4088
+[00:52:33] INFO      done in 31s | test r=0.1212 rmse=0.3926 ssim=0.3677
+[00:52:33] INFO    training STAGATEStyleBaseline (257,830 params) on visium_human_breast for 250 epochs
+[00:52:48] INFO      ep   25/250  loss 1.4054  val r 0.0829  rmse 0.4089
+[00:53:00] INFO      ep   50/250  loss 1.3405  val r 0.1088  rmse 0.4034
+[00:53:18] INFO      ep   75/250  loss 1.3105  val r 0.1118  rmse 0.4008
+[00:53:32] INFO      ep  100/250  loss 1.2768  val r 0.1153  rmse 0.4034
+[00:53:46] INFO      ep  125/250  loss 1.2823  val r 0.1167  rmse 0.4036
+[00:54:00] INFO      ep  150/250  loss 1.2421  val r 0.1172  rmse 0.4046
+[00:54:11] INFO      ep  175/250  loss 1.2629  val r 0.1175  rmse 0.4049
+[00:54:23] INFO      ep  200/250  loss 1.2448  val r 0.1176  rmse 0.4045
+[00:54:41] INFO      ep  225/250  loss 1.2571  val r 0.1176  rmse 0.4049

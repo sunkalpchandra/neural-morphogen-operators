@@ -86,5 +86,71 @@
     "field_pearson_median": 0.03801730045007484,
     "field_rmse": 0.2841415408453968,
     "frac_genes_positive": 0.6980461811722913
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 1,
+    "horizon": 0,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.0820416027080401,
+    "field_pearson_median": 0.040134818009244524,
+    "field_rmse": 0.320765401058427,
+    "frac_genes_positive": 0.7371225577264654
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 1,
+    "horizon": 2,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.08892734168309567,
+    "field_pearson_median": 0.04263644787357064,
+    "field_rmse": 0.3060814754336288,
+    "frac_genes_positive": 0.7229129662522202
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 1,
+    "horizon": 4,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.0918498951952162,
+    "field_pearson_median": 0.040246162805865925,
+    "field_rmse": 0.29860597432370645,
+    "frac_genes_positive": 0.7300177619893428
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 1,
+    "horizon": 8,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.09410323973670788,
+    "field_pearson_median": 0.0400144073367513,
+    "field_rmse": 0.29055748175445517,
+    "frac_genes_positive": 0.7193605683836589
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 1,
+    "horizon": 16,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.09393163803943494,
+    "field_pearson_median": 0.03976849781136554,
+    "field_rmse": 0.2844154299394607,
+    "frac_genes_positive": 0.7158081705150977
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 1,
+    "horizon": 32,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.08772755261525668,
+    "field_pearson_median": 0.038640423093359515,
+    "field_rmse": 0.28544280070953254,
+    "frac_genes_positive": 0.6962699822380106
   }
 ]

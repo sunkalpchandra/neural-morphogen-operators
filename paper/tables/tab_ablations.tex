@@ -1,0 +1,25 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Ablations on the mouse-brain Visium section. Each variant removes exactly one ingredient with all else held fixed. $\Delta r$ is the change in held-out Pearson $r$ relative to the full model. The \emph{$-$ dynamics} row is the critical control: it disables the operator entirely ($T{=}0$) while leaving its parameters allocated, so the two rows are exactly parameter-matched. \textbf{This table uses a smaller training budget than Table~\ref{tab:benchmark}} (fewer epochs and seeds); it is internally consistent, but absolute values are not comparable across the two tables.}
+\label{tab:ablations}
+\begin{tabular}{lrrrrr}
+\toprule
+variant & params & Pearson $r$ $\uparrow$ & RMSE $\downarrow$ & SSIM $\uparrow$ & $\Delta r$\\
+\midrule
+Full model & 2.20M & \textbf{0.233\,\tiny{$\pm$ 0.005}} & \textbf{0.253\,\tiny{$\pm$ 0.003}} & \textbf{0.392\,\tiny{$\pm$ 0.007}} & -- \\
+$-$ dynamics ($T{=}0$) & 2.20M & 0.227\,\tiny{$\pm$ 0.001} & 0.266\,\tiny{$\pm$ 0.001} & 0.362\,\tiny{$\pm$ 0.005} & -0.007 \\
+$-$ diffusion term & 2.20M & 0.226\,\tiny{$\pm$ 0.004} & 0.259\,\tiny{$\pm$ 0.001} & 0.373\,\tiny{$\pm$ 0.001} & -0.007 \\
+$-$ reaction term & 2.19M & 0.227\,\tiny{$\pm$ 0.001} & 0.255\,\tiny{$\pm$ 0.001} & 0.388\,\tiny{$\pm$ 0.003} & -0.006 \\
+$-$ PDE constraints & 2.20M & 0.233\,\tiny{$\pm$ 0.005} & 0.253\,\tiny{$\pm$ 0.002} & 0.388\,\tiny{$\pm$ 0.006} & -0.000 \\
+$-$ biological regularisers & 2.20M & 0.233\,\tiny{$\pm$ 0.005} & 0.253\,\tiny{$\pm$ 0.003} & 0.392\,\tiny{$\pm$ 0.007} & -0.000 \\
+isotropic $D$ & 2.20M & 0.229\,\tiny{$\pm$ 0.004} & 0.256\,\tiny{$\pm$ 0.003} & 0.393\,\tiny{$\pm$ 0.006} & -0.004 \\
+state-dependent $D$ & 2.20M & 0.236\,\tiny{$\pm$ 0.004} & 0.252\,\tiny{$\pm$ 0.001} & 0.396\,\tiny{$\pm$ 0.004} & +0.003 \\
+discrete GNN operator & 0.61M & 0.223\,\tiny{$\pm$ 0.001} & 0.255\,\tiny{$\pm$ 0.001} & 0.372\,\tiny{$\pm$ 0.000} & -0.011 \\
+\midrule
+latent $C{=}8$ & 1.07M & 0.213\,\tiny{$\pm$ 0.005} & 0.257\,\tiny{$\pm$ 0.003} & 0.368\,\tiny{$\pm$ 0.003} & -0.021 \\
+latent $C{=}16$ & 1.30M & 0.220\,\tiny{$\pm$ 0.002} & 0.256\,\tiny{$\pm$ 0.002} & 0.380\,\tiny{$\pm$ 0.001} & -0.013 \\
+latent $C{=}64$ & 5.77M & 0.237\,\tiny{$\pm$ 0.000} & 0.254\,\tiny{$\pm$ 0.001} & 0.397\,\tiny{$\pm$ 0.001} & +0.004 \\
+\bottomrule
+\end{tabular}
+\end{table}
