@@ -9,10 +9,10 @@
 \begin{figure}[t]
   \centering
   \includegraphics[width=\linewidth]{figures/fig_multisection.pdf}
-  \caption{\textbf{Benchmark across \MSSections{} tissue sections.} (a) NMO
+  \caption{\textbf{Benchmark across \MSSections{} tissue sections.} (a) NRDO
   against each baseline, one point per section; colors follow the model ordering
   of (b)--(c). (b) Mean paired difference with a percentile bootstrap 95\% CI
-  over sections. (c) Fraction of sections on which NMO wins. Every confidence
+  over sections. (c) Fraction of sections on which NRDO wins. Every confidence
   interval excludes zero.}
   \label{fig:multisection}
 \end{figure}
@@ -20,13 +20,13 @@
 We evaluate on \MSSections{} sections spanning four technologies
 (\MSRuns{} runs), with the section as the unit of analysis: every model sees
 identical held-out blocks, so a paired test removes the between-section variance
-that otherwise dominates. NMO attains Pearson $r$ \MSNMOPearson{} against
+that otherwise dominates. NRDO attains Pearson $r$ \MSNMOPearson{} against
 \MSBestBaselinePearson{} for the closest baseline (\MSBestBaseline{}).
 
 All \MSNBaselines{} baselines are beaten with Holm-corrected
 $p \le \MSMaxHolm$ (Appendix~\ref{app:empirical}), and the \emph{smallest} effect size
 across the family is $d_z = \MSMinDz$, which is large by conventional
-standards; NMO wins on at least \MSMinWins{} of \MSNPairs{} sections against
+standards; NRDO wins on at least \MSMinWins{} of \MSNPairs{} sections against
 every comparator. The advantage is therefore consistent across anatomies rather
 than an artifact of one tissue: the twelve MERFISH sections span the
 anterior--posterior axis of the same brain with assay, panel and preprocessing
@@ -38,16 +38,16 @@ autoencoder sees no coordinates and reaches \MSAEPearson{} purely through the
 inverse-distance read-out head shared by every graph baseline, so the gap between
 it and a graph model isolates \emph{message passing}: across \MSNGraphModels{}
 graph models that margin spans \MSWorstGraphOverAE{} to \MSBestGraphOverAE{}
-Pearson $r$, against \MSNMOOverAE{} for NMO --- an order of magnitude larger. An
+Pearson $r$, against \MSNMOOverAE{} for NRDO --- an order of magnitude larger. An
 implicit neural field (SIREN), which is continuous by construction but carries no
 dynamics, is the weakest model tested (\MSWeakestPearson{}, a gap of
-$\MSMaxDelta$ against NMO). Continuity alone is therefore not sufficient, and on
+$\MSMaxDelta$ against NRDO). Continuity alone is therefore not sufficient, and on
 these sections message passing adds little over a well-chosen read-out head; it
 is the \emph{operator} that carries the gain, which the parameter-matched $T{=}0$
 control confirms directly (Section~\ref{sec:ablations}).
 
 \paragraph{Spatial autocorrelation.}
-NMO leads on SSIM (\MSNMOSSIM{} against \MSBestAnySSIM{} for the best baseline,
+NRDO leads on SSIM (\MSNMOSSIM{} against \MSBestAnySSIM{} for the best baseline,
 \MSBestAnySSIMModel{}) but has by some margin the largest error in Moran's $I$
 (\MSNMOMoran{} against \MSBestAnyMoran{} for \MSBestAnyMoranModel{}, a deficit of
 \MSMoranDelta{}): the predicted fields are markedly more spatially autocorrelated
@@ -89,7 +89,7 @@ Correlation does not establish that a reconstruction remains usable for the
 analyses a biologist would run on it, so we score the predictions against
 annotations shipped with the public data: Space Ranger clusters for Visium, the
 vendor clustering for Xenium, and curated anatomical regions for the Stereo-seq
-embryo. Clustering the \emph{predicted} expression at held-out locations, NMO
+embryo. Clustering the \emph{predicted} expression at held-out locations, NRDO
 retains \BioARIRet{} of the adjusted Rand index obtainable from the measured
 data, against \BioARIRetBest{} for the best baseline; it is also nominally ahead
 on marker AUROC (\BioMarker{} versus \BioMarkerBest{}) and on $k$-NN neighborhood
@@ -164,14 +164,14 @@ random split therefore admits exactly the neighbor leakage that motivated our
 block protocol, so zero-shot numbers are comparable to each other but not to the
 in-domain oracle or the training-mean floor, and we read only the former.
 
-Under that common protocol, NMO applied unchanged from adult mouse brain to
+Under that common protocol, NRDO applied unchanged from adult mouse brain to
 human breast carcinoma attains \TissueZeroShot{}, and an operator fitted to
 55\,$\mu$m Visium spots and evaluated on single-cell Xenium sampling of the same
 organ reaches \ResZeroShot{} over \ResSharedGenes{} shared genes. The
 \TissueZeroShotBaselineName{} baseline transfers better in both settings
 (\TissueZeroShotBaseline{} cross-tissue) and decoder-only refitting recovers
 \TissueFineTune{}. We attribute this to the mechanism that produces the
-in-domain gain: NMO fits an operator whose fixed point is the source tissue, and
+in-domain gain: NRDO fits an operator whose fixed point is the source tissue, and
 relaxation toward that attractor is less appropriate when the target has a
 different architecture, whereas local message passing encodes less about the
 source. Proposition~\ref{prop:nystrom} makes the distinction precise ---
@@ -217,11 +217,11 @@ that argument does not establish which ordering is the converged one.
 We settle it on \ConvSection{}, chosen because it is the section where the
 ordering actually changes with budget. Training every model to a shared
 early-stopping criterion on the full section with \ConvSeeds{} seeds
-(Appendix~\ref{app:empirical}, Table~\ref{tab:converged}), NMO attains
+(Appendix~\ref{app:empirical}, Table~\ref{tab:converged}), NRDO attains
 \ConvNMO{} against \ConvBest{} for the strongest baseline (\ConvBestModel), and
 wins on \ConvWins{}/\ConvNPairs{} seeds against every comparator with
 $d_z = \ConvMinDz$--$\ConvMaxDz$. At the benchmark's budget the ordering on this
-section is reversed. The budget is therefore \emph{conservative} for NMO here
+section is reversed. The budget is therefore \emph{conservative} for NRDO here
 rather than neutral, and the honest reading of Table~\ref{tab:multisection} is
 that it establishes consistency across anatomy at a fixed budget, not that its
 margins are the converged margins. With \ConvNPairs{} seeds we report effect
@@ -231,11 +231,11 @@ Two findings survive convergence and matter more than the ordering. The
 non-spatial autoencoder still matches the graph models --- the best of them
 leads it by \ConvGraphOverAE{} Pearson $r$ --- so their near-tie is a property of
 this task rather than an artifact of undertraining, which strengthens rather
-than weakens the reading in Section~\ref{sec:results}. And NMO retains the
+than weakens the reading in Section~\ref{sec:results}. And NRDO retains the
 largest error in Moran's $I$ (\ConvNMOMoran{} against \ConvBestMoran{}), so the
 over-smoothing is structural and not a symptom of a truncated budget.
 
-The cost is real: NMO takes \ConvNMOWall\,s against \ConvBaseWallLo--\ConvBaseWallHi\,s
+The cost is real: NRDO takes \ConvNMOWall\,s against \ConvBaseWallLo--\ConvBaseWallHi\,s
 for the baselines on one CPU, a factor of \ConvSlowdown{} against the slowest of
 them.
 

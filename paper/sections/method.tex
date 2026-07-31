@@ -5,7 +5,7 @@
 \begin{figure}[t]
   \centering
   \includegraphics[width=\linewidth]{figures/fig1_overview.pdf}
-  \caption{\textbf{Neural Morphogen Operator.} Irregularly sampled expression is
+  \caption{\textbf{Neural Reaction--Diffusion Operator.} Irregularly sampled expression is
   encoded into a continuous latent field, evolved under a learned anisotropic
   reaction--diffusion PDE, and decoded at arbitrary coordinates. The decoder
   receives no positional input, so all spatial structure passes through the field
@@ -28,7 +28,7 @@ regular $H\times W$ lattice (Nadaraya--Watson, learnable bandwidth), yielding a
 field and an \emph{occupancy} map distinguishing ``tissue with no signal'' from
 ``no measurement here''. Spectral blocks \citep{li2021fno} refine the field.
 
-\paragraph{The morphogen operator.}
+\paragraph{The reaction--diffusion operator.}
 The field evolves under
 \begin{equation}
 \frac{\partial \vz}{\partial t}

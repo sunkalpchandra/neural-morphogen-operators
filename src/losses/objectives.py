@@ -192,7 +192,8 @@ def _radial_spectrum(field: torch.Tensor, n_bins: int = 16) -> torch.Tensor:
 def spectral_match(pred: torch.Tensor, target: torch.Tensor, coords: torch.Tensor,
                    mask: Optional[torch.Tensor] = None, grid: int = 64,
                    n_bins: int = 16, n_genes: int = 128,
-                   generator: Optional[torch.Generator] = None) -> torch.Tensor:
+                   generator: Optional[torch.Generator] = None,
+                   mode: str = "full") -> torch.Tensor:
     """Penalize the *missing high-frequency energy* of the reconstruction.
 
     A dissipative operator attenuates high spatial frequencies, which is exactly
@@ -216,6 +217,18 @@ def spectral_match(pred: torch.Tensor, target: torch.Tensor, coords: torch.Tenso
     ft = _rasterize(coords, target, grid, mask)
     sp = _radial_spectrum(fp, n_bins)
     st = _radial_spectrum(ft, n_bins)
+
+    if mode == "shape":
+        # Match the *distribution* of energy across scales rather than its
+        # absolute level. Normalizing by total power removes the amplitude
+        # degree of freedom, which the full-spectrum form can exploit to lower
+        # the loss without redistributing anything, and restricting to the
+        # upper half of the band puts the penalty where the defect is: a
+        # dissipative operator loses high-frequency energy, not low.
+        lo = n_bins // 2
+        sp = sp / sp.sum().clamp_min(1e-12)
+        st = st / st.sum().clamp_min(1e-12)
+        return F.mse_loss(torch.log(sp[lo:] + 1e-8), torch.log(st[lo:] + 1e-8))
     return F.mse_loss(torch.log(sp + 1e-8), torch.log(st + 1e-8))
 
 
@@ -255,6 +268,7 @@ class LossWeights:
     spectral_grid: int = 64
     spectral_bins: int = 16
     spectral_genes: int = 128
+    spectral_mode: str = "full"      # {'full', 'shape'}
 
 
 class NMOLoss(nn.Module):
@@ -323,7 +337,7 @@ class NMOLoss(nn.Module):
         if w.spectral > 0 and coords is not None:
             l_spec = spectral_match(pred, target, coords, eval_mask,
                                     grid=w.spectral_grid, n_bins=w.spectral_bins,
-                                    n_genes=w.spectral_genes)
+                                    n_genes=w.spectral_genes, mode=w.spectral_mode)
             loss = loss + w.spectral * l_spec
             terms["spectral"] = l_spec.detach()
 

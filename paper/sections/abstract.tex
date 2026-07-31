@@ -3,21 +3,21 @@ Machine learning for spatial transcriptomics almost universally models a tissue
 section as a graph over the measured spots, an inductive bias that ties the
 learned function to one sampling lattice and leaves expression undefined between
 nodes. Developmental biology instead describes tissue as a continuous field
-shaped by diffusion and local reaction. We introduce \textbf{Neural Morphogen
-Operators} (NMO), which encode irregularly sampled expression into a continuous
+shaped by diffusion and local reaction. We introduce \textbf{Neural Reaction--Diffusion
+Operators} (NRDO), which encode irregularly sampled expression into a continuous
 latent field, evolve it under a learned anisotropic reaction--diffusion PDE
 $\partial_t \vz = \nabla\!\cdot\!(\mD_\theta \nabla \vz) + f_\theta(\vz)$, and
 decode at arbitrary coordinates. Solving the diffusion half-step exactly in the
 Fourier domain under Strang splitting makes the integrator unconditionally
 stable and second-order accurate, and renders $\mD_\theta$ readable as a
 diffusion length.
-Across \MSSections{} tissue sections from four technologies (\MSRuns{} runs), NMO
+Across \MSSections{} tissue sections from four technologies (\MSRuns{} runs), NRDO
 improves masked-region reconstruction over graph, Gaussian-process and implicit
 neural-field baselines, beating every one with Holm-corrected $p \le \MSMaxHolm$
 in paired tests over sections. Because twelve of those sections are serial
 sections of one brain, the conservative unit of analysis is the specimen, and at
 that level the separation from the \emph{continuous} baselines is what the data
-establish most firmly: NMO wins on all \MSSpecPairs{} independent specimens with
+establish most firmly: NRDO wins on all \MSSpecPairs{} independent specimens with
 $d_z = \MSSpecContDz$, the strongest outcome this design admits. Two controls
 localize the gain. An exactly parameter-matched ablation---the $\OpParamPct\%$
 of weights forming the operator are left allocated but unused---costs
@@ -25,7 +25,7 @@ $\MatchedNoDynamicsDelta$ Pearson $r$, more than the entire margin over the best
 baseline, so the effect is attributable to the operator rather than to capacity;
 and a non-spatial baseline sharing the same read-out head shows that graph
 message passing contributes at most \MSBestGraphOverAE{}, against \MSNMOOverAE{}
-for NMO. Replacing the exponential integrator with explicit Euler costs
+for NRDO. Replacing the exponential integrator with explicit Euler costs
 $\NumSpeedup\times$ more steps to reach the same tolerance, so the numerical
 machinery is load-bearing rather than decorative, and we prove that a single
 stationary snapshot determines the reaction network only on a Lebesgue-null
@@ -36,7 +36,7 @@ specimen-level separation is small and statistically unresolved
 ($d_z = \MSSpecGraphDz$ over \MSSpecPairs{} specimens, where the smallest
 attainable Wilcoxon $p$ is $\MSSpecMinP$), so more independent tissues, not more
 sections of one brain, is what would settle it; and the predicted fields are
-smoother than the measurements, on which NMO trails every baseline tested.
+smoother than the measurements, on which NRDO trails every baseline tested.
 \end{abstract}
 
 % =====================================================================

@@ -56,20 +56,38 @@ def _predict_all(model, sec, visible: torch.Tensor) -> np.ndarray:
     return sec.denormalise(out["pred"]).cpu().numpy()
 
 
-def evaluate_zero_shot(model, target_sec, visible_frac: float = 0.5, seed: int = 0) -> Dict:
-    """Show the model half the target tissue; score it on the other half.
+def evaluate_zero_shot(model, target_sec, visible_frac: float = 0.5, seed: int = 0,
+                       protocol: str = "block") -> Dict:
+    """Condition the model on part of the target tissue; score it on the rest.
 
     A zero-shot spatial model still needs *some* observations to condition on --
-    it predicts a field, not a constant. We reveal a random half of the target
-    locations and evaluate on the complement, so no target label is ever used
-    for fitting.
+    it predicts a field, not a constant -- so the question is which part to
+    reveal.
+
+    ``protocol='block'`` reveals the target's own training blocks and scores its
+    held-out blocks, which is the split every other experiment in this paper
+    uses and is the only setting in which a zero-shot number is comparable with
+    the in-domain oracle.
+
+    ``protocol='random'`` reveals a random half. This was the original choice and
+    it is retained for reproducing earlier numbers, but it is not comparable to
+    the oracle: on the Xenium target the median distance from a scored location
+    to the nearest visible one is 19.5 um under the random split against 116.6 um
+    under blocks (``experiments/exp12_split_geometry.py``), so it permits exactly
+    the neighbour leakage that motivated the block protocol in the first place.
     """
-    rng = np.random.default_rng(seed)
     n = target_sec.n_obs
-    vis_np = np.zeros(n, dtype=np.float32)
-    vis_np[rng.choice(n, int(visible_frac * n), replace=False)] = 1.0
+    if protocol == "block" and hasattr(target_sec, "split"):
+        vis_np = (target_sec.split == "train").astype(np.float32)
+        held = target_sec.split == "test"
+        if vis_np.sum() < 1 or held.sum() < 1:      # no usable split; fall back
+            protocol = "random"
+    if protocol != "block" or not hasattr(target_sec, "split"):
+        rng = np.random.default_rng(seed)
+        vis_np = np.zeros(n, dtype=np.float32)
+        vis_np[rng.choice(n, int(visible_frac * n), replace=False)] = 1.0
+        held = vis_np == 0
     visible = torch.from_numpy(vis_np).to(target_sec.coords.device)
-    held = vis_np == 0
 
     pred = _predict_all(model, target_sec, visible)
     true = target_sec.numpy_expr(denorm=True)
@@ -78,11 +96,18 @@ def evaluate_zero_shot(model, target_sec, visible_frac: float = 0.5, seed: int =
                                gene_names=target_sec.gene_names)
 
 
-def mean_predictor(target_sec, visible_frac: float = 0.5, seed: int = 0) -> Dict:
-    rng = np.random.default_rng(seed)
+def mean_predictor(target_sec, visible_frac: float = 0.5, seed: int = 0,
+                   protocol: str = "block") -> Dict:
+    """Training-mean floor, scored under the same protocol as everything else."""
     n = target_sec.n_obs
-    vis = np.zeros(n, dtype=bool)
-    vis[rng.choice(n, int(visible_frac * n), replace=False)] = True
+    if protocol == "block" and hasattr(target_sec, "split"):
+        vis = target_sec.split == "train"
+        if vis.sum() < 1 or (target_sec.split == "test").sum() < 1:
+            protocol = "random"
+    if protocol != "block" or not hasattr(target_sec, "split"):
+        rng = np.random.default_rng(seed)
+        vis = np.zeros(n, dtype=bool)
+        vis[rng.choice(n, int(visible_frac * n), replace=False)] = True
     true = target_sec.numpy_expr(denorm=True)
     pred = np.repeat(true[vis].mean(0, keepdims=True), (~vis).sum(), axis=0)
     coords = target_sec.coords.cpu().numpy()

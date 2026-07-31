@@ -365,7 +365,7 @@ DISPLAY_NAMES = {
     "gp": "Gaussian Process",
     "neural_field": "Neural field (SIREN)",
     "gp_multiscale": "GP, multi-bandwidth",
-    "nmo": "NMO (ours)",
+    "nmo": "NRDO (ours)",
 }
 
 
