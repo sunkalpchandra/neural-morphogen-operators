@@ -336,6 +336,46 @@ def table_bead(records: List[Dict], out: Path) -> str:
     return tex
 
 
+def table_development(records: List[Dict], out: Path) -> str:
+    """Stereo-seq E9.5 -> E10.5 field-level forecasting."""
+    df = pd.DataFrame(records)
+    if df.empty:
+        return ""
+    rows = []
+    ref = df[df["model"].isin(["persistence", "mean"])]
+    for _, r in ref.iterrows():
+        rows.append(
+            f"{_esc(r['display'])} & -- & {r['field_pearson_mean']:.3f} & "
+            f"{r['field_rmse']:.3f} & {100*r['frac_genes_positive']:.0f}\\% \\\\\n"
+        )
+    nmo = df[df["model"] == "nmo"]
+    if not nmo.empty:
+        rows.append("\\midrule\n")
+        agg = nmo.groupby("horizon").agg(
+            m=("field_pearson_mean", "mean"), s=("field_pearson_mean", "std"),
+            rm=("field_rmse", "mean"), fp=("frac_genes_positive", "mean")).reset_index()
+        for _, r in agg.iterrows():
+            rows.append(
+                f"NMO & $T{{=}}{int(r['horizon'])}$ & {_fmt(r['m'], r['s'])} & "
+                f"{r['rm']:.3f} & {100*r['fp']:.0f}\\% \\\\\n"
+            )
+    tex = _wrap(
+        "".join(rows),
+        "Developmental forecasting on Stereo-seq: the E9.5 field is encoded, "
+        "integrated forward for $T$ operator steps, and scored against the "
+        "measured E10.5 field. \\textbf{Consecutive stages are different embryos}, "
+        "so there is no cell-to-cell correspondence and the comparison is made at "
+        "the level of the rasterised field after isotropic normalisation to a "
+        "common frame; it inherits the error of that coarse registration. "
+        "\\emph{Persistence} predicts E10.5 $=$ E9.5 and is the reference the "
+        "operator must beat for its dynamics to carry temporal information.",
+        "tab:development", "llrrr",
+        r"model & horizon & field $r$ $\uparrow$ & field RMSE $\downarrow$ & genes with $r>0$",
+    )
+    out.write_text(tex)
+    return tex
+
+
 def table_perturbseq(records: List[Dict], out: Path) -> str:
     df = pd.DataFrame([r for r in records if "error" not in r])
     if df.empty:
@@ -415,6 +455,10 @@ def build_all(results_root: str | Path = "results", out_dir: str | Path = "paper
     ps = load_json_glob("exp4/**/perturbseq_consistency.json", results_root)
     if ps:
         made["perturbseq"] = table_perturbseq(ps, out_dir / "tab_perturbseq.tex")
+
+    dev = load_json_glob("exp6/**/forecast.json", results_root)
+    if dev:
+        made["development"] = table_development(dev, out_dir / "tab_development.tex")
 
     return made
 

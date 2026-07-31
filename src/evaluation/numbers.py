@@ -160,6 +160,25 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("PSNull", _val(float(n["mean_null_spearman"].mean())))
             cmd("PSFracPos", f"{100*float(n['frac_positive'].mean()):.0f}")
 
+    # ---- Experiment 6 : developmental forecasting ------------------------ #
+    dev = pd.DataFrame(load_json_glob("exp6/**/forecast.json", results_root))
+    if not dev.empty and "field_pearson_mean" in dev.columns:
+        pers = dev[dev["model"] == "persistence"]["field_pearson_mean"]
+        if len(pers):
+            cmd("DevPersistence", _val(float(pers.mean())))
+        nm = dev[dev["model"] == "nmo"]
+        if not nm.empty:
+            byh = nm.groupby("horizon")["field_pearson_mean"].mean()
+            best_h = int(byh.idxmax())
+            cmd("DevNMOBest", _val(float(byh.max())))
+            cmd("DevNMOBestHorizon", str(best_h))
+            z = byh.get(0)
+            if z is not None:
+                cmd("DevNMOZero", _val(float(z)))
+            if len(pers):
+                cmd("DevBeatsPersistence",
+                    "yes" if float(byh.max()) > float(pers.mean()) else "no")
+
     # ---- dataset inventory ---------------------------------------------- #
     sp = Path(processed_summary)
     if sp.exists():

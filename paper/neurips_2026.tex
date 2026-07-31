@@ -42,6 +42,9 @@
   AblNoPDEDelta,AblNoBioReg,AblNoBioRegDelta,AblIsotropic,AblIsotropicDelta,%
   AblDiscreteGNN,AblDiscreteGNNDelta,DiffLenMedian,DiffLenLo,DiffLenHi,TuringFrac,%
   PatternWavelength,BeadNSig,BeadNPathways,BeadWidth,PSRho,PSNull,PSFracPos,%
+  BestAnySSIM,BestAnySSIMModel,BestAnyMoran,BestAnyMoranModel,SSIMDeficit,%
+  MoranDeficit,DevPersistence,DevNMOBest,DevNMOBestHorizon,DevNMOZero,%
+  DevBeatsPersistence,NSections,NPhysicsRuns,GrowthAtZero,BestBaselineSSIM,%
   NDatasets,TotalLocations}\do{%
   \expandafter\providecommand\csname\@nmocmd\endcsname{\textbf{??}}}
 \makeatother
@@ -532,6 +535,34 @@ HVG intersection.
   resolution (b).}
   \label{fig:transfer}
 \end{figure}
+
+\subsection{Developmental forecasting: the one genuine temporal axis}
+
+\inputtable{tab_development}
+
+Every experiment so far fits a \emph{stationary} operator, because the data are
+snapshots. The Stereo-seq developmental series is the single dataset here with a
+real time axis, so it is the only place we can ask the operator to act as a
+forward-time predictor. We encode the E9.5 field, integrate for $T$ operator
+steps, and score the decoded prediction against the measured E10.5 field
+(Table~\ref{tab:development}).
+
+The comparison must be read carefully. \textbf{Consecutive MOSTA stages are
+different embryos}, not the same embryo imaged twice, so no cell-to-cell
+correspondence exists and none can be manufactured by registration. We therefore
+evaluate at the level of the rasterised field after isotropic normalisation to a
+common frame, and the score inherits the error of that coarse alignment. The
+reference to beat is \emph{persistence} --- predicting E10.5 $=$ E9.5. If the
+learned dynamics carried no temporal information, NMO could not exceed it.
+
+Persistence attains field-level $r = \DevPersistence$, which is itself low and
+quantifies how much the embryo changes (and how crude the registration is)
+between these stages. Sweeping the horizon rather than tuning it, NMO reaches
+\DevNMOBest{} at $T = \DevNMOBestHorizon$. We report the full sweep so the
+horizon is visible as a reported quantity rather than a hyperparameter chosen
+against the test field. This experiment is the weakest in the paper in terms of
+statistical power, and we present it as an existence check on forward-time
+behaviour rather than as a forecasting benchmark.
 
 \subsection{Counterfactual perturbation}
 
