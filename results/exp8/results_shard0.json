@@ -1,0 +1,27 @@
+[
+  {
+    "section": "merfish_allen_01",
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "n_params": 1590389,
+    "n_obs_used": 2500,
+    "n_genes_used": 500,
+    "wall_s": 245.6,
+    "pearson_mean": 0.23197901248931885,
+    "pearson_median": 0.211367666721344,
+    "spearman_mean": 0.2129286378622055,
+    "rmse": 0.7589074373245239,
+    "mae": 0.42716461420059204,
+    "n_locations": 407,
+    "n_genes": 500,
+    "pearson_per_location": 0.633730411529541,
+    "ssim_mean": 0.3447297000322881,
+    "ssim_grid": 16,
+    "ssim_occupancy": 0.22265625,
+    "morans_i_pred": 0.9569211004805905,
+    "morans_i_true": 0.13144447362051143,
+    "morans_i_abs_error": 0.8254766268600792,
+    "morans_i_corr": 0.14047125339974542
+  }
+]
