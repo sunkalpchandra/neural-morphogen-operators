@@ -9,7 +9,7 @@ signalling, local reaction networks. This repository asks whether an operator of
 that second kind can be fitted directly to spatial expression data, and what it
 buys.
 
-**Neural Morphogen Operators (NMO)** encode irregularly sampled expression into a
+**Neural Reaction--Diffusion Operators (NRDO)** encode irregularly sampled expression into a
 continuous latent field, evolve that field under a learned anisotropic
 reaction–diffusion PDE
 
@@ -29,23 +29,42 @@ measured.
 This matters more than the benchmark numbers, so it comes first.
 
 **Claimed.** Treating tissue as a continuous field rather than a discrete graph
-improves prediction at unmeasured coordinates, transfers zero-shot across tissue,
-species and sampling resolution, and yields quantitative diagnostics (diffusion
-tensors, dispersion relations) that can be checked and falsified.
+improves prediction at unmeasured coordinates: across 17 sections and four
+technologies NRDO beats every baseline under paired tests, and at the specimen
+level — the conservative unit — it wins on all 5 independent specimens against
+the continuous baselines. An exactly parameter-matched control attributes the
+gain to the operator rather than to capacity. The model degrades most gracefully
+under **sampling-density** loss, which is the axis a field-based formulation
+predicts and the one place it clearly beats the graph baselines.
 
-**Not claimed.** That the fitted operator recovers real biochemistry. Standard
-spatial transcriptomics measures a tissue **once**. Many different operators
-produce the same stationary field, so the PDE is identified only up to the
-quasi-steady-state assumption we impose and the inductive bias of the
-architecture. Reported diffusion lengths and Turing wavelengths are properties of
-a *fitted operator*, not measurements of morphogen transport. The honest framing
-is: **NMO learns latent continuous operators that summarise spatial
-gene-expression organisation.**
+**Not claimed — and several of these were claimed in earlier revisions until a
+control said otherwise.**
 
-Known failure mode, reported in the paper rather than hidden: predictions remain
-systematically **smoother** than measured tissue. NMO reduces this relative to
-baselines but does not eliminate it, which is why we report Moran's *I* error as a
-first-class metric.
+- *Not* that the fitted operator recovers real biochemistry. Standard spatial
+  transcriptomics measures a tissue **once**; many operators produce the same
+  stationary field, so the PDE is identified only up to the quasi-steady-state
+  assumption and the architecture's inductive bias (Theorem 11).
+- *Not* that the recovered diffusion length is a biological measurement. It is
+  close to its own initialization: sections with coordinates **shuffled**, which
+  contain no spatial signal at all, recover 404 µm against 405 µm untrained,
+  while real tissue gives 375 µm. See `experiments/exp11_difflen_null.py`.
+- *Not* that the operator transfers. Under the held-out-block protocol used
+  everywhere else in this work it reaches 0.002 Pearson *r* cross-tissue against
+  a training-mean floor of 0.000. An earlier random-half protocol suggested
+  otherwise; it was scoring interpolation between neighbouring spots.
+- *Not* that NRDO separates from **graph** baselines with statistical
+  confidence. At the specimen level *d_z* = 0.32–0.81 over 5 specimens, ahead on
+  3 of 5. More independent tissues, not more sections of one brain, is what
+  would settle it.
+
+The honest framing is: **NRDO learns latent continuous operators that summarize
+spatial gene-expression organization within a section.**
+
+Known failure mode, reported rather than hidden: predictions are systematically
+**smoother** than measured tissue, and NRDO is the *worst* model tested on
+Moran's *I* error. This survives training to convergence, and a spectral-matching
+loss bounds rather than removes it (`experiments/exp13_spectral.py`), so the
+limitation belongs to the operator class rather than to the objective.
 
 ---
 
@@ -167,7 +186,18 @@ python experiments/exp3_resolution.py  --source visium_mouse_brain --targets xen
 python experiments/exp4_perturbation.py
 python experiments/exp5_ablations.py   --section visium_mouse_brain
 python experiments/exp6_development.py                 # E9.5 -> E10.5
+python experiments/exp7_numerics.py                    # integrator stability / cost
+python experiments/exp8_multisection.py                # 17-section benchmark
+python experiments/exp9_biology.py                     # spatial-domain preservation
+python experiments/exp10_robustness.py                 # noise / dropout / density / k
+python experiments/exp11_difflen_null.py               # diffusion-length null controls
+python experiments/exp12_split_geometry.py             # split difficulty (no training)
+python experiments/exp13_spectral.py --mode shape      # spectral-matching sweep
+python experiments/exp14_converged.py                  # converged single-section
 python experiments/make_figures.py                     # figures + tables + numbers
+
+make check-numbers                                     # prose vs artifacts (CI gate)
+make papers                                            # full + workshop builds
 ```
 
 | Experiment | Question |
@@ -251,7 +281,7 @@ grid sizes. Pass `device: mps` to override.
 ```
 src/
   data/          sources registry, downloader, per-platform loaders, preprocessing
-  models/        layers, dynamics operator, NMO, baselines
+  models/        layers, dynamics operator, NRDO, baselines
   losses/        reconstruction, smoothness, PDE, mass, Jacobian stability
   training/      section container, masking strategies, trainer, CLI
   evaluation/    metrics, LaTeX table generation, inline-number generation

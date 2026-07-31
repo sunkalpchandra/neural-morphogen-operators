@@ -1,48 +1,48 @@
 [
   {
-    "prop": "P1",
+    "prop": "\\ref{prop:spd}",
     "quantity": "$\\lambda_{\\min}(\\mD_c)$",
     "predicted": "$\\ge \\varepsilon = 0.0001$",
     "observed": "1.000e-04",
     "ok": true
   },
   {
-    "prop": "P2",
+    "prop": "\\ref{prop:contraction}",
     "quantity": "$\\sup_{\\Delta t}\\;\\|E(\\Delta t)u\\|/\\|u\\|$",
     "predicted": "$\\le 1$",
     "observed": "0.6575769247",
     "ok": true
   },
   {
-    "prop": "P3",
+    "prop": "\\ref{prop:mass}",
     "quantity": "$\\max_c |\\Delta \\int_\\Omega u_c|$",
     "predicted": "$0$ (exact)",
     "observed": "1.04e-17",
     "ok": true
   },
   {
-    "prop": "P4",
+    "prop": "\\ref{prop:reaction}",
     "quantity": "$\\min_c (g_c - \\|f_c\\|_\\infty)$",
     "predicted": "$\\ge 0$",
     "observed": "0.00e+00",
     "ok": true
   },
   {
-    "prop": "P5",
+    "prop": "\\ref{prop:order}",
     "quantity": "observed order of $S_{\\Delta t}$",
     "predicted": "$2$",
     "observed": "2.00",
     "ok": true
   },
   {
-    "prop": "P6",
+    "prop": "\\ref{prop:bounded}",
     "quantity": "$\\sup_n \\|\\vz_n'\\|$ vs.\\ analytic bound",
     "predicted": "$\\le 220.6$",
     "observed": "68.5",
     "ok": true
   },
   {
-    "prop": "P7",
+    "prop": "\\ref{prop:vacuity}",
     "quantity": "observed order of $\\|R_{\\Delta t}\\|$",
     "predicted": "$1$",
     "observed": "1.00",
