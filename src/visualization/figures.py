@@ -291,8 +291,8 @@ def figure5_dynamics(model, section, channel: Optional[int] = None) -> plt.Figur
                                  for c in range(Z0.shape[0])]))
 
     show = [0, max(T // 3, 1), max(2 * T // 3, 2), T] if T >= 3 else list(range(T + 1))
-    fig = plt.figure(figsize=(WIDTH_FULL, 2.35))
-    gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 1.05], hspace=0.55, wspace=0.62)
+    fig = plt.figure(figsize=(WIDTH_FULL, 1.85))
+    gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 0.95], hspace=0.62, wspace=0.62)
 
     fields = [traj[t].detach().cpu().numpy()[0, channel] for t in show]
     m = np.nanpercentile(np.abs(np.stack(fields)), 98)
@@ -327,7 +327,7 @@ def figure5_dynamics(model, section, channel: Optional[int] = None) -> plt.Figur
     panel_label(ax2, "b", dx=-0.34, dy=1.30)
 
     # -- dispersion relation --
-    ax3 = fig.add_subplot(gs[1, 1:3])
+    ax3 = fig.add_subplot(gs[1, 1:4])
     rep = model.operator.linear_stability(zT, coord_scale_um=section.coord_scale_um)
     k, g = rep["k"], rep["growth_rate"]
     ax3.plot(k, g, color=CATEGORICAL[1], linewidth=1.6)
@@ -343,16 +343,6 @@ def figure5_dynamics(model, section, channel: Optional[int] = None) -> plt.Figur
     ax3.set_title("Dispersion relation of the learned operator", fontsize=7, pad=4)
     panel_label(ax3, "c", dx=-0.13, dy=1.30)
 
-    # -- diffusion length distribution --
-    ax4 = fig.add_subplot(gs[1, 3])
-    L = model.diffusion_length_um(section.coord_scale_um)
-    if L.size:
-        ax4.hist(np.asarray(L).ravel(), bins=14, color=CATEGORICAL[2], alpha=0.85,
-                 edgecolor="white", linewidth=0.4)
-    ax4.set_xlabel("diffusion length ($\\mu$m)")
-    ax4.set_ylabel("channels")
-    ax4.set_title("Length scales", fontsize=7, pad=4)
-    panel_label(ax4, "d", dx=-0.36, dy=1.30)
     return fig
 
 

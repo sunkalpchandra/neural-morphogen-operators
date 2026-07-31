@@ -84,15 +84,6 @@ can be violated mid-training as $\mD_\theta$ adapts.
 \subsection{The reconstruction does not degrade tissue-level structure}
 \label{sec:biology}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig_biology.pdf}
-  \caption{\textbf{Biological preservation} across \BioSections{} sections with
-  reference annotations. Predicted expression at held-out locations is clustered
-  and scored against the reference; marker AUROC asks whether the predicted field
-  still discriminates a region using that region's measured markers.}
-  \label{fig:biology}
-\end{figure}
 
 Correlation does not establish that a reconstruction remains usable for the
 analyses a biologist would run on it, so we score the predictions against
@@ -118,15 +109,6 @@ pushed.
 
 \subsection{Learned dynamics}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig5_dynamics.pdf}
-  \caption{\textbf{The fitted operator.} (a) A latent channel relaxing under the
-  learned dynamics. (b) Per-channel diffusion tensors as length-scale ellipses,
-  showing the anisotropy is used. (c) Dispersion relation of the linearized
-  operator. (d) Diffusion lengths across channels.}
-  \label{fig:dynamics}
-\end{figure}
 
 \paragraph{The recovered length scale is close to its own initialization.}
 On the primary section the fitted operator has a median diffusion length of
@@ -144,8 +126,13 @@ initialization while attaining $r = \NullShuffledR$, and real tissue moves it by
 $\sqrt{2\,D_{\mathrm{init}}\,\Delta t\,n_{\mathrm{steps}}}$ times the coordinate
 scale, fixed by the configuration before any data is seen. Fixing the splat
 bandwidth across \NullSigmaRange{} grid cells leaves the result between
-\NullSigmaLo{} and \NullSigmaHi\,$\mu$m, so the encoder kernel is not the
-mechanism either (Appendix~\ref{app:empirical}).
+\NullSigmaLo{} and \NullSigmaHi\,$\mu$m, and sweeping the lattice over
+\NullGridN{} resolutions leaves it between \NullGridUmLo{} and
+\NullGridUmHi\,$\mu$m while the same quantity measured in lattice cells moves
+from \NullGridCellsLo{} to \NullGridCellsHi. Neither the encoder kernel nor the
+discretization is therefore the mechanism: the length is pinned in microns and
+free in cells, which is what a quantity fixed in normalized coordinates before
+training does (Appendix~\ref{app:empirical}).
 
 We therefore withdraw the correspondence with measured gradient lengths: the
 median is largely a configuration constant, and agreement with a biological
@@ -166,54 +153,32 @@ away from steady state, in line with Theorem~\ref{thm:identifiability}.
 
 \subsection{Transfer across tissue, species and resolution}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig4_transfer.pdf}
-  \caption{\textbf{Zero-shot transfer} against the in-domain oracle and the
-  training-mean floor, for (a) mouse brain $\rightarrow$ human breast carcinoma
-  and (b) Visium $\rightarrow$ single-cell Xenium.}
-  \label{fig:transfer}
-\end{figure}
-
-\emph{A caveat governs this subsection.} The zero-shot condition conditions a
-model on a random half of the target and scores the complement, whereas the
-in-domain oracle is scored on the contiguous held-out blocks used everywhere else
-in this paper. Those are not equally hard problems: on the Xenium target the
-median distance from a scored location to the nearest visible one is
+Transfer is the weakest setting here, and a protocol caveat governs it. The
+zero-shot condition conditions a model on a random half of the target and scores
+the complement, whereas every other experiment in this paper scores contiguous
+held-out blocks. Those are not equally hard: on the Xenium target the median
+distance from a scored location to the nearest visible one is
 \SplitXenRandom\,$\mu$m under the random split against \SplitXenBlock\,$\mu$m
-under blocks (a factor of \SplitXenRatio), so the
-random split permits exactly the neighbor leakage that motivated our block
-protocol in the first place. Zero-shot numbers are therefore comparable
-\emph{to each other} but not to the oracle or floor rows, and we read only the
-former. Correcting the protocol is straightforward and is in progress; we prefer
-to flag the comparison than to quote it.
+under blocks, a factor of \SplitXenRatio{} (Appendix~\ref{app:empirical}). The
+random split therefore admits exactly the neighbor leakage that motivated our
+block protocol, so zero-shot numbers are comparable to each other but not to the
+in-domain oracle or the training-mean floor, and we read only the former.
 
-Applied unchanged from adult mouse brain to human breast carcinoma---a different
-species, organ and spatial architecture---NMO attains \TissueZeroShot{}
-zero-shot, and an operator fitted to 55\,$\mu$m Visium spots and evaluated on
-single-cell Xenium sampling of the same organ reaches \ResZeroShot{} over
-\ResSharedGenes{} shared genes.
-
-Under the common zero-shot protocol the \TissueZeroShotBaselineName{} baseline
-transfers better in both settings (\TissueZeroShotBaseline{} cross-tissue), and
-decoder-only refitting recovers \TissueFineTune{}. We attribute this to the mechanism that produces the in-domain
-gain: NMO fits an operator whose fixed point is the source tissue, and relaxation
-toward that attractor is less appropriate when the target has a different
-architecture, whereas local message passing encodes less about the source.
-Appendix~\ref{app:discretization} makes the distinction precise---
-Proposition~\ref{prop:nystrom} establishes discretization invariance of the
-\emph{encoder}, which does not by itself entail portability of the \emph{fitted}
-operator. Conditioning $\mD_\theta$ on tissue-level covariates, or fitting a
-shared operator across sections, is the natural next step.
-
-\paragraph{Developmental forecasting.}
-On the Stereo-seq series---the only dataset here with a genuine temporal
-axis---integrating the encoded E9.5 field forward improves the field-level match
-to E10.5 from \DevNMOZero{} at $T{=}0$ to \DevNMOBest{} at
-$T{=}\DevNMOBestHorizon$, against \DevPersistence{} for predicting no change, so
-the operator carries genuine temporal information with an interior optimum in
-$T$. Consecutive stages are distinct embryos, so this is a field-level comparison
-after coarse registration (Appendix~\ref{app:empirical}).
+Under that common protocol, NMO applied unchanged from adult mouse brain to
+human breast carcinoma attains \TissueZeroShot{}, and an operator fitted to
+55\,$\mu$m Visium spots and evaluated on single-cell Xenium sampling of the same
+organ reaches \ResZeroShot{} over \ResSharedGenes{} shared genes. The
+\TissueZeroShotBaselineName{} baseline transfers better in both settings
+(\TissueZeroShotBaseline{} cross-tissue) and decoder-only refitting recovers
+\TissueFineTune{}. We attribute this to the mechanism that produces the
+in-domain gain: NMO fits an operator whose fixed point is the source tissue, and
+relaxation toward that attractor is less appropriate when the target has a
+different architecture, whereas local message passing encodes less about the
+source. Proposition~\ref{prop:nystrom} makes the distinction precise ---
+discretization invariance of the \emph{encoder} does not entail portability of
+the \emph{fitted} operator. Conditioning $\mD_\theta$ on tissue-level covariates
+is the natural next step. Full tables, the developmental-forecasting result and
+the corrected-protocol discussion are in Appendix~\ref{app:empirical}.
 
 \subsection{Counterfactual perturbation}
 \label{sec:results4}
