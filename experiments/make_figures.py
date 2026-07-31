@@ -106,6 +106,35 @@ def main() -> int:
         savefig(F.figure5_dynamics(nmo, sec), figdir / "fig5_dynamics")
         made.append("fig5_dynamics")
 
+        # Physics diagnostics across every available NMO checkpoint, so the
+        # numbers quoted in the paper (diffusion lengths, Turing fraction) are
+        # aggregated over seeds rather than read off a single run.
+        phys = []
+        for ck_i in sorted(results.glob(f"exp1/*/runs/{a.section}__nmo__seed*/best.pt")):
+            try:
+                m = _load_model(ck_i, cfg, sec.n_genes, "nmo", device)
+                with torch.no_grad():
+                    z0, _ = m.encode(sec.coords, sec.expr * visible.view(-1, 1),
+                                     sec.edge_index, visible)
+                    zT = m.evolve(z0)
+                rep = m.stability_report(zT, coord_scale_um=sec.coord_scale_um)
+                phys.append({
+                    "checkpoint": str(ck_i),
+                    "turing_unstable": bool(rep["turing_unstable"]),
+                    "k_max": float(rep["k_max"]),
+                    "growth_max": float(rep["growth_max"]),
+                    "growth_at_zero": float(rep["growth_rate"][0]),
+                    "pattern_wavelength_um": (
+                        float(2 * np.pi / rep["k_max"] * sec.coord_scale_um)
+                        if rep["k_max"] > 1e-6 else None),
+                    "diffusion_length_um": m.diffusion_length_um(sec.coord_scale_um).tolist(),
+                })
+            except Exception as e:
+                print(f"[warn] physics for {ck_i.parent.name}: {e}")
+        if phys:
+            (results / "physics.json").write_text(json.dumps(phys, indent=2))
+            print(f"physics: {len(phys)} NMO checkpoint(s) -> results/physics.json")
+
     # ---- Results-dependent figures --------------------------------------- #
     exp1 = [r for r in load_json_glob("exp1/**/*.json", results)
             if "model" in r and "pearson_mean" in r]

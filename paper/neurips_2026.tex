@@ -437,6 +437,27 @@ physical transport. Several latent channels correlate with canonical pathway
 scores (Figure~\ref{fig:latent}b), again a statement about alignment rather than
 mechanism.
 
+\paragraph{The learned operator is not Turing-unstable, and we report that as a
+negative result.} The dispersion relation (Figure~\ref{fig:dynamics}c) decreases
+monotonically in $|\vk|$: growth is weakly positive only for the uniform mode
+$\vk = 0$ and strictly negative at every finite wavenumber. There is therefore no
+band of spatial modes that the operator spontaneously amplifies, and no
+characteristic patterning wavelength. Fitted operators were Turing-unstable in
+\TuringFrac\% of runs.
+
+This is worth stating plainly because the opposite result would have been the more
+attention-catching one. What the model learns from a stationary snapshot is a
+\emph{dissipative} operator: one whose fixed point is the observed tissue and
+whose action is to relax perturbations towards it. That is exactly what the
+training objective asks for---equation~\eqref{eq:steady} rewards making the
+measured configuration stationary, not making it spontaneously patterned---so the
+absence of a Turing band is the expected consequence of the data we have rather
+than evidence against reaction--diffusion accounts of the underlying biology.
+Detecting genuine pattern-forming instability would require observing the tissue
+away from steady state, which a single snapshot cannot provide. We flag this so
+that the dispersion analysis is read as a diagnostic of the fitted operator and
+not as a claim about morphogenesis.
+
 \subsection{Transfer across tissue, species and resolution}
 
 \inputtable{tab_transfer_tissue}

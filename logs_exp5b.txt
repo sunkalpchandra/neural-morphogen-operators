@@ -5,3 +5,10 @@ Consider using tensor.detach() first. (Triggered internally at /Users/runner/wor
   return {k: float(v) for k, v in terms.items()}
 [21:23:16] INFO      ep   25/400  loss 1.5012  val r 0.1447  rmse 0.2944
 [21:25:52] INFO      ep   50/400  loss 1.4004  val r 0.1995  rmse 0.2842
+[21:28:59] INFO      ep   75/400  loss 1.3103  val r 0.2214  rmse 0.2739
+[21:31:07] INFO      ep  100/400  loss 1.3071  val r 0.2376  rmse 0.2721
+[21:32:45] INFO      ep  125/400  loss 1.2756  val r 0.2450  rmse 0.2684
+[21:34:33] INFO      ep  150/400  loss 1.2411  val r 0.2492  rmse 0.2696
+[21:36:13] INFO      ep  175/400  loss 1.2199  val r 0.2526  rmse 0.2689
+[21:37:53] INFO      ep  200/400  loss 1.2350  val r 0.2553  rmse 0.2681
+[21:39:09] INFO      ep  225/400  loss 1.2158  val r 0.2598  rmse 0.2665

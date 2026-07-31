@@ -35,3 +35,9 @@ Python(71973) MallocStackLogging: can't turn off malloc stack logging because it
 [21:20:47] INFO      ep   25/500  loss 1.5257  val r 0.1337  rmse 0.2942
 [21:22:30] INFO      ep   50/500  loss 1.3876  val r 0.1971  rmse 0.2829
 [21:25:14] INFO      ep   75/500  loss 1.3197  val r 0.2274  rmse 0.2722
+[21:27:49] INFO      ep  100/500  loss 1.2904  val r 0.2418  rmse 0.2695
+[21:30:26] INFO      ep  125/500  loss 1.2821  val r 0.2517  rmse 0.2651
+[21:32:40] INFO      ep  150/500  loss 1.2432  val r 0.2588  rmse 0.2640
+[21:35:02] INFO      ep  175/500  loss 1.2222  val r 0.2633  rmse 0.2638
+[21:37:11] INFO      ep  200/500  loss 1.2062  val r 0.2673  rmse 0.2619
+[21:39:05] INFO      ep  225/500  loss 1.2208  val r 0.2692  rmse 0.2624

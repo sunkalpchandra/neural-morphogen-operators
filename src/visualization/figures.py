@@ -91,9 +91,16 @@ def figure2_reconstruction(
     held = visible == 0
 
     if genes is None:
+        # Show genes spanning the performance range, not only the best ones:
+        # a cherry-picked top-k panel would misrepresent typical behaviour.
         r = pearson_per_gene(pred_nmo[held], true[held])
         order = np.argsort(-np.nan_to_num(r, nan=-1))
-        gi = order[:n_genes]
+        valid = order[np.isfinite(r[order])]
+        if len(valid) >= n_genes:
+            quantiles = np.linspace(0, 0.75, n_genes)  # best -> lower quartile
+            gi = np.array([valid[int(q * (len(valid) - 1))] for q in quantiles])
+        else:
+            gi = valid[:n_genes]
     else:
         name2i = {g: i for i, g in enumerate(section.gene_names)}
         gi = np.array([name2i[g] for g in genes if g in name2i][:n_genes])
@@ -283,8 +290,8 @@ def figure5_dynamics(model, section, channel: Optional[int] = None) -> plt.Figur
                                  for c in range(Z0.shape[0])]))
 
     show = [0, max(T // 3, 1), max(2 * T // 3, 2), T] if T >= 3 else list(range(T + 1))
-    fig = plt.figure(figsize=(WIDTH_FULL, 3.05))
-    gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 1.05], hspace=0.5, wspace=0.32)
+    fig = plt.figure(figsize=(WIDTH_FULL, 3.25))
+    gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 1.05], hspace=0.55, wspace=0.62)
 
     fields = [traj[t].detach().cpu().numpy()[0, channel] for t in show]
     m = np.nanpercentile(np.abs(np.stack(fields)), 98)
@@ -315,7 +322,7 @@ def figure5_dynamics(model, section, channel: Optional[int] = None) -> plt.Figur
         ax2.set_xlim(-lim, lim); ax2.set_ylim(-lim, lim)
         ax2.set_aspect("equal")
     ax2.set_xlabel("$\\mu$m"); ax2.set_ylabel("$\\mu$m")
-    ax2.set_title("Learned diffusion tensors", fontsize=7, pad=4)
+    ax2.set_title("Diffusion tensors", fontsize=7, pad=4)
     panel_label(ax2, "b", dx=-0.34, dy=1.30)
 
     # -- dispersion relation --

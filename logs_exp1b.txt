@@ -168,3 +168,41 @@ Python(73735) MallocStackLogging: can't turn off malloc stack logging because it
 [21:24:34] INFO      ep   75/500  loss 1.2021  val r 0.2088  rmse 0.2815
 [21:25:15] INFO      ep  100/500  loss 1.1915  val r 0.2201  rmse 0.2838
 [21:25:41] INFO      ep  125/500  loss 1.1566  val r 0.2253  rmse 0.2833
+[21:26:15] INFO      ep  150/500  loss 1.1146  val r 0.2294  rmse 0.2858
+[21:26:43] INFO      ep  175/500  loss 1.0883  val r 0.2340  rmse 0.2842
+[21:27:17] INFO      ep  200/500  loss 1.1088  val r 0.2389  rmse 0.2844
+[21:27:55] INFO      ep  225/500  loss 1.0899  val r 0.2412  rmse 0.2827
+[21:28:19] INFO      ep  250/500  loss 1.0652  val r 0.2424  rmse 0.2839
+[21:28:52] INFO      ep  275/500  loss 1.0851  val r 0.2432  rmse 0.2851
+[21:29:29] INFO      ep  300/500  loss 1.0691  val r 0.2434  rmse 0.2833
+[21:30:03] INFO      ep  325/500  loss 1.0964  val r 0.2450  rmse 0.2833
+[21:30:34] INFO      ep  350/500  loss 1.0789  val r 0.2457  rmse 0.2824
+[21:31:01] INFO      ep  375/500  loss 1.0846  val r 0.2453  rmse 0.2826
+[21:31:34] INFO      ep  400/500  loss 1.0472  val r 0.2461  rmse 0.2826
+[21:32:08] INFO      ep  425/500  loss 1.0589  val r 0.2466  rmse 0.2822
+[21:32:31] INFO      ep  450/500  loss 1.0638  val r 0.2462  rmse 0.2828
+[21:32:58] INFO      ep  475/500  loss 1.0671  val r 0.2464  rmse 0.2825
+[21:33:27] INFO      ep  500/500  loss 1.0660  val r 0.2464  rmse 0.2825
+Python(79616) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(79617) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:33:35] INFO      done in 649s | test r=0.2352 rmse=0.2530 ssim=0.6911
+[done] stagate seed 0: r=0.2352
+[21:33:36] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(79642) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(79643) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:33:37] INFO    training STAGATEStyleBaseline (691,903 params) on visium_mouse_brain for 500 epochs
+[21:34:16] INFO      ep   25/500  loss 1.4379  val r 0.1120  rmse 0.2935
+[21:34:45] INFO      ep   50/500  loss 1.3004  val r 0.1772  rmse 0.2857
+[21:35:14] INFO      ep   75/500  loss 1.2281  val r 0.2049  rmse 0.2817
+[21:35:38] INFO      ep  100/500  loss 1.1838  val r 0.2195  rmse 0.2847
+[21:36:07] INFO      ep  125/500  loss 1.1708  val r 0.2276  rmse 0.2853
+[21:36:42] INFO      ep  150/500  loss 1.1271  val r 0.2333  rmse 0.2849
+[21:37:10] INFO      ep  175/500  loss 1.1088  val r 0.2378  rmse 0.2830
+[21:37:36] INFO      ep  200/500  loss 1.0872  val r 0.2396  rmse 0.2858
+[21:37:59] INFO      ep  225/500  loss 1.1084  val r 0.2422  rmse 0.2843
+[21:38:22] INFO      ep  250/500  loss 1.0979  val r 0.2434  rmse 0.2837
+[21:38:46] INFO      ep  275/500  loss 1.0827  val r 0.2439  rmse 0.2829
+[21:39:07] INFO      ep  300/500  loss 1.0670  val r 0.2430  rmse 0.2841
+[21:39:33] INFO      ep  325/500  loss 1.0654  val r 0.2441  rmse 0.2840
+[21:39:54] INFO      ep  350/500  loss 1.0573  val r 0.2456  rmse 0.2839
+[21:40:17] INFO      ep  375/500  loss 1.0618  val r 0.2451  rmse 0.2839

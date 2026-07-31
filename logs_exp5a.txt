@@ -4,3 +4,11 @@
 Consider using tensor.detach() first. (Triggered internally at /Users/runner/work/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:823.)
   return {k: float(v) for k, v in terms.items()}
 [21:23:16] INFO      ep   25/400  loss 1.5011  val r 0.1450  rmse 0.2944
+[21:26:12] INFO      ep   50/400  loss 1.3997  val r 0.2010  rmse 0.2840
+[21:29:08] INFO      ep   75/400  loss 1.3092  val r 0.2247  rmse 0.2731
+[21:31:26] INFO      ep  100/400  loss 1.3055  val r 0.2415  rmse 0.2705
+[21:33:02] INFO      ep  125/400  loss 1.2737  val r 0.2485  rmse 0.2662
+[21:34:52] INFO      ep  150/400  loss 1.2386  val r 0.2522  rmse 0.2669
+[21:36:38] INFO      ep  175/400  loss 1.2175  val r 0.2556  rmse 0.2658
+[21:38:10] INFO      ep  200/400  loss 1.2322  val r 0.2570  rmse 0.2657
+[21:39:30] INFO      ep  225/400  loss 1.2125  val r 0.2615  rmse 0.2640

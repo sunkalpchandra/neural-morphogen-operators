@@ -81,8 +81,16 @@ def _wrap(body: str, caption: str, label: str, colspec: str, header: str,
 # --------------------------------------------------------------------------- #
 
 
+def is_derived(key: str) -> bool:
+    """True for objects built *from* a source dataset for a specific experiment
+    (e.g. the Visium section rebuilt with a target gene panel force-included).
+    These are not separate datasets and must not be counted or listed as such."""
+    return "__panel_" in key
+
+
 def table_datasets(summary_path: str | Path, out: Path) -> str:
-    s = json.loads(Path(summary_path).read_text())
+    s = {k: v for k, v in json.loads(Path(summary_path).read_text()).items()
+         if not is_derived(k)}
     rows = []
     for key, r in sorted(s.items()):
         extent = r.get("extent_um")

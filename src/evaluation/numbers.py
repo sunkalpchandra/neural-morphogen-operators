@@ -15,7 +15,7 @@ from typing import Dict, List, Optional
 import numpy as np
 import pandas as pd
 
-from .tables import load_json_glob
+from .tables import is_derived, load_json_glob
 
 
 def _ms(df: pd.DataFrame, key: str) -> str:
@@ -101,6 +101,12 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
 
     # ---- physics diagnostics -------------------------------------------- #
     phys = []
+    pj = results_root / "physics.json"
+    if pj.exists():
+        try:
+            phys = json.loads(pj.read_text())
+        except Exception:
+            phys = []
     for p in sorted(results_root.glob("**/result.json")):
         try:
             r = json.loads(p.read_text())
@@ -117,6 +123,10 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("DiffLenHi", f"{np.percentile(dl, 90):.0f}")
         wl = [p["pattern_wavelength_um"] for p in phys if p.get("pattern_wavelength_um")]
         cmd("TuringFrac", f"{100*np.mean([bool(p['turing_unstable']) for p in phys]):.0f}")
+        cmd("NPhysicsRuns", str(len(phys)))
+        gz = [p.get("growth_at_zero") for p in phys if p.get("growth_at_zero") is not None]
+        if gz:
+            cmd("GrowthAtZero", f"{np.mean(gz):.2f}")
         if wl:
             cmd("PatternWavelength", f"{np.median(wl):.0f}")
 
@@ -139,8 +149,13 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
     # ---- dataset inventory ---------------------------------------------- #
     sp = Path(processed_summary)
     if sp.exists():
-        s = json.loads(sp.read_text())
-        cmd("NDatasets", str(len(s)))
+        s = {k: v for k, v in json.loads(sp.read_text()).items() if not is_derived(k)}
+        # Sections of the same atlas (e.g. three MERFISH coronal sections) are
+        # one dataset, not three; count source datasets, and report sections too.
+        families = {k.split("__")[0].rsplit("_", 1)[0] if any(
+            k.startswith(p) for p in ("merfish_allen_", "mosta_embryo_")) else k for k in s}
+        cmd("NDatasets", str(len(families)))
+        cmd("NSections", str(len(s)))
         cmd("TotalLocations", f"{sum(v['n_obs'] for v in s.values()):,}".replace(",", "{,}"))
 
     out = Path(out)

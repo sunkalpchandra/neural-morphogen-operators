@@ -2,3 +2,14 @@
 [21:03:26] INFO    preprocess[perturb_norman] 111668 x 33694
 [21:15:39] INFO      QC: 111668 -> 111659 obs (100.0% kept), 33694 -> 22613 genes
 [21:20:32] INFO      gene selection: 2000 HVG + 73 forced morphogen genes -> 2073
+[21:31:09] INFO    [ok]   wrote data/processed/perturb_norman.h5ad  (111659 x 2073, 294.9 MB)
+[21:31:34] INFO    processed objects: 9
+[21:31:34] INFO      merfish_allen_31               91951 x   502  single cell
+[21:31:34] INFO      merfish_allen_40              104461 x   502  single cell
+[21:31:34] INFO      merfish_allen_50               92787 x   501  single cell
+[21:31:34] INFO      mosta_embryo_E10.5             18360 x  2099  bin50 (~25 um)
+[21:31:34] INFO      mosta_embryo_E9.5               5898 x  2069  bin50 (~25 um)
+[21:31:34] INFO      perturb_norman                111659 x  2073  single cell
+[21:31:34] INFO      visium_human_breast             4869 x  2087  spot (multi-cell)
+[21:31:34] INFO      visium_mouse_brain              2691 x  2079  spot (multi-cell)
+[21:31:34] INFO      xenium_mouse_brain             36362 x   248  single cell

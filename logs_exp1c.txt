@@ -116,3 +116,36 @@ Python(71919) MallocStackLogging: can't turn off malloc stack logging because it
 [21:24:35] INFO      ep  250/500  loss 1.0939  val r 0.1856  rmse 0.2948
 [21:25:15] INFO      ep  275/500  loss 1.0593  val r 0.1839  rmse 0.3002
 [21:25:48] INFO      ep  300/500  loss 1.0578  val r 0.1745  rmse 0.2984
+[21:26:24] INFO      ep  325/500  loss 1.0542  val r 0.1772  rmse 0.2980
+[21:26:58] INFO      ep  350/500  loss 1.0496  val r 0.1770  rmse 0.3003
+[21:27:39] INFO      ep  375/500  loss 1.0491  val r 0.1878  rmse 0.2932
+[21:28:17] INFO      ep  400/500  loss 1.0638  val r 0.1898  rmse 0.2944
+[21:28:54] INFO      ep  425/500  loss 1.0825  val r 0.1777  rmse 0.2963
+[21:29:31] INFO      ep  450/500  loss 1.0709  val r 0.1749  rmse 0.2964
+[21:30:10] INFO      ep  475/500  loss 1.0881  val r 0.1818  rmse 0.2964
+[21:30:44] INFO      ep  500/500  loss 1.0294  val r 0.1734  rmse 0.2973
+Python(78123) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(78126) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:30:51] INFO      done in 682s | test r=0.1568 rmse=0.2915 ssim=0.6172
+[done] gp seed 1: r=0.1568
+[21:30:53] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(78147) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(78152) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:30:54] INFO    training GPSpatialBaseline (3 params) on visium_mouse_brain for 500 epochs
+[21:31:30] INFO      ep   25/500  loss 1.0795  val r 0.1699  rmse 0.3073
+[21:32:07] INFO      ep   50/500  loss 1.0564  val r 0.1809  rmse 0.3013
+[21:32:36] INFO      ep   75/500  loss 1.0480  val r 0.1799  rmse 0.3061
+[21:33:07] INFO      ep  100/500  loss 1.0607  val r 0.1618  rmse 0.3047
+[21:33:39] INFO      ep  125/500  loss 1.0535  val r 0.1824  rmse 0.2991
+[21:34:20] INFO      ep  150/500  loss 1.0602  val r 0.1734  rmse 0.3008
+[21:34:57] INFO      ep  175/500  loss 1.0583  val r 0.1767  rmse 0.2995
+[21:35:27] INFO      ep  200/500  loss 1.0493  val r 0.1801  rmse 0.2989
+[21:36:02] INFO      ep  225/500  loss 1.0565  val r 0.1822  rmse 0.2978
+[21:36:40] INFO      ep  250/500  loss 1.0582  val r 0.1764  rmse 0.2991
+[21:37:13] INFO      ep  275/500  loss 1.0710  val r 0.1870  rmse 0.2982
+[21:37:44] INFO      ep  300/500  loss 1.0466  val r 0.1694  rmse 0.2985
+[21:38:11] INFO      ep  325/500  loss 1.0639  val r 0.1775  rmse 0.2968
+[21:38:40] INFO      ep  350/500  loss 1.0484  val r 0.1835  rmse 0.2962
+[21:39:07] INFO      ep  375/500  loss 1.0397  val r 0.1730  rmse 0.2968
+[21:39:36] INFO      ep  400/500  loss 1.0423  val r 0.1787  rmse 0.3015
+[21:40:04] INFO      ep  425/500  loss 1.1123  val r 0.1786  rmse 0.2975
