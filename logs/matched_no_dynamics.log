@@ -36,3 +36,43 @@ Python(18468) MallocStackLogging: can't turn off malloc stack logging because it
 [22:43:55] INFO      ep  200/500  loss 1.1925  val r 0.2554  rmse 0.2704
 [22:44:46] INFO      ep  225/500  loss 1.2067  val r 0.2559  rmse 0.2720
 [22:45:40] INFO      ep  250/500  loss 1.1965  val r 0.2568  rmse 0.2725
+[22:46:32] INFO      ep  275/500  loss 1.1814  val r 0.2571  rmse 0.2743
+[22:47:37] INFO      ep  300/500  loss 1.1719  val r 0.2565  rmse 0.2744
+[22:48:55] INFO      ep  325/500  loss 1.1685  val r 0.2564  rmse 0.2747
+[22:49:57] INFO      ep  350/500  loss 1.1634  val r 0.2568  rmse 0.2755
+[22:50:57] INFO      ep  375/500  loss 1.1616  val r 0.2557  rmse 0.2751
+[22:51:56] INFO      ep  400/500  loss 1.1656  val r 0.2559  rmse 0.2758
+[22:52:44] INFO      ep  425/500  loss 1.1752  val r 0.2558  rmse 0.2757
+[22:53:36] INFO      ep  450/500  loss 1.1667  val r 0.2562  rmse 0.2761
+[22:54:17] INFO      ep  475/500  loss 1.1782  val r 0.2561  rmse 0.2761
+[22:54:17] INFO      early stop at epoch 475 (best 0.2571)
+[22:54:20] INFO      done in 827s | test r=0.2200 rmse=0.2816 ssim=0.3520
+[done] no_dynamics seed 1: r=0.2200 rmse=0.2816
+[22:54:21] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(27613) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(27621) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[22:54:22] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 500 epochs
+[22:55:18] INFO      ep   25/500  loss 1.5144  val r 0.1162  rmse 0.2950
+[22:56:18] INFO      ep   50/500  loss 1.4241  val r 0.2078  rmse 0.2929
+[22:57:11] INFO      ep   75/500  loss 1.3371  val r 0.2304  rmse 0.2794
+[22:58:10] INFO      ep  100/500  loss 1.2751  val r 0.2440  rmse 0.2713
+[22:59:55] INFO      ep  125/500  loss 1.2415  val r 0.2475  rmse 0.2701
+[23:01:22] INFO      ep  150/500  loss 1.2159  val r 0.2492  rmse 0.2718
+[23:02:46] INFO      ep  175/500  loss 1.2184  val r 0.2491  rmse 0.2728
+[23:03:45] INFO      ep  200/500  loss 1.1937  val r 0.2471  rmse 0.2739
+[23:04:39] INFO      ep  225/500  loss 1.1966  val r 0.2469  rmse 0.2769
+[23:05:29] INFO      ep  250/500  loss 1.1828  val r 0.2466  rmse 0.2792
+[23:06:27] INFO      ep  275/500  loss 1.1888  val r 0.2455  rmse 0.2789
+[23:07:15] INFO      ep  300/500  loss 1.1732  val r 0.2454  rmse 0.2811
+[23:08:05] INFO      ep  325/500  loss 1.1704  val r 0.2440  rmse 0.2824
+[23:08:58] INFO      ep  350/500  loss 1.1661  val r 0.2444  rmse 0.2830
+[23:08:58] INFO      early stop at epoch 350 (best 0.2492)
+[23:09:01] INFO      done in 876s | test r=0.2298 rmse=0.2622 ssim=0.3688
+[done] no_dynamics seed 2: r=0.2298 rmse=0.2622
+
+             pearson_mean                rmse  ... ssim_mean   n_params     
+                    mean       std      mean  ...       std       mean  std
+variant                                       ...                          
+no_dynamics     0.224155  0.005091  0.275754  ...  0.008416  2198304.0  0.0
+
+[1 rows x 8 columns]

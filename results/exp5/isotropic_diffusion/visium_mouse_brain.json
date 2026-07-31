@@ -1,0 +1,27 @@
+[
+  {
+    "variant": "isotropic_diffusion",
+    "seed": 0,
+    "section": "visium_mouse_brain",
+    "n_params": 2198240,
+    "best_epoch": 274,
+    "pearson_mean": 0.2268458902835846,
+    "pearson_median": 0.19110940396785736,
+    "spearman_mean": 0.19468525052070618,
+    "rmse": 0.2575065791606903,
+    "mae": 0.14759422838687897,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.8599890470504761,
+    "ssim_mean": 0.3884944269837782,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127,
+    "morans_i_pred": 0.9638651567400637,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.7894695469676225,
+    "morans_i_corr": 0.4367153042989916,
+    "turing_unstable": false,
+    "growth_max": 0.6570267081260681,
+    "diffusion_length_um_mean": 393.9654541015625
+  }
+]

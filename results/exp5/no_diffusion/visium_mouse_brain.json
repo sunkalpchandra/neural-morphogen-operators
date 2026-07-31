@@ -23,5 +23,30 @@
     "turing_unstable": false,
     "growth_max": 0.13114774227142334,
     "diffusion_length_um_mean": null
+  },
+  {
+    "variant": "no_diffusion",
+    "seed": 1,
+    "section": "visium_mouse_brain",
+    "n_params": 2198208,
+    "best_epoch": 274,
+    "pearson_mean": 0.22353175282478333,
+    "pearson_median": 0.20659445226192474,
+    "spearman_mean": 0.16151581704616547,
+    "rmse": 0.26015451550483704,
+    "mae": 0.15014208853244781,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.854709804058075,
+    "ssim_mean": 0.37179056005430855,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127,
+    "morans_i_pred": 0.7546308761066591,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.5803395199609839,
+    "morans_i_corr": 0.4174561357956517,
+    "turing_unstable": false,
+    "growth_max": 0.0929548516869545,
+    "diffusion_length_um_mean": null
   }
 ]

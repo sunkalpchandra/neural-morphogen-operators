@@ -1,0 +1,4 @@
+,pearson_mean,pearson_mean,rmse,rmse,ssim_mean,ssim_mean,n_params,n_params
+,mean,std,mean,std,mean,std,mean,std
+variant,,,,,,,,
+no_bio_reg,0.2334432527422905,0.004793793086341215,0.252665638923645,0.0030246685833843104,0.39237989997111133,0.007417027278074179,2198304.0,0.0

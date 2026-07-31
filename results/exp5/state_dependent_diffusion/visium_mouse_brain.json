@@ -1,0 +1,27 @@
+[
+  {
+    "variant": "state_dependent_diffusion",
+    "seed": 0,
+    "section": "visium_mouse_brain",
+    "n_params": 2200416,
+    "best_epoch": 224,
+    "pearson_mean": 0.2333221584558487,
+    "pearson_median": 0.1962931901216507,
+    "spearman_mean": 0.19442854821681976,
+    "rmse": 0.25222525000572205,
+    "mae": 0.14570730924606323,
+    "n_locations": 567,
+    "n_genes": 2079,
+    "pearson_per_location": 0.8647806644439697,
+    "ssim_mean": 0.39345480451342574,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127,
+    "morans_i_pred": 0.9627522340878344,
+    "morans_i_true": 0.17439560977244126,
+    "morans_i_abs_error": 0.7883566243153931,
+    "morans_i_corr": 0.4143293305264024,
+    "turing_unstable": false,
+    "growth_max": 0.5542594790458679,
+    "diffusion_length_um_mean": 388.8471984863281
+  }
+]

@@ -7,3 +7,42 @@
 [22:32:52] INFO      ep  125/300  loss 1.1997  val r 0.2179  rmse 0.2838
 [22:33:14] INFO      ep  150/300  loss 1.1636  val r 0.2198  rmse 0.2862
 [22:33:56] INFO      ep  175/300  loss 1.1462  val r 0.2242  rmse 0.2856
+[23:02:35] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[23:02:36] INFO    training GNNBaseline (609,599 params) on visium_mouse_brain for 300 epochs
+[23:02:59] INFO      ep   25/300  loss 1.4242  val r 0.1027  rmse 0.2940
+[23:03:21] INFO      ep   50/300  loss 1.3383  val r 0.1686  rmse 0.2878
+[23:03:42] INFO      ep   75/300  loss 1.2488  val r 0.1936  rmse 0.2815
+[23:04:01] INFO      ep  100/300  loss 1.2366  val r 0.2113  rmse 0.2851
+[23:04:20] INFO      ep  125/300  loss 1.1997  val r 0.2179  rmse 0.2838
+[23:04:39] INFO      ep  150/300  loss 1.1636  val r 0.2198  rmse 0.2862
+[23:04:59] INFO      ep  175/300  loss 1.1462  val r 0.2242  rmse 0.2856
+[23:05:16] INFO      ep  200/300  loss 1.1711  val r 0.2246  rmse 0.2842
+[23:05:34] INFO      ep  225/300  loss 1.1584  val r 0.2290  rmse 0.2833
+[23:06:00] INFO      ep  250/300  loss 1.1330  val r 0.2301  rmse 0.2840
+[23:06:19] INFO      ep  275/300  loss 1.1638  val r 0.2300  rmse 0.2842
+[23:06:35] INFO      ep  300/300  loss 1.1535  val r 0.2301  rmse 0.2844
+[23:06:38] INFO      done in 239s | test r=0.2236 rmse=0.2543 ssim=0.3723
+[done] discrete_gnn seed 0: r=0.2236 rmse=0.2543
+[23:06:40] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[23:06:40] INFO    training GNNBaseline (609,599 params) on visium_mouse_brain for 300 epochs
+[23:07:00] INFO      ep   25/300  loss 1.4471  val r 0.1115  rmse 0.2943
+[23:07:19] INFO      ep   50/300  loss 1.3316  val r 0.1750  rmse 0.2892
+[23:07:37] INFO      ep   75/300  loss 1.2719  val r 0.1955  rmse 0.2812
+[23:07:57] INFO      ep  100/300  loss 1.2276  val r 0.2109  rmse 0.2833
+[23:08:16] INFO      ep  125/300  loss 1.2172  val r 0.2163  rmse 0.2856
+[23:08:35] INFO      ep  150/300  loss 1.1783  val r 0.2206  rmse 0.2861
+[23:08:56] INFO      ep  175/300  loss 1.1629  val r 0.2246  rmse 0.2840
+[23:09:11] INFO      ep  200/300  loss 1.1462  val r 0.2262  rmse 0.2860
+[23:09:26] INFO      ep  225/300  loss 1.1744  val r 0.2270  rmse 0.2867
+[23:09:42] INFO      ep  250/300  loss 1.1694  val r 0.2284  rmse 0.2862
+[23:09:58] INFO      ep  275/300  loss 1.1604  val r 0.2279  rmse 0.2859
+[23:10:13] INFO      ep  300/300  loss 1.1487  val r 0.2279  rmse 0.2860
+[23:10:15] INFO      done in 212s | test r=0.2222 rmse=0.2561 ssim=0.3727
+[done] discrete_gnn seed 1: r=0.2222 rmse=0.2561
+
+              pearson_mean                rmse  ... ssim_mean  n_params     
+                     mean       std      mean  ...       std      mean  std
+variant                                        ...                         
+discrete_gnn     0.222924  0.001011  0.255211  ...  0.000324  609599.0  0.0
+
+[1 rows x 8 columns]
