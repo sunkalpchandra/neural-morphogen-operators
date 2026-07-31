@@ -39,12 +39,11 @@ inverse-distance read-out head shared by every graph baseline, so the gap betwee
 it and a graph model isolates \emph{message passing}: across \MSNGraphModels{}
 graph models that margin spans \MSWorstGraphOverAE{} to \MSBestGraphOverAE{}
 Pearson $r$, against \MSNMOOverAE{} for NRDO --- an order of magnitude larger. An
-implicit neural field (SIREN), which is continuous by construction but carries no
-dynamics, is the weakest model tested (\MSWeakestPearson{}, a gap of
-$\MSMaxDelta$ against NRDO). Continuity alone is therefore not sufficient, and on
-these sections message passing adds little over a well-chosen read-out head; it
-is the \emph{operator} that carries the gain, which the parameter-matched $T{=}0$
-control confirms directly (Section~\ref{sec:ablations}).
+implicit neural field, continuous by construction but carrying no dynamics, is
+the weakest model tested (\MSWeakestPearson{}, a gap of $\MSMaxDelta$). Continuity
+alone is therefore insufficient and message passing adds little over a good
+read-out head; it is the \emph{operator} that carries the gain, which the
+parameter-matched $T{=}0$ control confirms (Section~\ref{sec:ablations}).
 
 \paragraph{Spatial autocorrelation.}
 NRDO leads on SSIM (\MSNMOSSIM{} against \MSBestAnySSIM{} for the best baseline,
@@ -84,61 +83,43 @@ can be violated mid-training as $\mD_\theta$ adapts.
 \subsection{The reconstruction does not degrade tissue-level structure}
 \label{sec:biology}
 
-
 Correlation does not establish that a reconstruction remains usable for the
-analyses a biologist would run on it, so we score the predictions against
-annotations shipped with the public data: Space Ranger clusters for Visium, the
-vendor clustering for Xenium, and curated anatomical regions for the Stereo-seq
-embryo. Clustering the \emph{predicted} expression at held-out locations, NRDO
-retains \BioARIRet{} of the adjusted Rand index obtainable from the measured
-data, against \BioARIRetBest{} for the best baseline; it is also nominally ahead
-on marker AUROC (\BioMarker{} versus \BioMarkerBest{}) and on $k$-NN neighborhood
-preservation (\BioKNN{} versus \BioKNNBest{}).
+analyses a biologist would run on it, so we cluster the \emph{predicted}
+expression at held-out locations and score it against annotations shipped with
+the public data, over \BioSections{} sections with reference labels
+(Appendix~\ref{app:empirical}, Table~\ref{tab:biology}). NRDO retains
+\BioARIRet{} of the adjusted Rand index obtainable from the measured data against
+\BioARIRetBest{} for the best baseline, and is nominally ahead on marker AUROC
+and $k$-NN neighborhood preservation.
 
-We deliberately do not read these as a second win. Each margin is a small
-fraction of its own dispersion --- $\BioARIRetGapSD$, $\BioMarkerGapSD$ and
-$\BioKNNGapSD$ pooled standard deviations respectively --- over
-\BioSections{} annotated sections, which is too few to support a paired test, and
-we report none. The defensible conclusion is the negative one, and it is the one
-we intend: the operator attains its reconstruction accuracy \emph{without}
-degrading the tissue-level structure a downstream analysis depends on, where a
-model that smoothed its way to a good correlation would have lost it. The
-reference labels are themselves the output of a clustering algorithm rather than
-independent ground truth, which further limits how hard this evidence can be
-pushed.
+We do not read this as a second win. Each margin is a small fraction of its own
+dispersion --- $\BioARIRetGapSD$, $\BioMarkerGapSD$ and $\BioKNNGapSD$ pooled
+standard deviations --- over too few annotated sections to support a paired test,
+and we report none. The defensible claim is the negative one: the operator
+attains its reconstruction accuracy \emph{without} degrading the tissue-level
+structure a downstream analysis depends on, where a model that smoothed its way
+to a good correlation would have lost it. The reference labels are themselves an
+algorithm's output rather than independent ground truth.
 
 \subsection{Learned dynamics}
 
 
 \paragraph{The recovered length scale is close to its own initialization.}
-On the primary section the fitted operator has a median diffusion length of
-\NullBaseline\,$\mu$m. An earlier version of this work noted that this is the
-same order as measured morphogen gradients \citep{kicheva2007kinetics,yu2009fgf8}.
-That observation does not survive a control, and we report the control instead.
-
-Refitting the identical architecture at the identical budget on
-\emph{coordinate-shuffled} sections --- expression permuted across positions, so
-every gene's marginal is preserved and no spatial structure remains --- recovers
-\NullShuffled\,$\mu$m, against \NullInit\,$\mu$m for the untrained model. The
-shuffled fit therefore moves the length scale by \NullShuffledShift\% from
-initialization while attaining $r = \NullShuffledR$, and real tissue moves it by
-\NullDataShift\%. The initialization is not incidental: it is
-$\sqrt{2\,D_{\mathrm{init}}\,\Delta t\,n_{\mathrm{steps}}}$ times the coordinate
-scale, fixed by the configuration before any data is seen. Fixing the splat
-bandwidth across \NullSigmaRange{} grid cells leaves the result between
-\NullSigmaLo{} and \NullSigmaHi\,$\mu$m, and sweeping the lattice over
-\NullGridN{} resolutions leaves it between \NullGridUmLo{} and
-\NullGridUmHi\,$\mu$m while the same quantity measured in lattice cells moves
-from \NullGridCellsLo{} to \NullGridCellsHi. Neither the encoder kernel nor the
-discretization is therefore the mechanism: the length is pinned in microns and
-free in cells, which is what a quantity fixed in normalized coordinates before
-training does (Appendix~\ref{app:empirical}).
-
-We therefore withdraw the correspondence with measured gradient lengths: the
-median is largely a configuration constant, and agreement with a biological
-scale that a configuration choice also produces is not evidence. What the data
-do determine is the \emph{spread}: at initialization every channel carries an
-identical length scale, and training differentiates them across
+The fitted operator has a median diffusion length of \NullBaseline\,$\mu$m on the
+primary section. An earlier version of this work noted that this is the same
+order as measured morphogen gradients \citep{kicheva2007kinetics,yu2009fgf8}; a
+control retracts that observation. Refitting the identical architecture at the
+identical budget on \emph{coordinate-shuffled} sections --- expression permuted
+across positions, preserving every marginal and destroying all spatial structure
+--- recovers \NullShuffled\,$\mu$m at $r = \NullShuffledR$, against
+\NullInit\,$\mu$m untrained: a move of \NullShuffledShift\% from initialization
+against \NullDataShift\% for real tissue. Sweeping the splat bandwidth and the
+lattice resolution leaves the value unchanged in microns while it moves by a
+factor of four in lattice cells, so neither is the mechanism
+(Table~\ref{tab:difflen_null}). We therefore withdraw the correspondence with
+measured gradient lengths: the median is largely a configuration constant. What
+the data do determine is the \emph{spread} --- at initialization every channel
+carries an identical length scale, and training differentiates them across
 \DiffLenLo--\DiffLenHi\,$\mu$m. The anisotropy is
 used rather than merely available: constraining $\mD$ to be isotropic costs
 \AblIsotropicDelta{} Pearson $r$.
@@ -153,139 +134,93 @@ away from steady state, in line with Theorem~\ref{thm:identifiability}.
 
 \subsection{Transfer across tissue, species and resolution}
 
-Transfer is the weakest setting here, and a protocol caveat governs it. The
-zero-shot condition conditions a model on a random half of the target and scores
-the complement, whereas every other experiment in this paper scores contiguous
-held-out blocks. Those are not equally hard: on the Xenium target the median
-distance from a scored location to the nearest visible one is
-\SplitXenRandom\,$\mu$m under the random split against \SplitXenBlock\,$\mu$m
-under blocks, a factor of \SplitXenRatio{} (Appendix~\ref{app:empirical}). The
-random split therefore admits exactly the neighbor leakage that motivated our
-block protocol, so zero-shot numbers are comparable to each other but not to the
-in-domain oracle or the training-mean floor, and we read only the former.
+Transfer is the weakest setting here, and we report it under the same
+held-out-block protocol as everything else. An earlier version conditioned the
+model on a random half of the target and scored the complement, which is not
+comparable: on the Xenium target the median distance from a scored location to
+the nearest visible one is \SplitXenRandom\,$\mu$m under a random split against
+\SplitXenBlock\,$\mu$m under blocks, so the random split admits exactly the
+neighbor leakage that motivated blocks in the first place. Under that protocol a
+zero-shot model appeared to beat models trained on the target; under blocks it
+does not, and the numbers below are the corrected ones.
 
-Under that common protocol, NRDO applied unchanged from adult mouse brain to
-human breast carcinoma attains \TissueZeroShot{}, and an operator fitted to
-55\,$\mu$m Visium spots and evaluated on single-cell Xenium sampling of the same
-organ reaches \ResZeroShot{} over \ResSharedGenes{} shared genes. The
-\TissueZeroShotBaselineName{} baseline transfers better in both settings
-(\TissueZeroShotBaseline{} cross-tissue) and decoder-only refitting recovers
-\TissueFineTune{}. We attribute this to the mechanism that produces the
-in-domain gain: NRDO fits an operator whose fixed point is the source tissue, and
-relaxation toward that attractor is less appropriate when the target has a
-different architecture, whereas local message passing encodes less about the
-source. Proposition~\ref{prop:nystrom} makes the distinction precise ---
-discretization invariance of the \emph{encoder} does not entail portability of
-the \emph{fitted} operator. Conditioning $\mD_\theta$ on tissue-level covariates
-is the natural next step. Full tables, the developmental-forecasting result and
-the corrected-protocol discussion are in Appendix~\ref{app:empirical}.
+Applied unchanged from adult mouse brain to human breast carcinoma, NRDO reaches
+\TissueZeroShot{} against a training-mean floor of \TissueFloor{} and an
+in-domain oracle of \TissueOracle{} --- that is, essentially no transfer.
+Cross-resolution is better but still poor: an operator fitted to 55\,$\mu$m
+Visium spots and evaluated on single-cell Xenium of the same organ reaches
+\ResZeroShot{} over \ResSharedGenes{} shared genes against an oracle of
+\ResOracle{}. The \TissueZeroShotBaselineName{} baseline transfers better in both
+settings. We attribute this to the mechanism that produces the in-domain gain:
+NRDO fits an operator whose fixed point is the source tissue, and relaxation
+toward that attractor is inappropriate when the target has a different
+architecture, whereas local message passing encodes less about the source.
+Proposition~\ref{prop:nystrom} makes the distinction precise --- discretization
+invariance of the \emph{encoder} does not entail portability of the \emph{fitted}
+operator. Until $\mD_\theta$ is conditioned on tissue-level covariates the
+operator should be regarded as a within-section model. Full tables and the
+developmental-forecasting result are in Appendix~\ref{app:empirical}.
 
 \subsection{Counterfactual perturbation}
 \label{sec:results4}
 
-We test whether the latent field encodes pathway-specific structure using a
-split-half design: we inject the latent direction that maximally raises one
-random half of a morphogen pathway, integrate the operator, and assess whether
-the \emph{held-out} half responds preferentially against a permutation null over
+We test whether the latent field encodes pathway-specific structure with a
+split-half design: inject the latent direction that maximally raises one random
+half of a morphogen pathway, integrate the operator, and ask whether the
+\emph{held-out} half responds preferentially against a permutation null over
 matched gene sets. Across \BeadNPathways{} pathways the enrichment does not reach
 significance (\BeadNSig{} significant; mean held-out rank \BeadMeanRank\% against
 a 50\% chance level).
 
-Theorem~\ref{thm:identifiability} predicts this outcome. The perturbation
-displaces $\vz$ off the observed manifold $\mathcal{R}=\vz^\star(\Omega)$, and a
-single stationary snapshot places no constraint on $f_\theta$ there. The
-correlations between latent channels and pathway scores
-(Appendix~\ref{app:empirical}) are therefore best read as reflecting coarse
-anatomical structure that pathway scores also track, and we do not interpret them
-as evidence of a pathway-specific representation. The experiment does establish a
-spatial scale: the response decays to half its peak within \BeadWidth\,$\mu$m,
-matching the diffusion lengths of $\mD_\theta$. A second pre-specified probe
-against Perturb-seq \citep{norman2019perturbseq} was underpowered
-($n=\PSNPerturb$) and we report it as inconclusive (Appendix~\ref{app:empirical}).
+Theorem~\ref{thm:identifiability} predicts this: the perturbation displaces
+$\vz$ off the observed manifold $\mathcal{R} = \vz^\star(\Omega)$, where a single
+stationary snapshot places no constraint on $f_\theta$. We therefore read the
+latent--pathway correlations as coarse anatomy that pathway scores also track,
+not as a pathway-specific representation. The experiment does establish a spatial
+scale --- the response decays to half its peak within \BeadWidth\,$\mu$m. A
+second pre-specified probe against Perturb-seq \citep{norman2019perturbseq} was
+underpowered ($n = \PSNPerturb$) and is inconclusive
+(Appendix~\ref{app:empirical}).
 
-% =====================================================================
-\else
-\subsection{Spectral matching: converting the weakness into a measurement}
-\label{sec:spectral}
+\paragraph{Can the smoothness be trained away?}
+The obvious remedy is a loss term matching the radially averaged power spectrum
+of the predicted field to that of the measured field. We implement it and sweep
+its weight in two forms (Appendix~\ref{app:empirical},
+Table~\ref{tab:spectral}). The result is a bound rather than a fix: the better
+form buys $\SpecShapePctMoran\%$ of $|\Delta I|$ for $\SpecShapePctR\%$ of the
+Pearson $r$ at its optimum, but across every weight and both forms the predicted
+autocorrelation bottoms out at $I_{\mathrm{pred}} = \SpecMinIPred$ against a
+measured $\SpecITrue$. Weighting the term heavily enough to destroy predictive
+accuracy still does not bring the reconstruction near the roughness of the data,
+so the smoothness belongs to the operator class rather than to the objective. We
+keep $\lambda = 0$ throughout.
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig_spectral.pdf}
-  \caption{\textbf{Spectral matching.} (a) The trade-off: up and to the left is
-  better. Points are labeled by weight $\lambda$; $\lambda = 0$ is the model used
-  everywhere else. (b) Predicted global autocorrelation against $\lambda$. No
-  weight of either form brings $I_{\mathrm{pred}}$ near the measured value.}
-  \label{fig:spectral}
-\end{figure}
+\paragraph{Robustness to sampling density.}
+Spatial transcriptomics is noisy and sampled at whatever density the assay
+provides, so we re-train every model under \RobAxes{} corruption axes applied
+identically to all of them (\RobRuns{} runs; Appendix~\ref{app:empirical},
+Table~\ref{tab:robustness}). On two axes NRDO is not the most robust: under
+multiplicative count noise every model retains about the same fraction
+(\RobNoiseNMO\% against \RobNoiseBest\% for \RobNoiseBestModel{}), and under
+random location dropout the graph baselines degrade slightly less. The exception
+is the axis the continuous formulation actually predicts. Subsampling the section
+to an eighth of its locations --- changing sampling density without changing
+anatomy --- NRDO retains \RobDensNMO\% of its full-density accuracy against
+\RobDensBest\% for the best baseline. A model defined on a field rather than on a
+lattice should survive exactly this perturbation, and it is the one setting where
+it clearly does.
 
-Section~\ref{sec:results} reports that our predicted fields are too smooth, and
-Section~\ref{sec:convergence} shows this is structural rather than an artifact of
-the training budget. The natural remedy is a term matching the radially averaged
-power spectrum of the predicted field to that of the measured field. We
-implement it, sweep its weight, and report the trade-off
-(Table~\ref{tab:spectral}, Fig.~\ref{fig:spectral}; \SpecSeeds{} seeds per
-point).
-
-The form of the term matters more than its weight. Matching the \emph{absolute}
-spectrum over all radial bands leaves an amplitude degree of freedom that the
-model can exploit without redistributing any energy across scales: a controlled
-check finds that this objective penalizes a purely rescaled field more heavily
-than a genuinely smoothed one. Its best setting reaches
-$|\Delta I| = \SpecFullBestMoran$, a $\SpecFullPctMoran\%$ improvement, but at
-$\SpecFullPctR\%$ of the Pearson $r$. Matching the spectrum \emph{normalized} by
-total power, over the upper half of the band only, removes that degree of
-freedom and penalizes exactly the frequencies a dissipative operator loses. At
-$\lambda = \SpecShapeBestW$ it attains $|\Delta I| = \SpecShapeBestMoran$ ---
-better than the absolute form achieves at any weight --- for
-$\SpecShapePctR\%$ of the accuracy rather than $\SpecFullPctR\%$. Larger weights
-do not help: the curve turns over, so this is an optimum rather than a point on
-a slope.
-
-We report the honest conclusion rather than the convenient one. Spectral
-matching does buy spatial fidelity, and the corrected form buys it roughly four
-times more cheaply than the naive one, but it does not solve the problem: across
-every weight and both forms the predicted autocorrelation bottoms out at
-$I_{\mathrm{pred}} = \SpecMinIPred$ against a measured $\SpecITrue$. Even when
-the term is weighted heavily enough to destroy predictive accuracy, the
-reconstruction does not approach the roughness of the data. We therefore keep
-$\lambda = 0$ for every other experiment in this paper and read this section as
-bounding the remedy rather than delivering it: the smoothness is a property of
-the operator class, and a loss term applied on top of it is the wrong place to
-fix it.
-
-\subsection{Convergence}
-\label{sec:convergence}
-
-The benchmark trains every model for a fixed, reduced number of epochs, which
-raises a fair objection: if no model has converged, the observed ordering is a
-fact about the budget as much as about the models. Section~\ref{sec:limitations}
-previously argued that undertraining compresses differences symmetrically, but
-that argument does not establish which ordering is the converged one.
-
-We settle it on \ConvSection{}, chosen because it is the section where the
-ordering actually changes with budget. Training every model to a shared
-early-stopping criterion on the full section with \ConvSeeds{} seeds
-(Appendix~\ref{app:empirical}, Table~\ref{tab:converged}), NRDO attains
-\ConvNMO{} against \ConvBest{} for the strongest baseline (\ConvBestModel), and
-wins on \ConvWins{}/\ConvNPairs{} seeds against every comparator with
-$d_z = \ConvMinDz$--$\ConvMaxDz$. At the benchmark's budget the ordering on this
-section is reversed. The budget is therefore \emph{conservative} for NRDO here
-rather than neutral, and the honest reading of Table~\ref{tab:multisection} is
-that it establishes consistency across anatomy at a fixed budget, not that its
-margins are the converged margins. With \ConvNPairs{} seeds we report effect
-sizes and the win record rather than a significance claim.
-
-Two findings survive convergence and matter more than the ordering. The
-non-spatial autoencoder still matches the graph models --- the best of them
-leads it by \ConvGraphOverAE{} Pearson $r$ --- so their near-tie is a property of
-this task rather than an artifact of undertraining, which strengthens rather
-than weakens the reading in Section~\ref{sec:results}. And NRDO retains the
-largest error in Moran's $I$ (\ConvNMOMoran{} against \ConvBestMoran{}), so the
-over-smoothing is structural and not a symptom of a truncated budget.
-
-The cost is real: NRDO takes \ConvNMOWall\,s against \ConvBaseWallLo--\ConvBaseWallHi\,s
-for the baselines on one CPU, a factor of \ConvSlowdown{} against the slowest of
-them.
+\paragraph{Is the benchmark's ordering the converged ordering?}
+Not exactly, and the direction favors us. Training every model to a shared
+early-stopping criterion on the full \ConvSection{} section --- the one whose
+ordering changes with budget --- NRDO attains \ConvNMO{} against \ConvBest{} for
+the strongest baseline, winning \ConvWins{}/\ConvNPairs{} seeds with
+$d_z = \ConvMinDz$--$\ConvMaxDz$, having \emph{lost} to it at the benchmark
+budget (Appendix~\ref{app:empirical}, Table~\ref{tab:converged}). Two findings
+survive convergence: the non-spatial autoencoder still matches the graph models,
+so their near-tie is a property of the task rather than of undertraining; and
+NRDO retains the largest error in Moran's $I$, so the over-smoothing is
+structural.
 
 \subsection{Further results}
 The exponential integrator costs

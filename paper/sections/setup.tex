@@ -39,16 +39,13 @@ RMSE, SSIM \citep{wang2004ssim} on rasterized maps, and absolute error in Moran'
 $I$ \citep{moran1950}, the last included because correlation and RMSE both reward
 regression toward a smooth mean.
 
-\paragraph{Two scopes, kept distinct.} Results are reported at two scales and we
-label every number with the one it belongs to. The \emph{benchmark} spans
-\MSSections{} sections at \MSSeeds{} seeds under a reduced budget, and is the
-basis for every claim about generality (Section~\ref{sec:results},
-Table~\ref{tab:multisection}); the \emph{primary section}
+\paragraph{Two scopes, kept distinct.} Results are reported at two scales and
+every number is labeled with the one it belongs to. The \emph{benchmark} spans
+\MSSections{} sections at \MSSeeds{} seeds under a reduced budget and is the
+basis for every claim about generality; the \emph{primary section}
 (\DiffLenSection{}) is run at the full budget with \NSeeds{} seeds and carries
-the diagnostics that need a converged fit --- the learned operator, the
-ablations and the physics read-outs (Appendix~\ref{app:empirical},
-Table~\ref{tab:benchmark}). The two are not interchangeable: absolute scores are
-higher on the primary section, and a value from one is never quoted in support
-of a claim about the other.
+the diagnostics that need a converged fit. Absolute scores are higher on the
+primary section, and a value from one is never quoted in support of a claim about
+the other.
 
 % =====================================================================

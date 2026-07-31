@@ -3,24 +3,35 @@
 
 We asked whether the continuous description that developmental biology uses for
 tissue can be fitted as an operator on spatial transcriptomics, and whether doing
-so is useful. On the evidence presented, it is. Across \MSSections{} sections and
-four technologies, treating tissue as a field rather than a graph improves
-prediction at unmeasured coordinates against every baseline tested, with
-Holm-corrected significance and large effect sizes under paired tests. A
-parameter-matched control attributes the gain to the operator rather than to
-capacity; a non-spatial control and an implicit neural field together show that
-neither message passing nor continuity alone accounts for it; the reconstruction
-preserves the tissue-level structure a downstream analysis depends on; and replacing the
-exponential integrator costs $\NumSpeedup\times$ more steps to reach the same
-tolerance, so the numerical machinery is load-bearing.
+so is useful. On the evidence presented it is, within limits we can state
+precisely.
 
-We also delimit what this class of method can establish:
+Across \MSSections{} sections and four technologies, treating tissue as a field
+rather than a graph improves prediction at unmeasured coordinates against every
+baseline tested under paired tests over sections. At the specimen level --- the
+conservative unit, and the one we regard as decisive --- the separation from the
+continuous baselines holds on every independent specimen, while that from the
+graph baselines does not resolve. Three controls localize what remains: a
+parameter-matched ablation attributes the gain to the operator rather than to
+capacity, a non-spatial baseline shows message passing contributes little even at
+convergence, and an implicit neural field shows continuity alone is not
+sufficient. On the section whose ordering is budget-dependent, training to
+convergence reverses it in our favor, so the benchmark's fixed budget is
+conservative rather than flattering.
+
+We are equally explicit about what the evidence does not support.
 Theorem~\ref{thm:identifiability} shows a stationary snapshot constrains the
-reaction network only on a null set, which both explains our perturbation result
-and identifies the data needed to go further. We regard NRDO as learning latent
-continuous operators that summarize spatial gene-expression organization, with
-the most promising directions being to condition the operator on tissue
-covariates for transfer, and to pair spatial with temporal or interventional
-sampling to make the dynamics identifiable.
+reaction network only on a null set, which explains our perturbation result and
+identifies the data needed to go further. Consistent with that, the operator's
+recovered length scale is close to its initialization, so we withdraw any reading
+of it as a measured biological quantity. The predicted fields are too smooth, and
+a spectral-matching term bounds rather than removes the problem. Under a
+held-out-block protocol the fitted operator does not transfer to a new tissue.
+
+We therefore regard NRDO as learning latent continuous operators that summarize
+spatial gene-expression organization within a section, not as recovering
+morphogen dynamics. Three directions would change that: more independent
+specimens, an architecture whose smoothness is not intrinsic, and spatial data
+paired with temporal or interventional sampling.
 
 \label{endofmain}

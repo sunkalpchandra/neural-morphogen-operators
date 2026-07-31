@@ -395,6 +395,38 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("NumSpeedup", f"{eul.iloc[0]/base:.0f}")
         cmd("NumStrangSteps", str(int(base)))
 
+    # ---- Experiment 10 : robustness ---------------------------------------- #
+    rb = sorted(Path(results_root).glob("exp10/robustness_shard*.json"))
+    if rb:
+        R = pd.DataFrame([x for f in rb for x in json.loads(f.read_text())
+                          if not x.get("failed")])
+        if not R.empty:
+            cmd("RobRuns", str(len(R)))
+            cmd("RobAxes", str(int(R["axis"].nunique())))
+            # Retention at the harshest level relative to the mildest, per axis.
+            # Density is the axis a continuous operator should survive best, and
+            # it is the one the design predicted in advance.
+            for ax, base, worst, tag in [("noise", 0.0, 1.0, "Noise"),
+                                         ("dropout", 0.0, 0.6, "Drop"),
+                                         ("density", 1.0, 0.125, "Dens")]:
+                sub = R[R["axis"] == ax]
+                if sub.empty:
+                    continue
+                piv = sub.pivot_table(index="model", columns="level",
+                                      values="pearson_mean")
+                if base not in piv.columns or worst not in piv.columns:
+                    continue
+                ret = (piv[worst] / piv[base]).dropna()
+                if "nmo" in ret.index:
+                    cmd(f"Rob{tag}NMO", f"{100 * float(ret['nmo']):.0f}")
+                    others = ret.drop(index=["nmo"])
+                    if len(others):
+                        cmd(f"Rob{tag}Best", f"{100 * float(others.max()):.0f}")
+                        cmd(f"Rob{tag}BestModel",
+                            DISPLAYNAMES.get(others.idxmax(), others.idxmax()))
+                        cmd(f"Rob{tag}Wins", "yes" if float(ret["nmo"]) > float(others.max())
+                            else "no")
+
     # ---- Experiment 13 : spectral matching --------------------------------- #
     sj = Path(results_root) / "exp13" / "spectral_sweep.json"
     if sj.exists():

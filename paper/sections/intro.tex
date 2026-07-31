@@ -31,24 +31,18 @@ step-size restriction and renders the learned tensor $\mD_\theta$ directly
 interpretable as a diffusion length in microns.
 
 \paragraph{Contributions.}
-\begin{enumerate}\itemsep1pt \parskip0pt
-\item We introduce a PDE-constrained neural operator for spatial omics, coupling
-  a graph kernel-integral encoder, a spectral reaction--diffusion operator and a
-  coordinate-free continuous decoder (Section~\ref{sec:method}).
-\item We show that the resulting integrator is unconditionally stable and
-  second-order accurate, with structurally guaranteed positive-definite
-  diffusion and a uniform absorbing set for the field
-  (Propositions~\ref{prop:contraction}--\ref{prop:bounded}).
-\item We show that the conventional physics-informed residual is uninformative
-  for an exactly integrated operator, and derive the steady-state constraint that
-  replaces it (Proposition~\ref{prop:vacuity}).
-\item We demonstrate improved masked-region reconstruction over graph and
-  Gaussian-process baselines across four spatial technologies, and isolate the
-  operator as the source of the gain using an exactly parameter-matched control.
-\item We establish that a single stationary snapshot determines the reaction
-  network only on a Lebesgue-null subset of latent space
-  (Theorem~\ref{thm:identifiability}), which delimits what any method of this
-  class can identify and predicts the outcome of our perturbation experiment.
-\end{enumerate}
-
-% =====================================================================
+We contribute (i) a PDE-constrained neural operator for spatial omics, coupling a
+graph kernel-integral encoder, a spectral reaction--diffusion operator and a
+coordinate-free continuous decoder (Section~\ref{sec:method}); (ii) an integrator
+that is unconditionally stable and second-order accurate, with structurally
+guaranteed positive-definite diffusion
+(Propositions~\ref{prop:contraction}--\ref{prop:bounded}); (iii) the observation
+that the conventional physics-informed residual is uninformative for an exactly
+integrated operator, and the steady-state constraint that replaces it
+(Proposition~\ref{prop:vacuity}); (iv) improved masked-region reconstruction
+across four spatial technologies, with the operator isolated as the source of the
+gain by an exactly parameter-matched control; and (v) a proof that a single
+stationary snapshot determines the reaction network only on a Lebesgue-null
+subset of latent space (Theorem~\ref{thm:identifiability}), which delimits what
+any method of this class can identify and predicts the outcome of our
+perturbation experiment.

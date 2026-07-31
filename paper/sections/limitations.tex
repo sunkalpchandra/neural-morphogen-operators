@@ -2,45 +2,40 @@
 \label{sec:limitations}
 % =====================================================================
 
-A limitation intrinsic to the setting is that a single stationary snapshot cannot
-identify a dynamical system. Theorem~\ref{thm:identifiability} makes this precise:
-for $C\ge3$ the stationarity constraint determines $f_\theta$ only on the range
+\textbf{Identifiability.} A single stationary snapshot cannot identify a
+dynamical system. Theorem~\ref{thm:identifiability} makes this precise: for
+$C\ge3$ the stationarity constraint determines $f_\theta$ only on the range
 $\mathcal{R}=\vz^\star(\Omega)$, a Lebesgue-null set, so counterfactuals that
 displace $\vz$ off $\mathcal{R}$ are governed by the architecture rather than the
 data. Reported diffusion lengths accordingly characterize the fitted operator
-rather than physical morphogen transport; Section~\ref{sec:results} shows
-they are moreover close to their initialization, which is why we make no
-claim about signaling and why the operator is named for its mathematical
-class rather than for a biological one. Dense temporal or interventional sampling would remove this
+rather than physical morphogen transport; Section~\ref{sec:results} shows they
+are moreover close to their initialization, which is why we make no claim about
+signaling. Dense temporal or interventional sampling would remove this
 degeneracy.
 
-We note that the predicted fields are smoother than the measurements, and that on
-Moran's $I$ error NRDO trails the baselines it leads on the other metrics. This is
-a known consequence of diffusion-based architectures
-\citep{grand2021,gread2022} and bounds the applications we would recommend:
-prediction at unmeasured coordinates is well supported, delineation of sharp
-boundaries less so. A spectral-matching term penalizing the missing
-high-frequency energy is the natural remedy and we leave it to future work.
+\textbf{Over-smoothing.} The predicted fields are smoother than the measurements,
+and on Moran's $I$ error NRDO trails the baselines it leads on the other metrics.
+This survives training to convergence and is only partly correctable by a
+spectral-matching term (Section~\ref{sec:spectral}), so it bounds the
+applications we would recommend: prediction at unmeasured coordinates is well
+supported, delineation of sharp boundaries less so.
 
-The benchmark's statistical resolution is limited by the number of independent
-specimens rather than by the number of sections. Twelve of \MSSections{} sections
-come from one brain, leaving \MSSpecPairs{} independent specimens, at which the
-smallest attainable Wilcoxon $p$ is $\MSSpecMinP$. Against the continuous
-baselines this is enough: NRDO wins on every specimen, which is the strongest
-result the design admits. Against the graph baselines it is not
-($d_z = \MSSpecGraphDz$, NRDO ahead on \MSSpecWins{} of \MSSpecPairs{}); the
-section-level separation there rests substantially on correlated sections of one
-brain, and additional independent tissues --- not additional sections --- are
-what would settle it. We regard this as the single most informative experiment
-left undone.
+\textbf{Independent specimens, not sections.} The benchmark's statistical
+resolution is limited by the number of independent specimens. Twelve of
+\MSSections{} sections come from one brain, leaving \MSSpecPairs{} specimens, at
+which the smallest attainable Wilcoxon $p$ is $\MSSpecMinP$. Against the
+continuous baselines this suffices --- NRDO wins on every specimen --- but
+against the graph baselines it does not ($d_z = \MSSpecGraphDz$, ahead on
+\MSSpecWins{} of \MSSpecPairs{}). Additional independent tissues, not additional
+sections, are what would settle it, and we regard this as the single most
+informative experiment left undone.
 
-Transfer remains the weakest setting. NRDO retains a substantial fraction of
-in-domain performance zero-shot, but the STAGATE-style baseline transfers better,
-and until $\mD_\theta$ is conditioned on tissue-level covariates the operator is
-best regarded as a within-section model. Finally, the \emph{-style} baselines
-implement each method's architectural core with a common read-out head and are
-not reproductions of published pipelines; the benchmark uses a reduced epoch
-budget and subsampled sections so that \MSRuns{} runs were feasible on CPU, which
-lowers all models' absolute scores; and scope is limited to single 2-D sections.
+\textbf{Transfer.} Under the held-out-block protocol the fitted operator does not
+transfer to a new tissue and the STAGATE-style baseline transfers better, so it
+is best regarded as a within-section model.
 
-\iffullpaper\else\label{endofmain}\fi
+\textbf{Scope.} The \emph{-style} baselines implement each method's
+architectural core with a common read-out head and are not reproductions of
+published pipelines. The benchmark uses a reduced epoch budget and subsampled
+sections so that \MSRuns{} runs were feasible on CPU, and scope is limited to
+single 2-D sections.

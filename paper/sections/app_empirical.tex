@@ -37,10 +37,80 @@ each appears with its heading.
 \subsection{Dataset inventory}
 \inputtable{tab_datasets}
 
+\subsection{Robustness}
+\inputtable{tab_robustness}
+
 \subsection{Spectral matching}
+\subsubsection*{Full discussion}
+\label{sec:spectral}
+
+
+Section~\ref{sec:results} reports that our predicted fields are too smooth, and
+Section~\ref{sec:convergence} shows this is structural rather than an artifact of
+the training budget. The natural remedy is a term matching the radially averaged
+power spectrum of the predicted field to that of the measured field. We
+implement it, sweep its weight, and report the trade-off
+(Table~\ref{tab:spectral}, Fig.~\ref{fig:spectral}; \SpecSeeds{} seeds per
+point).
+
+The form of the term matters more than its weight. Matching the \emph{absolute}
+spectrum over all bands leaves an amplitude degree of freedom the model can
+exploit without redistributing energy across scales --- a controlled check finds
+it penalizes a purely rescaled field more heavily than a genuinely smoothed one
+--- and its best setting costs $\SpecFullPctR\%$ of the Pearson $r$ to gain
+$\SpecFullPctMoran\%$ of $|\Delta I|$. Matching the spectrum \emph{normalized}
+by total power over the upper half of the band removes that freedom and
+penalizes the frequencies a dissipative operator actually loses. At
+$\lambda = \SpecShapeBestW$ it reaches $|\Delta I| = \SpecShapeBestMoran$,
+better than the absolute form achieves at any weight, for $\SpecShapePctR\%$ of
+the accuracy; the curve turns over above that, so it is an optimum rather than a
+point on a slope.
+
+The conclusion is a bound, not a fix. Across every weight and both forms the
+predicted autocorrelation bottoms out at $I_{\mathrm{pred}} = \SpecMinIPred$
+against a measured $\SpecITrue$: weighting the term heavily enough to destroy
+predictive accuracy still does not bring the reconstruction near the roughness of
+the data. We keep $\lambda = 0$ elsewhere and conclude that the smoothness
+belongs to the operator class rather than to the objective.
+
+
 \inputtable{tab_spectral}
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_spectral.pdf}
+  \caption{\textbf{Spectral matching.} (a) The trade-off: up and to the left is
+  better. Points are labeled by weight $\lambda$; $\lambda = 0$ is the model used
+  everywhere else. (b) Predicted global autocorrelation against $\lambda$. No
+  weight of either form brings $I_{\mathrm{pred}}$ near the measured value.}
+  \label{fig:spectral}
+\end{figure}
+
 
 \subsection{Converged single-section comparison}
+\label{sec:convergence}
+\subsubsection*{Full discussion}
+
+The benchmark trains every model for a fixed, reduced number of epochs, so its
+ordering could be a fact about the budget rather than the models. We settle this
+on \ConvSection{}, the section where the ordering changes with budget, training
+every model to a shared early-stopping criterion on the full section with
+\ConvSeeds{} seeds (Appendix~\ref{app:empirical}, Table~\ref{tab:converged}).
+NRDO attains \ConvNMO{} against \ConvBest{} for the strongest baseline
+(\ConvBestModel), winning on \ConvWins{}/\ConvNPairs{} seeds against every
+comparator with $d_z = \ConvMinDz$--$\ConvMaxDz$, having \emph{lost} to that
+baseline at the benchmark budget. The budget is therefore conservative for NRDO
+here rather than neutral: Table~\ref{tab:multisection} establishes consistency
+across anatomy at a fixed budget, not that its margins are the converged margins.
+
+Two findings survive convergence and matter more than the ordering. The
+non-spatial autoencoder still matches the graph models (the best leads it by
+\ConvGraphOverAE{} Pearson $r$), so their near-tie is a property of this task
+rather than of undertraining. And NRDO retains the largest error in Moran's $I$
+(\ConvNMOMoran{} against \ConvBestMoran{}), so the over-smoothing is structural.
+NRDO costs \ConvNMOWall\,s against \ConvBaseWallLo--\ConvBaseWallHi\,s per run on
+one CPU.
+
+
 \inputtable{tab_converged}
 
 \subsection{Null controls for the recovered diffusion length}

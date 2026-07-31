@@ -18,15 +18,11 @@ the difference cannot be attributed to capacity. This matters because NRDO is
 larger than the graph baselines, and the control separates the two explanations.
 
 \iffullpaper
-Removing the biological regularizers changes held-out $r$ by \AblNoBioRegDelta{}
-and removing the PDE constraint terms by \AblNoPDEDelta{}, both within seed
-noise; at the weights used here these terms are inert with respect to predictive
-accuracy, and their role is confined to constraining the form of the operator for
-the analysis of Section~\ref{sec:results}. Removing diffusion costs
-\AblNoDiffusionDelta{} and removing the reaction \AblNoReactionDelta{}: the two
-contribute differently, diffusion supplying long-range transport into masked
-regions and the reaction the nonlinearity that prevents collapse to a smooth
-interpolant.
-
-% =====================================================================
-\fi
+Removing the biological regularizers or the PDE constraint terms changes held-out
+$r$ by \AblNoBioRegDelta{} and \AblNoPDEDelta{} respectively, both within seed
+noise: at the weights used here these terms are inert with respect to predictive
+accuracy, and their role is confined to constraining the form of the operator.
+Removing diffusion costs \AblNoDiffusionDelta{} and removing the reaction
+\AblNoReactionDelta{}; the two contribute differently, diffusion supplying
+long-range transport into masked regions and the reaction the nonlinearity that
+prevents collapse to a smooth interpolant (Appendix~\ref{app:empirical}).
