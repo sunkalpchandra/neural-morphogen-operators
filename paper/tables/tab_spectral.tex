@@ -1,0 +1,18 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Spectral matching: the trade-off between reconstruction accuracy and spatial fidelity as the term's weight $\lambda$ is swept, 2 seeds per point, on the primary section. $\lambda = 0$ is the model used everywhere else in this paper. The measured field has $I = 0.174$, so a faithful reconstruction would drive $I_{\mathrm{pred}}$ down toward that value. Two forms are compared: matching the absolute power spectrum across all radial bands, and matching the spectrum normalized by total power over the upper half of the band. The first leaves an amplitude degree of freedom that the model can exploit without redistributing energy across scales; the second removes it and penalizes only the frequencies a dissipative operator actually loses.}
+\label{tab:spectral}
+\begin{tabular}{lrrrrr}
+\toprule
+weight & Pearson $r$ $\uparrow$ & SSIM $\uparrow$ & $|\Delta I|$ $\downarrow$ & morans_i_pred & $|\Delta C|$ $\downarrow$\\
+\midrule
+\multicolumn{6}{l}{\emph{absolute spectrum, all bands}} \\
+\quad $\lambda = 0$ & 0.249\,\tiny{$\pm$ 0.005} & 0.405\,\tiny{$\pm$ 0.007} & 0.760\,\tiny{$\pm$ 0.004} & 0.934\,\tiny{$\pm$ 0.004} & 0.727\,\tiny{$\pm$ 0.003} \\
+\quad $\lambda = 0.001$ & 0.240\,\tiny{$\pm$ 0.004} & 0.399\,\tiny{$\pm$ 0.004} & 0.758\,\tiny{$\pm$ 0.003} & 0.932\,\tiny{$\pm$ 0.003} & 0.728\,\tiny{$\pm$ 0.002} \\
+\quad $\lambda = 0.01$ & 0.184\,\tiny{$\pm$ 0.007} & 0.368\,\tiny{$\pm$ 0.017} & 0.781\,\tiny{$\pm$ 0.018} & 0.955\,\tiny{$\pm$ 0.018} & 0.745\,\tiny{$\pm$ 0.010} \\
+\quad $\lambda = 0.1$ & 0.123\,\tiny{$\pm$ 0.004} & 0.405\,\tiny{$\pm$ 0.002} & 0.720\,\tiny{$\pm$ 0.001} & 0.894\,\tiny{$\pm$ 0.000} & 0.711\,\tiny{$\pm$ 0.000} \\
+\quad $\lambda = 1$ & 0.055\,\tiny{$\pm$ 0.007} & 0.401\,\tiny{$\pm$ 0.023} & 0.695\,\tiny{$\pm$ 0.003} & 0.869\,\tiny{$\pm$ 0.003} & 0.698\,\tiny{$\pm$ 0.003} \\
+\bottomrule
+\end{tabular}
+\end{table}

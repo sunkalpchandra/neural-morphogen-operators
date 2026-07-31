@@ -115,7 +115,21 @@ def mean_predictor(target_sec, visible_frac: float = 0.5, seed: int = 0,
 
 
 def finetune_decoder(model, target_sec, cfg: Config, epochs: int, seed: int, logger) -> Dict:
-    """Freeze encoder + operator; refit only the read-out head on the target."""
+    """Freeze encoder + operator; refit only the read-out head on the target.
+
+    Not every baseline has a separable read-out. The exact GP, for instance, is
+    three kernel hyperparameters and no decoder at all, and freezing by name
+    leaves nothing trainable -- which used to reach ``loss.backward()`` and fail
+    with an opaque autograd error. Such a model is reported as not supporting
+    the setting rather than as having scored badly in it.
+    """
+    trainable = [n for n, _ in model.named_parameters()
+                 if n.startswith("decoder") or n.startswith("dec")]
+    if not trainable:
+        for p_ in model.parameters():
+            p_.requires_grad = True
+        return {"unsupported": True,
+                "reason": "no separable read-out head to refit"}
     for name, p in model.named_parameters():
         p.requires_grad = name.startswith("decoder") or name.startswith("dec")
     tcfg = TrainConfig(**{**cfg.train.to_dict(), "seed": seed, "epochs": epochs})

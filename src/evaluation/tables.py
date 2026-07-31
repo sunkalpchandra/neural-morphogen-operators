@@ -490,6 +490,11 @@ def build_all(results_root: str | Path = "results", out_dir: str | Path = "paper
         made["biology"] = table_biology(json.loads(bio.read_text()),
                                         out_dir / "tab_biology.tex")
 
+    sw = results_root / "exp13" / "spectral_sweep.json"
+    if sw.exists():
+        made["spectral"] = table_spectral(json.loads(sw.read_text()),
+                                          out_dir / "tab_spectral.tex")
+
     cv = results_root / "exp14" / "converged.json"
     if cv.exists():
         made["converged"] = table_converged(json.loads(cv.read_text()),
@@ -857,6 +862,50 @@ def table_converged(records: List[Dict], out: Path) -> str:
         f"time is single-CPU and is reported because NMO is several times more "
         f"expensive than every baseline.",
         "tab:converged", "l" + "r" * (len(cols) + 3), header,
+    )
+    out.write_text(tex)
+    return tex
+
+
+def table_spectral(records: List[Dict], out: Path) -> str:
+    """Accuracy against spatial fidelity as the spectral weight is swept."""
+    df = pd.DataFrame([r for r in records if not r.get("failed")])
+    if df.empty:
+        return ""
+    df["mode"] = df.get("mode", "full")
+    cols = [c for c in ["pearson_mean", "ssim_mean", "morans_i_abs_error",
+                        "morans_i_pred", "gearys_c_abs_error"] if c in df.columns]
+    g = df.groupby(["mode", "spectral_weight"])[cols].agg(["mean", "std"])
+    i_true = float(df["morans_i_true"].mean()) if "morans_i_true" in df else float("nan")
+    rows, last_mode = [], None
+    for (mode, w) in sorted(g.index, key=lambda k: (k[0] != "full", k[0], k[1])):
+        if mode != last_mode:
+            if last_mode is not None:
+                rows.append("\\addlinespace\n")
+            label = ("absolute spectrum, all bands" if mode == "full"
+                     else "normalized spectrum, high band")
+            rows.append(f"\\multicolumn{{{len(cols)+1}}}{{l}}{{\\emph{{{label}}}}} \\\\\n")
+            last_mode = mode
+        cells = [_fmt(g.loc[(mode, w), (c, "mean")], g.loc[(mode, w), (c, "std")])
+                 for c in cols]
+        rows.append(f"\\quad $\\lambda = {w:g}$ & " + " & ".join(cells) + " \\\\\n")
+    n_seed = int(df.groupby(["mode", "spectral_weight"]).size().max())
+    header = "weight & " + " & ".join(METRIC_LABELS.get(c, c) for c in cols)
+    tex = _wrap(
+        "".join(rows),
+        f"Spectral matching: the trade-off between reconstruction accuracy and "
+        f"spatial fidelity as the term's weight $\\lambda$ is swept, {n_seed} seeds "
+        f"per point, on the primary section. $\\lambda = 0$ is the model used "
+        f"everywhere else in this paper. The measured field has "
+        f"$I = {i_true:.3f}$, so a faithful reconstruction would drive "
+        f"$I_{{\\mathrm{{pred}}}}$ down toward that value. Two forms are compared: "
+        f"matching the absolute power spectrum across all radial bands, and "
+        f"matching the spectrum normalized by total power over the upper half of "
+        f"the band. The first leaves an amplitude degree of freedom that the model "
+        f"can exploit without redistributing energy across scales; the second "
+        f"removes it and penalizes only the frequencies a dissipative operator "
+        f"actually loses.",
+        "tab:spectral", "l" + "r" * len(cols), header,
     )
     out.write_text(tex)
     return tex
