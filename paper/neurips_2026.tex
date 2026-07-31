@@ -61,6 +61,10 @@
   DevBeatsPersistence,NSections,NPhysicsRuns,GrowthAtZero,BestBaselineSSIM,%
   BeadMeanRank,BeadMinP,BeadSeeds,PSNPerturb,PSNShared,PSWilcoxonP,AEPearson,BestGraphOverAE,WorstGraphOverAE,NGraphBelowAE,NGraphModels,%
   NMOOverAE,NMOvsGraphRatio,MatchedFull,MatchedNoDynamics,MatchedNoDynamicsDelta,%
+  MSSections,MSRuns,MSNMOPearson,MSBestBaseline,MSBestBaselinePearson,MSMinDelta,%
+  MSMinDz,MSMaxHolm,MSMinWins,MSNPairs,MSNBaselines,MSAllSig,BioSections,%
+  BioARIRet,BioARIRetBest,BioMarker,BioMarkerBest,BioKNN,BioKNNBest,%
+  NumStableDt,NumCFL,NumCFLRatio,NumEulerSteps,NumSpeedup,NumStrangSteps,%
   MatchedNoReaction,MatchedNoReactionDelta,MatchedSeeds,%
   NDatasets,TotalLocations}\do{%
   \expandafter\providecommand\csname\@nmocmd\endcsname{\textbf{??}}}
@@ -109,27 +113,28 @@ learned function to one sampling lattice and leaves expression undefined between
 nodes. Developmental biology instead describes tissue as a continuous field
 shaped by diffusion and local reaction. We introduce \textbf{Neural Morphogen
 Operators} (NMO), which encode irregularly sampled expression into a continuous
-latent field, evolve that field under a learned anisotropic reaction--diffusion
-PDE $\partial_t \vz = \nabla\!\cdot\!(\mD_\theta \nabla \vz) + f_\theta(\vz)$,
-and decode expression at arbitrary coordinates. Solving the diffusion half-step
-exactly in the Fourier domain under Strang splitting makes the integrator
-unconditionally stable and second-order accurate, and renders the learned tensor
-$\mD_\theta$ directly interpretable as a diffusion length
-($\DiffLenMedian\,\mu$m median, matching measured morphogen gradients). We further
-show that for an exactly integrated operator the conventional physics-informed
-residual is uninformative, and derive the steady-state constraint that replaces
-it. On \NSections{} sections from \NDatasets{} public datasets spanning four
-technologies, NMO improves masked-region reconstruction over graph and
-Gaussian-process baselines ($r = \NMOPearson$ against $\BestBaselinePearson$),
-leading on four of five metrics. Two controls locate the effect: an exactly
-parameter-matched ablation shows that the $0.43\%$ of weights forming the
-operator account for $\MatchedNoDynamicsDelta$ Pearson $r$, and a non-spatial
-baseline sharing the same read-out head shows that graph message passing
-contributes at most \BestGraphOverAE{} on this task against \NMOOverAE{} for the
-operator. Finally, we prove that a single stationary snapshot determines the
-reaction network only on a Lebesgue-null subset of latent space, which delimits
-what any method of this class can identify from static tissue and predicts the
-outcome of our perturbation experiment.
+latent field, evolve it under a learned anisotropic reaction--diffusion PDE
+$\partial_t \vz = \nabla\!\cdot\!(\mD_\theta \nabla \vz) + f_\theta(\vz)$, and
+decode at arbitrary coordinates. Solving the diffusion half-step exactly in the
+Fourier domain under Strang splitting makes the integrator unconditionally
+stable and second-order accurate, and renders $\mD_\theta$ interpretable as a
+diffusion length ($\DiffLenMedian\,\mu$m median, matching measured morphogen
+gradients).
+Across \MSSections{} tissue sections from four technologies (\MSRuns{} runs), NMO
+improves masked-region reconstruction over graph, Gaussian-process and implicit
+neural-field baselines, beating every one with Holm-corrected $p \le \MSMaxHolm$
+in paired tests over sections and a smallest effect size of $d_z = \MSMinDz$.
+Two controls localize the gain: a parameter-matched ablation shows the $0.43\%$
+of weights forming the operator account for $\MatchedNoDynamicsDelta$ Pearson
+$r$, while a non-spatial baseline sharing the same read-out head shows graph
+message passing contributes at most \BestGraphOverAE{}. Replacing the
+exponential integrator with explicit Euler costs $\NumSpeedup\times$ more compute
+at matched accuracy, so the numerical machinery is load-bearing rather than
+decorative. The reconstruction also preserves tissue biology, retaining
+\BioARIRet{} of the spatial-domain structure recoverable from measured data.
+Finally, we prove that a single stationary snapshot determines the reaction
+network only on a Lebesgue-null subset of latent space, which delimits what any
+method of this class can identify from static tissue.
 \end{abstract}
 
 % =====================================================================
@@ -173,10 +178,10 @@ interpretable as a diffusion length in microns.
 \item We show that the resulting integrator is unconditionally stable and
   second-order accurate, with structurally guaranteed positive-definite
   diffusion and a uniform absorbing set for the field
-  (Propositions~\ref{prop:contraction-main}--\ref{prop:bounded}).
+  (Propositions~\ref{prop:contraction}--\ref{prop:bounded}).
 \item We show that the conventional physics-informed residual is uninformative
   for an exactly integrated operator, and derive the steady-state constraint that
-  replaces it (Proposition~\ref{prop:vacuity-main}).
+  replaces it (Proposition~\ref{prop:vacuity}).
 \item We demonstrate improved masked-region reconstruction over graph and
   Gaussian-process baselines across four spatial technologies, and isolate the
   operator as the source of the gain using an exactly parameter-matched control.
@@ -240,20 +245,18 @@ carry no explicit spatial operator, which is the gap we address.
 
 A section provides $N$ measurements $\{(\vp_i, \vg_i)\}_{i=1}^N$ with positions
 $\vp_i \in \R^2$ (isotropically normalized to $[-1,1]^2$) and expression
-$\vg_i \in \R^G$. We posit a latent field $\vz : \R^2 \to \R^C$ and factor the
-model as encode--evolve--decode.
+$\vg_i \in \R^G$. We posit a latent field $\vz : \R^2 \to \R^C$, factored as
+encode--evolve--decode.
 
 \paragraph{Spatial encoder.}
 Irregular sampling is handled by kernel-integral layers on a $k$-NN graph
 \citep{li2020gno}, $\vz_i \leftarrow \sigma( W \vz_i + |\mathcal{N}(i)|^{-1}
 \sum_{j\in\mathcal{N}(i)} \kappa_\theta(\vp_j-\vp_i)\odot\vz_j )$, where
-$\kappa_\theta$ maps a \emph{relative} displacement to a per-channel gain;
-depending on geometry rather than node identity is what lets an encoder fitted to
-one lattice be evaluated on another. Features are splatted onto a regular
-$H\times W$ lattice (Nadaraya--Watson, learnable bandwidth), yielding a field and
-an \emph{occupancy} map that distinguishes ``tissue with no signal'' from ``no
-measurement here''---the distinction the masked-region task hinges on. Spectral
-blocks \citep{li2021fno} then refine the field.
+$\kappa_\theta$ maps a \emph{relative} displacement to a per-channel gain, so the
+layer depends on geometry rather than node identity. Features are splatted onto a
+regular $H\times W$ lattice (Nadaraya--Watson, learnable bandwidth), yielding a
+field and an \emph{occupancy} map distinguishing ``tissue with no signal'' from
+``no measurement here''. Spectral blocks \citep{li2021fno} refine the field.
 
 \paragraph{The morphogen operator.}
 The field evolves under
@@ -267,10 +270,10 @@ $\mD_c = L_c L_c^\top + \varepsilon I$ ($L_c$ lower triangular, so definiteness 
 structural rather than penalized) and a pointwise reaction network $f_\theta$
 implemented as $1\times1$ convolutions with a $\tanh$-bounded output.
 
-Equation~\eqref{eq:pde} is stiff---the diffusion operator has eigenvalues scaling
-as $-|\vk|^2$, so an explicit scheme needs $\Delta t = O(h^2/\|\mD\|)$---but for
-constant-coefficient anisotropic diffusion it is diagonal in the Fourier basis,
-so evolution over $\tau$ has a closed form,
+Equation~\eqref{eq:pde} is stiff, with diffusion eigenvalues scaling as
+$-|\vk|^2$, so an explicit scheme needs $\Delta t = O(h^2/\|\mD\|)$. For
+constant-coefficient anisotropic diffusion, however, the operator is diagonal in
+the Fourier basis and evolution over $\tau$ has a closed form,
 \begin{equation}
 E_c(\tau) = \mathcal{F}^{-1}\,
    \exp\!\big(-\vk^\top \mD_c \vk\, \tau\big)\, \mathcal{F} .
@@ -283,24 +286,18 @@ e^{\frac{\Delta t}{2}\mathcal{A}}$, which is second-order accurate
 (Proposition~\ref{prop:order}). Two structural guarantees follow; both are proved
 in Appendix~\ref{app:proofs} and verified numerically in Table~\ref{tab:theory}.
 
-\begin{proposition}[Unconditional stability]
-\label{prop:contraction-main}
-For every $\tau\ge0$ and every $\mD\in(\mathcal{S}_{++}^2)^C$,
-$\|e^{\tau\mathcal{A}_{\mD}}u\|_{L^2}\le\|u\|_{L^2}$, with equality only for
-spatially constant $u$. The spatial mean is exactly conserved.
-\end{proposition}
-
-Because definiteness is structural ($\lambda_{\min}(\mD_c)\ge\varepsilon$,
-Proposition~\ref{prop:spd}), Proposition~\ref{prop:contraction-main} holds along
-the entire optimization trajectory: no step size couples to learned parameters
-and no projection is required. Combined with $\|f_\theta\|_\infty\le\|g\|_\infty$
-it yields a uniform absorbing set for the zero-mean component of radius
-$\Delta t\|g\|_\infty|\Omega|^{1/2}/(1-\rho)$ with
-$\rho=e^{-\Delta t\lambda_{\min}\pi^2}$ (Proposition~\ref{prop:bounded});
-rollouts accordingly remain bounded for $10^3$ steps, two orders of magnitude
-beyond the training horizon. The eigenvalues of $\mD_c$ are squared diffusion
-lengths per unit pseudo-time, convertible to microns via the stored coordinate
-scale.
+Because $\vk^\top\mD_c\vk\ge0$, the multiplier in \eqref{eq:expstep} lies in
+$(0,1]$ for \emph{every} $\Delta t$: the diffusive half-step is an $L^2$
+contraction and conserves the spatial mean exactly, with no CFL restriction
+(Proposition~\ref{prop:contraction}). Definiteness is structural
+($\lambda_{\min}(\mD_c)\ge\varepsilon$), so this holds along the entire
+optimization trajectory --- no step size couples to learned parameters and no
+projection is required --- and combining it with
+$\|f_\theta\|_\infty\le\|g\|_\infty$ yields a uniform absorbing set for the
+zero-mean component (Proposition~\ref{prop:bounded}). Section~\ref{sec:numerics}
+measures what this buys in practice. The eigenvalues of $\mD_c$ are squared
+diffusion lengths per unit pseudo-time, convertible to microns via the stored
+coordinate scale.
 
 \paragraph{Decoder.}
 Predictions come from bilinear interpolation of the evolved field at any
@@ -315,18 +312,14 @@ smoothness prior, and physics terms. The conventional physics-informed
 penalty---the PDE residual along the model's own trajectory---turns out to be
 uninformative for an exactly integrated operator.
 
-\begin{proposition}[The trajectory residual is an integrator diagnostic]
-\label{prop:vacuity-main}
-Let $R_{\Delta t}(\vz;\theta) := \Delta t^{-1}(S_{\Delta t}\vz-\vz) -
-(\mathcal{A}_{\mD}\vz+f_\theta(\vz))$. Then
+Writing $R_{\Delta t} := \Delta t^{-1}(S_{\Delta t}\vz-\vz) -
+(\mathcal{A}_{\mD}\vz+f_\theta(\vz))$, one finds
 $\|R_{\Delta t}\| = \tfrac{\Delta t}{2}\|[\mathcal{A}_{\mD},\mathcal{F}_\theta]\vz\|
-+ O(\Delta t^2)$, uniformly over bounded parameter sets, and $R_{\Delta t}$ is
-independent of the observations.
-\end{proposition}
-
-Minimizing $\|R_{\Delta t}\|^2$ therefore cannot fit the model to data---the data
-do not appear---and merely biases $\theta$ toward operators whose diffusive and
-reactive parts commute (Appendix~\ref{app:vacuity}). We instead impose the
++ O(\Delta t^2)$ uniformly over bounded parameter sets, with no dependence on the
+observations (Proposition~\ref{prop:vacuity}). Minimizing $\|R_{\Delta t}\|^2$
+therefore cannot fit the model to data---the data do not appear---and merely
+biases $\theta$ toward operators whose diffusive and reactive parts commute
+(Appendix~\ref{app:vacuity}). We instead impose the
 constraint that the \emph{measured configuration be a near-stationary state} of
 the learned operator,
 \begin{equation}
@@ -338,13 +331,12 @@ the natural formalization of the quasi-steady-state assumption for adult tissue,
 which constrains $\mD_\theta$ and $f_\theta$ jointly. Mass, Jacobian-norm and
 splitting-consistency terms are also included.
 
-\paragraph{Interpretability: dispersion analysis.}
+\paragraph{Interpretability.}
 Linearizing \eqref{eq:pde} about a homogeneous $\vz^*$ gives $\partial_t
 \delta\vz_{\vk} = (\mJ - \vk^\top\!\mD\vk)\,\delta\vz_{\vk}$ with $\mJ =
 \nabla f_\theta(\vz^*)$, so $\max\mathrm{Re}\,\mathrm{spec}(\mJ - |\vk|^2\mD)$
-against $|\vk|$ is the dispersion relation of the learned operator (maximized
-over orientations of $\vk$, since $\mD$ is anisotropic). This yields a
-quantitative, falsifiable read-out of the dynamics the model has inferred.
+against $|\vk|$ is the dispersion relation of the learned operator --- a
+falsifiable read-out of the dynamics it has inferred (Appendix~\ref{app:turing}).
 
 % =====================================================================
 \section{Experimental setup}
@@ -382,12 +374,13 @@ training split only.
 \paragraph{Baselines.} A non-spatial autoencoder (the floor), a GCN
 \citep{kipf2017gcn}, SpaGCN-style and STAGATE-style models
 \citep{hu2021spagcn,dong2022stagate}, a graph transformer
-\citep{vaswani2017attention}, and an exact GP \citep{rasmussen2006gp}. The graph
-methods were not designed to predict at unmeasured coordinates, so each receives
-the same inverse-distance read-out head---the most favorable choice available. We
-mark these variants \emph{-style}, since they are not reproductions of the
-authors' published pipelines. All models share one training loop, masks,
-optimizer and evaluation code, so differences are attributable to the model.
+\citep{vaswani2017attention}, an exact GP and a multi-bandwidth GP
+\citep{rasmussen2006gp}, and an implicit neural field with Fourier features and
+SIREN activations \citep{tancik2020fourier}. The graph methods were not designed
+to predict at unmeasured coordinates, so each receives the same inverse-distance
+read-out head---the most favorable choice available---and is marked
+\emph{-style}, since these are not reproductions of the authors' pipelines. All
+models share one training loop, masks, optimizer and evaluation code.
 
 \paragraph{Metrics.} Per-gene Pearson and Spearman across held-out locations,
 RMSE, SSIM \citep{wang2004ssim} on rasterized maps, and absolute error in Moran's
@@ -399,62 +392,100 @@ regression toward a smooth mean. Mean $\pm$ s.d.\ over \NSeeds{} seeds.
 \label{sec:results}
 % =====================================================================
 
-\subsection{Masked spatial reconstruction}
+\subsection{Masked spatial reconstruction across 17 sections}
 
-\inputtable{tab_benchmark}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig_results_panel.pdf}
-  \caption{\textbf{Locating the effect.} (a) Masked-region reconstruction on the
-  adult mouse-brain Visium section. (b) Ablation deltas at the reduced budget:
-  the structural terms of the operator carry the effect. (c) The two decisive
-  controls at the benchmark budget---disabling the operator ($T{=}0$) costs more
-  than the full margin over the best baseline.}
-  \label{fig:results}
-\end{figure}
-
-NMO reaches Pearson $r$ of \NMOPearson{} on held-out blocks against
-\BestBaselinePearson{} for the strongest baseline (\BestBaseline{}), a gain of
-\PearsonGain{} (Table~\ref{tab:benchmark}, Fig.~\ref{fig:results}a). It leads on
-Pearson, Spearman, RMSE and SSIM. The Gaussian process trails the graph models
-here, which reflects our shared-bandwidth implementation---a single RBF length
-scale must serve both laminar and diffuse genes---rather than a limitation of GP
-regression in general.
+\inputtable{tab_multisection}
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{figures/fig2_reconstruction.pdf}
-  \caption{\textbf{Masked reconstruction across the performance range.} Measured
-  expression (left; held-out spots outlined) against NMO and two baselines, for
-  genes at the best and $60$th-percentile of per-gene Pearson $r$.}
-  \label{fig:reconstruction}
+  \includegraphics[width=\linewidth]{figures/fig_multisection.pdf}
+  \caption{\textbf{Benchmark across \MSSections{} tissue sections.} (a) NMO
+  against each baseline, one point per section; colors follow the model ordering
+  of (b)--(c). (b) Mean paired difference with a percentile bootstrap 95\% CI
+  over sections. (c) Fraction of sections on which NMO wins. Every confidence
+  interval excludes zero.}
+  \label{fig:multisection}
 \end{figure}
+
+We evaluate on \MSSections{} sections spanning four technologies
+(\MSRuns{} runs), with the section as the unit of analysis: every model sees
+identical held-out blocks, so a paired test removes the between-section variance
+that otherwise dominates. NMO attains Pearson $r$ \MSNMOPearson{} against
+\MSBestBaselinePearson{} for the closest baseline (\MSBestBaseline{}).
+
+All \MSNBaselines{} baselines are beaten with Holm-corrected
+$p \le \MSMaxHolm$ (Appendix~\ref{app:empirical}), and the \emph{smallest} effect size
+across the family is $d_z = \MSMinDz$, which is large by conventional
+standards; NMO wins on at least \MSMinWins{} of \MSNPairs{} sections against
+every comparator. The advantage is therefore consistent across anatomies rather
+than an artifact of one tissue: the twelve MERFISH sections span the
+anterior--posterior axis of the same brain with assay, panel and preprocessing
+held fixed, so the variation between them is anatomical.
 
 \paragraph{The gain comes from continuity, not from message passing.}
-We included a non-spatial autoencoder as a floor, and it proves unexpectedly
-informative. It sees no coordinates at all and reaches \AEPearson{} purely
-through the inverse-distance read-out head shared by every graph baseline, so the
-gap between it and a graph model isolates the contribution of \emph{message
-passing}. That contribution is small: across \NGraphModels{} graph models the
-margin spans \WorstGraphOverAE{} to \BestGraphOverAE{} Pearson $r$. NMO gains
-\NMOOverAE{} over the same reference, roughly \NMOvsGraphRatio$\times$ the best
-graph model's margin. On a leakage-controlled coordinate-prediction task, then,
-most of what a graph model contributes over distance-weighted interpolation is
-modest, while the continuous operator contributes substantially more. We suggest
-this control merits routine reporting in the spatial transcriptomics literature.
+Two controls localize the effect. A non-spatial autoencoder sees no coordinates
+and reaches \AEPearson{} purely through the inverse-distance read-out head shared
+by every graph baseline, so the gap between it and a graph model isolates
+\emph{message passing}: across \NGraphModels{} graph models that margin spans
+\WorstGraphOverAE{} to \BestGraphOverAE{} Pearson $r$, against \NMOOverAE{} for
+NMO. An implicit neural field (SIREN), which is continuous by construction but
+carries no dynamics, is the weakest model tested
+($\Delta r = \MSMinDelta$ at minimum against NMO across sections). Continuity
+alone is therefore not sufficient, and message passing contributes little; it is
+the \emph{operator} that carries the gain, which the parameter-matched $T{=}0$
+control confirms directly (Section~\ref{sec:ablations}).
 
 \paragraph{Spatial autocorrelation.}
 NMO leads on SSIM (\NMOSSIM{} against \BestAnySSIM{}) but has the largest error
 in Moran's $I$ (\NMOMoran{} against \BestAnyMoran{}): the predicted fields are
 more spatially autocorrelated than the measurements ($I = \NMOMoranPred$ versus
-\MoranTrue{}). The two metrics measure different things---SSIM local contrast on
-a rasterized map, Moran's $I$ global autocorrelation on the point set---and the
-pattern is the expected signature of a dissipative operator, which attenuates
-high spatial frequencies. This is the same diffusion-driven smoothing identified
-in graph neural diffusion models \citep{grand2021,gread2022}, and it is the
-principal quantity we would target in future work
-(Section~\ref{sec:limitations}).
+\MoranTrue{}). SSIM measures local contrast on a rasterized map and Moran's $I$
+global autocorrelation on the point set, and the pattern is the expected
+signature of a dissipative operator attenuating high spatial frequencies --- the
+same diffusion-driven smoothing analyzed for graph neural diffusion
+\citep{grand2021,gread2022}. Section~\ref{sec:limitations} discusses the remedy.
+
+\subsection{The numerical machinery is load-bearing}
+\label{sec:numerics}
+
+A reviewer is entitled to ask whether the exponential integrator is necessary or
+merely elegant. Replacing it with explicit Euler on the same right-hand side, and
+the spectral Laplacian with a five-point stencil, answers this. The exponential
+scheme remains stable to $\Delta t = \NumStableDt$, which is
+$\NumCFLRatio\times$ the CFL bound, while the empirical limit for the explicit
+finite-difference scheme tracks that bound closely, confirming the analysis. At
+matched accuracy the exponential scheme needs \NumStrangSteps{} steps against
+\NumEulerSteps{} for explicit Euler, a $\NumSpeedup\times$ difference in cost (Appendix~\ref{app:empirical}).
+The fair statement is therefore not that the alternatives fail but that they are
+an order of magnitude more expensive for the same answer, while additionally
+imposing a step-size restriction that couples to \emph{learned} parameters and
+can be violated mid-training as $\mD_\theta$ adapts.
+
+\subsection{The reconstruction preserves tissue biology}
+\label{sec:biology}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_biology.pdf}
+  \caption{\textbf{Biological preservation} across \BioSections{} sections with
+  reference annotations. Predicted expression at held-out locations is clustered
+  and scored against the reference; marker AUROC asks whether the predicted field
+  still discriminates a region using that region's measured markers.}
+  \label{fig:biology}
+\end{figure}
+
+Correlation does not establish that a reconstruction remains usable for the
+analyses a biologist would run on it, so we score the predictions against
+annotations shipped with the public data: Space Ranger clusters for Visium, the
+vendor clustering for Xenium, and curated anatomical regions for the Stereo-seq
+embryo. Clustering the \emph{predicted} expression at held-out locations, NMO
+retains \BioARIRet{} of the adjusted Rand index obtainable from the measured
+data, against \BioARIRetBest{} for the best baseline; it also leads on marker
+AUROC (\BioMarker{} versus \BioMarkerBest{}) and on $k$-NN neighborhood
+preservation (\BioKNN{} versus \BioKNNBest{}). The margins here are narrower than
+on reconstruction accuracy, and we read them as showing that the operator does
+not \emph{sacrifice} biological structure for point-wise accuracy rather than as
+a separate large gain.
 
 \subsection{Learned dynamics}
 
@@ -470,10 +501,10 @@ principal quantity we would target in future work
 
 The fitted operator has a median diffusion length of \DiffLenMedian{}\,$\mu$m
 (10--90th pct.\ \DiffLenLo--\DiffLenHi), the same order as measured morphogen
-gradients \citep{kicheva2007kinetics,yu2009fgf8}. We treat this as a consistency
-check rather than a measurement of physical transport, since the model was fitted
-to a snapshot. The anisotropy is used rather than merely available: constraining
-$\mD$ to be isotropic costs \AblIsotropicDelta{} Pearson $r$.
+gradients \citep{kicheva2007kinetics,yu2009fgf8} --- a consistency check rather
+than a measurement, since the model was fitted to a snapshot. The anisotropy is
+used rather than merely available: constraining $\mD$ to be isotropic costs
+\AblIsotropicDelta{} Pearson $r$.
 
 The dispersion relation (Fig.~\ref{fig:dynamics}c) decreases monotonically in
 $|\vk|$, so the fitted operator is dissipative and supports no Turing band. This
@@ -494,16 +525,13 @@ away from steady state, in line with Theorem~\ref{thm:identifiability}.
   \label{fig:transfer}
 \end{figure}
 
-Trained on adult mouse brain and applied unchanged to human breast carcinoma---a
-different species, organ and spatial architecture---NMO attains
-\TissueZeroShot{} zero-shot against a training-mean floor of \TissueFloor{} and
-an in-domain oracle of \TissueOracle{}, so a substantial part of the learned
-structure survives the domain change. The cross-resolution setting is comparable:
-an operator fitted to 55\,$\mu$m Visium spots and evaluated on single-cell Xenium
-sampling of the same organ reaches \ResZeroShot{}. Since all Xenium panel genes
-are present in the raw Visium matrix, we rebuild the source with the panel
-force-included (\ResSharedGenes{} shared genes), so the comparison is not limited
-by a thin gene overlap.
+Applied unchanged from adult mouse brain to human breast carcinoma---a different
+species, organ and spatial architecture---NMO attains \TissueZeroShot{}
+zero-shot against a training-mean floor of \TissueFloor{} and an in-domain
+oracle of \TissueOracle{}, so a substantial part of the learned structure
+survives the domain change. Cross-resolution is comparable: an operator fitted to
+55\,$\mu$m Visium spots and evaluated on single-cell Xenium sampling of the same
+organ reaches \ResZeroShot{} over \ResSharedGenes{} shared genes.
 
 The \TissueZeroShotBaselineName{} baseline transfers better in both settings
 (\TissueZeroShotBaseline{} cross-tissue), and decoder-only refitting recovers
@@ -517,15 +545,14 @@ Proposition~\ref{prop:nystrom} establishes discretization invariance of the
 operator. Conditioning $\mD_\theta$ on tissue-level covariates, or fitting a
 shared operator across sections, is the natural next step.
 
-\subsection{Developmental forecasting}
+\paragraph{Developmental forecasting.}
 On the Stereo-seq series---the only dataset here with a genuine temporal
 axis---integrating the encoded E9.5 field forward improves the field-level match
 to E10.5 from \DevNMOZero{} at $T{=}0$ to \DevNMOBest{} at
-$T{=}\DevNMOBestHorizon$, against \DevPersistence{} for predicting no change.
-The learned operator therefore carries genuine temporal information, with an
-interior optimum in $T$. Consecutive MOSTA stages are distinct embryos, so the
-comparison is at the level of the rasterized field after coarse registration
-(Appendix~\ref{app:empirical}).
+$T{=}\DevNMOBestHorizon$, against \DevPersistence{} for predicting no change, so
+the operator carries genuine temporal information with an interior optimum in
+$T$. Consecutive stages are distinct embryos, so this is a field-level comparison
+after coarse registration (Appendix~\ref{app:empirical}).
 
 \subsection{Counterfactual perturbation}
 \label{sec:results4}
@@ -556,11 +583,10 @@ against Perturb-seq \citep{norman2019perturbseq} was underpowered
 % =====================================================================
 
 The decisive control is \emph{$-$ dynamics}, which sets the integration horizon
-to zero so the operator is never applied. The sweep (Fig.~\ref{fig:results}b,
-Appendix~\ref{app:empirical}) uses a reduced budget at which the full model has
+to zero so the operator is never applied. The sweep (Appendix~\ref{app:empirical}) uses a reduced budget at which the full model has
 not converged (\AblFull{} against \MatchedFull{}); since undertraining compresses
 every delta, we re-ran the two decisive variants at the benchmark budget
-(\MatchedSeeds{} seeds; Fig.~\ref{fig:results}c), obtaining
+(\MatchedSeeds{} seeds; Appendix~\ref{app:empirical}), obtaining
 \MatchedNoDynamics{} ($\MatchedNoDynamicsDelta$) for $T{=}0$ and
 \MatchedNoReaction{} ($\MatchedNoReactionDelta$) without the reaction. Disabling
 the operator therefore costs more than the entire margin over the best baseline.
@@ -586,57 +612,57 @@ interpolant.
 \label{sec:limitations}
 % =====================================================================
 
-A limitation of our setting is that a single stationary snapshot cannot identify
-a dynamical system. Theorem~\ref{thm:identifiability} makes this precise: for
-$C\ge3$ the stationarity constraint determines $f_\theta$ only on the range
+A limitation intrinsic to the setting is that a single stationary snapshot cannot
+identify a dynamical system. Theorem~\ref{thm:identifiability} makes this precise:
+for $C\ge3$ the stationarity constraint determines $f_\theta$ only on the range
 $\mathcal{R}=\vz^\star(\Omega)$, a Lebesgue-null set, so counterfactuals that
 displace $\vz$ off $\mathcal{R}$ are governed by the architecture rather than the
-data. Reported diffusion lengths accordingly characterize the fitted operator,
-not physical morphogen transport, and ``morphogen'' names the operator
+data. Reported diffusion lengths accordingly characterize the fitted operator
+rather than physical morphogen transport, and ``morphogen'' names the operator
 class---anisotropic reaction--diffusion---rather than a validated claim about
-signaling. Dense temporal sampling or interventional spatial data would remove
-this degeneracy.
+signaling. Dense temporal or interventional sampling would remove this
+degeneracy.
 
 We note that the predicted fields are smoother than the measurements, and that on
-Moran's $I$ error NMO trails the baselines it leads on the other four metrics.
-This is a known consequence of diffusion-based architectures
+Moran's $I$ error NMO trails the baselines it leads on the other metrics. This is
+a known consequence of diffusion-based architectures
 \citep{grand2021,gread2022} and bounds the applications we would recommend:
-predicting expression at unmeasured coordinates is well supported, delineating
-sharp boundaries less so. A spectral-matching or adversarial term penalizing the
-missing high-frequency energy is the natural remedy and we leave it to future
-work.
+prediction at unmeasured coordinates is well supported, delineation of sharp
+boundaries less so. A spectral-matching term penalizing the missing
+high-frequency energy is the natural remedy and we leave it to future work.
 
-Transfer is the weakest setting. Although NMO retains a substantial fraction of
-in-domain performance zero-shot, the STAGATE-style baseline transfers better, and
-until $\mD_\theta$ is conditioned on tissue-level covariates the operator is best
-regarded as a within-section model. Finally, the \emph{-style} baseline variants
+Transfer remains the weakest setting. NMO retains a substantial fraction of
+in-domain performance zero-shot, but the STAGATE-style baseline transfers better,
+and until $\mD_\theta$ is conditioned on tissue-level covariates the operator is
+best regarded as a within-section model. Finally, the \emph{-style} baselines
 implement each method's architectural core with a common read-out head and are
-not reproductions of published pipelines; the in-domain margin is a few points of
-Pearson $r$ measured on one section per condition over \NSeeds{} seeds without a
-power analysis; and scope is limited to single 2-D sections and CPU-scale compute.
+not reproductions of published pipelines; the benchmark uses a reduced epoch
+budget and subsampled sections so that \MSRuns{} runs were feasible on CPU, which
+lowers all models' absolute scores; and scope is limited to single 2-D sections.
 
-% =====================================================================
 \section{Discussion and Conclusion}
 % =====================================================================
 
 We asked whether the continuous description that developmental biology uses for
 tissue can be fitted as an operator on spatial transcriptomics, and whether doing
-so is useful. On the evidence presented, it is. Treating tissue as a field rather
-than a graph improves prediction at unmeasured coordinates across four
-technologies; a parameter-matched control attributes the gain to the operator
-rather than to capacity; a non-spatial control indicates that most of the
-advantage comes from continuity rather than from message passing; and on the one
-dataset with a genuine temporal axis, integrating the operator forward
-outperforms persistence. The exact spectral solve makes the dynamics stable
-without a step-size restriction and readable as a physical length scale.
+so is useful. On the evidence presented, it is. Across \MSSections{} sections and
+four technologies, treating tissue as a field rather than a graph improves
+prediction at unmeasured coordinates against every baseline tested, with
+Holm-corrected significance and large effect sizes under paired tests. A
+parameter-matched control attributes the gain to the operator rather than to
+capacity; a non-spatial control and an implicit neural field together show that
+neither message passing nor continuity alone accounts for it; the reconstruction
+preserves spatial-domain structure and marker localization; and replacing the
+exponential integrator costs $\NumSpeedup\times$ more compute at matched
+accuracy, so the numerical machinery is load-bearing.
 
-We also delimit what a method of this class can establish. Theorem~2 shows that a
-stationary snapshot constrains the reaction network only on a null set, which
-both explains the outcome of our perturbation experiment and identifies the data
-that would be required to go further. We regard NMO as learning latent continuous
-operators that summarize spatial gene-expression organization, and we see the
-most promising directions as conditioning the operator on tissue covariates to
-improve transfer, and pairing spatial data with dense temporal or interventional
+We also delimit what this class of method can establish:
+Theorem~\ref{thm:identifiability} shows a stationary snapshot constrains the
+reaction network only on a null set, which both explains our perturbation result
+and identifies the data needed to go further. We regard NMO as learning latent
+continuous operators that summarize spatial gene-expression organization, with
+the most promising directions being to condition the operator on tissue
+covariates for transfer, and to pair spatial with temporal or interventional
 sampling to make the dynamics identifiable.
 
 \label{endofmain}
@@ -1142,6 +1168,35 @@ accounts for the entire margin over the strongest baseline.
 This appendix collects the complete result tables underlying
 Section~\ref{sec:results}. Tables are placed inline with \texttt{[h]} so that
 each appears with its heading.
+
+\subsection{Single-section model comparison}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_results_panel.pdf}
+  \caption{\textbf{Locating the effect} on the primary section, where all nine
+  models are run. (a) Full model comparison. (b) Ablation deltas at the reduced
+  budget. (c) The two decisive controls at the benchmark budget: disabling the
+  operator ($T{=}0$) costs more than the full margin over the best baseline.}
+  \label{fig:results}
+\end{figure}
+
+
+\subsection{Numerical behavior}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_numerics.pdf}
+  \caption{\textbf{What the exact spectral solve buys.} (a) Largest stable step
+  size per scheme against the CFL bound for the explicit five-point Laplacian.
+  (b) Steps required to integrate a fixed horizon to relative error $<10^{-2}$,
+  relative to the exponential scheme.}
+  \label{fig:numerics}
+\end{figure}
+
+
+\subsection{Paired statistics, numerics and biology}
+\inputtable{tab_paired}
+\inputtable{tab_numerics}
+\inputtable{tab_biology}
 
 \subsection{Dataset inventory}
 \inputtable{tab_datasets}

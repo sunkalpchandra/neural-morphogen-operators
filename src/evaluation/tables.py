@@ -290,8 +290,8 @@ def table_ablations(records: List[Dict], out: Path) -> str:
         "Pearson $r$ relative to the full model. The \\emph{$-$ dynamics} row is the "
         "critical control: it disables the operator entirely ($T{=}0$) while leaving "
         "its parameters allocated, so the two rows are exactly parameter-matched. "
-        "\\textbf{This table uses a smaller training budget than "
-        "Table~\\ref{tab:benchmark}} (fewer epochs and seeds); it is internally "
+        "\\textbf{This table uses a smaller training budget than the main "
+        "benchmark} (fewer epochs and seeds); it is internally "
         "consistent, but absolute values are not comparable across the two tables.",
         "tab:ablations", "lr" + "r" * (len(metrics) + 1), header,
     )

@@ -15,6 +15,7 @@ from typing import Dict, List, Optional
 import numpy as np
 import pandas as pd
 
+from ..models.baselines import DISPLAY_NAMES as DISPLAYNAMES
 from .tables import dedupe, is_derived, load_json_glob
 
 
@@ -237,6 +238,62 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             if len(pers):
                 cmd("DevBeatsPersistence",
                     "yes" if float(byh.max()) > float(pers.mean()) else "no")
+
+    # ---- Experiment 8 : multi-section benchmark -------------------------- #
+    ms = [x for f in Path(results_root).glob("exp8/results_shard*.json")
+          for x in json.loads(f.read_text()) if "pearson_mean" in x and not x.get("failed")]
+    if ms:
+        from .statistics import paired_comparison as _pc
+        m8 = pd.DataFrame(ms)
+        cmd("MSSections", str(int(m8["section"].nunique())))
+        cmd("MSRuns", str(len(m8)))
+        per = m8.groupby(["section", "model"])["pearson_mean"].mean().unstack("model")
+        cmd("MSNMOPearson", _val(float(per["nmo"].mean())))
+        res = _pc(m8, "nmo", "pearson_mean")
+        if res:
+            best = min(res, key=lambda r: r.mean_diff)          # closest competitor
+            cmd("MSBestBaseline", DISPLAYNAMES.get(best.other, best.other))
+            cmd("MSBestBaselinePearson", _val(float(per[best.other].mean())))
+            cmd("MSMinDelta", _val(best.mean_diff))
+            cmd("MSMinDz", f"{best.cohens_dz:.2f}")
+            cmd("MSMaxHolm", f"{max(r.p_holm for r in res):.1g}")
+            cmd("MSMinWins", f"{min(r.n_reference_wins for r in res)}")
+            cmd("MSNPairs", str(res[0].n_sections))
+            cmd("MSNBaselines", str(len(res)))
+            cmd("MSAllSig", "yes" if all(r.p_holm < 0.05 for r in res) else "no")
+
+    # ---- Experiment 9 : biology ------------------------------------------ #
+    bp = Path(results_root) / "exp9" / "biology.json"
+    if bp.exists():
+        b = pd.DataFrame([r for r in json.loads(bp.read_text()) if "ari_predicted" in r])
+        if not b.empty:
+            cmd("BioSections", str(int(b["section"].nunique())))
+            g = b.groupby("model")
+            for k, nm in [("ari_retention", "BioARIRet"), ("marker_auroc_predicted", "BioMarker"),
+                          ("neighborhood_preservation", "BioKNN")]:
+                if k in b.columns:
+                    cmd(nm, _val(float(g[k].mean().get("nmo", np.nan))))
+                    others = g[k].mean().drop(index=["nmo"], errors="ignore")
+                    if len(others):
+                        cmd(nm + "Best", _val(float(others.max())))
+                        cmd(nm + "BestModel", DISPLAYNAMES.get(others.idxmax(), others.idxmax()))
+
+    # ---- Experiment 7 : numerics ----------------------------------------- #
+    sp_ = Path(results_root) / "exp7" / "stability.json"
+    cp_ = Path(results_root) / "exp7" / "cost.json"
+    if sp_.exists() and cp_.exists():
+        S = pd.DataFrame(json.loads(sp_.read_text())); K = pd.DataFrame(json.loads(cp_.read_text()))
+        cfl = float(S["cfl_limit"].iloc[0])
+        top = S[(S["scheme"] == "strang-spectral") & S["stable"]]["dt"].max()
+        cmd("NumStableDt", f"{top:.3g}")
+        cmd("NumCFL", f"{cfl:.4g}")
+        cmd("NumCFLRatio", f"{top/cfl:.0f}")
+        base = K[K["scheme"] == "strang-spectral"]["n_steps"].iloc[0]
+        eul = K[K["scheme"] == "euler-spectral"]["n_steps"]
+        if len(eul) and eul.iloc[0]:
+            cmd("NumEulerSteps", str(int(eul.iloc[0])))
+            cmd("NumSpeedup", f"{eul.iloc[0]/base:.0f}")
+        cmd("NumStrangSteps", str(int(base)))
 
     # ---- dataset inventory ---------------------------------------------- #
     sp = Path(processed_summary)
