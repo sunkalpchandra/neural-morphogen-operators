@@ -107,7 +107,7 @@ def figure2_reconstruction(
 
     others = list(preds_other.items())
     ncol = 2 + len(others)
-    fig, axes = plt.subplots(len(gi), ncol, figsize=(WIDTH_FULL, 1.35 * len(gi)),
+    fig, axes = plt.subplots(len(gi), ncol, figsize=(WIDTH_FULL, 1.08 * len(gi)),
                              squeeze=False)
 
     for r_i, g in enumerate(gi):
@@ -180,7 +180,7 @@ def figure3_latent_fields(model, section, n_show: int = 6) -> plt.Figure:
     corr = np.array(corr) if corr else np.zeros((1, len(order)))
 
     nrow = 2
-    fig = plt.figure(figsize=(WIDTH_FULL, 2.9))
+    fig = plt.figure(figsize=(WIDTH_FULL, 2.55))
     gs = fig.add_gridspec(nrow, n_show, height_ratios=[1.0, 0.95], hspace=0.42, wspace=0.08)
 
     for i, c in enumerate(order):
@@ -238,7 +238,7 @@ def figure4_transfer(exp2: List[Dict], exp3: Optional[List[Dict]] = None) -> plt
     if exp3:
         panels.append(("Visium $\\rightarrow$ Xenium\n(cross-resolution)", exp3))
 
-    fig, axes = plt.subplots(1, len(panels), figsize=(WIDTH_FULL, 2.35), squeeze=False)
+    fig, axes = plt.subplots(1, len(panels), figsize=(WIDTH_FULL, 2.05), squeeze=False)
     order = ["oracle", "zero_shot", "decoder_finetune", "floor"]
     pretty = {"oracle": "in-domain oracle", "zero_shot": "zero-shot",
               "decoder_finetune": "decoder-only fine-tune", "floor": "training mean"}
@@ -290,7 +290,7 @@ def figure5_dynamics(model, section, channel: Optional[int] = None) -> plt.Figur
                                  for c in range(Z0.shape[0])]))
 
     show = [0, max(T // 3, 1), max(2 * T // 3, 2), T] if T >= 3 else list(range(T + 1))
-    fig = plt.figure(figsize=(WIDTH_FULL, 3.25))
+    fig = plt.figure(figsize=(WIDTH_FULL, 2.85))
     gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 1.05], hspace=0.55, wspace=0.62)
 
     fields = [traj[t].detach().cpu().numpy()[0, channel] for t in show]
@@ -393,7 +393,7 @@ def figure6_ablations(records: List[Dict]) -> plt.Figure:
     latent = [v for v in ["latent_8", "latent_16", "latent_32", "latent_64"]
               if v in set(a["variant"])]
 
-    fig, axes = plt.subplots(1, 2, figsize=(WIDTH_FULL, 2.3),
+    fig, axes = plt.subplots(1, 2, figsize=(WIDTH_FULL, 2.05),
                              gridspec_kw={"width_ratios": [1.55, 1.0]})
 
     sub = a[a["variant"].isin(structural)].copy()
