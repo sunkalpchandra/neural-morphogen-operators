@@ -648,7 +648,7 @@ def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figu
     per = df.groupby(["section", "model"])["pearson_mean"].mean().unstack("model")
     others = [c for c in per.columns if c != reference]
     fig, axes = plt.subplots(1, 3, figsize=(WIDTH_FULL, 2.15),
-                             gridspec_kw={"width_ratios": [1.15, 1.0, 1.0]})
+                             gridspec_kw={"width_ratios": [1.30, 1.0, 0.80]})
 
     # (a) NMO vs each baseline, one point per section
     ax = axes[0]
@@ -661,9 +661,9 @@ def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figu
     ax.plot(lim, lim, ls="--", lw=0.8, color=INK_SECONDARY)
     ax.set_xlim(lim); ax.set_ylim(lim); ax.set_aspect("equal")
     ax.set_xlabel("baseline Pearson $r$"); ax.set_ylabel("NMO Pearson $r$")
-    ax.set_title(f"Per-section, {len(per)} sections", fontsize=7.5, pad=4)
-    ax.legend(fontsize=4.8, loc="upper left", handletextpad=0.2, borderpad=0.2)
-    panel_label(ax, "a", dx=-0.26, dy=1.14)
+    ax.set_title(f"{len(per)} sections", fontsize=7.5, pad=4)
+    # no legend: colors match the model ordering in panels (b) and (c)
+    panel_label(ax, "a", dx=-0.24, dy=1.16)
 
     # (b) paired difference with bootstrap CI
     ax = axes[1]
@@ -676,8 +676,8 @@ def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figu
                 elinewidth=1.0, capsize=2, lw=0)
     ax.axvline(0, color=INK_SECONDARY, lw=0.8, ls="--")
     ax.set_yticks(y); ax.set_yticklabels(
-        [DISPLAY_NAMES.get(r.other, r.other) for r in res], fontsize=6)
-    ax.set_xlabel("$\\Delta r$ vs. NMO (95\\% CI)")
+        [DISPLAY_NAMES.get(r.other, r.other).replace(" (non-spatial)","").replace(" (SIREN)","").replace(" (GCN)","") for r in res], fontsize=6)
+    ax.set_xlabel("$\\Delta r$ vs. NMO (95% CI)")
     ax.set_title("Paired difference", fontsize=7.5, pad=4)
     ax.grid(axis="y", visible=False)
     panel_label(ax, "b", dx=-0.62, dy=1.14)
@@ -693,11 +693,11 @@ def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figu
                 f"{r.n_reference_wins}/{r.n_sections}", va="center", fontsize=5.6,
                 color=INK_SECONDARY)
     ax.set_yticks(y); ax.set_yticklabels([])
-    ax.set_xlim(0, 118); ax.set_xlabel("\\% sections NMO wins")
+    ax.set_xlim(0, 118); ax.set_xlabel("% sections NMO wins")
     ax.set_title("Win rate", fontsize=7.5, pad=4)
     ax.grid(axis="y", visible=False)
     panel_label(ax, "c", dx=-0.10, dy=1.14)
-    fig.subplots_adjust(wspace=0.72)
+    fig.subplots_adjust(wspace=1.15)
     return fig
 
 
