@@ -6,3 +6,29 @@
 [22:31:38] INFO      ep  100/500  loss 1.3126  val r 0.2396  rmse 0.2701
 [22:34:14] INFO      ep  125/500  loss 1.2789  val r 0.2477  rmse 0.2653
 [22:35:01] INFO      ep  150/500  loss 1.2428  val r 0.2540  rmse 0.2639
+[22:35:32] INFO      ep  175/500  loss 1.2207  val r 0.2601  rmse 0.2621
+[22:35:58] INFO      ep  200/500  loss 1.2343  val r 0.2608  rmse 0.2624
+[22:36:23] INFO      ep  225/500  loss 1.2132  val r 0.2657  rmse 0.2614
+[22:36:54] INFO      ep  250/500  loss 1.1946  val r 0.2668  rmse 0.2624
+[22:37:20] INFO      ep  275/500  loss 1.2053  val r 0.2665  rmse 0.2634
+[22:37:47] INFO      ep  300/500  loss 1.1943  val r 0.2671  rmse 0.2639
+[22:38:12] INFO      ep  325/500  loss 1.2126  val r 0.2665  rmse 0.2652
+[22:38:39] INFO      ep  350/500  loss 1.1946  val r 0.2675  rmse 0.2651
+[22:39:10] INFO      ep  375/500  loss 1.2038  val r 0.2675  rmse 0.2662
+[22:39:37] INFO      ep  400/500  loss 1.1727  val r 0.2676  rmse 0.2664
+[22:40:00] INFO      ep  425/500  loss 1.1818  val r 0.2675  rmse 0.2664
+[22:40:18] INFO      ep  450/500  loss 1.1843  val r 0.2676  rmse 0.2665
+[22:40:40] INFO      ep  475/500  loss 1.1890  val r 0.2674  rmse 0.2666
+[22:41:17] INFO      ep  500/500  loss 1.1873  val r 0.2674  rmse 0.2666
+[22:41:20] INFO      done in 1139s | test r=0.2423 rmse=0.2537 ssim=0.3956
+[done] no_reaction seed 0: r=0.2423 rmse=0.2537
+[22:41:21] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(19001) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(19003) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[22:41:22] INFO    training NeuralMorphogenOperator (2,188,864 params) on visium_mouse_brain for 500 epochs
+[22:41:46] INFO      ep   25/500  loss 1.5248  val r 0.1428  rmse 0.2943
+[22:42:06] INFO      ep   50/500  loss 1.3914  val r 0.2004  rmse 0.2841
+[22:42:30] INFO      ep   75/500  loss 1.3200  val r 0.2265  rmse 0.2723
+[22:42:51] INFO      ep  100/500  loss 1.2927  val r 0.2409  rmse 0.2695
+[22:43:10] INFO      ep  125/500  loss 1.2851  val r 0.2504  rmse 0.2655
+[22:43:47] INFO      ep  150/500  loss 1.2458  val r 0.2576  rmse 0.2639
