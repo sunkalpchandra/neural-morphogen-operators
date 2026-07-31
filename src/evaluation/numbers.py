@@ -215,6 +215,9 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("PSRho", _ms(n, "mean_spearman"))
             cmd("PSNull", _val(float(n["mean_null_spearman"].mean())))
             cmd("PSFracPos", f"{100*float(n['frac_positive'].mean()):.0f}")
+            cmd("PSNPerturb", str(int(n["n_perturbations"].mean())))
+            cmd("PSNShared", str(int(n["n_shared_genes"].mean())))
+            cmd("PSWilcoxonP", f"{float(n['wilcoxon_p'].mean()):.2f}")
 
     # ---- Experiment 6 : developmental forecasting ------------------------ #
     dev = pd.DataFrame(load_json_glob("exp6/**/forecast.json", results_root))

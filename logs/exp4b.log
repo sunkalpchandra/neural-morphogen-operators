@@ -40,3 +40,8 @@
 [perturb-seq] seed0 stagate: {'n_perturbations': 7, 'n_shared_genes': 339, 'mean_spearman': 0.010665169970581038, 'median_spearman': 0.015189023687333337, 'mean_null_spearman': 0.0215662283121622, 'frac_positive': 0.5714285714285714, 'wilcoxon_p': 0.6875, 'seed': 0, 'model': 'stagate', 'display': 'STAGATE-style'}
 [01:27:40] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
 [01:27:40] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 250 epochs
+[01:28:33] INFO      ep   25/250  loss 1.5257  val r 0.1337  rmse 0.2942
+[01:29:11] INFO      ep   50/250  loss 1.3886  val r 0.1967  rmse 0.2831
+[01:29:38] INFO      ep   75/250  loss 1.3227  val r 0.2256  rmse 0.2728
+[01:29:56] INFO      ep  100/250  loss 1.2960  val r 0.2396  rmse 0.2702
+[01:30:21] INFO      ep  125/250  loss 1.2913  val r 0.2481  rmse 0.2667

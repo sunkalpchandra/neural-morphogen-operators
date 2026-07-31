@@ -1,0 +1,14 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Agreement between the model's counterfactual gene--gene responses and measured CRISPRa responses from Norman et al. (2019). \textbf{This is an out-of-context probe}: the Perturb-seq data are non-spatial K562 cells while the operator is fitted to human breast tissue, so it tests whether the reaction module encodes generic transcriptional coupling, not whether it recovered tissue-specific signalling. Null is a within-perturbation label permutation; $p$ is a Wilcoxon signed-rank test against that null.}
+\label{tab:perturbseq}
+\begin{tabular}{lrrrrr}
+\toprule
+model & \#perturb. & Spearman $\rho$ & null & \% positive & $p$\\
+\midrule
+STAGATE-style & 7 & 0.011 & +0.022 & 57\% & 0.688 \\
+NMO (ours) & 7 & -0.024 & -0.000 & 57\% & 0.688 \\
+\bottomrule
+\end{tabular}
+\end{table}

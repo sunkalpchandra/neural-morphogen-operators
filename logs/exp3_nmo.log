@@ -50,3 +50,13 @@ visium_mouse_brain -> xenium_mouse_brain: 248 shared genes, 2691 source location
 [01:24:56] INFO      ep  175/250  loss 1.2764  val r 0.2071  rmse 1.7854
 [01:26:04] INFO      ep  200/250  loss 1.2720  val r 0.2094  rmse 1.7837
 [01:27:41] INFO      ep  225/250  loss 1.2687  val r 0.2104  rmse 1.7829
+[01:28:52] INFO      ep  250/250  loss 1.2693  val r 0.2100  rmse 1.7834
+[01:28:53] INFO      done in 601s | test r=0.2545 rmse=1.7571 ssim=0.5523
+
+                         pearson_mean                    rmse          
+                                mean           std      mean       std
+setting          model                                                
+floor            mean   9.346206e-08  2.489930e-08  1.871548  0.000297
+oracle           nmo    2.585622e-01  5.787121e-03  1.752287  0.006807
+source_in_domain nmo    2.559367e-01  8.755744e-03  0.245906  0.002220
+zero_shot        nmo    1.388291e-01  1.549524e-02  1.863076  0.025882

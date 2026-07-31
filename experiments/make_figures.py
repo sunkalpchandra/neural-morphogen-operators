@@ -27,7 +27,7 @@ import matplotlib
 matplotlib.use("Agg")
 
 from src.evaluation import numbers as numbers_mod
-from src.evaluation.tables import build_all, load_json_glob
+from src.evaluation.tables import build_all, dedupe, load_json_glob
 from src.models.baselines import build_baseline
 from src.models.nmo import build_nmo
 from src.training.dataset import load_section
@@ -142,13 +142,16 @@ def main() -> int:
         savefig(F.figure7_benchmark(exp1), figdir / "fig7_benchmark")
         made.append("fig7_benchmark")
 
-    exp2 = [r for r in load_json_glob("exp2/*.json", results) if "setting" in r]
-    exp3 = [r for r in load_json_glob("exp3/*.json", results) if "setting" in r]
+    exp2 = [r for r in load_json_glob("exp2/**/*.json", results) if "setting" in r]
+    exp3 = [r for r in load_json_glob("exp3/**/*.json", results) if "setting" in r]
+    exp2 = dedupe(exp2, ["model", "seed", "setting", "target"])
+    exp3 = dedupe(exp3, ["model", "seed", "setting", "target"])
     if exp2:
         savefig(F.figure4_transfer(exp2, exp3 or None), figdir / "fig4_transfer")
         made.append("fig4_transfer")
 
-    exp5 = [r for r in load_json_glob("exp5/*.json", results) if "variant" in r]
+    exp5 = dedupe([r for r in load_json_glob("exp5/**/*.json", results) if "variant" in r],
+                  ["variant", "seed", "section"])
     if exp5:
         savefig(F.figure6_ablations(exp5), figdir / "fig6_ablations")
         made.append("fig6_ablations")

@@ -1,0 +1,27 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Cross-resolution transfer: 55\,$\mu$m Visium spots $\rightarrow$ single-cell Xenium. Shared gene vocabulary: 248 genes. Mean $\pm$ s.d. over seeds.}
+\label{tab:transfer_resolution}
+\begin{tabular}{llrrr}
+\toprule
+model & & Pearson $r$ $\uparrow$ & RMSE $\downarrow$ & SSIM $\uparrow$\\
+\midrule
+\multicolumn{5}{l}{\emph{source (in-domain)}} \\
+\quad NMO (ours) & & 0.256\,\tiny{$\pm$ 0.009} & 0.246\,\tiny{$\pm$ 0.002} & 0.384\,\tiny{$\pm$ 0.007} \\
+\quad STAGATE-style & & 0.242\,\tiny{$\pm$ 0.001} & 0.248\,\tiny{$\pm$ 0.001} & 0.364\,\tiny{$\pm$ 0.001} \\
+\addlinespace
+\multicolumn{5}{l}{\emph{target (zero-shot)}} \\
+\quad STAGATE-style & & 0.282\,\tiny{$\pm$ 0.000} & 1.765\,\tiny{$\pm$ 0.001} & 0.208\,\tiny{$\pm$ 0.001} \\
+\quad NMO (ours) & & 0.139\,\tiny{$\pm$ 0.015} & 1.863\,\tiny{$\pm$ 0.026} & 0.125\,\tiny{$\pm$ 0.004} \\
+\addlinespace
+\multicolumn{5}{l}{\emph{target (in-domain oracle)}} \\
+\quad NMO (ours) & & 0.259\,\tiny{$\pm$ 0.006} & 1.752\,\tiny{$\pm$ 0.007} & 0.556\,\tiny{$\pm$ 0.006} \\
+\quad STAGATE-style & & 0.256\,\tiny{$\pm$ 0.001} & 1.760\,\tiny{$\pm$ 0.002} & 0.569\,\tiny{$\pm$ 0.001} \\
+\addlinespace
+\multicolumn{5}{l}{\emph{target (training-mean floor)}} \\
+\quad mean & & 0.000\,\tiny{$\pm$ 0.000} & 1.872\,\tiny{$\pm$ 0.000} & 0.101\,\tiny{$\pm$ 0.001} \\
+\addlinespace
+\bottomrule
+\end{tabular}
+\end{table}

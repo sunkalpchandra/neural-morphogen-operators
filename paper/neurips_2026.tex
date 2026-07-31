@@ -45,7 +45,7 @@
   BestAnySSIM,BestAnySSIMModel,BestAnyMoran,BestAnyMoranModel,SSIMDelta,%
   MoranDelta,DevPersistence,DevNMOBest,DevNMOBestHorizon,DevNMOZero,%
   DevBeatsPersistence,NSections,NPhysicsRuns,GrowthAtZero,BestBaselineSSIM,%
-  BeadMeanRank,BeadMinP,BeadSeeds,AEPearson,BestGraphOverAE,WorstGraphOverAE,NGraphBelowAE,NGraphModels,%
+  BeadMeanRank,BeadMinP,BeadSeeds,PSNPerturb,PSNShared,PSWilcoxonP,AEPearson,BestGraphOverAE,WorstGraphOverAE,NGraphBelowAE,NGraphModels,%
   NMOOverAE,NMOvsGraphRatio,MatchedFull,MatchedNoDynamics,MatchedNoDynamicsDelta,%
   MatchedNoReaction,MatchedNoReactionDelta,MatchedSeeds,%
   NDatasets,TotalLocations}\do{%
@@ -642,10 +642,18 @@ measured CRISPRa responses \citep{norman2019perturbseq}.
 profiled non-spatial K562 cells, whereas our operator is fitted to tissue. We fit
 on the human breast section so at least species and a proliferative context are
 shared, report a permutation null, and report the same quantity for every
-baseline. The agreement is modest ($\rho = \PSRho$ against a null of \PSNull);
-we read it as weak evidence that the reaction network captures generic
-transcriptional coupling, and explicitly \emph{not} as validation of the spatial
-dynamics.
+baseline.
+
+\paragraph{This probe is underpowered and we treat it as inconclusive.} Only
+\PSNPerturb{} of Norman's single-gene perturbations fall inside the spatial
+model's gene vocabulary (\PSNShared{} genes are shared overall): HVG selection on
+a breast-cancer section and a CRISPRa screen in K562 agree on very few targets.
+With $n=\PSNPerturb$ the test cannot separate absence of effect from absence of
+power. The observed value ($\rho = \PSRho$ against a null of \PSNull, Wilcoxon
+$p = \PSWilcoxonP$) is consistent with zero and we draw no conclusion from it in
+either direction. We report it because the experiment was pre-specified, not
+because it decided anything; a properly powered version would need a screen whose
+targets were chosen to overlap the spatial panel.
 
 % =====================================================================
 \section{Ablations}
