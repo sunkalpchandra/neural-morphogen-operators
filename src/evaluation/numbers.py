@@ -193,6 +193,9 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
         cmd("BeadNSig", str(int((sig < 0.05).sum())))
         cmd("BeadNPathways", str(int(len(sig))))
         cmd("BeadWidth", f"{bead['response_halfwidth_um'].mean():.0f}")
+        cmd("BeadMeanRank", f"{bead['held_out_mean_rank_pct'].mean():.0f}")
+        cmd("BeadMinP", f"{bead.groupby('pathway')['p_value'].mean().min():.2f}")
+        cmd("BeadSeeds", str(int(bead['seed'].nunique())))
     ps = pd.DataFrame([r for r in load_json_glob("exp4/**/perturbseq_consistency.json", results_root)
                        if "error" not in r])
     if not ps.empty:

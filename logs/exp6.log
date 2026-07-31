@@ -3,3 +3,32 @@
 [00:19:02] INFO    aligned mosta_embryo_E9.5 <-> mosta_embryo_E10.5: 563 shared genes
 mosta_embryo_E9.5 -> mosta_embryo_E10.5: 563 shared genes, 5898 -> 18360 locations
 [00:19:10] INFO    training NeuralMorphogenOperator (1,614,644 params) on mosta_embryo_E9.5 for 250 epochs
+[00:25:29] INFO      ep   25/250  loss 1.5348  val r 0.1419  rmse 0.3914
+[00:26:55] INFO      ep   50/250  loss 1.4535  val r 0.1717  rmse 0.3816
+[00:28:05] INFO      ep   75/250  loss 1.4016  val r 0.1779  rmse 0.3592
+[00:29:16] INFO      ep  100/250  loss 1.3867  val r 0.1849  rmse 0.3533
+[00:31:34] INFO      ep  125/250  loss 1.3688  val r 0.1879  rmse 0.3516
+[00:33:31] INFO      ep  150/250  loss 1.3686  val r 0.1893  rmse 0.3512
+[00:35:46] INFO      ep  175/250  loss 1.3314  val r 0.1894  rmse 0.3516
+[00:37:11] INFO      ep  200/250  loss 1.3351  val r 0.1902  rmse 0.3513
+[00:38:19] INFO      ep  225/250  loss 1.3387  val r 0.1899  rmse 0.3514
+[00:39:23] INFO      ep  250/250  loss 1.3288  val r 0.1899  rmse 0.3514
+[00:39:24] INFO      done in 1213s | test r=0.1741 rmse=0.3525 ssim=0.5322
+[forecast] seed0 T= 0: field r=0.0813
+[forecast] seed0 T= 2: field r=0.0883
+[forecast] seed0 T= 4: field r=0.0915
+[forecast] seed0 T= 8: field r=0.0944
+[forecast] seed0 T=16: field r=0.0952
+[forecast] seed0 T=32: field r=0.0913
+Python(61084) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(61085) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[00:39:30] INFO    training NeuralMorphogenOperator (1,614,644 params) on mosta_embryo_E9.5 for 250 epochs
+[00:40:39] INFO      ep   25/250  loss 1.4951  val r 0.1473  rmse 0.3905
+[00:41:47] INFO      ep   50/250  loss 1.4432  val r 0.1754  rmse 0.3742
+[00:42:56] INFO      ep   75/250  loss 1.4175  val r 0.1803  rmse 0.3562
+[00:44:10] INFO      ep  100/250  loss 1.3765  val r 0.1867  rmse 0.3523
+[00:45:22] INFO      ep  125/250  loss 1.3756  val r 0.1896  rmse 0.3517
+[00:46:31] INFO      ep  150/250  loss 1.3421  val r 0.1916  rmse 0.3512
+[00:47:39] INFO      ep  175/250  loss 1.3399  val r 0.1917  rmse 0.3516
+[00:48:49] INFO      ep  200/250  loss 1.3472  val r 0.1928  rmse 0.3512
+[00:49:48] INFO      ep  225/250  loss 1.3254  val r 0.1926  rmse 0.3514

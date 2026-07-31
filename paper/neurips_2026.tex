@@ -45,7 +45,7 @@
   BestAnySSIM,BestAnySSIMModel,BestAnyMoran,BestAnyMoranModel,SSIMDelta,%
   MoranDelta,DevPersistence,DevNMOBest,DevNMOBestHorizon,DevNMOZero,%
   DevBeatsPersistence,NSections,NPhysicsRuns,GrowthAtZero,BestBaselineSSIM,%
-  AEPearson,BestGraphOverAE,WorstGraphOverAE,NGraphBelowAE,NGraphModels,%
+  BeadMeanRank,BeadMinP,BeadSeeds,AEPearson,BestGraphOverAE,WorstGraphOverAE,NGraphBelowAE,NGraphModels,%
   NMOOverAE,NMOvsGraphRatio,MatchedFull,MatchedNoDynamics,MatchedNoDynamicsDelta,%
   MatchedNoReaction,MatchedNoReactionDelta,MatchedSeeds,%
   NDatasets,TotalLocations}\do{%
@@ -99,13 +99,15 @@ operator as the source of the gain: disabling the dynamics---an exactly
 parameter-matched control, since the operator holds under $0.5\%$ of the
 model's weights---costs \MatchedNoDynamicsDelta{} Pearson $r$ at matched budget.
 
-The same experiments expose a clear cost. The operator NMO learns is purely
-dissipative---linearising it yields no Turing instability at any finite
-wavenumber---so the fields it produces are far too spatially autocorrelated:
-Moran's $I$ error is the one metric on which NMO is the \emph{worst} model
-tested. Long-range smoothing is what buys point-wise accuracy inside a masked
-region and what inflates autocorrelation relative to real tissue; these are one
-phenomenon, and we report both.
+The same experiments expose clear costs, and we report them as results rather
+than caveats. The operator NMO learns is purely dissipative---linearising it
+yields no Turing instability at any finite wavenumber---so its fields are far too
+spatially autocorrelated, and Moran's $I$ error is the one metric on which NMO is
+the \emph{worst} model tested. A pre-registered split-half perturbation test also
+\emph{fails}: perturbing the latent direction aligned with one half of a
+morphogen pathway does not preferentially move the held-out half
+($\BeadNSig/\BeadNPathways$ pathways significant). Latent channels correlate
+with pathway activity, but that correlation does not survive a causal test.
 We also stress what the model does \emph{not} establish. Spatial transcriptomics
 is a single snapshot, so the operator is identified only up to the
 quasi-steady-state assumption we impose; recovered diffusion lengths are
@@ -572,14 +574,37 @@ statistical power, and we present it as an existence check on forward-time
 behaviour rather than as a forecasting benchmark.
 
 \subsection{Counterfactual perturbation}
+\label{sec:results4}
 
 We perform the computational analogue of a morphogen bead implant: inject the
 latent direction that maximally raises a pathway's decoded activity into a small
 disc, integrate the operator, and read out the spatial response. The design is
-split-half---the direction is defined from a random half of each pathway's genes
-and enrichment is scored on the held-out half---with a permutation null over
-matched random gene sets. \BeadNSig{} of \BeadNPathways{} pathways show
-significant held-out enrichment (Appendix~\ref{app:bead}).
+deliberately falsifiable and split-half---the direction is defined from a random
+half of each pathway's genes and enrichment is scored on the \emph{held-out}
+half---with a permutation null over matched random gene sets.
+
+\paragraph{This test fails, and that is the primary outcome of the experiment.}
+Across \BeadNPathways{} pathways and \BeadSeeds{} seeds, \BeadNSig{} reach
+significance; the smallest per-pathway $p$ is \BeadMinP{} and the mean held-out
+rank is \BeadMeanRank\% against a 50\% chance level, so if anything held-out
+pathway members respond \emph{less} than random genes (Appendix~\ref{app:bead}).
+
+The negative result is informative because of what it rules out. Latent channels
+do correlate with pathway activity scores (Figure~\ref{fig:latent}b), and it
+would have been easy to present those correlations as evidence that the operator
+had internalised pathway structure. The perturbation test says otherwise: moving
+the latent direction that most raises one half of a pathway does not
+preferentially move the other half. The correlations are consistent with the
+latent field encoding coarse anatomical structure that pathway scores also
+track, rather than with a pathway-specific representation. We therefore do not
+claim that NMO recovers signalling programmes, and we would treat
+correlation-only evidence of this kind elsewhere with the same caution.
+
+What the experiment does establish is a spatial scale: the injected perturbation
+decays to half its peak within \BeadWidth\,$\mu$m, consistent with the
+diffusion lengths read off $\mD_\theta$. The operator propagates information
+over biologically plausible distances; it is the \emph{specificity} of what it
+propagates that the test rejects.
 
 Separately, we ask whether the reaction module encodes real transcriptional
 coupling by comparing the model's counterfactual gene--gene responses against
@@ -678,9 +703,19 @@ operator}, not morphogen transport, and we cannot falsify them against
 ground-truth kinetics in these data. Even the Stereo-seq series compares
 different embryos, so it is distributional rather than per-cell.
 
-\paragraph{Latent, not molecular.} Correlations between latent channels and
-pathway scores show alignment; they do not identify a channel \emph{as} SHH or
-BMP, and we avoid that language.
+\paragraph{Latent, not molecular --- and the name is a description, not a claim.}
+Correlations between latent channels and pathway scores show alignment, but our
+own split-half perturbation test rejects the stronger reading
+(Section~\ref{sec:results4}): perturbing a pathway-aligned direction does not
+preferentially move held-out members of that pathway. ``Morphogen'' in the name
+of the method describes the \emph{operator class} we fit --- anisotropic
+reaction--diffusion --- and not a validated claim that the model recovers
+morphogen signalling. Two of our three interpretability probes returned negative
+results (no Turing instability at any finite wavenumber; no pathway-specific
+perturbation response), and a reader should weight the method's interpretability
+claims accordingly. What survives is quantitative and modest: a learned
+anisotropic diffusion tensor with a physical length scale, and a response
+half-width consistent with it.
 
 \paragraph{Over-smoothing is our largest weakness, and it is worse than the
 baselines'.} Predicted maps are far more spatially autocorrelated than measured

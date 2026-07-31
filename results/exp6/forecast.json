@@ -1,0 +1,90 @@
+[
+  {
+    "model": "persistence",
+    "display": "Persistence (no dynamics)",
+    "seed": -1,
+    "horizon": null,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.06397607467552732,
+    "field_pearson_median": 0.021743725771254864,
+    "field_rmse": 0.34640700764879556,
+    "frac_genes_positive": 0.61101243339254
+  },
+  {
+    "model": "mean",
+    "display": "Spatial-mean predictor",
+    "seed": -1,
+    "horizon": null,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 1.208585678841698e-15,
+    "field_pearson_median": 3.1902312898611705e-16,
+    "field_rmse": 0.25673555708465845,
+    "frac_genes_positive": 0.04085257548845471
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "horizon": 0,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.08125727499479507,
+    "field_pearson_median": 0.040636001201817984,
+    "field_rmse": 0.3188710989010959,
+    "frac_genes_positive": 0.7353463587921847
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "horizon": 2,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.08830532197642876,
+    "field_pearson_median": 0.04158228476907111,
+    "field_rmse": 0.3029341599620561,
+    "frac_genes_positive": 0.7246891651865008
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "horizon": 4,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.09145041082044804,
+    "field_pearson_median": 0.04220155823847271,
+    "field_rmse": 0.2951606702022707,
+    "frac_genes_positive": 0.7229129662522202
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "horizon": 8,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.0943578740280716,
+    "field_pearson_median": 0.04017560851620696,
+    "field_rmse": 0.2871369419290402,
+    "frac_genes_positive": 0.7246891651865008
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "horizon": 16,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.09516839730087491,
+    "field_pearson_median": 0.03650490318457509,
+    "field_rmse": 0.2816038231755312,
+    "frac_genes_positive": 0.7211367673179396
+  },
+  {
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "horizon": 32,
+    "n_shared_genes": 563,
+    "field_pearson_mean": 0.09132369604110173,
+    "field_pearson_median": 0.03801730045007484,
+    "field_rmse": 0.2841415408453968,
+    "frac_genes_positive": 0.6980461811722913
+  }
+]

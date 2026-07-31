@@ -3,3 +3,41 @@
 [00:18:53] INFO    aligned visium_mouse_brain <-> visium_human_breast: 390 shared genes
 shared vocabulary: 390 genes
 [00:18:59] INFO    training NeuralMorphogenOperator (1,548,039 params) on visium_mouse_brain for 250 epochs
+[00:19:47] INFO      ep   25/250  loss 1.5036  val r 0.1403  rmse 0.2918
+[00:25:40] INFO      ep   50/250  loss 1.4180  val r 0.1947  rmse 0.2856
+[00:26:35] INFO      ep   75/250  loss 1.3223  val r 0.2166  rmse 0.2744
+[00:27:22] INFO      ep  100/250  loss 1.3321  val r 0.2366  rmse 0.2692
+[00:28:06] INFO      ep  125/250  loss 1.3097  val r 0.2474  rmse 0.2665
+[00:28:47] INFO      ep  150/250  loss 1.2772  val r 0.2516  rmse 0.2660
+[00:29:44] INFO      ep  175/250  loss 1.2573  val r 0.2553  rmse 0.2641
+[00:31:15] INFO      ep  200/250  loss 1.2683  val r 0.2573  rmse 0.2636
+[00:32:26] INFO      ep  225/250  loss 1.2677  val r 0.2572  rmse 0.2639
+[00:33:42] INFO      ep  250/250  loss 1.2500  val r 0.2575  rmse 0.2638
+[00:33:44] INFO      done in 884s | test r=0.2059 rmse=0.2526 ssim=0.3616
+[zero-shot] nmo seed 0: r=0.0413
+[00:33:46] INFO    training NeuralMorphogenOperator (174,470 params) on visium_human_breast for 80 epochs
+[00:34:28] INFO      ep   25/80  loss 1.5366  val r 0.0190  rmse 0.4302
+[00:35:18] INFO      ep   50/80  loss 1.4977  val r 0.0424  rmse 0.4183
+[00:36:04] INFO      ep   75/80  loss 1.5019  val r 0.0473  rmse 0.4169
+[00:36:12] INFO      ep   80/80  loss 1.4924  val r 0.0473  rmse 0.4169
+[00:36:14] INFO      done in 146s | test r=0.0546 rmse=0.4031 ssim=0.2937
+[00:36:14] INFO    training NeuralMorphogenOperator (1,548,039 params) on visium_human_breast for 250 epochs
+[00:37:24] INFO      ep   25/250  loss 1.5042  val r 0.1247  rmse 0.4097
+[00:38:18] INFO      ep   50/250  loss 1.4625  val r 0.1340  rmse 0.4029
+[00:39:12] INFO      ep   75/250  loss 1.4367  val r 0.1288  rmse 0.3925
+[00:40:03] INFO      ep  100/250  loss 1.4126  val r 0.1184  rmse 0.3961
+[00:41:03] INFO      ep  125/250  loss 1.4206  val r 0.1117  rmse 0.4041
+[00:42:00] INFO      ep  150/250  loss 1.3883  val r 0.1094  rmse 0.4101
+[00:42:57] INFO      ep  175/250  loss 1.4084  val r 0.1084  rmse 0.4135
+[00:43:57] INFO      ep  200/250  loss 1.3933  val r 0.1065  rmse 0.4157
+[00:45:00] INFO      ep  225/250  loss 1.4044  val r 0.1073  rmse 0.4160
+[00:45:59] INFO      ep  250/250  loss 1.4068  val r 0.1075  rmse 0.4162
+[00:45:59] INFO      early stop at epoch 250 (best 0.1340)
+[00:46:00] INFO      done in 585s | test r=0.1345 rmse=0.3957 ssim=0.3315
+[00:46:01] INFO    training NeuralMorphogenOperator (1,548,039 params) on visium_mouse_brain for 250 epochs
+[00:46:42] INFO      ep   25/250  loss 1.5108  val r 0.1610  rmse 0.2923
+[00:47:23] INFO      ep   50/250  loss 1.4232  val r 0.2102  rmse 0.2866
+[00:48:03] INFO      ep   75/250  loss 1.3409  val r 0.2221  rmse 0.2740
+[00:48:51] INFO      ep  100/250  loss 1.3119  val r 0.2354  rmse 0.2685
+[00:49:29] INFO      ep  125/250  loss 1.2955  val r 0.2439  rmse 0.2656
+[00:50:02] INFO      ep  150/250  loss 1.2567  val r 0.2485  rmse 0.2647

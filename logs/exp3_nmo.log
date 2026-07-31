@@ -1,0 +1,8 @@
+[00:48:33] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[00:48:34] INFO    section visium_mouse_brain__panel_xenium_mouse_brain: 2691 locations x 2177 genes, 23006 edges, scale 3191 um/unit
+[00:48:34] INFO    aligned visium_mouse_brain__panel_xenium_mouse_brain <-> xenium_mouse_brain: 248 shared genes
+visium_mouse_brain -> xenium_mouse_brain: 248 shared genes, 2691 source locations, 8000 target locations
+[00:48:41] INFO    training NeuralMorphogenOperator (1,493,369 params) on visium_mouse_brain__panel_xenium_mouse_brain for 250 epochs
+[00:49:22] INFO      ep   25/250  loss 1.4644  val r 0.1725  rmse 0.2829
+[00:49:51] INFO      ep   50/250  loss 1.3722  val r 0.2151  rmse 0.2751
+[00:50:23] INFO      ep   75/250  loss 1.2917  val r 0.2323  rmse 0.2641

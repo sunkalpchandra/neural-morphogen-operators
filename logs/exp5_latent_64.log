@@ -7,3 +7,35 @@
 [00:12:29] INFO      ep  125/300  loss 1.2584  val r 0.2528  rmse 0.2657
 [00:18:02] INFO      ep  150/300  loss 1.2264  val r 0.2555  rmse 0.2669
 [00:18:42] INFO      ep  175/300  loss 1.2077  val r 0.2591  rmse 0.2653
+[00:19:59] INFO      ep  200/300  loss 1.2256  val r 0.2606  rmse 0.2652
+[00:26:35] INFO      ep  225/300  loss 1.2104  val r 0.2629  rmse 0.2645
+[00:27:55] INFO      ep  250/300  loss 1.1968  val r 0.2630  rmse 0.2653
+[00:29:14] INFO      ep  275/300  loss 1.2152  val r 0.2630  rmse 0.2657
+[00:31:47] INFO      ep  300/300  loss 1.2082  val r 0.2628  rmse 0.2656
+[00:31:52] INFO      done in 2085s | test r=0.2377 rmse=0.2539 ssim=0.3977
+[done] latent_64 seed 0: r=0.2377 rmse=0.2539
+[00:31:57] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+Python(56511) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(56519) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[00:31:58] INFO    training NeuralMorphogenOperator (5,769,504 params) on visium_mouse_brain for 300 epochs
+[00:34:09] INFO      ep   25/300  loss 1.5162  val r 0.1527  rmse 0.2935
+[00:36:21] INFO      ep   50/300  loss 1.3668  val r 0.2091  rmse 0.2788
+[00:37:41] INFO      ep   75/300  loss 1.3007  val r 0.2363  rmse 0.2697
+[00:38:48] INFO      ep  100/300  loss 1.2730  val r 0.2476  rmse 0.2679
+[00:39:58] INFO      ep  125/300  loss 1.2680  val r 0.2553  rmse 0.2643
+[00:41:12] INFO      ep  150/300  loss 1.2311  val r 0.2593  rmse 0.2647
+[00:42:26] INFO      ep  175/300  loss 1.2132  val r 0.2621  rmse 0.2647
+[00:43:41] INFO      ep  200/300  loss 1.2026  val r 0.2638  rmse 0.2659
+[00:45:02] INFO      ep  225/300  loss 1.2216  val r 0.2635  rmse 0.2662
+[00:46:14] INFO      ep  250/300  loss 1.2177  val r 0.2640  rmse 0.2662
+[00:47:27] INFO      ep  275/300  loss 1.2093  val r 0.2638  rmse 0.2664
+[00:48:46] INFO      ep  300/300  loss 1.2002  val r 0.2638  rmse 0.2666
+[00:48:49] INFO      done in 1008s | test r=0.2373 rmse=0.2548 ssim=0.3965
+[done] latent_64 seed 1: r=0.2373 rmse=0.2548
+
+           pearson_mean                rmse  ... ssim_mean   n_params     
+                  mean       std      mean  ...       std       mean  std
+variant                                     ...                          
+latent_64     0.237481  0.000273  0.254345  ...  0.000809  5769504.0  0.0
+
+[1 rows x 8 columns]
