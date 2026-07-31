@@ -1,7 +1,7 @@
 """Publication figures. Each function returns a matplotlib Figure.
 
 Figures that need a fitted model take a ``(model, section)`` pair; figures that
-summarise experiments take the corresponding results JSON.
+summarize experiments take the corresponding results JSON.
 """
 
 from __future__ import annotations
@@ -93,7 +93,7 @@ def figure2_reconstruction(
 
     if genes is None:
         # Show genes spanning the performance range, not only the best ones:
-        # a cherry-picked top-k panel would misrepresent typical behaviour.
+        # a cherry-picked top-k panel would misrepresent typical behavior.
         r = pearson_per_gene(pred_nmo[held], true[held])
         order = np.argsort(-np.nan_to_num(r, nan=-1))
         valid = order[np.isfinite(r[order])]
@@ -338,7 +338,7 @@ def figure5_dynamics(model, section, channel: Optional[int] = None) -> plt.Figur
         ax3.annotate(f"$k^* = {rep['k_max']:.1f}$\n$\\lambda \\approx {lam:.0f}\\,\\mu$m",
                      xy=(rep["k_max"], rep["growth_max"]), xytext=(6, -2),
                      textcoords="offset points", fontsize=6, color=INK_SECONDARY)
-    ax3.set_xlabel("wavenumber $|k|$ (normalised units)")
+    ax3.set_xlabel("wavenumber $|k|$ (normalized units)")
     ax3.set_ylabel("max Re $\\lambda(k)$")
     ax3.set_title("Dispersion relation of the learned operator", fontsize=7, pad=4)
     panel_label(ax3, "c", dx=-0.13, dy=1.30)
@@ -366,7 +366,7 @@ ABLATION_LABELS = {
     "no_pde": "$-$ PDE constraints",
     "no_diffusion": "$-$ diffusion term",
     "no_reaction": "$-$ reaction term",
-    "no_bio_reg": "$-$ biological regularisers",
+    "no_bio_reg": "$-$ biological regularizers",
     "no_dynamics": "$-$ dynamics ($T=0$)",
     "isotropic_diffusion": "isotropic $D$",
     "state_dependent_diffusion": "state-dependent $D$",
@@ -502,7 +502,7 @@ def figure_results_panel(bench: List[Dict], abl: List[Dict], matched: Dict[str, 
     a = a[a["variant"].isin(keep)].copy()
     a["delta"] = a["mean"] - full
     a = a.sort_values("delta")
-    short = {"discrete_gnn": "discrete GNN", "no_bio_reg": "$-$ bio. regularisers",
+    short = {"discrete_gnn": "discrete GNN", "no_bio_reg": "$-$ bio. regularizers",
              "no_pde": "$-$ PDE terms", "isotropic_diffusion": "isotropic $D$",
              "no_dynamics": "$-$ dynamics", "no_diffusion": "$-$ diffusion",
              "no_reaction": "$-$ reaction"}
@@ -535,7 +535,7 @@ def figure_results_panel(bench: List[Dict], abl: List[Dict], matched: Dict[str, 
 
 
 def figure_datasets(processed_dir="data/processed", keys=None) -> plt.Figure:
-    """Tissue-section overview: one panel per dataset, coloured by total counts.
+    """Tissue-section overview: one panel per dataset, colored by total counts.
 
     Standard orientation figure for spatial-omics papers -- it shows at a glance
     that the sections differ in geometry, sampling density and physical extent,

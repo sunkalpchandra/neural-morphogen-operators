@@ -83,7 +83,7 @@ def _fmt(mean: float, std: float, prec: int = 3, bold: bool = False) -> str:
 
 
 def _wrap(body: str, caption: str, label: str, colspec: str, header: str,
-          note: str = "", small: bool = True, position: str = "t") -> str:
+          note: str = "", small: bool = True, position: str = "htbp") -> str:
     size = "\\small\n" if small else ""
     note_line = f"\\\\[2pt]\n\\multicolumn{{{colspec.count('c') + colspec.count('l') + colspec.count('r')}}}{{p{{0.95\\linewidth}}}}{{\\scriptsize {note}}}\n" if note else ""
     return (
@@ -177,7 +177,7 @@ def table_benchmark(
         f"are hidden from every model; metrics are computed on held-out locations only. "
         f"Mean $\\pm$ s.d. over {n_seeds} seeds. All models share the identical training "
         f"loop, masks and evaluation code. $|\\Delta I|$ is the mean absolute error in "
-        f"Moran's $I$ between predicted and measured expression maps: it penalises "
+        f"Moran's $I$ between predicted and measured expression maps: it penalizes "
         f"over-smoothing that correlation alone does not detect.",
         "tab:benchmark", "l" + "r" * (len(metrics) + 1), header,
     )
@@ -247,7 +247,7 @@ ABLATION_TEX = {
     "no_diffusion": r"$-$ diffusion term",
     "no_reaction": r"$-$ reaction term",
     "no_pde": r"$-$ PDE constraints",
-    "no_bio_reg": r"$-$ biological regularisers",
+    "no_bio_reg": r"$-$ biological regularizers",
     "isotropic_diffusion": r"isotropic $D$",
     "state_dependent_diffusion": r"state-dependent $D$",
     "discrete_gnn": r"discrete GNN operator",
@@ -370,7 +370,7 @@ def table_development(records: List[Dict], out: Path) -> str:
         "integrated forward for $T$ operator steps, and scored against the "
         "measured E10.5 field. \\textbf{Consecutive stages are different embryos}, "
         "so there is no cell-to-cell correspondence and the comparison is made at "
-        "the level of the rasterised field after isotropic normalisation to a "
+        "the level of the rasterized field after isotropic normalization to a "
         "common frame; it inherits the error of that coarse registration. "
         "\\emph{Persistence} predicts E10.5 $=$ E9.5 and is the reference the "
         "operator must beat for its dynamics to carry temporal information.",
@@ -407,7 +407,7 @@ def table_perturbseq(records: List[Dict], out: Path) -> str:
         "probe}: the Perturb-seq data are non-spatial K562 cells while the operator is "
         "fitted to human breast tissue, so it tests whether the reaction module encodes "
         "generic transcriptional coupling, not whether it recovered tissue-specific "
-        "signalling. Null is a within-perturbation label permutation; $p$ is a Wilcoxon "
+        "signaling. Null is a within-perturbation label permutation; $p$ is a Wilcoxon "
         "signed-rank test against that null.",
         "tab:perturbseq", "lrrrrr",
         r"model & \#perturb. & Spearman $\rho$ & null & \% positive & $p$",

@@ -45,18 +45,36 @@ and table counts, abstract lengths, section headings).
 
 ## What the survey changed in the manuscript
 
-* **Register.** The sampled papers are uniformly impersonal. The manuscript now
-  contains **zero** first-person pronouns in either main text or appendices.
-* **Abstract length.** Sample range 149--260 words (median ~190); the abstract is
-  243 words, down from 305.
-* **Figure density.** Sample carries 3--14 figures; the main text carries six,
-  spread over pages 2--7, with three more in the appendices.
-* **Formal apparatus.** The theory papers surveyed (`fno_universal_approximation`,
-  `strang_unconditional_energy_dissipation`, `determining_nonlinear_balance_laws`)
-  average >20 numbered environments each. The manuscript now states 1 theorem,
-  14 propositions, 1 lemma, 1 corollary, 2 definitions and 14 proofs across
-  13 displayed equations, with the substantive derivations in
-  Appendices A--H.
-* **Verification.** `scripts/verify_theory.py` checks every analytical claim
-  against the implementation under adversarially perturbed parameters and emits
-  Table 3; no proposition appears without a corresponding executable check.
+Sentence-level patterns extracted from the surveyed papers (`_analysis.json`,
+`_theory_analysis.json`) and applied to the manuscript:
+
+* **Voice.** Every paper sampled uses first-person plural for contributions:
+  *"We introduce LATTICE..."*, *"We show that neural message passing solvers
+  representationally contain some classical methods..."*, *"We present Graph
+  Neural Diffusion (GRAND)..."*. The manuscript uses the same construction
+  throughout.
+* **Limitations are one sentence, factual, forward-looking.** The sampled form is
+  *"A limitation of our model is that we require high quality groundtruth data to
+  train"* (MP-PDE) and *"We note that adding growth rate regularization in this
+  way does not guarantee conservation of mass"* (TrajectoryNet). None
+  dramatizes. Our Limitations section was rewritten to match: each limitation is
+  stated once, plainly, and paired with the remedy or the data that would remove
+  it. All findings are unchanged; only the framing is.
+* **Negative results are contextualized, not editorialized.** The over-smoothing
+  result is now tied to the diffusion-driven smoothing analyzed in GRAND and
+  GREAD, which is the correct literature for it and makes it a known property of
+  diffusion-based architectures rather than an isolated defect.
+* **Hedging vocabulary.** Interpretive claims use *suggests / indicates / is
+  consistent with*, matching the sampled usage; assertions of fact do not hedge.
+* **Abstract.** 271 words, opening with the gap, then the method, then results,
+  then the theoretical contribution -- the ordering used by all five ML4Bio
+  papers sampled.
+* **Spelling.** American throughout (`scripts/americanize.py` normalizes the
+  `.tex` sources *and* the table/figure generators, so regeneration cannot
+  reintroduce British forms).
+* **Formal apparatus.** The theory papers average >20 numbered environments;
+  the manuscript states 1 theorem, 13 propositions, 1 lemma, 1 corollary,
+  2 definitions and 13 proofs, with derivations in Appendices B--I.
+* **Appendix length.** Reduced from 4,072 to 3,294 words by merging the
+  notation/spectral sections, dropping a standard well-posedness proposition and
+  consolidating eleven table-only sections into one.
