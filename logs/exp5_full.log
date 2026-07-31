@@ -16,3 +16,4 @@
 [done] full seed 0: r=0.2301 rmse=0.2548
 [22:19:48] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
 [22:19:48] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 300 epochs
+[22:21:30] INFO      ep   25/300  loss 1.5257  val r 0.1337  rmse 0.2942

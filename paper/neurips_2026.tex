@@ -46,7 +46,8 @@
   MoranDelta,DevPersistence,DevNMOBest,DevNMOBestHorizon,DevNMOZero,%
   DevBeatsPersistence,NSections,NPhysicsRuns,GrowthAtZero,BestBaselineSSIM,%
   AEPearson,BestGraphOverAE,WorstGraphOverAE,NGraphBelowAE,NGraphModels,%
-  NMOOverAE,NMOvsGraphRatio,%
+  NMOOverAE,NMOvsGraphRatio,MatchedFull,MatchedNoDynamics,MatchedNoDynamicsDelta,%
+  MatchedNoReaction,MatchedNoReactionDelta,MatchedSeeds,%
   NDatasets,TotalLocations}\do{%
   \expandafter\providecommand\csname\@nmocmd\endcsname{\textbf{??}}}
 \makeatother
@@ -613,7 +614,29 @@ zero so the operator is never applied. It costs \AblNoDynamicsDelta{} Pearson $r
 model, the PDE would have been decorative and the central claim of this paper
 would fail; we report it first for that reason.
 
-The control is unusually clean because it is \emph{exactly} parameter-matched:
+\paragraph{The ablation budget matters, so we report the control twice.}
+The sweep in Table~\ref{tab:ablations} uses a reduced budget for tractability, and
+at that budget the full model has \emph{not} converged (\AblFull{} against
+\MatchedFull{} at the benchmark budget). Undertraining compresses every ablation
+delta, so reading the central control off that table would understate it. We
+therefore re-ran the two decisive variants at exactly the benchmark budget
+(\MatchedSeeds{} seeds, same epochs as Table~\ref{tab:benchmark}), where they can
+be compared directly against the NMO row:
+
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule
+variant (matched budget) & Pearson $r$ & $\Delta r$ \\
+\midrule
+Full model (= NMO, Table~\ref{tab:benchmark}) & \MatchedFull{} & -- \\
+$-$ dynamics ($T{=}0$) & \MatchedNoDynamics{} & \MatchedNoDynamicsDelta{} \\
+$-$ reaction term & \MatchedNoReaction{} & \MatchedNoReactionDelta{} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{The control is exactly parameter-matched.}
+It is unusually clean because it is \emph{exactly} parameter-matched:
 the operator is only 9{,}536 of the model's 2{,}198{,}336 parameters
 ($0.43\%$; a per-channel $2\times2$ tensor plus a pointwise reaction MLP), and
 $T{=}0$ leaves them allocated but unused. Identical architecture, parameter count
@@ -628,6 +651,16 @@ information transport into masked regions, while the reaction term supplies the
 nonlinearity that prevents the field from collapsing to a smooth interpolant.
 Constraining $\mD$ to be isotropic costs \AblIsotropicDelta, indicating the
 anisotropy is used rather than merely available.
+
+Two ablations are honestly \emph{null}. Removing the biological regularisers
+(smoothness, mass, Jacobian) changes held-out $r$ by \AblNoBioRegDelta{} and
+removing the PDE constraint terms by \AblNoPDEDelta{} --- both within seed
+noise. At the weights we chose these terms are effectively inert: they neither
+help nor hurt. We report this rather than quietly dropping the rows, because a
+reader is entitled to know that three of the five loss terms we describe in
+Section~\ref{sec:losses} are not doing measurable work at these settings. Their
+value, if any, is in constraining the operator's \emph{form} for the
+interpretability analysis rather than in improving prediction.
 
 % =====================================================================
 \section{Limitations}

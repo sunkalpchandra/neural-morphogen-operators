@@ -137,6 +137,24 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
                 cmd(name, _val(float(g.loc[v, "mean"])))
                 cmd(name + "Delta", _val(float(g.loc[v, "mean"]) - full))
 
+    # ---- matched-budget controls ----------------------------------------- #
+    # The ablation sweep runs at a reduced budget, at which the full model has
+    # not converged; that compresses every delta. The two controls carrying the
+    # central claim are re-run at exactly the benchmark budget so they can be
+    # compared against the NMO row of Table 1 directly.
+    m5 = pd.DataFrame(dedupe([r for r in load_json_glob("exp5_matched/**/*.json", results_root)
+                              if "variant" in r], ["variant", "seed", "section"]))
+    if not m5.empty and not e1.empty:
+        nmo_ref = float(e1[e1["model"] == "nmo"]["pearson_mean"].mean())
+        cmd("MatchedFull", _val(nmo_ref))
+        g = m5.groupby("variant")["pearson_mean"]
+        for v, name in [("no_dynamics", "MatchedNoDynamics"), ("no_reaction", "MatchedNoReaction")]:
+            if v in g.groups:
+                val = float(g.mean()[v])
+                cmd(name, _ms(m5[m5["variant"] == v], "pearson_mean"))
+                cmd(name + "Delta", _val(val - nmo_ref))
+        cmd("MatchedSeeds", str(int(m5.groupby("variant").size().max())))
+
     # ---- physics diagnostics -------------------------------------------- #
     phys = []
     pj = results_root / "physics.json"
