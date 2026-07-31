@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Masked spatial reconstruction across 17 tissue sections spanning four technologies, mean $\pm$ s.d. over sections (2 seeds each, averaged within section). Stars give Holm-corrected Wilcoxon signed-rank $p$ for the paired comparison against NMO, with the section as the unit of analysis: $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Sections on which NMO wins on Pearson $r$ --- Autoencoder (non-spatial): 12/15; GNN (GCN): 14/15; GP, multi-bandwidth: 15/15; Neural field (SIREN): 15/15.}
+\label{tab:multisection}
+\begin{tabular}{lrrrr}
+\toprule
+model & Pearson $r$ $\uparrow$ & RMSE $\downarrow$ & SSIM $\uparrow$ & $|\Delta I|$ $\downarrow$\\
+\midrule
+STAGATE-style & 0.154\,\tiny{$\pm$ 0.048}$^{**}$ & 0.704\,\tiny{$\pm$ 0.360}$^{**}$ & 0.306\,\tiny{$\pm$ 0.037}$^{*}$ & 0.766\,\tiny{$\pm$ 0.041}$^{***}$ \\
+GNN (GCN) & 0.153\,\tiny{$\pm$ 0.048}$^{**}$ & 0.704\,\tiny{$\pm$ 0.358}$^{*}$ & 0.307\,\tiny{$\pm$ 0.041}$^{*}$ & 0.795\,\tiny{$\pm$ 0.042}$^{***}$ \\
+Autoencoder (non-spatial) & 0.153\,\tiny{$\pm$ 0.047}$^{**}$ & 0.728\,\tiny{$\pm$ 0.374}$^{***}$ & 0.224\,\tiny{$\pm$ 0.037}$^{**}$ & 0.756\,\tiny{$\pm$ 0.044}$^{***}$ \\
+Gaussian Process & 0.121 & 0.890 & 0.218 & 0.765 \\
+GP, multi-bandwidth & 0.115\,\tiny{$\pm$ 0.035}$^{***}$ & 0.673\,\tiny{$\pm$ 0.222}$^{***}$ & 0.287\,\tiny{$\pm$ 0.027}$^{**}$ & 0.783\,\tiny{$\pm$ 0.025}$^{***}$ \\
+Neural field (SIREN) & 0.106\,\tiny{$\pm$ 0.042}$^{***}$ & 0.725\,\tiny{$\pm$ 0.368}$^{***}$ & 0.235\,\tiny{$\pm$ 0.033}$^{***}$ & 0.625\,\tiny{$\pm$ 0.058}$^{***}$ \\
+\midrule
+NMO (ours) & \textbf{0.161\,\tiny{$\pm$ 0.049}} & \textbf{0.654\,\tiny{$\pm$ 0.212}} & \textbf{0.316\,\tiny{$\pm$ 0.043}} & \textbf{0.861\,\tiny{$\pm$ 0.039}} \\
+\bottomrule
+\end{tabular}
+\end{table}

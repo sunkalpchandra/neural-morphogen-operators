@@ -1,0 +1,82 @@
+[06:15:12] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[06:15:13] INFO    training NeuralMorphogenOperator (1,493,369 params) on xenium_mouse_brain for 150 epochs
+[06:15:53] INFO      ep   25/150  loss 1.4606  val r 0.1164  rmse 1.8862
+[06:16:32] INFO      ep   50/150  loss 1.3885  val r 0.1599  rmse 1.8610
+[06:17:13] INFO      ep   75/150  loss 1.3355  val r 0.1695  rmse 1.8171
+[06:17:57] INFO      ep  100/150  loss 1.3045  val r 0.1776  rmse 1.8043
+[06:18:39] INFO      ep  125/150  loss 1.2954  val r 0.1814  rmse 1.8006
+[06:19:20] INFO      ep  150/150  loss 1.2983  val r 0.1817  rmse 1.7998
+[06:19:21] INFO      done in 246s | test r=0.2084 rmse=1.7870 ssim=0.3107
+[ok] xenium_mouse_brain   nmo            s0  ARI 0.163/0.579 (ret 0.28)  nbr 0.180  markerAUC 0.748
+[06:19:40] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[06:19:40] INFO    training STAGATEStyleBaseline (221,336 params) on xenium_mouse_brain for 150 epochs
+[06:19:47] INFO      ep   25/150  loss 1.3675  val r 0.1274  rmse 1.8856
+[06:19:53] INFO      ep   50/150  loss 1.2529  val r 0.1797  rmse 1.8653
+[06:20:00] INFO      ep   75/150  loss 1.2025  val r 0.1920  rmse 1.8377
+[06:20:06] INFO      ep  100/150  loss 1.1531  val r 0.1963  rmse 1.8125
+[06:20:12] INFO      ep  125/150  loss 1.1345  val r 0.1986  rmse 1.8038
+[06:20:19] INFO      ep  150/150  loss 1.1364  val r 0.1990  rmse 1.8027
+[06:20:20] INFO      done in 39s | test r=0.2048 rmse=1.8011 ssim=0.2750
+[ok] xenium_mouse_brain   stagate        s0  ARI 0.138/0.579 (ret 0.24)  nbr 0.153  markerAUC 0.731
+[06:20:34] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[06:20:35] INFO    training GNNBaseline (139,032 params) on xenium_mouse_brain for 150 epochs
+[06:20:39] INFO      ep   25/150  loss 1.3668  val r 0.1324  rmse 1.8793
+[06:20:44] INFO      ep   50/150  loss 1.2911  val r 0.1800  rmse 1.8664
+[06:20:49] INFO      ep   75/150  loss 1.2585  val r 0.1935  rmse 1.8464
+[06:20:54] INFO      ep  100/150  loss 1.2205  val r 0.1969  rmse 1.8252
+[06:20:58] INFO      ep  125/150  loss 1.2021  val r 0.1981  rmse 1.8159
+[06:21:03] INFO      ep  150/150  loss 1.2030  val r 0.1981  rmse 1.8146
+[06:21:03] INFO      done in 28s | test r=0.1943 rmse=1.8071 ssim=0.2519
+[ok] xenium_mouse_brain   gnn            s0  ARI 0.120/0.579 (ret 0.21)  nbr 0.145  markerAUC 0.723
+[06:21:18] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[06:21:18] INFO    training MultiScaleGPBaseline (1,506 params) on xenium_mouse_brain for 150 epochs
+[06:21:36] INFO      ep   25/150  loss 1.0347  val r 0.1335  rmse 1.8568
+[06:21:54] INFO      ep   50/150  loss 1.0322  val r 0.1578  rmse 1.8504
+[06:22:11] INFO      ep   75/150  loss 1.0479  val r 0.1389  rmse 1.8641
+[06:22:29] INFO      ep  100/150  loss 1.0362  val r 0.1476  rmse 1.8512
+[06:22:47] INFO      ep  125/150  loss 1.0381  val r 0.1527  rmse 1.8496
+[06:23:05] INFO      ep  150/150  loss 1.0596  val r 0.1427  rmse 1.8600
+[06:23:06] INFO      done in 108s | test r=0.1866 rmse=1.8298 ssim=0.3039
+[ok] xenium_mouse_brain   gp_multiscale  s0  ARI 0.140/0.579 (ret 0.24)  nbr 0.176  markerAUC 0.679
+[06:23:21] INFO    section xenium_mouse_brain: 36362 locations x 248 genes, 331354 edges, scale 3001 um/unit
+[06:23:21] INFO    training NeuralFieldBaseline (114,552 params) on xenium_mouse_brain for 150 epochs
+[06:23:23] INFO      ep   25/150  loss 1.1969  val r 0.1357  rmse 1.8603
+[06:23:26] INFO      ep   50/150  loss 1.0626  val r 0.1268  rmse 1.8497
+[06:23:28] INFO      ep   75/150  loss 0.9959  val r 0.1084  rmse 1.8532
+[06:23:30] INFO      ep  100/150  loss 0.9490  val r 0.1083  rmse 1.8540
+[06:23:33] INFO      ep  125/150  loss 0.9300  val r 0.1074  rmse 1.8552
+[06:23:35] INFO      ep  150/150  loss 0.9312  val r 0.1066  rmse 1.8557
+[06:23:36] INFO      done in 14s | test r=0.1690 rmse=1.8351 ssim=0.1882
+[ok] xenium_mouse_brain   neural_field   s0  ARI 0.103/0.579 (ret 0.18)  nbr 0.127  markerAUC 0.680
+[06:23:42] INFO    section mosta_embryo_E9.5: 5898 locations x 2069 genes, 48040 edges, scale 1395 um/unit
+[06:23:43] INFO    training NeuralMorphogenOperator (2,194,454 params) on mosta_embryo_E9.5 for 150 epochs
+[06:25:10] INFO      ep   25/150  loss 1.5292  val r 0.1105  rmse 0.2680
+[06:26:36] INFO      ep   50/150  loss 1.5212  val r 0.1419  rmse 0.2623
+[06:27:55] INFO      ep   75/150  loss 1.4459  val r 0.1476  rmse 0.2528
+[06:29:07] INFO      ep  100/150  loss 1.4392  val r 0.1518  rmse 0.2497
+[06:30:18] INFO      ep  125/150  loss 1.4385  val r 0.1532  rmse 0.2489
+[11:10:09] INFO      ep  150/150  loss 1.4270  val r 0.1535  rmse 0.2488
+[11:10:11] INFO      done in 17185s | test r=0.1253 rmse=0.2541 ssim=0.2330
+[ok] mosta_embryo_E9.5    nmo            s0  ARI 0.264/0.288 (ret 0.92)  nbr 0.328  markerAUC 0.789
+[11:10:19] INFO    section mosta_embryo_E9.5: 5898 locations x 2069 genes, 48040 edges, scale 1395 um/unit
+[11:10:21] INFO    training STAGATEStyleBaseline (689,333 params) on mosta_embryo_E9.5 for 150 epochs
+[11:10:43] INFO      ep   25/150  loss 1.4371  val r 0.0787  rmse 0.2680
+[11:11:08] INFO      ep   50/150  loss 1.4304  val r 0.1172  rmse 0.2650
+[11:11:23] INFO      ep   75/150  loss 1.3544  val r 0.1317  rmse 0.2608
+[11:11:48] INFO      ep  100/150  loss 1.3492  val r 0.1373  rmse 0.2571
+[11:12:08] INFO      ep  125/150  loss 1.3483  val r 0.1393  rmse 0.2558
+[11:12:22] INFO      ep  150/150  loss 1.3359  val r 0.1396  rmse 0.2556
+[11:12:23] INFO      done in 121s | test r=0.1090 rmse=0.2582 ssim=0.2086
+[ok] mosta_embryo_E9.5    stagate        s0  ARI 0.223/0.288 (ret 0.78)  nbr 0.249  markerAUC 0.767
+[11:12:30] INFO    section mosta_embryo_E9.5: 5898 locations x 2069 genes, 48040 edges, scale 1395 um/unit
+[11:12:31] INFO    training GNNBaseline (607,029 params) on mosta_embryo_E9.5 for 150 epochs
+[11:12:54] INFO      ep   25/150  loss 1.4427  val r 0.0808  rmse 0.2684
+[11:13:12] INFO      ep   50/150  loss 1.4421  val r 0.1210  rmse 0.2663
+[11:13:23] INFO      ep   75/150  loss 1.3702  val r 0.1349  rmse 0.2629
+[11:13:43] INFO      ep  100/150  loss 1.3676  val r 0.1387  rmse 0.2590
+[11:13:57] INFO      ep  125/150  loss 1.3671  val r 0.1398  rmse 0.2572
+[11:14:10] INFO      ep  150/150  loss 1.3544  val r 0.1400  rmse 0.2570
+[11:14:11] INFO      done in 98s | test r=0.1115 rmse=0.2591 ssim=0.1994
+[ok] mosta_embryo_E9.5    gnn            s0  ARI 0.273/0.288 (ret 0.95)  nbr 0.252  markerAUC 0.770
+[11:14:18] INFO    section mosta_embryo_E9.5: 5898 locations x 2069 genes, 48040 edges, scale 1395 um/unit
+[11:14:19] INFO    training MultiScaleGPBaseline (12,432 params) on mosta_embryo_E9.5 for 150 epochs

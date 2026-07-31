@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Paired comparison of NMO against each baseline, with the tissue section as the unit of analysis. $\Delta$ is the mean paired difference in Pearson $r$ (positive favors NMO) with a percentile bootstrap 95\% CI over sections; $d_z$ is Cohen's effect size for paired designs; $p$ is the Wilcoxon signed-rank test and $p_{\mathrm{Holm}}$ its Holm--Bonferroni correction across the baseline family.}
+\label{tab:paired}
+\begin{tabular}{lrrlrrrr}
+\toprule
+baseline & $n$ & $\Delta r$ & 95\% CI & $d_z$ & $p$ & $p_{\mathrm{Holm}}$ & wins\\
+\midrule
+Neural field (SIREN) & 15 & +0.0652 & [+0.0502, +0.0812] & 2.01 & 6.1e-05 & 0.00031 & 15/15 \\
+GP, multi-bandwidth & 15 & +0.0465 & [+0.0374, +0.0559] & 2.44 & 6.1e-05 & 0.00031 & 15/15 \\
+Autoencoder (non-spatial) & 15 & +0.0177 & [+0.0095, +0.0257] & 1.06 & 0.0015 & 0.0031 & 12/15 \\
+GNN (GCN) & 15 & +0.0166 & [+0.0096, +0.0235] & 1.16 & 0.00043 & 0.0013 & 14/15 \\
+STAGATE-style & 15 & +0.0165 & [+0.0086, +0.0245] & 1.00 & 0.002 & 0.0031 & 12/15 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Numerical behavior of the integrator variants. The largest stable step is measured by sweeping $\Delta t$ and testing boundedness over 300 steps; the CFL reference is $h^2/(4\lambda_{\max}) = 0.01215$ for the explicit five-point Laplacian. Cost is the number of steps required to integrate a fixed horizon to relative error $<10^{-2}$, relative to the exponential scheme. The empirical limit for \texttt{euler-fd5} tracks the CFL bound, confirming the analysis.}
+\label{tab:numerics}
+\begin{tabular}{lrrrr}
+\toprule
+scheme & largest stable $\Delta t$ & vs.\ CFL & steps to $10^{-2}$ & cost\\
+\midrule
+strang-spectral & 0.501 & 41$\times$ & 4 & 1$\times$ \\
+euler-spectral & 0.00302 & 0$\times$ & 128 & 32$\times$ \\
+strang-fd5 & 0.0166 & 1$\times$ & 32 & 8$\times$ \\
+euler-fd5 & 0.0094 & 1$\times$ & 64 & 16$\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}

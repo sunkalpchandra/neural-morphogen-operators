@@ -665,3 +665,39 @@ shard 0/3: 66 of 68 jobs remaining
 [06:14:08] INFO      ep   25/200  loss 1.4408  val r 0.0582  rmse 0.3085
 [06:14:21] INFO      ep   50/200  loss 1.3678  val r 0.0849  rmse 0.3053
 [06:14:34] INFO      ep   75/200  loss 1.3632  val r 0.0924  rmse 0.3022
+[06:14:47] INFO      ep  100/200  loss 1.3457  val r 0.0964  rmse 0.3009
+[06:15:03] INFO      ep  125/200  loss 1.3457  val r 0.0988  rmse 0.3004
+[06:15:21] INFO      ep  150/200  loss 1.3380  val r 0.0986  rmse 0.3010
+[06:15:37] INFO      ep  175/200  loss 1.3425  val r 0.0990  rmse 0.3009
+[06:15:53] INFO      ep  200/200  loss 1.3365  val r 0.0990  rmse 0.3009
+[06:15:55] INFO      done in 120s | test r=0.0974 rmse=0.2959 ssim=0.2970
+[56/66] visium_human_breast    stagate            s1 r=0.0974 (124s)
+[06:15:57] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[06:15:57] INFO    training MultiScaleGPBaseline (12,540 params) on visium_human_breast for 200 epochs
+[06:17:26] INFO      ep   25/200  loss 1.2693  val r 0.0709  rmse 0.3063
+[06:19:00] INFO      ep   50/200  loss 1.2884  val r 0.0705  rmse 0.3062
+[06:20:34] INFO      ep   75/200  loss 1.3108  val r 0.0641  rmse 0.3083
+[06:21:54] INFO      ep  100/200  loss 1.3070  val r 0.0632  rmse 0.3082
+[06:23:19] INFO      ep  125/200  loss 1.2684  val r 0.0702  rmse 0.3048
+[06:25:33] INFO      ep  150/200  loss 1.2868  val r 0.0651  rmse 0.3066
+[06:27:50] INFO      ep  175/200  loss 1.2861  val r 0.0661  rmse 0.3070
+[06:29:54] INFO      ep  200/200  loss 1.2651  val r 0.0656  rmse 0.3073
+[06:29:58] INFO      done in 837s | test r=0.0546 rmse=0.3034 ssim=0.2586
+[57/66] visium_human_breast    gp_multiscale      s0 r=0.0546 (843s)
+[06:30:00] INFO    section visium_human_breast: 4869 locations x 2087 genes, 40660 edges, scale 3406 um/unit
+[06:30:02] INFO    training NeuralFieldBaseline (351,783 params) on visium_human_breast for 200 epochs
+[06:30:14] INFO      ep   25/200  loss 1.3558  val r 0.0816  rmse 0.3060
+[06:30:27] INFO      ep   50/200  loss 1.2554  val r 0.0805  rmse 0.3037
+[11:09:29] INFO      ep   75/200  loss 1.2363  val r 0.0761  rmse 0.3023
+[11:09:45] INFO      ep  100/200  loss 1.2161  val r 0.0719  rmse 0.3022
+[11:09:55] INFO      ep  125/200  loss 1.2124  val r 0.0683  rmse 0.3020
+[11:10:05] INFO      ep  150/200  loss 1.2045  val r 0.0661  rmse 0.3022
+[11:10:15] INFO      ep  175/200  loss 1.2069  val r 0.0651  rmse 0.3023
+[11:10:30] INFO      ep  200/200  loss 1.2026  val r 0.0651  rmse 0.3023
+[11:10:34] INFO      done in 16828s | test r=0.0642 rmse=0.3098 ssim=0.2559
+[58/66] visium_human_breast    neural_field       s1 r=0.0642 (16836s)
+[11:10:35] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[11:10:36] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 200 epochs
+[11:12:09] INFO      ep   25/200  loss 1.4686  val r 0.1472  rmse 0.2948
+[11:13:20] INFO      ep   50/200  loss 1.4171  val r 0.2000  rmse 0.2844
+[11:14:27] INFO      ep   75/200  loss 1.3474  val r 0.2222  rmse 0.2748

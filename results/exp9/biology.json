@@ -718,5 +718,899 @@
         "pearson_flat": 0.7611016717610564
       }
     ]
+  },
+  {
+    "section": "xenium_mouse_brain",
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "reference": "Xenium graph clusters",
+    "n_reference_domains": 25,
+    "ari_measured": 0.5790343884282392,
+    "nmi_measured": 0.7580522188039834,
+    "ari_predicted": 0.16258336830054249,
+    "nmi_predicted": 0.427667229423994,
+    "ari_retention": 0.28078361415090936,
+    "marker_auroc_measured": 0.8882651813056415,
+    "marker_auroc_predicted": 0.7478379246869926,
+    "n_marker_tests": 40,
+    "neighborhood_preservation": 0.17962059620596205,
+    "morans_i_measured": 0.17346540997924134,
+    "morans_i_predicted": 0.9773157416435969,
+    "gearys_c_measured": 0.8189533282427914,
+    "gearys_c_predicted": 0.02132784291724355,
+    "gearys_c_abs_error": 0.7976254853255478,
+    "regions": [
+      {
+        "region": "1",
+        "n": 51,
+        "rmse": 1.9315712451934814,
+        "pearson_flat": 0.4381854711479877
+      },
+      {
+        "region": "10",
+        "n": 17,
+        "rmse": 1.6602431535720825,
+        "pearson_flat": 0.6113687958798465
+      },
+      {
+        "region": "11",
+        "n": 45,
+        "rmse": 1.832129716873169,
+        "pearson_flat": 0.4857961779776079
+      },
+      {
+        "region": "15",
+        "n": 21,
+        "rmse": 1.8152985572814941,
+        "pearson_flat": 0.5236979204021682
+      },
+      {
+        "region": "16",
+        "n": 18,
+        "rmse": 1.8022394180297852,
+        "pearson_flat": 0.5151062202489834
+      },
+      {
+        "region": "18",
+        "n": 11,
+        "rmse": 1.9830881357192993,
+        "pearson_flat": 0.3279521240622124
+      },
+      {
+        "region": "19",
+        "n": 14,
+        "rmse": 2.125596284866333,
+        "pearson_flat": 0.22990038312351194
+      },
+      {
+        "region": "2",
+        "n": 44,
+        "rmse": 1.830987811088562,
+        "pearson_flat": 0.4539100918582926
+      },
+      {
+        "region": "21",
+        "n": 15,
+        "rmse": 1.8222181797027588,
+        "pearson_flat": 0.4578003891431465
+      },
+      {
+        "region": "22",
+        "n": 20,
+        "rmse": 1.9260931015014648,
+        "pearson_flat": 0.4222199590830991
+      },
+      {
+        "region": "25",
+        "n": 12,
+        "rmse": 1.7714451551437378,
+        "pearson_flat": 0.5505493439272736
+      },
+      {
+        "region": "26",
+        "n": 11,
+        "rmse": 1.7641687393188477,
+        "pearson_flat": 0.5739634932195103
+      },
+      {
+        "region": "3",
+        "n": 58,
+        "rmse": 1.6003119945526123,
+        "pearson_flat": 0.6700366356155212
+      },
+      {
+        "region": "4",
+        "n": 81,
+        "rmse": 1.6937823295593262,
+        "pearson_flat": 0.6076439504742674
+      },
+      {
+        "region": "5",
+        "n": 50,
+        "rmse": 1.7145968675613403,
+        "pearson_flat": 0.5852112235123266
+      },
+      {
+        "region": "6",
+        "n": 45,
+        "rmse": 1.7016639709472656,
+        "pearson_flat": 0.6022963007545158
+      },
+      {
+        "region": "8",
+        "n": 24,
+        "rmse": 1.5197688341140747,
+        "pearson_flat": 0.7015624733964353
+      },
+      {
+        "region": "9",
+        "n": 37,
+        "rmse": 2.0704073905944824,
+        "pearson_flat": 0.21378216613766848
+      }
+    ]
+  },
+  {
+    "section": "xenium_mouse_brain",
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "seed": 0,
+    "reference": "Xenium graph clusters",
+    "n_reference_domains": 25,
+    "ari_measured": 0.5790343884282392,
+    "nmi_measured": 0.7580522188039834,
+    "ari_predicted": 0.13831426628669322,
+    "nmi_predicted": 0.40173662629524515,
+    "ari_retention": 0.23887055596497575,
+    "marker_auroc_measured": 0.8882651813056415,
+    "marker_auroc_predicted": 0.7314264455225511,
+    "n_marker_tests": 40,
+    "neighborhood_preservation": 0.15284552845528454,
+    "morans_i_measured": 0.17346540997924134,
+    "morans_i_predicted": 0.9057601465424997,
+    "gearys_c_measured": 0.8189533282427914,
+    "gearys_c_predicted": 0.09747551171769984,
+    "gearys_c_abs_error": 0.7214778165250916,
+    "regions": [
+      {
+        "region": "1",
+        "n": 51,
+        "rmse": 1.9525656700134277,
+        "pearson_flat": 0.421337231281015
+      },
+      {
+        "region": "10",
+        "n": 17,
+        "rmse": 1.6422265768051147,
+        "pearson_flat": 0.6230837405505746
+      },
+      {
+        "region": "11",
+        "n": 45,
+        "rmse": 1.8783162832260132,
+        "pearson_flat": 0.44173556503446704
+      },
+      {
+        "region": "15",
+        "n": 21,
+        "rmse": 1.8133243322372437,
+        "pearson_flat": 0.5223544783700829
+      },
+      {
+        "region": "16",
+        "n": 18,
+        "rmse": 1.7994472980499268,
+        "pearson_flat": 0.5173496529082235
+      },
+      {
+        "region": "18",
+        "n": 11,
+        "rmse": 1.982560634613037,
+        "pearson_flat": 0.3298972589946429
+      },
+      {
+        "region": "19",
+        "n": 14,
+        "rmse": 2.1558327674865723,
+        "pearson_flat": 0.19183591546220222
+      },
+      {
+        "region": "2",
+        "n": 44,
+        "rmse": 1.821299433708191,
+        "pearson_flat": 0.46221245813449213
+      },
+      {
+        "region": "21",
+        "n": 15,
+        "rmse": 1.816157579421997,
+        "pearson_flat": 0.4639401938615075
+      },
+      {
+        "region": "22",
+        "n": 20,
+        "rmse": 1.9403269290924072,
+        "pearson_flat": 0.40414970464341404
+      },
+      {
+        "region": "25",
+        "n": 12,
+        "rmse": 1.792475700378418,
+        "pearson_flat": 0.5341078089260489
+      },
+      {
+        "region": "26",
+        "n": 11,
+        "rmse": 1.7708865404129028,
+        "pearson_flat": 0.5693948092720076
+      },
+      {
+        "region": "3",
+        "n": 58,
+        "rmse": 1.599722146987915,
+        "pearson_flat": 0.6675689253335299
+      },
+      {
+        "region": "4",
+        "n": 81,
+        "rmse": 1.708907127380371,
+        "pearson_flat": 0.6005997382959055
+      },
+      {
+        "region": "5",
+        "n": 50,
+        "rmse": 1.7343467473983765,
+        "pearson_flat": 0.5710126648381064
+      },
+      {
+        "region": "6",
+        "n": 45,
+        "rmse": 1.7000916004180908,
+        "pearson_flat": 0.606631673630452
+      },
+      {
+        "region": "8",
+        "n": 24,
+        "rmse": 1.5457696914672852,
+        "pearson_flat": 0.6913138405019704
+      },
+      {
+        "region": "9",
+        "n": 37,
+        "rmse": 2.072972059249878,
+        "pearson_flat": 0.2093938512543356
+      }
+    ]
+  },
+  {
+    "section": "xenium_mouse_brain",
+    "model": "gnn",
+    "display": "GNN (GCN)",
+    "seed": 0,
+    "reference": "Xenium graph clusters",
+    "n_reference_domains": 25,
+    "ari_measured": 0.5790343884282392,
+    "nmi_measured": 0.7580522188039834,
+    "ari_predicted": 0.11986930311122783,
+    "nmi_predicted": 0.3792082690674623,
+    "ari_retention": 0.2070158621089971,
+    "marker_auroc_measured": 0.8882651813056415,
+    "marker_auroc_predicted": 0.7231117407350319,
+    "n_marker_tests": 40,
+    "neighborhood_preservation": 0.1449322493224932,
+    "morans_i_measured": 0.17346540997924134,
+    "morans_i_predicted": 0.9117944772002737,
+    "gearys_c_measured": 0.8189533282427914,
+    "gearys_c_predicted": 0.08860732362234876,
+    "gearys_c_abs_error": 0.7303460046204426,
+    "regions": [
+      {
+        "region": "1",
+        "n": 51,
+        "rmse": 1.9310483932495117,
+        "pearson_flat": 0.4359671975208751
+      },
+      {
+        "region": "10",
+        "n": 17,
+        "rmse": 1.6367368698120117,
+        "pearson_flat": 0.6307284306264676
+      },
+      {
+        "region": "11",
+        "n": 45,
+        "rmse": 1.8760942220687866,
+        "pearson_flat": 0.4427952743496827
+      },
+      {
+        "region": "15",
+        "n": 21,
+        "rmse": 1.811034083366394,
+        "pearson_flat": 0.5241737981387512
+      },
+      {
+        "region": "16",
+        "n": 18,
+        "rmse": 1.7955114841461182,
+        "pearson_flat": 0.5195044833023581
+      },
+      {
+        "region": "18",
+        "n": 11,
+        "rmse": 1.9950745105743408,
+        "pearson_flat": 0.3183434272668598
+      },
+      {
+        "region": "19",
+        "n": 14,
+        "rmse": 2.142397165298462,
+        "pearson_flat": 0.19962375501451884
+      },
+      {
+        "region": "2",
+        "n": 44,
+        "rmse": 1.859803557395935,
+        "pearson_flat": 0.42805246883532516
+      },
+      {
+        "region": "21",
+        "n": 15,
+        "rmse": 1.8456361293792725,
+        "pearson_flat": 0.44020541000857855
+      },
+      {
+        "region": "22",
+        "n": 20,
+        "rmse": 1.9489964246749878,
+        "pearson_flat": 0.39515422577908027
+      },
+      {
+        "region": "25",
+        "n": 12,
+        "rmse": 1.8180781602859497,
+        "pearson_flat": 0.5133463012586156
+      },
+      {
+        "region": "26",
+        "n": 11,
+        "rmse": 1.7791616916656494,
+        "pearson_flat": 0.5635995069984615
+      },
+      {
+        "region": "3",
+        "n": 58,
+        "rmse": 1.6274336576461792,
+        "pearson_flat": 0.6555391719796742
+      },
+      {
+        "region": "4",
+        "n": 81,
+        "rmse": 1.7330206632614136,
+        "pearson_flat": 0.5826927102077993
+      },
+      {
+        "region": "5",
+        "n": 50,
+        "rmse": 1.7329803705215454,
+        "pearson_flat": 0.5738669401114992
+      },
+      {
+        "region": "6",
+        "n": 45,
+        "rmse": 1.7067385911941528,
+        "pearson_flat": 0.60327300836958
+      },
+      {
+        "region": "8",
+        "n": 24,
+        "rmse": 1.5552281141281128,
+        "pearson_flat": 0.6919094902511271
+      },
+      {
+        "region": "9",
+        "n": 37,
+        "rmse": 2.0754811763763428,
+        "pearson_flat": 0.20454480474812556
+      }
+    ]
+  },
+  {
+    "section": "xenium_mouse_brain",
+    "model": "gp_multiscale",
+    "display": "GP, multi-bandwidth",
+    "seed": 0,
+    "reference": "Xenium graph clusters",
+    "n_reference_domains": 25,
+    "ari_measured": 0.5790343884282392,
+    "nmi_measured": 0.7580522188039834,
+    "ari_predicted": 0.1404070755170378,
+    "nmi_predicted": 0.4167857627178577,
+    "ari_retention": 0.24248486501495362,
+    "marker_auroc_measured": 0.8882651813056415,
+    "marker_auroc_predicted": 0.6792647319004013,
+    "n_marker_tests": 40,
+    "neighborhood_preservation": 0.17582655826558263,
+    "morans_i_measured": 0.17346540997924134,
+    "morans_i_predicted": 0.9069287900860877,
+    "gearys_c_measured": 0.8189533282427914,
+    "gearys_c_predicted": 0.07706939933693147,
+    "gearys_c_abs_error": 0.74188392890586,
+    "regions": [
+      {
+        "region": "1",
+        "n": 51,
+        "rmse": 1.9891959428787231,
+        "pearson_flat": 0.40794869823478885
+      },
+      {
+        "region": "10",
+        "n": 17,
+        "rmse": 1.7577213048934937,
+        "pearson_flat": 0.5464619689540237
+      },
+      {
+        "region": "11",
+        "n": 45,
+        "rmse": 1.7846019268035889,
+        "pearson_flat": 0.5247040246094422
+      },
+      {
+        "region": "15",
+        "n": 21,
+        "rmse": 1.8520679473876953,
+        "pearson_flat": 0.4990704870454391
+      },
+      {
+        "region": "16",
+        "n": 18,
+        "rmse": 1.8970904350280762,
+        "pearson_flat": 0.4547270391394598
+      },
+      {
+        "region": "18",
+        "n": 11,
+        "rmse": 2.0473713874816895,
+        "pearson_flat": 0.298517673867363
+      },
+      {
+        "region": "19",
+        "n": 14,
+        "rmse": 2.0687897205352783,
+        "pearson_flat": 0.30593824709494877
+      },
+      {
+        "region": "2",
+        "n": 44,
+        "rmse": 1.9280811548233032,
+        "pearson_flat": 0.38238997084065557
+      },
+      {
+        "region": "21",
+        "n": 15,
+        "rmse": 1.8795393705368042,
+        "pearson_flat": 0.4218819608290504
+      },
+      {
+        "region": "22",
+        "n": 20,
+        "rmse": 1.795366883277893,
+        "pearson_flat": 0.53258119881076
+      },
+      {
+        "region": "25",
+        "n": 12,
+        "rmse": 1.8897267580032349,
+        "pearson_flat": 0.4549759889266216
+      },
+      {
+        "region": "26",
+        "n": 11,
+        "rmse": 1.8535948991775513,
+        "pearson_flat": 0.5100306552273289
+      },
+      {
+        "region": "3",
+        "n": 58,
+        "rmse": 1.709602952003479,
+        "pearson_flat": 0.5939321622064864
+      },
+      {
+        "region": "4",
+        "n": 81,
+        "rmse": 1.8017122745513916,
+        "pearson_flat": 0.5318658270560401
+      },
+      {
+        "region": "5",
+        "n": 50,
+        "rmse": 1.7978888750076294,
+        "pearson_flat": 0.5287882195409244
+      },
+      {
+        "region": "6",
+        "n": 45,
+        "rmse": 1.7636924982070923,
+        "pearson_flat": 0.5606253218360616
+      },
+      {
+        "region": "8",
+        "n": 24,
+        "rmse": 1.6256552934646606,
+        "pearson_flat": 0.6382656158925512
+      },
+      {
+        "region": "9",
+        "n": 37,
+        "rmse": 2.155060291290283,
+        "pearson_flat": 0.2091369245202908
+      }
+    ]
+  },
+  {
+    "section": "xenium_mouse_brain",
+    "model": "neural_field",
+    "display": "Neural field (SIREN)",
+    "seed": 0,
+    "reference": "Xenium graph clusters",
+    "n_reference_domains": 25,
+    "ari_measured": 0.5790343884282392,
+    "nmi_measured": 0.7580522188039834,
+    "ari_predicted": 0.10326232140384886,
+    "nmi_predicted": 0.34463626769433303,
+    "ari_retention": 0.1783353864079635,
+    "marker_auroc_measured": 0.8882651813056415,
+    "marker_auroc_predicted": 0.6803951460971885,
+    "n_marker_tests": 40,
+    "neighborhood_preservation": 0.12672086720867207,
+    "morans_i_measured": 0.17346540997924134,
+    "morans_i_predicted": 0.7860928874590327,
+    "gearys_c_measured": 0.8189533282427914,
+    "gearys_c_predicted": 0.21181309847992982,
+    "gearys_c_abs_error": 0.6071402297628616,
+    "regions": [
+      {
+        "region": "1",
+        "n": 51,
+        "rmse": 1.947638750076294,
+        "pearson_flat": 0.4194824334615094
+      },
+      {
+        "region": "10",
+        "n": 17,
+        "rmse": 1.6859149932861328,
+        "pearson_flat": 0.6046715611831858
+      },
+      {
+        "region": "11",
+        "n": 45,
+        "rmse": 1.8598299026489258,
+        "pearson_flat": 0.4564756104279401
+      },
+      {
+        "region": "15",
+        "n": 21,
+        "rmse": 1.8281182050704956,
+        "pearson_flat": 0.5169887803015826
+      },
+      {
+        "region": "16",
+        "n": 18,
+        "rmse": 1.8236408233642578,
+        "pearson_flat": 0.4991261551473989
+      },
+      {
+        "region": "18",
+        "n": 11,
+        "rmse": 2.0235769748687744,
+        "pearson_flat": 0.28885076744849353
+      },
+      {
+        "region": "19",
+        "n": 14,
+        "rmse": 2.1480190753936768,
+        "pearson_flat": 0.167797761954597
+      },
+      {
+        "region": "2",
+        "n": 44,
+        "rmse": 1.9354822635650635,
+        "pearson_flat": 0.3569034995842467
+      },
+      {
+        "region": "21",
+        "n": 15,
+        "rmse": 1.8858838081359863,
+        "pearson_flat": 0.40235795161073135
+      },
+      {
+        "region": "22",
+        "n": 20,
+        "rmse": 1.9574146270751953,
+        "pearson_flat": 0.3884734600862975
+      },
+      {
+        "region": "25",
+        "n": 12,
+        "rmse": 1.8474957942962646,
+        "pearson_flat": 0.48877622413986804
+      },
+      {
+        "region": "26",
+        "n": 11,
+        "rmse": 1.836006999015808,
+        "pearson_flat": 0.5335421177255697
+      },
+      {
+        "region": "3",
+        "n": 58,
+        "rmse": 1.7020940780639648,
+        "pearson_flat": 0.6197899152013558
+      },
+      {
+        "region": "4",
+        "n": 81,
+        "rmse": 1.7993340492248535,
+        "pearson_flat": 0.5390208626876949
+      },
+      {
+        "region": "5",
+        "n": 50,
+        "rmse": 1.7410122156143188,
+        "pearson_flat": 0.5730539000484534
+      },
+      {
+        "region": "6",
+        "n": 45,
+        "rmse": 1.7578758001327515,
+        "pearson_flat": 0.5853058646618565
+      },
+      {
+        "region": "8",
+        "n": 24,
+        "rmse": 1.6833099126815796,
+        "pearson_flat": 0.6238111328949074
+      },
+      {
+        "region": "9",
+        "n": 37,
+        "rmse": 2.076382637023926,
+        "pearson_flat": 0.18256801742957682
+      }
+    ]
+  },
+  {
+    "section": "mosta_embryo_E9.5",
+    "model": "nmo",
+    "display": "NMO (ours)",
+    "seed": 0,
+    "reference": "curated anatomical regions",
+    "n_reference_domains": 12,
+    "ari_measured": 0.2877447584819388,
+    "nmi_measured": 0.5513655144734984,
+    "ari_predicted": 0.2636425347901697,
+    "nmi_predicted": 0.5109227600012518,
+    "ari_retention": 0.9162374883249803,
+    "marker_auroc_measured": 0.7876816132118803,
+    "marker_auroc_predicted": 0.7887871172943783,
+    "n_marker_tests": 40,
+    "neighborhood_preservation": 0.32820512820512826,
+    "morans_i_measured": 0.0702675799786262,
+    "morans_i_predicted": 0.9805044587896101,
+    "gearys_c_measured": 0.7214333483024611,
+    "gearys_c_predicted": 0.017712023474092425,
+    "gearys_c_abs_error": 0.7131833932992085,
+    "regions": [
+      {
+        "region": "AGM",
+        "n": 78,
+        "rmse": 0.224729523062706,
+        "pearson_flat": 0.8320846557819787
+      },
+      {
+        "region": "Brain",
+        "n": 155,
+        "rmse": 0.23788900673389435,
+        "pearson_flat": 0.8026109092760367
+      },
+      {
+        "region": "Cavity",
+        "n": 136,
+        "rmse": 0.2837038040161133,
+        "pearson_flat": 0.7579515583857223
+      },
+      {
+        "region": "Connective tissue",
+        "n": 35,
+        "rmse": 0.2485293745994568,
+        "pearson_flat": 0.793390217219788
+      },
+      {
+        "region": "Dermomyotome",
+        "n": 40,
+        "rmse": 0.25206318497657776,
+        "pearson_flat": 0.7622479065202464
+      },
+      {
+        "region": "Heart",
+        "n": 34,
+        "rmse": 0.28274592757225037,
+        "pearson_flat": 0.8483863295781296
+      },
+      {
+        "region": "Mesenchyme",
+        "n": 58,
+        "rmse": 0.2613604664802551,
+        "pearson_flat": 0.7780280643395787
+      },
+      {
+        "region": "Neural crest",
+        "n": 90,
+        "rmse": 0.2372530847787857,
+        "pearson_flat": 0.8253463904139017
+      },
+      {
+        "region": "Sclerotome",
+        "n": 24,
+        "rmse": 0.21637636423110962,
+        "pearson_flat": 0.8343480730628724
+      }
+    ]
+  },
+  {
+    "section": "mosta_embryo_E9.5",
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "seed": 0,
+    "reference": "curated anatomical regions",
+    "n_reference_domains": 12,
+    "ari_measured": 0.2877447584819388,
+    "nmi_measured": 0.5513655144734984,
+    "ari_predicted": 0.22316840367747562,
+    "nmi_predicted": 0.44191092457302605,
+    "ari_retention": 0.7755776503274984,
+    "marker_auroc_measured": 0.7876816132118803,
+    "marker_auroc_predicted": 0.7668443482557177,
+    "n_marker_tests": 40,
+    "neighborhood_preservation": 0.248868778280543,
+    "morans_i_measured": 0.0702675799786262,
+    "morans_i_predicted": 0.9167376994249469,
+    "gearys_c_measured": 0.7214333483024611,
+    "gearys_c_predicted": 0.08512697764908222,
+    "gearys_c_abs_error": 0.6808301650766216,
+    "regions": [
+      {
+        "region": "AGM",
+        "n": 78,
+        "rmse": 0.22680024802684784,
+        "pearson_flat": 0.8277842990204842
+      },
+      {
+        "region": "Brain",
+        "n": 155,
+        "rmse": 0.24140223860740662,
+        "pearson_flat": 0.7960020827497087
+      },
+      {
+        "region": "Cavity",
+        "n": 136,
+        "rmse": 0.28890204429626465,
+        "pearson_flat": 0.746470995051763
+      },
+      {
+        "region": "Connective tissue",
+        "n": 35,
+        "rmse": 0.24439571797847748,
+        "pearson_flat": 0.7995170973824168
+      },
+      {
+        "region": "Dermomyotome",
+        "n": 40,
+        "rmse": 0.25249722599983215,
+        "pearson_flat": 0.7615323787627541
+      },
+      {
+        "region": "Heart",
+        "n": 34,
+        "rmse": 0.319909930229187,
+        "pearson_flat": 0.8065533709414338
+      },
+      {
+        "region": "Mesenchyme",
+        "n": 58,
+        "rmse": 0.2618899345397949,
+        "pearson_flat": 0.7770527355202911
+      },
+      {
+        "region": "Neural crest",
+        "n": 90,
+        "rmse": 0.2425500452518463,
+        "pearson_flat": 0.8165359495657298
+      },
+      {
+        "region": "Sclerotome",
+        "n": 24,
+        "rmse": 0.22246593236923218,
+        "pearson_flat": 0.8233563326798895
+      }
+    ]
+  },
+  {
+    "section": "mosta_embryo_E9.5",
+    "model": "gnn",
+    "display": "GNN (GCN)",
+    "seed": 0,
+    "reference": "curated anatomical regions",
+    "n_reference_domains": 12,
+    "ari_measured": 0.2877447584819388,
+    "nmi_measured": 0.5513655144734984,
+    "ari_predicted": 0.2725716278898613,
+    "nmi_predicted": 0.45922180507023236,
+    "ari_retention": 0.9472687854606744,
+    "marker_auroc_measured": 0.7876816132118803,
+    "marker_auroc_predicted": 0.7702217944099191,
+    "n_marker_tests": 40,
+    "neighborhood_preservation": 0.2524886877828054,
+    "morans_i_measured": 0.0702675799786262,
+    "morans_i_predicted": 0.9342401033132028,
+    "gearys_c_measured": 0.7214333483024611,
+    "gearys_c_predicted": 0.06597334771491128,
+    "gearys_c_abs_error": 0.6887041109185241,
+    "regions": [
+      {
+        "region": "AGM",
+        "n": 78,
+        "rmse": 0.22789916396141052,
+        "pearson_flat": 0.8260345971064291
+      },
+      {
+        "region": "Brain",
+        "n": 155,
+        "rmse": 0.24288299679756165,
+        "pearson_flat": 0.7934497608559871
+      },
+      {
+        "region": "Cavity",
+        "n": 136,
+        "rmse": 0.2901913821697235,
+        "pearson_flat": 0.7443383293687377
+      },
+      {
+        "region": "Connective tissue",
+        "n": 35,
+        "rmse": 0.24635353684425354,
+        "pearson_flat": 0.796173835469819
+      },
+      {
+        "region": "Dermomyotome",
+        "n": 40,
+        "rmse": 0.25273916125297546,
+        "pearson_flat": 0.7620558514654063
+      },
+      {
+        "region": "Heart",
+        "n": 34,
+        "rmse": 0.32301703095436096,
+        "pearson_flat": 0.8044403970324402
+      },
+      {
+        "region": "Mesenchyme",
+        "n": 58,
+        "rmse": 0.26390931010246277,
+        "pearson_flat": 0.7736664944596373
+      },
+      {
+        "region": "Neural crest",
+        "n": 90,
+        "rmse": 0.2416296750307083,
+        "pearson_flat": 0.8178927527617541
+      },
+      {
+        "region": "Sclerotome",
+        "n": 24,
+        "rmse": 0.22149361670017242,
+        "pearson_flat": 0.8254775233837339
+      }
+    ]
   }
 ]
