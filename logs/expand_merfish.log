@@ -1,0 +1,59 @@
+[04:02:56] INFO    already processed: ['C57BL6J-638850.31', 'C57BL6J-638850.40', 'C57BL6J-638850.50']
+[04:02:56] INFO    selected 14 sections, 1.81 GB to stream
+[04:03:20] INFO      downloaded cell_metadata.csv (538 MB) (564 MB)
+[04:03:20] INFO    [1/14] C57BL6J-638850.01  (46 MB, free 5.8 GB)
+[04:03:22] INFO      downloaded C57BL6J-638850.01 (46 MB)
+[04:03:31] INFO      (merfish cell-type join skipped: 'cluster_label')
+[04:03:31] INFO      loaded merfish_allen: 23376 obs x 550 vars, extent 4178 x 4097 um
+[04:03:31] INFO    preprocess[merfish_allen] 23376 x 550
+[04:03:31] INFO      QC: 23376 -> 23376 obs (100.0% kept), 550 -> 550 genes
+[04:03:31] INFO      normalise: input already log-scaled; skipping CPM+log1p
+[04:03:36] INFO      gene selection: 500 HVG + 0 forced morphogen genes -> 500
+[04:03:36] INFO      coords: centre=[5429.8, 5376.4] um, scale=2352.8 um/unit
+[04:03:36] INFO      split (contiguous blocks, 8x8): {'train': 14567, 'val': 4629, 'test': 4180}
+[04:03:38] INFO    [ok]   wrote data/processed/merfish_allen_01.h5ad  (23376 x 500, 18.6 MB)
+[04:03:38] INFO    [2/14] C57BL6J-638850.05  (78 MB, free 5.7 GB)
+[04:03:43] INFO      downloaded C57BL6J-638850.05 (78 MB)
+[04:03:51] INFO      (merfish cell-type join skipped: 'cluster_label')
+[04:03:51] INFO      loaded merfish_allen: 45896 obs x 550 vars, extent 6127 x 5166 um
+[04:03:51] INFO    preprocess[merfish_allen] 45896 x 550
+[04:03:51] INFO      QC: 45896 -> 45896 obs (100.0% kept), 550 -> 550 genes
+[04:03:51] INFO      normalise: input already log-scaled; skipping CPM+log1p
+[04:03:51] INFO      gene selection: 500 HVG + 1 forced morphogen genes -> 501
+[04:03:52] INFO      coords: centre=[5356.0, 5418.1] um, scale=3091.1 um/unit
+[04:03:52] INFO      split (contiguous blocks, 8x8): {'train': 26329, 'val': 8252, 'test': 11315}
+[04:03:54] INFO    [ok]   wrote data/processed/merfish_allen_05.h5ad  (45896 x 501, 32.1 MB)
+[04:03:54] INFO    [3/14] C57BL6J-638850.10  (69 MB, free 5.7 GB)
+[04:03:58] INFO      downloaded C57BL6J-638850.10 (69 MB)
+[04:04:07] INFO      (merfish cell-type join skipped: 'cluster_label')
+[04:04:07] INFO      loaded merfish_allen: 42070 obs x 550 vars, extent 8402 x 5441 um
+[04:04:07] INFO    preprocess[merfish_allen] 42070 x 550
+[04:04:07] INFO      QC: 42070 -> 42070 obs (100.0% kept), 550 -> 550 genes
+[04:04:07] INFO      normalise: input already log-scaled; skipping CPM+log1p
+[04:04:07] INFO      gene selection: 500 HVG + 3 forced morphogen genes -> 503
+[04:04:07] INFO      coords: centre=[5580.6, 5542.4] um, scale=4637.4 um/unit
+[04:04:07] INFO      split (contiguous blocks, 8x8): {'train': 28906, 'val': 5080, 'test': 8084}
+[04:04:10] INFO    [ok]   wrote data/processed/merfish_allen_10.h5ad  (42070 x 503, 27.5 MB)
+[04:04:10] INFO    [4/14] C57BL6J-638850.14  (145 MB, free 5.7 GB)
+[04:04:18] INFO      downloaded C57BL6J-638850.14 (145 MB)
+[04:05:04] INFO      (merfish cell-type join skipped: 'cluster_label')
+[04:05:04] INFO      loaded merfish_allen: 94357 obs x 550 vars, extent 9048 x 5717 um
+[04:05:04] INFO    preprocess[merfish_allen] 94357 x 550
+[04:05:09] INFO      QC: 94357 -> 94357 obs (100.0% kept), 550 -> 550 genes
+[04:05:09] INFO      normalise: input already log-scaled; skipping CPM+log1p
+[04:05:10] INFO      gene selection: 500 HVG + 0 forced morphogen genes -> 500
+[04:05:11] INFO      coords: centre=[5512.1, 5040.9] um, scale=4727.6 um/unit
+[04:05:11] INFO      split (contiguous blocks, 8x8): {'train': 63974, 'val': 13039, 'test': 17344}
+[04:05:25] INFO    [ok]   wrote data/processed/merfish_allen_14.h5ad  (94357 x 500, 62.0 MB)
+[04:05:27] INFO    [5/14] C57BL6J-638850.18  (82 MB, free 4.5 GB)
+[04:05:32] INFO      downloaded C57BL6J-638850.18 (82 MB)
+[04:05:53] INFO      (merfish cell-type join skipped: 'cluster_label')
+[04:05:53] INFO      loaded merfish_allen: 44309 obs x 550 vars, extent 7980 x 4825 um
+[04:05:54] INFO    preprocess[merfish_allen] 44309 x 550
+[04:05:54] INFO      QC: 44309 -> 44309 obs (100.0% kept), 550 -> 550 genes
+[04:05:54] INFO      normalise: input already log-scaled; skipping CPM+log1p
+[04:05:54] INFO      gene selection: 500 HVG + 0 forced morphogen genes -> 500
+[04:05:55] INFO      coords: centre=[5445.8, 5240.4] um, scale=4091.0 um/unit
+[04:05:55] INFO      split (contiguous blocks, 8x8): {'train': 29375, 'val': 6844, 'test': 8090}
+[04:06:00] INFO    [ok]   wrote data/processed/merfish_allen_18.h5ad  (44309 x 500, 32.5 MB)
+[04:06:00] INFO    [6/14] C57BL6J-638850.26  (174 MB, free 3.4 GB)

@@ -1,0 +1,24 @@
+== (a) stability envelope ==
+   strang-spectral  largest stable dt = 0.5012   (CFL bound 0.01215)
+   euler-spectral   largest stable dt = 0.00302   (CFL bound 0.01215)
+   strang-fd5       largest stable dt = 0.0166   (CFL bound 0.01215)
+   euler-fd5        largest stable dt = 0.009404   (CFL bound 0.01215)
+
+== (b) cost at matched accuracy (rel. err < 1e-2) ==
+   strang-spectral      4 steps  (1x)  err=8.39e-03
+   euler-spectral     128 steps  (32x)  err=2.33e-03
+   strang-fd5          32 steps  (8x)  err=9.14e-04
+   euler-fd5           64 steps  (16x)  err=6.14e-03
+
+== (c) effect on held-out reconstruction ==
+[04:03:06] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[04:03:06] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 250 epochs
+/Users/sunkalp/neural-morphogen-operators/src/training/trainer.py:156: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /Users/runner/work/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:823.)
+  return {k: float(v) for k, v in terms.items()}
+[04:03:23] INFO      ep   25/250  loss 1.5011  val r 0.1450  rmse 0.2944
+[04:03:40] INFO      ep   50/250  loss 1.4005  val r 0.2009  rmse 0.2841
+[04:03:57] INFO      ep   75/250  loss 1.3114  val r 0.2232  rmse 0.2735
+[04:04:13] INFO      ep  100/250  loss 1.3098  val r 0.2399  rmse 0.2708
+[04:05:24] INFO      ep  125/250  loss 1.2817  val r 0.2463  rmse 0.2671
+[04:05:56] INFO      ep  150/250  loss 1.2506  val r 0.2486  rmse 0.2678
