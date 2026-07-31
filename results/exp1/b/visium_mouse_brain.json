@@ -15,11 +15,13 @@
     "n_locations": 567,
     "n_genes": 2079,
     "pearson_per_location": 0.8639110922813416,
-    "ssim_mean": 0.6882678824642336,
+    "ssim_mean": 0.38705406301060363,
     "morans_i_pred": 0.9267751093516214,
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7523794995791802,
-    "morans_i_corr": 0.49434062119478456
+    "morans_i_corr": 0.49434062119478456,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127
   },
   {
     "section": "visium_mouse_brain",
@@ -37,11 +39,13 @@
     "n_locations": 567,
     "n_genes": 2079,
     "pearson_per_location": 0.8626284599304199,
-    "ssim_mean": 0.6889540925115644,
+    "ssim_mean": 0.3863247953359309,
     "morans_i_pred": 0.9311902067920194,
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.756794597019578,
-    "morans_i_corr": 0.4847789399616295
+    "morans_i_corr": 0.4847789399616295,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127
   },
   {
     "section": "visium_mouse_brain",
@@ -59,11 +63,13 @@
     "n_locations": 567,
     "n_genes": 2079,
     "pearson_per_location": 0.8628401160240173,
-    "ssim_mean": 0.6891155099720437,
+    "ssim_mean": 0.38349339725553405,
     "morans_i_pred": 0.9287637319518638,
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7543681221794226,
-    "morans_i_corr": 0.49633185119649315
+    "morans_i_corr": 0.49633185119649315,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127
   },
   {
     "section": "visium_mouse_brain",
@@ -81,11 +87,13 @@
     "n_locations": 567,
     "n_genes": 2079,
     "pearson_per_location": 0.8621470928192139,
-    "ssim_mean": 0.6889579765002588,
+    "ssim_mean": 0.3918391195611609,
     "morans_i_pred": 0.9112669722930438,
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7368713625206026,
-    "morans_i_corr": 0.5273670486627027
+    "morans_i_corr": 0.5273670486627027,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127
   },
   {
     "section": "visium_mouse_brain",
@@ -103,11 +111,13 @@
     "n_locations": 567,
     "n_genes": 2079,
     "pearson_per_location": 0.8632014989852905,
-    "ssim_mean": 0.690509739113317,
+    "ssim_mean": 0.3944538791640638,
     "morans_i_pred": 0.9143023397926268,
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7399067300201855,
-    "morans_i_corr": 0.5251899122883366
+    "morans_i_corr": 0.5251899122883366,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127
   },
   {
     "section": "visium_mouse_brain",
@@ -125,11 +135,13 @@
     "n_locations": 567,
     "n_genes": 2079,
     "pearson_per_location": 0.8625179529190063,
-    "ssim_mean": 0.690412565896669,
+    "ssim_mean": 0.393380982334689,
     "morans_i_pred": 0.9107636806198448,
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7363680708474035,
-    "morans_i_corr": 0.5321228232213736
+    "morans_i_corr": 0.5321228232213736,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127
   },
   {
     "section": "visium_mouse_brain",
@@ -147,11 +159,13 @@
     "n_locations": 567,
     "n_genes": 2079,
     "pearson_per_location": 0.8635954856872559,
-    "ssim_mean": 0.6910825490213216,
+    "ssim_mean": 0.3952045248502581,
     "morans_i_pred": 0.9102496234564392,
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7358540136839979,
-    "morans_i_corr": 0.5267260390010323
+    "morans_i_corr": 0.5267260390010323,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127
   },
   {
     "section": "visium_mouse_brain",
@@ -169,11 +183,13 @@
     "n_locations": 567,
     "n_genes": 2079,
     "pearson_per_location": 0.8617370128631592,
-    "ssim_mean": 0.6896310323477579,
+    "ssim_mean": 0.3915911370489278,
     "morans_i_pred": 0.9147512418674437,
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7403556320950025,
-    "morans_i_corr": 0.5225847108464485
+    "morans_i_corr": 0.5225847108464485,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127
   },
   {
     "section": "visium_mouse_brain",
@@ -191,10 +207,12 @@
     "n_locations": 567,
     "n_genes": 2079,
     "pearson_per_location": 0.862888753414154,
-    "ssim_mean": 0.6914361894791212,
+    "ssim_mean": 0.39405320043209197,
     "morans_i_pred": 0.9090478686447447,
     "morans_i_true": 0.17439560977244126,
     "morans_i_abs_error": 0.7346522588723037,
-    "morans_i_corr": 0.5209401306832891
+    "morans_i_corr": 0.5209401306832891,
+    "ssim_grid": 19,
+    "ssim_occupancy": 0.34349030470914127
   }
 ]

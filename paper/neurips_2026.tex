@@ -42,8 +42,8 @@
   AblNoPDEDelta,AblNoBioReg,AblNoBioRegDelta,AblIsotropic,AblIsotropicDelta,%
   AblDiscreteGNN,AblDiscreteGNNDelta,DiffLenMedian,DiffLenLo,DiffLenHi,TuringFrac,%
   PatternWavelength,BeadNSig,BeadNPathways,BeadWidth,PSRho,PSNull,PSFracPos,%
-  BestAnySSIM,BestAnySSIMModel,BestAnyMoran,BestAnyMoranModel,SSIMDeficit,%
-  MoranDeficit,DevPersistence,DevNMOBest,DevNMOBestHorizon,DevNMOZero,%
+  BestAnySSIM,BestAnySSIMModel,BestAnyMoran,BestAnyMoranModel,SSIMDelta,%
+  MoranDelta,DevPersistence,DevNMOBest,DevNMOBestHorizon,DevNMOZero,%
   DevBeatsPersistence,NSections,NPhysicsRuns,GrowthAtZero,BestBaselineSSIM,%
   NDatasets,TotalLocations}\do{%
   \expandafter\providecommand\csname\@nmocmd\endcsname{\textbf{??}}}
@@ -93,12 +93,13 @@ operator as the source of the gain: disabling the dynamics---an exactly
 parameter-matched control, since the operator holds under $0.5\%$ of the
 model's weights---costs \AblNoDynamicsDelta{} Pearson $r$.
 
-The same experiments expose a clear cost. NMO is simultaneously the \emph{worst}
-model on structural metrics (SSIM, Moran's $I$ error), because the operator it
-learns is purely dissipative: linearising it yields no Turing instability at any
-finite wavenumber. Long-range smoothing is what buys point-wise accuracy inside a
-masked region and what destroys fine spatial texture; these are one phenomenon,
-and we report both.
+The same experiments expose a clear cost. The operator NMO learns is purely
+dissipative---linearising it yields no Turing instability at any finite
+wavenumber---so the fields it produces are far too spatially autocorrelated:
+Moran's $I$ error is the one metric on which NMO is the \emph{worst} model
+tested. Long-range smoothing is what buys point-wise accuracy inside a masked
+region and what inflates autocorrelation relative to real tissue; these are one
+phenomenon, and we report both.
 We also stress what the model does \emph{not} establish. Spatial transcriptomics
 is a single snapshot, so the operator is identified only up to the
 quasi-steady-state assumption we impose; recovered diffusion lengths are
@@ -390,7 +391,7 @@ penalised. All results are mean $\pm$ s.d. over \NSeeds{} seeds.
 
 \inputtable{tab_benchmark}
 
-NMO reaches Pearson $r = \NMOPearson$ on held-out blocks against
+NMO reaches Pearson $r$ of \NMOPearson{} on held-out blocks against
 \BestBaselinePearson{} for the strongest baseline (\BestBaseline{}), a gain of
 \PearsonGain{} (Table~\ref{tab:benchmark}, Figure~\ref{fig:benchmark}).
 
@@ -413,28 +414,31 @@ fit for $\sim$2000 genes, and we did not run it. The GP number should therefore
 be read as a floor for classical spatial interpolation under a shared kernel, not
 as the best a geostatistical model could do.
 
-\paragraph{NMO wins on accuracy and loses on structure.}
-The most informative result in Table~\ref{tab:benchmark} is that the ranking
-\emph{inverts} between metric families. NMO is best on the point-wise measures
-(Pearson, Spearman, RMSE) but \emph{worst} on the structural ones: SSIM
-\NMOSSIM{} against \BestAnySSIM{} for the best baseline (\BestAnySSIMModel), and
-Moran's $I$ error \NMOMoran{} against \BestAnyMoran{} (\BestAnyMoranModel) --
-deficits of \SSIMDeficit{} and $+\MoranDeficit$ respectively.
+\paragraph{One metric disagrees, and it is the one we added to catch ourselves.}
+NMO is best on Pearson, Spearman, RMSE \emph{and} SSIM (\NMOSSIM{} against
+\BestAnySSIM{} for the best baseline, \BestAnySSIMModel). It is \emph{worst} on
+Moran's $I$ error: \NMOMoran{} against \BestAnyMoran{} for
+\BestAnyMoranModel{}, a gap of $+\MoranDelta$.
 
-We included Moran's $I$ specifically so that this kind of failure would be
-visible, and it is our own method that it exposes. The interpretation is
-mechanical rather than mysterious, and it ties directly to the dispersion
-analysis below: the operator we learn is purely dissipative, so integrating it
-attenuates high spatial frequencies. That is precisely what improves accuracy in
-the interior of a masked block, where the honest prediction is a smooth
-long-range extrapolation, and precisely what destroys the fine texture that SSIM
-and Moran's $I$ reward. Pooling information over hundreds of microns buys
-point-wise accuracy and costs high-frequency structure.
+The two structural metrics disagree because they measure different things. SSIM
+is computed on a rasterised map and is sensitive to local contrast and
+covariance at the lattice scale; Moran's $I$ is computed on the point set itself
+and summarises \emph{global} spatial autocorrelation. NMO produces maps whose
+local structure is good but whose overall autocorrelation is far too high:
+predicted $I$ is \NMOMoranPred{} against a measured \MoranTrue{}. The field is,
+in a specific and quantifiable sense, too smooth.
 
-The practical consequence is that NMO should be preferred when the quantity of
-interest is the value of a gene at an unmeasured location, and \emph{not} when
-the quantity of interest is the sharpness of a boundary. We return to this in
-Section~\ref{sec:limitations}.
+The mechanism ties directly to the dispersion analysis below. The operator we
+learn is purely dissipative, so integrating it attenuates high spatial
+frequencies. That is exactly what helps in the interior of a masked block, where
+the defensible prediction is a smooth long-range extrapolation, and exactly what
+inflates spatial autocorrelation relative to real tissue. Pooling information
+over hundreds of microns buys point-wise accuracy and costs high-frequency
+variability.
+
+We flag this prominently because a paper reporting only correlation, RMSE and
+SSIM would have shown a clean sweep and concealed the defect. Moran's $I$ was
+included as a guard against exactly that, and it fired on our own model.
 
 \begin{figure}[t]
   \centering
@@ -655,13 +659,13 @@ they do not identify a channel \emph{as} SHH or BMP. We deliberately avoid that
 language.
 
 \paragraph{Over-smoothing is our largest weakness, and it is worse than the
-baselines'.} Predicted maps are systematically smoother than measured ones:
-predicted Moran's $I$ ($\NMOMoranPred$) far exceeds the measured value
-($\MoranTrue$). Crucially, NMO does \emph{not} improve on this relative to the
-baselines --- it is worse, by $+\MoranDeficit$ in Moran's $I$ error and
-\SSIMDeficit{} in SSIM (Table~\ref{tab:benchmark}). The same dissipative operator
-that delivers the accuracy gain is what removes the fine structure, so the two
-findings are one phenomenon, not an unrelated defect.
+baselines'.} Predicted maps are far more spatially autocorrelated than measured
+ones: predicted Moran's $I$ ($\NMOMoranPred$) against a measured $\MoranTrue$.
+NMO does \emph{not} improve on this relative to the baselines --- it is worse, by
+$+\MoranDelta$ in Moran's $I$ error, even though it leads on SSIM by
+$\SSIMDelta$ (Table~\ref{tab:benchmark}). The same dissipative operator that
+delivers the accuracy gain is what inflates the autocorrelation, so the two
+findings are one phenomenon rather than an unrelated defect.
 
 This bounds the applications we would endorse. Predicting expression at
 unmeasured coordinates: reasonable. Delineating sharp anatomical boundaries,

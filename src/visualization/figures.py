@@ -413,6 +413,14 @@ def figure6_ablations(records: List[Dict]) -> plt.Figure:
     if latent:
         s2 = a[a["variant"].isin(latent)].copy()
         s2["C"] = [int(v.split("_")[1]) for v in s2["variant"]]
+        # The base configuration already uses C = 32, so the 'full' run *is* the
+        # C = 32 point of the sweep; re-running it would duplicate work.
+        base_C = 32
+        if base_C not in set(s2["C"]) and (a["variant"] == "full").any():
+            row = a.loc[a["variant"] == "full"].iloc[0]
+            s2 = pd.concat([s2, pd.DataFrame([{
+                "variant": "full", "mean": row["mean"], "std": row["std"], "C": base_C,
+            }])], ignore_index=True)
         s2 = s2.sort_values("C")
         axes[1].errorbar(s2["C"], s2["mean"], yerr=np.nan_to_num(s2["std"]),
                          marker="o", color=CATEGORICAL[0], capsize=2, linewidth=1.5,

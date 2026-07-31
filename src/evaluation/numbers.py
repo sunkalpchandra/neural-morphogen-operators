@@ -19,14 +19,18 @@ from .tables import dedupe, is_derived, load_json_glob
 
 
 def _ms(df: pd.DataFrame, key: str) -> str:
+    """mean +/- s.d., wrapped in \\ensuremath so the macro is usable in *both*
+    text mode and math mode. Emitting a bare ``$\\pm$`` would close an enclosing
+    ``$ ... $`` and break the build wherever the macro appears inside math."""
     if df.empty or key not in df.columns:
-        return r"\textbf{??}"
+        return r"\ensuremath{\mathbf{??}}"
     m, s = df[key].mean(), df[key].std()
-    return f"{m:.3f}" + (f"\\,$\\pm$\\,{s:.3f}" if np.isfinite(s) and s > 0 else "")
+    body = f"{m:.3f}" + (f" \\pm {s:.3f}" if np.isfinite(s) and s > 0 else "")
+    return f"\\ensuremath{{{body}}}"
 
 
 def _val(x: Optional[float], prec: int = 3) -> str:
-    return r"\textbf{??}" if x is None or not np.isfinite(x) else f"{x:.{prec}f}"
+    return r"\ensuremath{\mathbf{??}}" if x is None or not np.isfinite(x) else f"{x:.{prec}f}"
 
 
 def build(results_root: str | Path = "results", out: str | Path = "paper/numbers.tex",
@@ -69,8 +73,8 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("BestAnyMoran", _val(float(gm.min())))
             cmd("BestAnyMoranModel", str(gm.idxmin()).replace("_", " "))
             if not nmo.empty:
-                cmd("SSIMDeficit", _val(float(nmo["ssim_mean"].mean()) - float(gs.max())))
-                cmd("MoranDeficit", _val(float(nmo["morans_i_abs_error"].mean()) - float(gm.min())))
+                cmd("SSIMDelta", _val(float(nmo["ssim_mean"].mean()) - float(gs.max())))
+                cmd("MoranDelta", _val(float(nmo["morans_i_abs_error"].mean()) - float(gm.min())))
             nv = float(nmo["pearson_mean"].mean()) if not nmo.empty else np.nan
             cmd("PearsonGain", _val(nv - best_val))
             cmd("PearsonGainPct", _val(100 * (nv - best_val) / max(best_val, 1e-9), 1))

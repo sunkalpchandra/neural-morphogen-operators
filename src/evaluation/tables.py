@@ -253,7 +253,7 @@ ABLATION_TEX = {
     "discrete_gnn": r"discrete GNN operator",
     "latent_8": r"latent $C{=}8$",
     "latent_16": r"latent $C{=}16$",
-    "latent_32": r"latent $C{=}32$",
+    "latent_32": r"latent $C{=}32$ (= full)",
     "latent_64": r"latent $C{=}64$",
 }
 

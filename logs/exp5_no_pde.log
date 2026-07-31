@@ -1,0 +1,6 @@
+[21:58:37] INFO    section visium_mouse_brain: 2691 locations x 2079 genes, 23006 edges, scale 3191 um/unit
+[21:58:38] INFO    training NeuralMorphogenOperator (2,198,304 params) on visium_mouse_brain for 300 epochs
+[22:00:33] INFO      ep   25/300  loss 1.4998  val r 0.1447  rmse 0.2943
+[22:02:22] INFO      ep   50/300  loss 1.3920  val r 0.2005  rmse 0.2833
+[22:03:49] INFO      ep   75/300  loss 1.3045  val r 0.2251  rmse 0.2730
+[22:05:14] INFO      ep  100/300  loss 1.3021  val r 0.2418  rmse 0.2698

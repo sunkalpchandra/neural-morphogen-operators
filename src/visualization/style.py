@@ -176,10 +176,16 @@ def bar_with_error(
         ax.invert_yaxis()
         ax.grid(axis="y", visible=False)
         if label_values:
-            span = max(means) - min(0, min(means)) if len(means) else 1
+            # Place the label on the outside of the bar end, so it never sits on
+            # top of the bar or its error whisker for negative values.
+            span = (max(means) - min(means)) if len(means) > 1 else max(abs(max(means)), 1e-9)
+            pad = 0.04 * max(span, 1e-9)
             for p, m, e in zip(pos, means, errs):
-                ax.text(m + (e or 0) + 0.015 * max(span, 1e-9), p, value_fmt.format(m),
-                        va="center", ha="left", fontsize=6, color=INK_SECONDARY)
+                out = m - (e or 0) - pad if m < 0 else m + (e or 0) + pad
+                ax.text(out, p, value_fmt.format(m), va="center",
+                        ha="right" if m < 0 else "left", fontsize=6, color=INK_SECONDARY)
+            lo = min(list(means) + [0]); hi = max(list(means) + [0])
+            ax.set_xlim(lo - 0.42 * max(span, 1e-9), hi + 0.42 * max(span, 1e-9))
     else:
         b = ax.bar(pos, means, yerr=errs, color=colors, width=0.68,
                    error_kw=dict(ecolor=INK_SECONDARY, elinewidth=0.8, capsize=2))

@@ -79,3 +79,15 @@ Python(90575) MallocStackLogging: can't turn off malloc stack logging because it
 [21:57:31] INFO      ep  425/500  loss 1.2081  val r 0.2701  rmse 0.2709
 [21:57:49] INFO      ep  450/500  loss 1.1664  val r 0.2701  rmse 0.2714
 [21:58:05] INFO      ep  475/500  loss 1.1702  val r 0.2703  rmse 0.2716
+[21:58:20] INFO      ep  500/500  loss 1.1592  val r 0.2702  rmse 0.2715
+Python(94392) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Python(94393) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+[21:58:22] INFO      done in 349s | test r=0.2439 rmse=0.2569 ssim=0.6703
+[done] nmo seed 2: r=0.2439
+
+                                    pearson_mean  ... pearson_per_location
+                                            mean  ...                  std
+section            model display                  ...                     
+visium_mouse_brain nmo   NMO (ours)     0.246982  ...              0.00322
+
+[1 rows x 18 columns]

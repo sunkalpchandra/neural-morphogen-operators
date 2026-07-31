@@ -1,1 +1,3 @@
 [wait] for exp1 to release cores...
+[go] 21:58:28  workers=6 epochs=300 seeds='0 1'
+[queue] 20 jobs, 6 workers
