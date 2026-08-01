@@ -208,3 +208,25 @@ def min_attainable_p(n: int) -> float:
     significant one.
     """
     return 2.0 ** (-(n - 1)) if n >= 1 else float("nan")
+
+#: Minimum held-out locations for a section to enter the specimen-level
+#: analysis.
+#:
+#: Per-gene Pearson r across n held-out locations has a standard error of
+#: roughly 1/sqrt(n-3). At n = 54 that is 0.14, which is larger than every
+#: effect this benchmark measures (the paired differences run 0.005 to 0.049).
+#: A section that small cannot estimate the quantity being compared, so
+#: including it would add noise, not evidence -- and including it *because* it
+#: moves a p-value would be choosing the sample to fit the answer.
+#:
+#: The threshold is set at 200, which separates the one section below it (54)
+#: from the next smallest (314) by a wide margin, and it is recorded here
+#: rather than applied ad hoc so that it can be checked against the outcome it
+#: was not chosen from.
+MIN_HELDOUT_LOCATIONS = 200
+
+
+def size_eligible(n_test: int) -> bool:
+    """Whether a section's held-out set is large enough to estimate Pearson r."""
+    return int(n_test) >= MIN_HELDOUT_LOCATIONS
+

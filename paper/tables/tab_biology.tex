@@ -1,18 +1,18 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{Biological preservation of the reconstruction, averaged over 4 sections with reference annotations (Space Ranger clusters, Xenium clusters, and curated anatomical regions). Predicted expression at held-out locations is clustered and scored against the reference; ARI retention is the ratio to the score obtained from the measured data, so 1.0 would mean the reconstruction is as informative as the measurement. Marker AUROC asks whether the predicted field still discriminates a region using that region's measured markers; $k$-NN preservation is the overlap of neighborhoods in measured versus predicted expression space; $|\Delta C|$ is the error in Geary's $C$.}
+\caption{Biological preservation of the reconstruction, averaged over 7 sections with reference annotations (Space Ranger clusters, Xenium clusters, and curated anatomical regions). Predicted expression at held-out locations is clustered and scored against the reference; ARI retention is the ratio to the score obtained from the measured data, so 1.0 would mean the reconstruction is as informative as the measurement. Marker AUROC asks whether the predicted field still discriminates a region using that region's measured markers; $k$-NN preservation is the overlap of neighborhoods in measured versus predicted expression space; $|\Delta C|$ is the error in Geary's $C$.}
 \label{tab:biology}
 \begin{tabular}{lrrrrrr}
 \toprule
 model & ARI $\uparrow$ & ARI ret. $\uparrow$ & NMI $\uparrow$ & marker AUROC $\uparrow$ & $k$-NN pres. $\uparrow$ & $|\Delta C|$ $\downarrow$\\
 \midrule
-GNN (GCN) & 0.183\,\tiny{$\pm$ 0.065} & 0.495\,\tiny{$\pm$ 0.318} & 0.365\,\tiny{$\pm$ 0.071} & 0.764\,\tiny{$\pm$ 0.028} & 0.181\,\tiny{$\pm$ 0.052} & 0.727\,\tiny{$\pm$ 0.041} \\
-GP, multi-bandwidth & 0.183\,\tiny{$\pm$ 0.045} & 0.408\,\tiny{$\pm$ 0.145} & 0.395\,\tiny{$\pm$ 0.041} & 0.775\,\tiny{$\pm$ 0.086} & 0.221\,\tiny{$\pm$ 0.059} & 0.727\,\tiny{$\pm$ 0.038} \\
-STAGATE-style & 0.179\,\tiny{$\pm$ 0.041} & 0.467\,\tiny{$\pm$ 0.224} & 0.375\,\tiny{$\pm$ 0.058} & 0.768\,\tiny{$\pm$ 0.026} & 0.184\,\tiny{$\pm$ 0.053} & 0.715\,\tiny{$\pm$ 0.036} \\
-Neural field (SIREN) & 0.091\,\tiny{$\pm$ 0.060} & 0.182\,\tiny{$\pm$ 0.110} & 0.219\,\tiny{$\pm$ 0.131} & 0.696\,\tiny{$\pm$ 0.058} & 0.106\,\tiny{$\pm$ 0.027} & \textbf{0.537\,\tiny{$\pm$ 0.062}} \\
+GNN (GCN) & 0.200\,\tiny{$\pm$ 0.102} & 0.439\,\tiny{$\pm$ 0.287} & 0.344\,\tiny{$\pm$ 0.113} & 0.770\,\tiny{$\pm$ 0.051} & 0.153\,\tiny{$\pm$ 0.068} & 0.739\,\tiny{$\pm$ 0.056} \\
+GP, multi-bandwidth & 0.199\,\tiny{$\pm$ 0.081} & 0.376\,\tiny{$\pm$ 0.163} & 0.360\,\tiny{$\pm$ 0.119} & 0.767\,\tiny{$\pm$ 0.095} & 0.187\,\tiny{$\pm$ 0.081} & 0.745\,\tiny{$\pm$ 0.070} \\
+STAGATE-style & 0.199\,\tiny{$\pm$ 0.092} & 0.424\,\tiny{$\pm$ 0.228} & 0.347\,\tiny{$\pm$ 0.103} & 0.777\,\tiny{$\pm$ 0.051} & 0.154\,\tiny{$\pm$ 0.069} & 0.727\,\tiny{$\pm$ 0.052} \\
+Neural field (SIREN) & 0.099\,\tiny{$\pm$ 0.054} & 0.174\,\tiny{$\pm$ 0.090} & 0.188\,\tiny{$\pm$ 0.099} & 0.698\,\tiny{$\pm$ 0.049} & 0.091\,\tiny{$\pm$ 0.040} & \textbf{0.554\,\tiny{$\pm$ 0.069}} \\
 \midrule
-NRDO (ours) & \textbf{0.197\,\tiny{$\pm$ 0.051}} & \textbf{0.518\,\tiny{$\pm$ 0.276}} & \textbf{0.407\,\tiny{$\pm$ 0.086}} & \textbf{0.779\,\tiny{$\pm$ 0.027}} & \textbf{0.228\,\tiny{$\pm$ 0.082}} & 0.771\,\tiny{$\pm$ 0.051} \\
+NRDO (ours) & \textbf{0.220\,\tiny{$\pm$ 0.095}} & \textbf{0.469\,\tiny{$\pm$ 0.253}} & \textbf{0.381\,\tiny{$\pm$ 0.123}} & \textbf{0.786\,\tiny{$\pm$ 0.055}} & \textbf{0.192\,\tiny{$\pm$ 0.092}} & 0.786\,\tiny{$\pm$ 0.068} \\
 \bottomrule
 \end{tabular}
 \end{table}
