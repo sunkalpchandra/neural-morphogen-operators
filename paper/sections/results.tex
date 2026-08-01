@@ -91,7 +91,7 @@ an order of magnitude more expensive for the same answer, while additionally
 imposing a step-size restriction that couples to \emph{learned} parameters and
 can be violated mid-training as $\mD_\theta$ adapts.
 
-\subsection{The reconstruction does not degrade tissue-level structure}
+\subsection{Spatial-domain structure separates where accuracy does not}
 \label{sec:biology}
 
 Correlation does not establish that a reconstruction remains usable for the
@@ -100,17 +100,19 @@ expression at held-out locations and score it against annotations shipped with
 the public data, over \BioSections{} sections with reference labels
 (Appendix~\ref{app:empirical}, Table~\ref{tab:biology}). NRDO retains
 \BioARIRet{} of the adjusted Rand index obtainable from the measured data against
-\BioARIRetBest{} for the best baseline, and is nominally ahead on marker AUROC
-and $k$-NN neighborhood preservation.
+\BioARIRetBest{} for the best baseline.
 
-We do not read this as a second win. Each margin is a small fraction of its own
-dispersion --- $\BioARIRetGapSD$, $\BioMarkerGapSD$ and $\BioKNNGapSD$ pooled
-standard deviations --- over too few annotated sections to support a paired test,
-and we report none. The defensible claim is the negative one: the operator
-attains its reconstruction accuracy \emph{without} degrading the tissue-level
-structure a downstream analysis depends on, where a model that smoothed its way
-to a good correlation would have lost it. The reference labels are themselves an
-algorithm's output rather than independent ground truth.
+With \BioSections{} annotated sections the comparison is now testable, and it
+separates where reconstruction accuracy does not. Against \MSBestBaseline{} --- the comparator NRDO cannot be distinguished from
+on Pearson $r$ at the specimen level --- ARI retention is higher by
+$\BioARIStagateD$ on \BioARIStagateWins{} sections ($d_z = \BioARIStagateDz$,
+$p = \BioARIStagateP$); \BioARINSig{} of \BioARINComp{} comparisons reach
+$p<0.05$ uncorrected. Two models can predict held-out expression about equally
+well and still differ in whether the predicted field supports the analysis a
+biologist would run on it. That is what separates here, and it is a better
+argument for the operator than the accuracy margin. We do not overstate it: the
+reference labels are an algorithm's output rather than independent ground truth,
+and the remaining comparisons do not reach significance.
 
 \subsection{Learned dynamics}
 
@@ -207,16 +209,14 @@ so the smoothness belongs to the operator class rather than to the objective. We
 keep $\lambda = 0$ throughout.
 
 \paragraph{Robustness to sampling density.}
-Re-training every model under \RobAxes{} corruption axes applied identically to
-all of them (\RobRuns{} runs; Appendix~\ref{app:empirical},
-Table~\ref{tab:robustness}), NRDO is not the most robust to count noise
-(\RobNoiseNMO\% retained against \RobNoiseBest\%) or to location dropout. The
-exception is the axis the continuous formulation predicts: subsampling to an
-eighth of the locations, which changes sampling density without changing anatomy,
-NRDO retains \RobDensNMO\% of its full-density accuracy against \RobDensBest\%
-for the best baseline. A model defined on a field rather than a lattice should
-survive exactly this perturbation, and it is the one setting where it clearly
-does.
+Under \RobAxes{} corruption axes applied identically to every model
+(\RobRuns{} runs; Appendix~\ref{app:empirical}, Table~\ref{tab:robustness}),
+NRDO is not the most robust to count noise (\RobNoiseNMO\% retained against
+\RobNoiseBest\%) or to location dropout. The exception is the axis the
+continuous formulation predicts: subsampling to an eighth of the locations
+changes sampling density without changing anatomy, and NRDO retains
+\RobDensNMO\% of its full-density accuracy against \RobDensBest\% for the best
+baseline.
 
 \paragraph{Is the benchmark's ordering the converged ordering?}
 Not exactly, and the direction favors us. Training every model to a shared

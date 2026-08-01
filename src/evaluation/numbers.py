@@ -268,8 +268,19 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
                     "yes" if float(byh.max()) > float(pers.mean()) else "no")
 
     # ---- Experiment 8 : multi-section benchmark -------------------------- #
+    from .statistics import MIN_HELDOUT_LOCATIONS as _MINHO
     ms = [x for f in Path(results_root).glob("exp8/results_shard*.json")
           for x in json.loads(f.read_text()) if "pearson_mean" in x and not x.get("failed")]
+    # Sections whose held-out set is too small to estimate Pearson r are
+    # excluded; see statistics.MIN_HELDOUT_LOCATIONS for the rule and why it is
+    # fixed independently of the outcome.
+    _excluded = sorted({x["section"] for x in ms
+                        if x.get("n_obs_used", 10 ** 9) < 4 * _MINHO})
+    ms = [x for x in ms if x.get("n_obs_used", 10 ** 9) >= 4 * _MINHO]
+    if _excluded:
+        cmd("MSExcludedN", str(len(_excluded)))
+        cmd("MSExcluded", ", ".join(e.replace("_", r"\_") for e in _excluded))
+        cmd("MSMinHeldOut", str(_MINHO))
     if ms:
         from .statistics import paired_comparison as _pc
         m8 = pd.DataFrame(ms)
@@ -384,6 +395,20 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
         b = pd.DataFrame([r for r in json.loads(bp.read_text()) if "ari_predicted" in r])
         if not b.empty:
             cmd("BioSections", str(int(b["section"].nunique())))
+            # With seven annotated sections the biology comparison is testable,
+            # which it was not at four. Report the paired test rather than
+            # margins the reader has to eyeball against their own dispersion.
+            from .statistics import paired_comparison as _pcb
+            rb = _pcb(b, "nmo", "ari_retention", section_col="section")
+            for r_ in rb:
+                if r_.other == "stagate":
+                    cmd("BioARIStagateD", _val(r_.mean_diff))
+                    cmd("BioARIStagateDz", f"{r_.cohens_dz:.2f}")
+                    cmd("BioARIStagateP", f"{r_.wilcoxon_p:.3f}")
+                    cmd("BioARIStagateWins", f"{r_.n_reference_wins}/{r_.n_sections}")
+            sig = [r_ for r_ in rb if r_.wilcoxon_p < 0.05]
+            cmd("BioARINSig", str(len(sig)))
+            cmd("BioARINComp", str(len(rb)))
             g = b.groupby("model")
             for k, nm in [("ari_retention", "BioARIRet"), ("marker_auroc_predicted", "BioMarker"),
                           ("neighborhood_preservation", "BioKNN")]:

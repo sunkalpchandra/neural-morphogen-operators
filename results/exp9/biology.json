@@ -2572,5 +2572,185 @@
         "pearson_flat": 0.8439191312727976
       }
     ]
+  },
+  {
+    "section": "visium_human_heart",
+    "model": "nmo",
+    "display": "NRDO (ours)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 3,
+    "ari_measured": 0.009308321061317286,
+    "nmi_measured": 0.21528003178047364,
+    "ari_predicted": 0.06425724491866136,
+    "nmi_predicted": 0.07272257980042937,
+    "ari_retention": 6.903204616103762,
+    "marker_auroc_measured": NaN,
+    "marker_auroc_predicted": NaN,
+    "n_marker_tests": 0,
+    "neighborhood_preservation": 0.18820058997050143,
+    "morans_i_measured": 0.009517734196045952,
+    "morans_i_predicted": 0.839872701760669,
+    "gearys_c_measured": 0.9478711625452121,
+    "gearys_c_predicted": 0.14692084694463986,
+    "gearys_c_abs_error": 0.8132994957402558,
+    "regions": [
+      {
+        "region": "1",
+        "n": 20,
+        "rmse": 0.30909496545791626,
+        "pearson_flat": 0.7109955379015602
+      },
+      {
+        "region": "2",
+        "n": 90,
+        "rmse": 0.33762773871421814,
+        "pearson_flat": 0.760079717924605
+      }
+    ]
+  },
+  {
+    "section": "visium_human_heart",
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 3,
+    "ari_measured": 0.009308321061317286,
+    "nmi_measured": 0.21528003178047364,
+    "ari_predicted": -0.05137589879439909,
+    "nmi_predicted": 0.056023606036975516,
+    "ari_retention": -5.519351820373128,
+    "marker_auroc_measured": NaN,
+    "marker_auroc_predicted": NaN,
+    "n_marker_tests": 0,
+    "neighborhood_preservation": 0.1929203539823009,
+    "morans_i_measured": 0.009517734196045952,
+    "morans_i_predicted": 0.7221026552538617,
+    "gearys_c_measured": 0.9478711625452121,
+    "gearys_c_predicted": 0.250678457750438,
+    "gearys_c_abs_error": 0.7185675386560524,
+    "regions": [
+      {
+        "region": "1",
+        "n": 20,
+        "rmse": 0.3109530210494995,
+        "pearson_flat": 0.7091814434988162
+      },
+      {
+        "region": "2",
+        "n": 90,
+        "rmse": 0.33926260471343994,
+        "pearson_flat": 0.7578508739483263
+      }
+    ]
+  },
+  {
+    "section": "visium_human_heart",
+    "model": "gnn",
+    "display": "GNN (GCN)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 3,
+    "ari_measured": 0.009308321061317286,
+    "nmi_measured": 0.21528003178047364,
+    "ari_predicted": -0.06383906163057093,
+    "nmi_predicted": 0.06350643545768526,
+    "ari_retention": -6.858278867911827,
+    "marker_auroc_measured": NaN,
+    "marker_auroc_predicted": NaN,
+    "n_marker_tests": 0,
+    "neighborhood_preservation": 0.20176991150442478,
+    "morans_i_measured": 0.009517734196045952,
+    "morans_i_predicted": 0.7967523467896342,
+    "gearys_c_measured": 0.9478711625452121,
+    "gearys_c_predicted": 0.18876305501176688,
+    "gearys_c_abs_error": 0.7764558485805528,
+    "regions": [
+      {
+        "region": "1",
+        "n": 20,
+        "rmse": 0.30879294872283936,
+        "pearson_flat": 0.7106204600197735
+      },
+      {
+        "region": "2",
+        "n": 90,
+        "rmse": 0.3387409746646881,
+        "pearson_flat": 0.7577098903851697
+      }
+    ]
+  },
+  {
+    "section": "visium_human_heart",
+    "model": "gp_multiscale",
+    "display": "GP, multi-bandwidth",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 3,
+    "ari_measured": 0.009308321061317286,
+    "nmi_measured": 0.21528003178047364,
+    "ari_predicted": -0.05846093433422433,
+    "nmi_predicted": 0.054619649793468714,
+    "ari_retention": -6.280502568521322,
+    "marker_auroc_measured": NaN,
+    "marker_auroc_predicted": NaN,
+    "n_marker_tests": 0,
+    "neighborhood_preservation": 0.17817109144542773,
+    "morans_i_measured": 0.009517734196045952,
+    "morans_i_predicted": 0.6517255597917951,
+    "gearys_c_measured": 0.9478711625452121,
+    "gearys_c_predicted": 0.30847729024215964,
+    "gearys_c_abs_error": 0.6664073522155114,
+    "regions": [
+      {
+        "region": "1",
+        "n": 20,
+        "rmse": 0.32417091727256775,
+        "pearson_flat": 0.6871589569109644
+      },
+      {
+        "region": "2",
+        "n": 90,
+        "rmse": 0.34972918033599854,
+        "pearson_flat": 0.7389223775362599
+      }
+    ]
+  },
+  {
+    "section": "visium_human_heart",
+    "model": "neural_field",
+    "display": "Neural field (SIREN)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 3,
+    "ari_measured": 0.009308321061317286,
+    "nmi_measured": 0.21528003178047364,
+    "ari_predicted": 0.000252345617779054,
+    "nmi_predicted": 0.01012221330334958,
+    "ari_retention": 0.02710968133960592,
+    "marker_auroc_measured": NaN,
+    "marker_auroc_predicted": NaN,
+    "n_marker_tests": 0,
+    "neighborhood_preservation": 0.1905604719764012,
+    "morans_i_measured": 0.009517734196045952,
+    "morans_i_predicted": 0.26753282179802207,
+    "gearys_c_measured": 0.9478711625452121,
+    "gearys_c_predicted": 0.721571923679175,
+    "gearys_c_abs_error": 0.2909108302118913,
+    "regions": [
+      {
+        "region": "1",
+        "n": 20,
+        "rmse": 0.3115219175815582,
+        "pearson_flat": 0.7085098530313878
+      },
+      {
+        "region": "2",
+        "n": 90,
+        "rmse": 0.3409065902233124,
+        "pearson_flat": 0.7553280414681843
+      }
+    ]
   }
 ]

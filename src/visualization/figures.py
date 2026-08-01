@@ -637,7 +637,7 @@ def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figu
     df = pd.DataFrame([r for r in records if "pearson_mean" in r and not r.get("failed")])
     per = df.groupby(["section", "model"])["pearson_mean"].mean().unstack("model")
     others = [c for c in per.columns if c != reference]
-    fig, axes = plt.subplots(1, 3, figsize=(WIDTH_FULL, 1.55),
+    fig, axes = plt.subplots(1, 3, figsize=(WIDTH_FULL, 1.35),
                              gridspec_kw={"width_ratios": [1.30, 1.0, 0.80]})
 
     # (a) NRDO vs each baseline, one point per section

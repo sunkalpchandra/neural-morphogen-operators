@@ -79,7 +79,7 @@ _decl("exp8",           # multi-section benchmark
       "MSNMOMoran", "MSBestAnyMoran", "MSBestAnyMoranModel", "MSMoranDelta",
       "MSNMORMSE", "MSBestAnyRMSE", "MSBestAnyRMSEModel", "MSRMSEDelta",
       "MSAEPearson", "MSBestGraphOverAE", "MSWorstGraphOverAE", "MSNGraphModels",
-      "MSNMOOverAE")
+      "MSNMOOverAE", "MSExcludedN", "MSExcluded", "MSMinHeldOut")
 _decl("exp2", "TissueZeroShot", "TissueOracle", "TissueFloor", "TissueFineTune",
       "TissueZeroShotBest", "TissueZeroShotBaseline", "TissueZeroShotBaselineName",
       "TissueZeroShotGap", "TissueZeroShotRatio", "TissueSharedGenes")
@@ -101,7 +101,8 @@ _decl("exp7", "NumStableDt", "NumCFL", "NumCFLRatio", "NumEulerSteps", "NumSpeed
       "NumStrangSteps")
 _decl("exp9", "BioSections", "BioARIRet", "BioARIRetBest", "BioARIRetBestModel",
       "BioMarker", "BioMarkerBest", "BioMarkerBestModel", "BioKNN", "BioKNNBest",
-      "BioKNNBestModel")
+      "BioKNNBestModel", "BioARIStagateD", "BioARIStagateDz",
+      "BioARIStagateP", "BioARIStagateWins", "BioARINSig", "BioARINComp")
 _decl("physics", "DiffLenMedian", "DiffLenLo", "DiffLenHi", "TuringFrac",
       "NPhysicsRuns", "GrowthAtZero", "PatternWavelength", "DiffLenN",
       "DiffLenPerRun", "DiffLenSections", "DiffLenSection")
