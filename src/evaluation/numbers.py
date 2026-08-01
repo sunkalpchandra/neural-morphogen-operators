@@ -295,8 +295,17 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("MSMaxDelta", _val(worst.mean_diff))            # A9: the weakest model's gap
             cmd("MSMinDz", f"{best.cohens_dz:.2f}")
             cmd("MSMaxHolm", f"{max(r.p_holm for r in res):.1g}")
-            cmd("MSMinWins", f"{min(r.n_reference_wins for r in res)}")
-            cmd("MSNPairs", str(res[0].n_sections))
+            # Baselines can cover different numbers of sections, so a bare
+            # "wins on W of N" would pair a win count from one comparison with
+            # the section count of another. Report the weakest win *fraction*
+            # as an explicit w/n, and the range of n alongside it.
+            worst_frac = min(res, key=lambda r: r.n_reference_wins / max(r.n_sections, 1))
+            cmd("MSMinWins", f"{worst_frac.n_reference_wins}")
+            cmd("MSMinWinFrac",
+                f"{worst_frac.n_reference_wins}/{worst_frac.n_sections}")
+            ns = sorted({r.n_sections for r in res})
+            cmd("MSNPairs", str(ns[-1]))
+            cmd("MSNPairsRange", str(ns[0]) if len(ns) == 1 else f"{ns[0]}--{ns[-1]}")
             cmd("MSNBaselines", str(len(res)))
             cmd("MSAllSig", "yes" if all(r.p_holm < 0.05 for r in res) else "no")
 

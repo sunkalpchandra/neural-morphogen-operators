@@ -70,7 +70,7 @@ _decl("exp1",           # single section: visium_mouse_brain, 3 seeds
 _decl("exp8",           # multi-section benchmark
       "MSSections", "MSPool", "MSRuns", "MSSeeds", "MSNMOPearson", "MSBestBaseline",
       "MSBestBaselinePearson", "MSMinDelta", "MSMinDz", "MSMaxHolm", "MSMinWins",
-      "MSNPairs", "MSNBaselines", "MSAllSig", "MSWeakest", "MSWeakestPearson",
+      "MSNPairs", "MSNPairsRange", "MSMinWinFrac", "MSNBaselines", "MSAllSig", "MSWeakest", "MSWeakestPearson",
       "MSMaxDelta", "MSSpecimens", "MSSpecPairs", "MSSpecMinP", "MSSpecGraphDz",
       "MSSpecGraphDelta", "MSSpecContDz", "MSSpecContDelta", "MSSpecWins",
       "MSNMOSSIM", "MSBestAnySSIM", "MSBestAnySSIMModel", "MSSSIMDelta",
