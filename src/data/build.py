@@ -38,6 +38,8 @@ SPATIAL_KEYS = [
     "visium_human_lymph_node",
     "visium_mouse_brain_coronal",
     "visium_human_heart",
+    "visium_ffpe_human_prostate",
+    "visium_ffpe_mouse_brain",
     "merfish_allen",
     "xenium_mouse_brain",
     "mosta_embryo",

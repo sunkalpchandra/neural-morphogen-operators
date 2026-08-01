@@ -63,6 +63,8 @@ QC_PRESETS: Dict[str, Dict] = {
     "visium_human_lymph_node": dict(min_counts=500, min_genes=200, n_hvg=2000),
     "visium_mouse_brain_coronal": dict(min_counts=500, min_genes=200, n_hvg=2000),
     "visium_human_heart": dict(min_counts=500, min_genes=200, n_hvg=2000),
+    "visium_ffpe_human_prostate": dict(min_counts=500, min_genes=200, n_hvg=2000),
+    "visium_ffpe_mouse_brain": dict(min_counts=500, min_genes=200, n_hvg=2000),
     "xenium_mouse_brain":  dict(min_counts=20,  min_genes=10,  n_hvg=248,  max_mito_frac=1.0),
     "merfish_allen":       dict(min_counts=0,   min_genes=5,   n_hvg=500,  max_mito_frac=1.0),
     "mosta_embryo":        dict(min_counts=100, min_genes=50,  n_hvg=2000),

@@ -482,6 +482,45 @@ VISIUM_HUMAN_HEART = _visium_11(
 
 
 
+def _visium_13(key: str, sample: str, title: str, tissue: str,
+               organism: str) -> DatasetSpec:
+    """A Visium 1.3.0 FFPE public dataset, count matrix and spatial metadata."""
+    base = f"{_TENX_SPATIAL}/{sample}"
+    return DatasetSpec(
+        key=key, title=title,
+        technology="Visium FFPE (55 um spots, 100 um centre-to-centre)",
+        organism=organism, tissue=tissue,
+        citation="10x Genomics, Space Ranger 1.3.0 demonstration dataset",
+        accession=f"10x {sample}",
+        license="10x Genomics public dataset terms (free for research use)",
+        notes=("Independent specimen. FFPE chemistry differs from the "
+               "fresh-frozen sections, which adds assay diversity within Visium "
+               "rather than confounding it: one QC policy is applied throughout."),
+        files=[
+            RemoteFile(f"{base}/{sample}_filtered_feature_bc_matrix.h5",
+                       f"{key}/filtered_feature_bc_matrix.h5",
+                       role="count matrix (spots x genes)"),
+            RemoteFile(f"{base}/{sample}_spatial.tar.gz", f"{key}/spatial.tar.gz",
+                       role="spot coordinates and scale factors", extract=True),
+            RemoteFile(f"{base}/{sample}_analysis.tar.gz", f"{key}/analysis.tar.gz",
+                       role="Space Ranger clustering (reference annotation only)",
+                       extract=True),
+        ],
+    )
+
+
+VISIUM_FFPE_PROSTATE = _visium_13(
+    "visium_ffpe_human_prostate", "Visium_FFPE_Human_Prostate_Cancer",
+    "10x Genomics Visium FFPE -- Human Prostate (adenocarcinoma)",
+    "Prostate, acinar cell carcinoma", "Homo sapiens")
+
+VISIUM_FFPE_MOUSE_BRAIN = _visium_13(
+    "visium_ffpe_mouse_brain", "Visium_FFPE_Mouse_Brain",
+    "10x Genomics Visium FFPE -- Adult Mouse Brain (separate animal)",
+    "Whole adult brain, coronal section", "Mus musculus")
+
+
+
 DATASETS: Dict[str, DatasetSpec] = {
     d.key: d
     for d in [
@@ -495,6 +534,8 @@ DATASETS: Dict[str, DatasetSpec] = {
         VISIUM_HUMAN_LYMPH,
         VISIUM_MOUSE_BRAIN_CORONAL,
         VISIUM_HUMAN_HEART,
+        VISIUM_FFPE_PROSTATE,
+        VISIUM_FFPE_MOUSE_BRAIN,
     ]
 }
 
