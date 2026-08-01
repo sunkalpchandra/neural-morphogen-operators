@@ -517,6 +517,11 @@ def load_perturb_norman(raw_dir: Path, key: str = "perturb_norman") -> ad.AnnDat
 LOADERS = {
     "visium_mouse_brain": lambda raw, **kw: load_visium(raw, "visium_mouse_brain"),
     "visium_human_breast": lambda raw, **kw: load_visium(raw, "visium_human_breast"),
+    # Additional independent specimens. load_visium is generic over the key, so
+    # these need no new reader -- only registration.
+    "visium_mouse_kidney": lambda raw, **kw: load_visium(raw, "visium_mouse_kidney"),
+    "visium_human_lymph_node": lambda raw, **kw: load_visium(raw, "visium_human_lymph_node"),
+    "visium_mouse_brain_coronal": lambda raw, **kw: load_visium(raw, "visium_mouse_brain_coronal"),
     "xenium_mouse_brain": lambda raw, **kw: load_xenium(raw),
     "merfish_allen": lambda raw, **kw: load_merfish_section(raw, kw.get("section", sources.MERFISH_PRIMARY_SECTION)),
     "mosta_embryo": lambda raw, **kw: load_mosta(raw, kw.get("stage", "E9.5_E1S1")),

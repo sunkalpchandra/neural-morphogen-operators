@@ -409,6 +409,72 @@ PERTURB_NORMAN = DatasetSpec(
 # Registry
 # --------------------------------------------------------------------------- #
 
+
+# --------------------------------------------------------------------------- #
+# Datasets 7-9 -- additional INDEPENDENT Visium specimens.
+#
+# The benchmark's binding constraint is not the number of sections but the
+# number of independent biological specimens: twelve of the seventeen sections
+# are serial sections of one brain, which leaves five specimens and a smallest
+# attainable Wilcoxon p of 0.0625. Against the graph baselines the separation
+# does not resolve at that sample size, and no amount of additional sectioning
+# of the same tissue would change it.
+#
+# These three are distinct organs from distinct donors, so each adds a genuinely
+# independent unit of analysis. They are the cheapest available fix for the
+# limitation the paper identifies as its most important open question. The
+# full-resolution microscopy images are deliberately not fetched: the pipeline
+# consumes count matrices, and the images are the bulk of the download.
+# --------------------------------------------------------------------------- #
+
+
+def _visium_11(key: str, sample: str, title: str, tissue: str,
+               organism: str) -> DatasetSpec:
+    """A Visium 1.1.0 public dataset, count matrix and spatial metadata only."""
+    base = f"https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/{sample}"
+    return DatasetSpec(
+        key=key,
+        title=title,
+        technology="Visium (55 um spots, 100 um centre-to-centre, hexagonal lattice)",
+        organism=organism,
+        tissue=tissue,
+        citation="10x Genomics, Space Ranger 1.1.0 demonstration dataset",
+        accession=f"10x {sample}",
+        license="10x Genomics public dataset terms (free for research use)",
+        notes=("Added to increase the number of INDEPENDENT specimens in the "
+               "benchmark, which is what limits its statistical resolution. "
+               "Microscopy images are not downloaded."),
+        files=[
+            RemoteFile(f"{base}/{sample}_filtered_feature_bc_matrix.h5",
+                       f"{key}/filtered_feature_bc_matrix.h5",
+                       role="count matrix (spots x genes)"),
+            RemoteFile(f"{base}/{sample}_spatial.tar.gz",
+                       f"{key}/spatial.tar.gz",
+                       role="spot coordinates and scale factors", extract=True),
+            RemoteFile(f"{base}/{sample}_analysis.tar.gz",
+                       f"{key}/analysis.tar.gz",
+                       role="Space Ranger clustering (reference annotation only)",
+                       extract=True),
+        ],
+    )
+
+
+VISIUM_MOUSE_KIDNEY = _visium_11(
+    "visium_mouse_kidney", "V1_Mouse_Kidney",
+    "10x Genomics Visium -- Adult Mouse Kidney (coronal)",
+    "Whole adult kidney, coronal section", "Mus musculus")
+
+VISIUM_HUMAN_LYMPH = _visium_11(
+    "visium_human_lymph_node", "V1_Human_Lymph_Node",
+    "10x Genomics Visium -- Human Lymph Node",
+    "Whole lymph node", "Homo sapiens")
+
+VISIUM_MOUSE_BRAIN_CORONAL = _visium_11(
+    "visium_mouse_brain_coronal", "V1_Adult_Mouse_Brain_Coronal_Section_1",
+    "10x Genomics Visium -- Adult Mouse Brain (coronal, separate animal)",
+    "Whole adult brain, coronal section", "Mus musculus")
+
+
 DATASETS: Dict[str, DatasetSpec] = {
     d.key: d
     for d in [
@@ -418,6 +484,9 @@ DATASETS: Dict[str, DatasetSpec] = {
         XENIUM_MOUSE_BRAIN,
         MOSTA_EMBRYO,
         PERTURB_NORMAN,
+        VISIUM_MOUSE_KIDNEY,
+        VISIUM_HUMAN_LYMPH,
+        VISIUM_MOUSE_BRAIN_CORONAL,
     ]
 }
 
