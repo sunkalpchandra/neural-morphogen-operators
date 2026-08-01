@@ -1,5 +1,9 @@
 # Stage 0 — Consistency audit
 
+> **Status: closed.** Every item below has been fixed, and `make check-numbers`
+> now gates the classes of defect they belong to. See AUDIT_OUTCOMES.md for what
+> each fix did to the claims. Kept as the record of how the defects were found.
+
 Scope: every numeric claim in the main body of `paper/neurips_2026.tex`
 (lines 1–683, up to `\label{endofmain}`) traced to the artifact that produces it.
 No code or prose was changed.
