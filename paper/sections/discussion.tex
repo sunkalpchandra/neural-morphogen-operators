@@ -9,9 +9,9 @@ precisely.
 Across \MSSections{} sections and four technologies, treating tissue as a field
 rather than a graph improves prediction at unmeasured coordinates against every
 baseline tested under paired tests over sections. At the specimen level --- the
-conservative unit, and the one we regard as decisive --- the separation from the
-continuous baselines holds on every independent specimen, while that from the
-graph baselines does not resolve. Three controls localize what remains: a
+conservative unit, and the one we regard as decisive --- the separation survives
+family-wise correction against \MSSpecNSig{} baselines including a graph model,
+and fails to resolve only against \MSSpecGraphWorstModel{}. Three controls localize what remains: a
 parameter-matched ablation attributes the gain to the operator rather than to
 capacity, a non-spatial baseline shows message passing contributes little even at
 convergence, and an implicit neural field shows continuity alone is not

@@ -16,10 +16,11 @@ improves masked-region reconstruction over graph, Gaussian-process, implicit
 neural-field and imputation baselines, beating every one with Holm-corrected
 $p \le \MSMaxHolm$ in paired tests over sections. Because twelve of those sections
 are serial sections of one brain, the conservative unit of analysis is the
-specimen, and we report it over \MSSpecimens{} independent specimens: NRDO wins
-on \emph{every} specimen against \MSSpecSweeps{} of the baselines
-($d_z \ge \MSSpecSweepDz$, uncorrected $p = \MSSpecUncorrP$, the smallest the
-design admits). Two controls
+specimen, so we assembled \MSSpecimens{} independent specimens across five
+organs and two donors' species. At that level the advantage survives
+family-wise correction against \MSSpecNSig{} baselines
+(\MSSpecSigModels{}; Holm-corrected $p \le \MSSpecSigMaxHolm$, winning on at
+least \MSSpecSigMinWins{} specimens), including one graph model. Two controls
 localize the gain. An exactly parameter-matched ablation---the $\OpParamPct\%$
 of weights forming the operator are left allocated but unused---costs
 $\MatchedNoDynamicsDelta$ Pearson $r$, more than the entire margin over the best
@@ -29,12 +30,10 @@ message passing contributes at most \MSBestGraphOverAE{}, against \MSNMOOverAE{}
 for NRDO. We also prove that a single stationary snapshot determines the
 reaction network only on a Lebesgue-null subset of latent space, which delimits
 what any method of this class can identify from static tissue.
-Two limits are worth stating plainly. Against the strongest \emph{graph}
-baselines the specimen-level separation remains unresolved
-(\MSSpecGraphWorstModel{}: \MSSpecGraphWins{} specimens, $p = \MSSpecGraphWorstP$),
-and with \MSSpecimens{} specimens across this baseline family the smallest
-attainable Holm-corrected $p$ is $\MSSpecHolmFloor$, so no family-wise
-significant result is reachable at this sample size whatever the effect;
+Two limits are worth stating plainly. Against the strongest graph baseline the
+separation is still unresolved (\MSSpecGraphWorstModel{}:
+\MSSpecGraphWins{} specimens, $p = \MSSpecGraphWorstP$), so the method is
+distinguishable from most of this literature but not from all of it;
 and the predicted fields are
 smoother than the measurements, on which NRDO trails every baseline tested ---
 a spectral-matching term reduces the gap but cannot close it, so the limitation

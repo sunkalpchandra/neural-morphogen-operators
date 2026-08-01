@@ -367,6 +367,26 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             if res2:
                 cmd("MSSpecUncorrP", f"{min(r.wilcoxon_p for r in res2):.4f}")
                 cmd("MSSpecHolmFloor", f"{_map(res2[0].n_sections) * len(res2):.3f}")
+                # Baselines separated after family-wise correction: the claim
+                # the design could not previously express at any effect size.
+                sig = [r for r in res2 if r.p_holm < 0.05 and r.n_sections >= 8]
+                cmd("MSSpecNSig", str(len(sig)))
+                if sig:
+                    cmd("MSSpecSigMaxHolm", f"{max(r.p_holm for r in sig):.3f}")
+                    cmd("MSSpecSigMinWins",
+                        f"{min(r.n_reference_wins for r in sig)}/{sig[0].n_sections}")
+                    cmd("MSSpecSigModels",
+                        ", ".join(DISPLAYNAMES.get(r.other, r.other)
+                                  for r in sorted(sig, key=lambda r: r.p_holm)))
+                    graph_sig = [r for r in sig if r.other in ("gnn", "stagate",
+                                                               "autoencoder")]
+                    cmd("MSSpecGraphSig",
+                        DISPLAYNAMES.get(graph_sig[0].other, graph_sig[0].other)
+                        if graph_sig else "none")
+                    if graph_sig:
+                        cmd("MSSpecGraphSigHolm", f"{graph_sig[0].p_holm:.3f}")
+                        cmd("MSSpecGraphSigWins",
+                            f"{graph_sig[0].n_reference_wins}/{graph_sig[0].n_sections}")
                 sweeps = [r for r in res2
                           if r.n_reference_wins == r.n_sections and r.n_sections >= 8]
                 cmd("MSSpecSweeps", str(len(sweeps)))
