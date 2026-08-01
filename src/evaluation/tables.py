@@ -488,6 +488,7 @@ def build_all(results_root: str | Path = "results", out_dir: str | Path = "paper
     ms = [x for f in sorted(results_root.glob("exp8/results_shard*.json"))
           for x in json.loads(Path(f).read_text())]
     if ms:
+        made["headline"] = table_headline(ms, out_dir / "tab_headline.tex")
         made["multisection"] = table_multisection(ms, out_dir / "tab_multisection.tex")
         made["paired"] = table_paired_stats(ms, out_dir / "tab_paired.tex")
 
@@ -927,6 +928,78 @@ def table_spectral(records: List[Dict], out: Path) -> str:
         f"removes it and penalizes only the frequencies a dissipative operator "
         f"actually loses.",
         "tab:spectral", "l" + "r" * len(cols), header,
+    )
+    out.write_text(tex)
+    return tex
+
+
+def table_headline(records: List[Dict], out: Path, reference: str = "nmo") -> str:
+    """The benchmark and its specimen-level test in one table.
+
+    Splitting these across two tables asks the reader to hold a section-level
+    mean in mind while looking up whether it survives the conservative unit of
+    analysis. They belong side by side: the mean says how much, the specimen
+    columns say whether it holds across independent tissue.
+    """
+    from .statistics import paired_comparison, by_specimen, stars, MIN_HELDOUT_LOCATIONS
+
+    df = pd.DataFrame([r for r in records if "pearson_mean" in r and not r.get("failed")])
+    if df.empty:
+        return ""
+    df = df[df.get("n_obs_used", 10 ** 9) >= 4 * MIN_HELDOUT_LOCATIONS]
+    per = df.groupby(["section", "model"])[["pearson_mean", "morans_i_abs_error"]].mean()
+    per = per.reset_index()
+    ref_secs = set(per.loc[per["model"] == reference, "section"])
+    cov = per[per["section"].isin(ref_secs)].groupby("model")["section"].nunique()
+    keep = [m for m in cov.index if cov[m] >= max(3, int(0.9 * len(ref_secs)))]
+    matched = per[per["section"].isin(ref_secs) & per["model"].isin(keep)]
+    agg = matched.groupby("model")[["pearson_mean", "morans_i_abs_error"]].agg(["mean", "std"])
+
+    sec_stats = {r.other: r for r in paired_comparison(df, reference, "pearson_mean")}
+    spec_stats = {r.other: r for r in paired_comparison(by_specimen(df), reference,
+                                                        "pearson_mean")}
+    order = sorted([m for m in agg.index if m != reference],
+                   key=lambda m: -agg.loc[m, ("pearson_mean", "mean")])
+    order += [reference] if reference in agg.index else []
+
+    best_r = agg[("pearson_mean", "mean")].idxmax()
+    best_i = agg[("morans_i_abs_error", "mean")].idxmin()
+    rows = []
+    for m in order:
+        st, sp = sec_stats.get(m), spec_stats.get(m)
+        r_cell = _fmt(agg.loc[m, ("pearson_mean", "mean")],
+                      agg.loc[m, ("pearson_mean", "std")], bold=(m == best_r))
+        if st is not None:
+            r_cell += stars(st.p_holm)
+        i_cell = _fmt(agg.loc[m, ("morans_i_abs_error", "mean")],
+                      agg.loc[m, ("morans_i_abs_error", "std")], bold=(m == best_i))
+        if sp is None:
+            wins = dz = ph = "--"
+        else:
+            wins = f"{sp.n_reference_wins}/{sp.n_sections}"
+            dz = f"{sp.cohens_dz:.2f}"
+            ph = (f"\\textbf{{{sp.p_holm:.3f}}}" if sp.p_holm < 0.05
+                  else f"{sp.p_holm:.2f}")
+        if m == reference:
+            rows.append("\\midrule\n")
+        rows.append(f"{_esc(DISPLAY_NAMES.get(m, m))} & {r_cell} & {i_cell} & "
+                    f"{wins} & {dz} & {ph} \\\\\n")
+
+    n_sec, n_spec = len(ref_secs), int(by_specimen(df)["section"].nunique())
+    tex = _wrap(
+        "".join(rows),
+        f"\\textbf{{Masked spatial reconstruction across {n_sec} sections and "
+        f"{n_spec} independent specimens.}} Left: mean $\\pm$ s.d. over sections, "
+        f"with Holm-corrected stars from the paired section-level test. Right: the "
+        f"conservative analysis, in which serial sections of one specimen are "
+        f"collapsed before testing --- specimens won, Cohen's $d_z$, and the "
+        f"Holm-corrected $p$ over the baseline family, bold where $p<0.05$. "
+        f"$|\\Delta I|$ is the error in Moran's $I$, on which NRDO is worst: the "
+        f"predicted fields are too smooth. Section-level "
+        f"$^{{*}}p<0.05$, $^{{**}}p<0.01$, $^{{***}}p<0.001$.",
+        "tab:headline", "lrrrrr",
+        "model & Pearson $r$ $\\uparrow$ & $|\\Delta I|$ $\\downarrow$ "
+        "& specimens & $d_z$ & $p_{\\mathrm{Holm}}$",
     )
     out.write_text(tex)
     return tex

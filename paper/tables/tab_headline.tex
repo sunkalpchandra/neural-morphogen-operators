@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{\textbf{Masked spatial reconstruction across 22 sections and 10 independent specimens.} Left: mean $\pm$ s.d. over sections, with Holm-corrected stars from the paired section-level test. Right: the conservative analysis, in which serial sections of one specimen are collapsed before testing --- specimens won, Cohen's $d_z$, and the Holm-corrected $p$ over the baseline family, bold where $p<0.05$. $|\Delta I|$ is the error in Moran's $I$, on which NRDO is worst: the predicted fields are too smooth. Section-level $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$.}
+\label{tab:headline}
+\begin{tabular}{lrrrrr}
+\toprule
+model & Pearson $r$ $\uparrow$ & $|\Delta I|$ $\downarrow$ & specimens & $d_z$ & $p_{\mathrm{Holm}}$\\
+\midrule
+STAGATE-style & 0.170\,\tiny{$\pm$ 0.064}$^{**}$ & 0.769\,\tiny{$\pm$ 0.045} & 7/10 & 0.45 & 0.43 \\
+Autoencoder (non-spatial) & 0.169\,\tiny{$\pm$ 0.063}$^{***}$ & 0.761\,\tiny{$\pm$ 0.049} & 7/10 & 0.65 & 0.21 \\
+GNN (GCN) & 0.167\,\tiny{$\pm$ 0.061}$^{***}$ & 0.793\,\tiny{$\pm$ 0.046} & 9/10 & 1.05 & \textbf{0.020} \\
+Tangram-style & 0.163\,\tiny{$\pm$ 0.064}$^{***}$ & 0.805\,\tiny{$\pm$ 0.054} & 9/10 & 0.92 & 0.08 \\
+GP, multi-bandwidth & 0.133\,\tiny{$\pm$ 0.053}$^{***}$ & 0.770\,\tiny{$\pm$ 0.040} & 10/10 & 2.12 & \textbf{0.014} \\
+Neural field (SIREN) & 0.118\,\tiny{$\pm$ 0.051}$^{***}$ & \textbf{0.612\,\tiny{$\pm$ 0.064}} & 10/10 & 1.93 & \textbf{0.014} \\
+\midrule
+NRDO (ours) & \textbf{0.183\,\tiny{$\pm$ 0.063}} & 0.848\,\tiny{$\pm$ 0.047} & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}

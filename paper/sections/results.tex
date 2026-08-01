@@ -6,6 +6,8 @@
 
 
 
+\inputtable{tab_headline}
+
 \begin{figure}[t]
   \centering
   \includegraphics[width=\linewidth]{figures/fig_multisection.pdf}
@@ -16,20 +18,23 @@
   \label{fig:multisection}
 \end{figure}
 
-We evaluate on \MSSections{} sections spanning four technologies
-(\MSRuns{} runs), with the section as the unit of analysis: every model sees
-identical held-out blocks, so a paired test removes the between-section variance
-that otherwise dominates. NRDO attains Pearson $r$ \MSNMOPearson{} against
-\MSBestBaselinePearson{} for the closest baseline (\MSBestBaseline{}).
+NRDO improves masked-region reconstruction over every baseline tested, on
+\MSSections{} sections spanning four technologies (\MSRuns{} runs), and the
+improvement survives the conservative unit of analysis
+(Table~\ref{tab:headline}, Fig.~\ref{fig:multisection}).
 
-All \MSNBaselines{} baselines are beaten with Holm-corrected
-$p \le \MSMaxHolm$ (Appendix~\ref{app:empirical}), and the \emph{smallest} effect size
-across the family is $d_z = \MSMinDz$, which is large by conventional
-standards; against every comparator NRDO wins on at least
-\MSMinWinFrac{} of the sections both were run on. The advantage is therefore consistent across anatomies rather
-than an artifact of one tissue: the twelve MERFISH sections span the
-anterior--posterior axis of the same brain with assay, panel and preprocessing
-held fixed, so the variation between them is anatomical.
+Two units are reported because they answer different questions. With the
+\emph{section} as the unit every model sees identical held-out blocks, so a
+paired test removes the between-section variance that otherwise dominates; all
+\MSNBaselines{} baselines are beaten with Holm-corrected $p \le \MSMaxHolm$.
+But twelve of these sections are serial sections of one brain, and treating them
+as independent overstates the effective sample size. Collapsing to
+\MSSpecimens{} independent \emph{specimens} costs most of that power and is the
+defensible test: the separation still survives family-wise correction against
+\MSSpecNSig{} baselines (\MSSpecSigModels{}), winning on at least
+\MSSpecSigMinWins{} specimens at $p \le \MSSpecSigMaxHolm$. It does not survive
+against \MSSpecGraphWorstModel{}, which we return to in
+Section~\ref{sec:limitations}.
 
 \paragraph{The gain comes from continuity, not from message passing.}
 Two controls localize the effect, both measured on this benchmark. A non-spatial
