@@ -132,7 +132,7 @@ def figure2_reconstruction(
                                     transform=axes[r_i][2 + c_i].transAxes, ha="center",
                                     va="top", fontsize=6, color=INK_SECONDARY)
 
-    titles = ["Measured", "NMO (ours)"] + [n for n, _ in others]
+    titles = ["Measured", "NRDO (ours)"] + [n for n, _ in others]
     for c, t in enumerate(titles):
         axes[0][c].set_title(t, fontsize=7.5, color=INK, pad=4)
     fig.subplots_adjust(wspace=0.06, hspace=0.30)
@@ -637,10 +637,10 @@ def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figu
     df = pd.DataFrame([r for r in records if "pearson_mean" in r and not r.get("failed")])
     per = df.groupby(["section", "model"])["pearson_mean"].mean().unstack("model")
     others = [c for c in per.columns if c != reference]
-    fig, axes = plt.subplots(1, 3, figsize=(WIDTH_FULL, 2.15),
+    fig, axes = plt.subplots(1, 3, figsize=(WIDTH_FULL, 1.55),
                              gridspec_kw={"width_ratios": [1.30, 1.0, 0.80]})
 
-    # (a) NMO vs each baseline, one point per section
+    # (a) NRDO vs each baseline, one point per section
     ax = axes[0]
     for i, o in enumerate(others):
         s = per[[reference, o]].dropna()
@@ -650,7 +650,7 @@ def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figu
     lim = [float(np.nanmin(per.values)) * 0.95, float(np.nanmax(per.values)) * 1.05]
     ax.plot(lim, lim, ls="--", lw=0.8, color=INK_SECONDARY)
     ax.set_xlim(lim); ax.set_ylim(lim); ax.set_aspect("equal")
-    ax.set_xlabel("baseline Pearson $r$"); ax.set_ylabel("NMO Pearson $r$")
+    ax.set_xlabel("baseline Pearson $r$"); ax.set_ylabel("NRDO Pearson $r$")
     ax.set_title(f"{len(per)} sections", fontsize=7.5, pad=4)
     # no legend: colors match the model ordering in panels (b) and (c)
     panel_label(ax, "a", dx=-0.24, dy=1.16)
@@ -667,7 +667,7 @@ def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figu
     ax.axvline(0, color=INK_SECONDARY, lw=0.8, ls="--")
     ax.set_yticks(y); ax.set_yticklabels(
         [DISPLAY_NAMES.get(r.other, r.other).replace(" (non-spatial)","").replace(" (SIREN)","").replace(" (GCN)","") for r in res], fontsize=6)
-    ax.set_xlabel("$\\Delta r$ vs. NMO (95% CI)")
+    ax.set_xlabel("$\\Delta r$ vs. NRDO (95% CI)")
     ax.set_title("Paired difference", fontsize=7.5, pad=4)
     ax.grid(axis="y", visible=False)
     panel_label(ax, "b", dx=-0.62, dy=1.14)
@@ -683,7 +683,7 @@ def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figu
                 f"{r.n_reference_wins}/{r.n_sections}", va="center", fontsize=5.6,
                 color=INK_SECONDARY)
     ax.set_yticks(y); ax.set_yticklabels([])
-    ax.set_xlim(0, 118); ax.set_xlabel("% sections NMO wins")
+    ax.set_xlim(0, 118); ax.set_xlabel("% sections NRDO wins")
     ax.set_title("Win rate", fontsize=7.5, pad=4)
     ax.grid(axis="y", visible=False)
     panel_label(ax, "c", dx=-0.10, dy=1.14)

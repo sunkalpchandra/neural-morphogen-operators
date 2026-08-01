@@ -143,6 +143,16 @@ SECTION_SCOPE: Dict[str, Set[str]] = {
     "Ablations": {"exp5", "exp5_matched", "exp1", "exp8", "architecture"},
     "Convergence": {"exp14", "exp8"},
     "Spectral matching": {"exp13", "exp8", "exp1"},
+    # Paragraph-level scopes. Demoting a subsection to a \paragraph to meet the
+    # page limit silently moved its macros into the preceding subsection's
+    # scope -- exactly the confusion this check exists to catch.
+    "Is the benchmark's ordering the converged ordering": {"exp14", "exp8"},
+    "Can the smoothness be trained away": {"exp13", "exp8"},
+    "Robustness to sampling density": {"exp10", "exp8"},
+    "The recovered length scale is close to its own initialization":
+        {"physics", "exp11", "exp5"},
+    "Spatial autocorrelation": {"exp8", "exp1"},
+    "The gain comes from continuity, not from message passing": {"exp8"},
 }
 
 #: Deliberate, declared exceptions to the scope rule. A macro may be quoted
@@ -251,9 +261,9 @@ def check_scope(rep: Report) -> None:
     for i, line in enumerate(lines):
         if stub_lo is not None and stub_hi is not None and stub_lo <= i <= stub_hi:
             continue
-        m = re.search(r"\\(?:sub)?section\*?\{([^}]*)\}", line)
+        m = re.search(r"\\(?:(?:sub)?section|paragraph)\*?\{([^}]*)\}", line)
         if m:
-            current = re.sub(r"\\[a-zA-Z]+|\{|\}", "", m.group(1)).strip()
+            current = re.sub(r"\\[a-zA-Z]+|\{|\}", "", m.group(1)).strip().rstrip(".")
         scope = next((v for k, v in SECTION_SCOPE.items() if current.startswith(k)), None)
         for mac in re.findall(r"\\([A-Z][A-Za-z]+)\b", line):
             src = PROVENANCE.get(mac)

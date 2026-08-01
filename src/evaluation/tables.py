@@ -377,7 +377,7 @@ def table_development(records: List[Dict], out: Path) -> str:
             rm=("field_rmse", "mean"), fp=("frac_genes_positive", "mean")).reset_index()
         for _, r in agg.iterrows():
             rows.append(
-                f"NMO & $T{{=}}{int(r['horizon'])}$ & {_fmt(r['m'], r['s'])} & "
+                f"NRDO & $T{{=}}{int(r['horizon'])}$ & {_fmt(r['m'], r['s'])} & "
                 f"{r['rm']:.3f} & {100*r['fp']:.0f}\\% \\\\\n"
             )
     tex = _wrap(
@@ -543,7 +543,7 @@ if __name__ == "__main__":
 
 
 def table_multisection(records: List[Dict], out: Path,
-                       metrics: Sequence[str] = ("pearson_mean", "rmse", "ssim_mean",
+                       metrics: Sequence[str] = ("pearson_mean", "ssim_mean",
                                                  "morans_i_abs_error"),
                        reference: str = "nmo") -> str:
     """Per-model aggregate across sections, with paired tests against ``reference``."""
@@ -573,12 +573,21 @@ def table_multisection(records: List[Dict], out: Path,
     order = sorted(order, key=lambda m: -agg.loc[m, ("pearson_mean", "mean")]) + \
             ([reference] if reference in agg.index else [])
 
+    # Bold the column winner, not our own row. Bolding the reference
+    # unconditionally asserts a win the numbers may not support -- Tangram-style
+    # beats us on SSIM, and the old rule presented the opposite.
+    best = {}
+    for m in metrics:
+        col = agg[(m, "mean")].dropna()
+        if len(col):
+            best[m] = col.idxmax() if HIGHER_IS_BETTER.get(m, True) else col.idxmin()
+
     rows = []
     for model in order:
         cells = []
         for m in metrics:
             val = _fmt(agg.loc[model, (m, "mean")], agg.loc[model, (m, "std")],
-                       bold=(model == reference))
+                       bold=(best.get(m) == model))
             st = stats_by[m].get(model)
             if st is not None:
                 val += stars(st.p_holm)
@@ -635,9 +644,9 @@ def table_paired_stats(records: List[Dict], out: Path, reference: str = "nmo",
             f"{r.n_reference_wins}/{r.n_sections} \\\\\n")
     tex = _wrap(
         "".join(rows),
-        "Paired comparison of NMO against each baseline, with the tissue section as "
+        "Paired comparison of NRDO against each baseline, with the tissue section as "
         "the unit of analysis. $\\Delta$ is the mean paired difference in Pearson $r$ "
-        "(positive favors NMO) with a percentile bootstrap 95\\% CI over sections; "
+        "(positive favors NRDO) with a percentile bootstrap 95\\% CI over sections; "
         "$d_z$ is Cohen's effect size for paired designs; $p$ is the Wilcoxon "
         "signed-rank test and $p_{\\mathrm{Holm}}$ its Holm--Bonferroni correction "
         "across the baseline family.",
@@ -861,16 +870,16 @@ def table_converged(records: List[Dict], out: Path) -> str:
         f"Converged comparison on {_esc(sec)}: the full section, no subsampling, "
         f"trained to a shared early-stopping criterion on held-out validation "
         f"rather than to a fixed epoch count, {n_seed} seeds. $d_z$ and the win "
-        f"record are paired over seeds against NMO. This addresses whether the "
+        f"record are paired over seeds against NRDO. This addresses whether the "
         f"reduced-budget ordering of Table~\\ref{{tab:multisection}} is the "
-        f"converged ordering. It is not: at 200 epochs on this section NMO scores "
+        f"converged ordering. It is not: at 200 epochs on this section NRDO scores "
         f"below the STAGATE-style baseline, and at convergence it scores above it, "
-        f"so the benchmark budget is conservative for NMO here rather than "
+        f"so the benchmark budget is conservative for NRDO here rather than "
         f"neutral. Two further points survive convergence --- the non-spatial "
         f"autoencoder still matches the graph models, so their near-tie is a "
-        f"property of the task and not of undertraining; and NMO retains the "
+        f"property of the task and not of undertraining; and NRDO retains the "
         f"largest error in Moran's $I$, so the over-smoothing is structural. Wall "
-        f"time is single-CPU and is reported because NMO is several times more "
+        f"time is single-CPU and is reported because NRDO is several times more "
         f"expensive than every baseline.",
         "tab:converged", "l" + "r" * (len(cols) + 3), header,
     )

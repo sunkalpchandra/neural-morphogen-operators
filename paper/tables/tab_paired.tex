@@ -1,14 +1,16 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{Paired comparison of NMO against each baseline, with the tissue section as the unit of analysis. $\Delta$ is the mean paired difference in Pearson $r$ (positive favors NMO) with a percentile bootstrap 95\% CI over sections; $d_z$ is Cohen's effect size for paired designs; $p$ is the Wilcoxon signed-rank test and $p_{\mathrm{Holm}}$ its Holm--Bonferroni correction across the baseline family.}
+\caption{Paired comparison of NRDO against each baseline, with the tissue section as the unit of analysis. $\Delta$ is the mean paired difference in Pearson $r$ (positive favors NRDO) with a percentile bootstrap 95\% CI over sections; $d_z$ is Cohen's effect size for paired designs; $p$ is the Wilcoxon signed-rank test and $p_{\mathrm{Holm}}$ its Holm--Bonferroni correction across the baseline family.}
 \label{tab:paired}
 \begin{tabular}{lrrlrrrr}
 \toprule
 baseline & $n$ & $\Delta r$ & 95\% CI & $d_z$ & $p$ & $p_{\mathrm{Holm}}$ & wins\\
 \midrule
-Neural field (SIREN) & 17 & +0.0622 & [+0.0481, +0.0772] & 1.97 & 1.5e-05 & 7.6e-05 & 17/17 \\
-GP, multi-bandwidth & 17 & +0.0453 & [+0.0371, +0.0538] & 2.49 & 1.5e-05 & 7.6e-05 & 17/17 \\
+SpaGE-style & 17 & +0.1416 & [+0.1217, +0.1606] & 3.36 & 1.5e-05 & 0.00011 & 17/17 \\
+Neural field (SIREN) & 17 & +0.0622 & [+0.0481, +0.0772] & 1.97 & 1.5e-05 & 0.00011 & 17/17 \\
+GP, multi-bandwidth & 17 & +0.0453 & [+0.0371, +0.0538] & 2.49 & 1.5e-05 & 0.00011 & 17/17 \\
+Tangram-style & 17 & +0.0194 & [+0.0137, +0.0250] & 1.57 & 4.6e-05 & 0.00018 & 16/17 \\
 Autoencoder (non-spatial) & 17 & +0.0159 & [+0.0085, +0.0237] & 0.96 & 0.0017 & 0.0034 & 13/17 \\
 GNN (GCN) & 17 & +0.0155 & [+0.0093, +0.0220] & 1.13 & 0.00011 & 0.00032 & 16/17 \\
 STAGATE-style & 17 & +0.0146 & [+0.0071, +0.0225] & 0.88 & 0.0032 & 0.0034 & 13/17 \\

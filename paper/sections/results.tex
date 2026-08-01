@@ -4,7 +4,7 @@
 
 \subsection{Masked spatial reconstruction across \MSSections{} sections}
 
-\inputtable{tab_multisection}
+
 
 \begin{figure}[t]
   \centering
@@ -12,8 +12,18 @@
   \caption{\textbf{Benchmark across \MSSections{} tissue sections.} (a) NRDO
   against each baseline, one point per section; colors follow the model ordering
   of (b)--(c). (b) Mean paired difference with a percentile bootstrap 95\% CI
-  over sections. (c) Fraction of sections on which NRDO wins. Every confidence
-  interval excludes zero.}
+  over sections. (c) Fraction of sections on which NRDO wins. Full table and
+  paired statistics in Appendix~\ref{app:empirical}.}
+  \label{fig:multisection}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_multisection.pdf}
+  \caption{\textbf{Benchmark across \MSSections{} tissue sections.} (a) NRDO
+  against each baseline, one point per section. (b) Mean paired difference with a
+  percentile bootstrap 95\% CI. (c) Fraction of sections on which NRDO wins. Full
+  table and paired statistics in Appendix~\ref{app:empirical}.}
   \label{fig:multisection}
 \end{figure}
 
@@ -46,8 +56,9 @@ read-out head; it is the \emph{operator} that carries the gain, which the
 parameter-matched $T{=}0$ control confirms (Section~\ref{sec:ablations}).
 
 \paragraph{Spatial autocorrelation.}
-NRDO leads on SSIM (\MSNMOSSIM{} against \MSBestAnySSIM{} for the best baseline,
-\MSBestAnySSIMModel{}) but has by some margin the largest error in Moran's $I$
+NRDO does not lead on every structural metric. On SSIM it is second, behind
+\MSBestAnySSIMModel{} (\MSNMOSSIM{} against \MSBestAnySSIM{}), and it has by
+some margin the largest error in Moran's $I$
 (\MSNMOMoran{} against \MSBestAnyMoran{} for \MSBestAnyMoranModel{}, a deficit of
 \MSMoranDelta{}): the predicted fields are markedly more spatially autocorrelated
 than the measurements. On the primary Visium section, where the diagnostic can be

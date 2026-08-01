@@ -1,19 +1,21 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{Masked spatial reconstruction across 17 tissue sections spanning four technologies; mean $\pm$ s.d. over sections, 2 seeds each. Excluded for incomplete coverage: Gaussian Process (1/17), SpaGE-style (3/17), Tangram-style (3/17). Stars: Holm-corrected Wilcoxon signed-rank $p$ against NRDO, section as the unit of analysis ($^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$). Win record and effect sizes: Table~\ref{tab:paired}.}
+\caption{Masked spatial reconstruction across 17 tissue sections spanning four technologies; mean $\pm$ s.d. over sections, 2 seeds each. Excluded for incomplete coverage: Gaussian Process (1/17). Stars: Holm-corrected Wilcoxon signed-rank $p$ against NRDO, section as the unit of analysis ($^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$). Win record and effect sizes: Table~\ref{tab:paired}.}
 \label{tab:multisection}
-\begin{tabular}{lrrrrr}
+\begin{tabular}{lrrrr}
 \toprule
-model & $n$ & Pearson $r$ $\uparrow$ & RMSE $\downarrow$ & SSIM $\uparrow$ & $|\Delta I|$ $\downarrow$\\
+model & $n$ & Pearson $r$ $\uparrow$ & SSIM $\uparrow$ & $|\Delta I|$ $\downarrow$\\
 \midrule
-STAGATE-style & 17 & 0.154\,\tiny{$\pm$ 0.048}$^{**}$ & 0.704\,\tiny{$\pm$ 0.360}$^{**}$ & 0.306\,\tiny{$\pm$ 0.037}$^{*}$ & 0.766\,\tiny{$\pm$ 0.041}$^{***}$ \\
-GNN (GCN) & 17 & 0.153\,\tiny{$\pm$ 0.048}$^{***}$ & 0.704\,\tiny{$\pm$ 0.358}$^{*}$ & 0.307\,\tiny{$\pm$ 0.041} & 0.795\,\tiny{$\pm$ 0.042}$^{***}$ \\
-Autoencoder (non-spatial) & 17 & 0.153\,\tiny{$\pm$ 0.047}$^{**}$ & 0.728\,\tiny{$\pm$ 0.374}$^{***}$ & 0.224\,\tiny{$\pm$ 0.037}$^{***}$ & 0.756\,\tiny{$\pm$ 0.044}$^{***}$ \\
-GP, multi-bandwidth & 17 & 0.123\,\tiny{$\pm$ 0.041}$^{***}$ & 0.716\,\tiny{$\pm$ 0.367}$^{***}$ & 0.291\,\tiny{$\pm$ 0.027}$^{**}$ & 0.777\,\tiny{$\pm$ 0.030}$^{***}$ \\
-Neural field (SIREN) & 17 & 0.106\,\tiny{$\pm$ 0.042}$^{***}$ & 0.725\,\tiny{$\pm$ 0.368}$^{***}$ & 0.235\,\tiny{$\pm$ 0.033}$^{***}$ & 0.625\,\tiny{$\pm$ 0.058}$^{***}$ \\
+STAGATE-style & 17 & 0.154\,\tiny{$\pm$ 0.048}$^{**}$ & 0.306\,\tiny{$\pm$ 0.037}$^{*}$ & 0.766\,\tiny{$\pm$ 0.041}$^{***}$ \\
+GNN (GCN) & 17 & 0.153\,\tiny{$\pm$ 0.048}$^{***}$ & 0.307\,\tiny{$\pm$ 0.041} & 0.795\,\tiny{$\pm$ 0.042}$^{***}$ \\
+Autoencoder (non-spatial) & 17 & 0.153\,\tiny{$\pm$ 0.047}$^{**}$ & 0.224\,\tiny{$\pm$ 0.037}$^{***}$ & 0.756\,\tiny{$\pm$ 0.044}$^{***}$ \\
+Tangram-style & 17 & 0.149\,\tiny{$\pm$ 0.047}$^{***}$ & \textbf{0.335\,\tiny{$\pm$ 0.050}} & 0.806\,\tiny{$\pm$ 0.057}$^{***}$ \\
+GP, multi-bandwidth & 17 & 0.123\,\tiny{$\pm$ 0.041}$^{***}$ & 0.291\,\tiny{$\pm$ 0.027}$^{**}$ & 0.777\,\tiny{$\pm$ 0.030}$^{***}$ \\
+Neural field (SIREN) & 17 & 0.106\,\tiny{$\pm$ 0.042}$^{***}$ & 0.235\,\tiny{$\pm$ 0.033}$^{***}$ & \textbf{0.625\,\tiny{$\pm$ 0.058}}$^{***}$ \\
+SpaGE-style & 17 & 0.027\,\tiny{$\pm$ 0.019}$^{***}$ & 0.182\,\tiny{$\pm$ 0.124}$^{*}$ & 0.645\,\tiny{$\pm$ 0.155}$^{***}$ \\
 \midrule
-NRDO (ours) & 17 & \textbf{0.168\,\tiny{$\pm$ 0.050}} & \textbf{0.697\,\tiny{$\pm$ 0.356}} & \textbf{0.320\,\tiny{$\pm$ 0.042}} & \textbf{0.853\,\tiny{$\pm$ 0.043}} \\
+NRDO (ours) & 17 & \textbf{0.168\,\tiny{$\pm$ 0.050}} & 0.320\,\tiny{$\pm$ 0.042} & 0.853\,\tiny{$\pm$ 0.043} \\
 \bottomrule
 \end{tabular}
 \end{table}
