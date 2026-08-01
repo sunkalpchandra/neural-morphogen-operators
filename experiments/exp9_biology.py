@@ -71,6 +71,7 @@ REFERENCE_LABELS = {
     "visium_mouse_kidney": ("sr_cluster", "Space Ranger graph clusters"),
     "visium_human_lymph_node": ("sr_cluster", "Space Ranger graph clusters"),
     "visium_mouse_brain_coronal": ("sr_cluster", "Space Ranger graph clusters"),
+    "visium_human_heart": ("sr_cluster", "Space Ranger graph clusters"),
     "xenium_mouse_brain": ("xenium_cluster", "Xenium graph clusters"),
     "mosta_embryo_E9.5": ("region", "curated anatomical regions"),
     "mosta_embryo_E10.5": ("region", "curated anatomical regions"),

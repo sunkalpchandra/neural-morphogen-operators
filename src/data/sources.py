@@ -475,6 +475,13 @@ VISIUM_MOUSE_BRAIN_CORONAL = _visium_11(
     "Whole adult brain, coronal section", "Mus musculus")
 
 
+VISIUM_HUMAN_HEART = _visium_11(
+    "visium_human_heart", "V1_Human_Heart",
+    "10x Genomics Visium -- Human Heart",
+    "Left ventricle, transverse section", "Homo sapiens")
+
+
+
 DATASETS: Dict[str, DatasetSpec] = {
     d.key: d
     for d in [
@@ -487,6 +494,7 @@ DATASETS: Dict[str, DatasetSpec] = {
         VISIUM_MOUSE_KIDNEY,
         VISIUM_HUMAN_LYMPH,
         VISIUM_MOUSE_BRAIN_CORONAL,
+        VISIUM_HUMAN_HEART,
     ]
 }
 

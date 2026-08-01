@@ -350,6 +350,25 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("MSSpecMinP", f"{_map(res2[0].n_sections):.2f}")
             graphs = [r for r in res2 if r.other in ("gnn", "stagate", "autoencoder")]
             cont = [r for r in res2 if r.other in ("neural_field", "gp_multiscale")]
+            # Family-wise correction has a floor set jointly by the number of
+            # specimens and the number of comparisons; quoting an uncorrected p
+            # without it would overstate what the design can resolve.
+            if res2:
+                cmd("MSSpecUncorrP", f"{min(r.wilcoxon_p for r in res2):.4f}")
+                cmd("MSSpecHolmFloor", f"{_map(res2[0].n_sections) * len(res2):.3f}")
+                sweeps = [r for r in res2
+                          if r.n_reference_wins == r.n_sections and r.n_sections >= 8]
+                cmd("MSSpecSweeps", str(len(sweeps)))
+                if sweeps:
+                    cmd("MSSpecSweepDz", f"{min(r.cohens_dz for r in sweeps):.2f}")
+                gr = [r for r in graphs if r.n_sections >= 8]
+                if gr:
+                    worst = max(gr, key=lambda r: r.wilcoxon_p)
+                    cmd("MSSpecGraphWorstP", f"{worst.wilcoxon_p:.2f}")
+                    cmd("MSSpecGraphWorstModel",
+                        DISPLAYNAMES.get(worst.other, worst.other))
+                    cmd("MSSpecGraphWins",
+                        f"{min(r.n_reference_wins for r in gr)}/{gr[0].n_sections}")
             if graphs:
                 cmd("MSSpecGraphDz", f"{min(r.cohens_dz for r in graphs):.2f}"
                     + "--" + f"{max(r.cohens_dz for r in graphs):.2f}")

@@ -522,6 +522,7 @@ LOADERS = {
     "visium_mouse_kidney": lambda raw, **kw: load_visium(raw, "visium_mouse_kidney"),
     "visium_human_lymph_node": lambda raw, **kw: load_visium(raw, "visium_human_lymph_node"),
     "visium_mouse_brain_coronal": lambda raw, **kw: load_visium(raw, "visium_mouse_brain_coronal"),
+    "visium_human_heart": lambda raw, **kw: load_visium(raw, "visium_human_heart"),
     "xenium_mouse_brain": lambda raw, **kw: load_xenium(raw),
     "merfish_allen": lambda raw, **kw: load_merfish_section(raw, kw.get("section", sources.MERFISH_PRIMARY_SECTION)),
     "mosta_embryo": lambda raw, **kw: load_mosta(raw, kw.get("stage", "E9.5_E1S1")),

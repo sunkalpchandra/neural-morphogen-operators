@@ -37,6 +37,7 @@ SPATIAL_KEYS = [
     "visium_mouse_kidney",
     "visium_human_lymph_node",
     "visium_mouse_brain_coronal",
+    "visium_human_heart",
     "merfish_allen",
     "xenium_mouse_brain",
     "mosta_embryo",

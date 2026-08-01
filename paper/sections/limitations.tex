@@ -21,14 +21,18 @@ applications we would recommend: prediction at unmeasured coordinates is well
 supported, delineation of sharp boundaries less so.
 
 \textbf{Independent specimens, not sections.} The benchmark's statistical
-resolution is limited by the number of independent specimens. Twelve of
-\MSSections{} sections come from one brain, leaving \MSSpecPairs{} specimens, at
-which the smallest attainable Wilcoxon $p$ is $\MSSpecMinP$. Against the
-continuous baselines this suffices --- NRDO wins on every specimen --- but
-against the graph baselines it does not ($d_z = \MSSpecGraphDz$, ahead on
-\MSSpecWins{} of \MSSpecPairs{}). Additional independent tissues, not additional
-sections, are what would settle it, and we regard this as the single most
-informative experiment left undone.
+resolution is set by the number of independent specimens, not sections: twelve of
+\MSSections{} sections are serial sections of one brain. We therefore added
+tissues rather than sections, reaching \MSSpecimens{} specimens, at which the
+smallest attainable Wilcoxon $p$ is $\MSSpecUncorrP$. Against \MSSpecSweeps{} of
+the baselines NRDO now wins on every specimen at exactly that $p$. Against the
+strongest graph baselines it does not (\MSSpecGraphWorstModel{}:
+\MSSpecGraphWins{}, $p = \MSSpecGraphWorstP$), and we note a limit of the design
+itself: with \MSSpecimens{} specimens and this baseline family the smallest
+attainable \emph{Holm-corrected} $p$ is $\MSSpecHolmFloor$, so a family-wise
+significant result is out of reach at this sample size regardless of the true
+effect. One further specimen would bring it within reach; that, and not more
+sectioning, is the experiment we would run next.
 
 \textbf{Transfer.} Under the held-out-block protocol the fitted operator does not
 transfer to a new tissue at all: zero-shot cross-tissue performance is at or

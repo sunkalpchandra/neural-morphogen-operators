@@ -72,7 +72,9 @@ _decl("exp8",           # multi-section benchmark
       "MSBestBaselinePearson", "MSMinDelta", "MSMinDz", "MSMaxHolm", "MSMinWins",
       "MSNPairs", "MSNPairsRange", "MSMinWinFrac", "MSNBaselines", "MSAllSig", "MSWeakest", "MSWeakestPearson",
       "MSMaxDelta", "MSSpecimens", "MSSpecPairs", "MSSpecMinP", "MSSpecGraphDz",
-      "MSSpecGraphDelta", "MSSpecContDz", "MSSpecContDelta", "MSSpecWins",
+      "MSSpecGraphDelta", "MSSpecContDz", "MSSpecContDelta", "MSSpecWins", "MSSpecUncorrP", "MSSpecHolmFloor",
+      "MSSpecSweeps", "MSSpecSweepDz", "MSSpecGraphWorstP",
+      "MSSpecGraphWorstModel", "MSSpecGraphWins",
       "MSNMOSSIM", "MSBestAnySSIM", "MSBestAnySSIMModel", "MSSSIMDelta",
       "MSNMOMoran", "MSBestAnyMoran", "MSBestAnyMoranModel", "MSMoranDelta",
       "MSNMORMSE", "MSBestAnyRMSE", "MSBestAnyRMSEModel", "MSRMSEDelta",
@@ -335,10 +337,17 @@ def check_coherence(rep: Report, results: Path) -> None:
                         "row averaged over a different section set than NMO",
                         n == len(matched))
 
-    # (b) marginal deltas in the benchmark table agree with the paired table
+    # (b) marginal deltas in the benchmark table agree with the paired table.
+    # Only for models the table actually shows: table_multisection drops any
+    # model covering under 90% of the reference sections, and comparing a
+    # dropped model's paired delta against a marginal mean it never appears in
+    # is a false positive -- the two are computed over different section sets
+    # by construction.
     from src.evaluation.statistics import paired_comparison
+    shown = [m for m in matched.columns
+             if int(matched[m].notna().sum()) >= max(3, int(0.9 * len(matched)))]
     for r in paired_comparison(df, "nmo", "pearson_mean"):
-        if r.other not in matched.columns:
+        if r.other not in shown:
             continue
         marginal = float(matched["nmo"].mean()) - float(matched[r.other].mean())
         ok = abs(marginal - r.mean_diff) < 5e-4

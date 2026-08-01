@@ -12,13 +12,14 @@ Fourier domain under Strang splitting makes the integrator unconditionally
 stable and second-order accurate, at $\NumSpeedup\times$ fewer steps than
 explicit Euler for the same tolerance.
 Across \MSSections{} tissue sections from four technologies (\MSRuns{} runs), NRDO
-improves masked-region reconstruction over graph, Gaussian-process and implicit
-neural-field baselines, beating every one with Holm-corrected $p \le \MSMaxHolm$
-in paired tests over sections. Because twelve of those sections are serial
-sections of one brain, the conservative unit of analysis is the specimen, and at
-that level the separation from the \emph{continuous} baselines is what the data
-establish most firmly: NRDO wins on all \MSSpecPairs{} independent specimens with
-$d_z = \MSSpecContDz$, the strongest outcome this design admits. Two controls
+improves masked-region reconstruction over graph, Gaussian-process, implicit
+neural-field and imputation baselines, beating every one with Holm-corrected
+$p \le \MSMaxHolm$ in paired tests over sections. Because twelve of those sections
+are serial sections of one brain, the conservative unit of analysis is the
+specimen, and we report it over \MSSpecimens{} independent specimens: NRDO wins
+on \emph{every} specimen against \MSSpecSweeps{} of the baselines
+($d_z \ge \MSSpecSweepDz$, uncorrected $p = \MSSpecUncorrP$, the smallest the
+design admits). Two controls
 localize the gain. An exactly parameter-matched ablation---the $\OpParamPct\%$
 of weights forming the operator are left allocated but unused---costs
 $\MatchedNoDynamicsDelta$ Pearson $r$, more than the entire margin over the best
@@ -28,11 +29,13 @@ message passing contributes at most \MSBestGraphOverAE{}, against \MSNMOOverAE{}
 for NRDO. We also prove that a single stationary snapshot determines the
 reaction network only on a Lebesgue-null subset of latent space, which delimits
 what any method of this class can identify from static tissue.
-Two limits are worth stating plainly. Against the \emph{graph} baselines the
-specimen-level separation is small and statistically unresolved
-($d_z = \MSSpecGraphDz$ over \MSSpecPairs{} specimens, where the smallest
-attainable Wilcoxon $p$ is $\MSSpecMinP$), so more independent tissues, not more
-sections of one brain, is what would settle it; and the predicted fields are
+Two limits are worth stating plainly. Against the strongest \emph{graph}
+baselines the specimen-level separation remains unresolved
+(\MSSpecGraphWorstModel{}: \MSSpecGraphWins{} specimens, $p = \MSSpecGraphWorstP$),
+and with \MSSpecimens{} specimens across this baseline family the smallest
+attainable Holm-corrected $p$ is $\MSSpecHolmFloor$, so no family-wise
+significant result is reachable at this sample size whatever the effect;
+and the predicted fields are
 smoother than the measurements, on which NRDO trails every baseline tested ---
 a spectral-matching term reduces the gap but cannot close it, so the limitation
 belongs to the operator class rather than to the objective.

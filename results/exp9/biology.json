@@ -1612,5 +1612,185 @@
         "pearson_flat": 0.8254775233837339
       }
     ]
+  },
+  {
+    "section": "visium_mouse_kidney",
+    "model": "nmo",
+    "display": "NRDO (ours)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 6,
+    "ari_measured": 0.6886076996344653,
+    "nmi_measured": 0.7050670587855854,
+    "ari_predicted": 0.29332638593124527,
+    "nmi_predicted": 0.4352083604109212,
+    "ari_retention": 0.42597023833301917,
+    "marker_auroc_measured": 0.9132403817858546,
+    "marker_auroc_predicted": 0.8339561991721944,
+    "n_marker_tests": 25,
+    "neighborhood_preservation": 0.1426537216828479,
+    "morans_i_measured": 0.1706299905659829,
+    "morans_i_predicted": 0.8822453244106053,
+    "gearys_c_measured": 0.7967382664827771,
+    "gearys_c_predicted": 0.08185510556046212,
+    "gearys_c_abs_error": 0.7186218015140745,
+    "regions": [
+      {
+        "region": "1",
+        "n": 114,
+        "rmse": 0.23057053983211517,
+        "pearson_flat": 0.9199187503663546
+      },
+      {
+        "region": "2",
+        "n": 81,
+        "rmse": 0.29937103390693665,
+        "pearson_flat": 0.8625946008912984
+      },
+      {
+        "region": "3",
+        "n": 83,
+        "rmse": 0.20182634890079498,
+        "pearson_flat": 0.9284479241812317
+      },
+      {
+        "region": "4",
+        "n": 78,
+        "rmse": 0.2907704710960388,
+        "pearson_flat": 0.8533712343065478
+      },
+      {
+        "region": "5",
+        "n": 135,
+        "rmse": 0.2222888022661209,
+        "pearson_flat": 0.9329055773535407
+      },
+      {
+        "region": "6",
+        "n": 24,
+        "rmse": 0.31084856390953064,
+        "pearson_flat": 0.8469164845648626
+      }
+    ]
+  },
+  {
+    "section": "visium_mouse_kidney",
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 6,
+    "ari_measured": 0.6886076996344653,
+    "nmi_measured": 0.7050670587855854,
+    "ari_predicted": 0.22250610828913486,
+    "nmi_predicted": 0.3449370405531989,
+    "ari_retention": 0.32312463018820164,
+    "marker_auroc_measured": 0.9132403817858546,
+    "marker_auroc_predicted": 0.8239374434612456,
+    "n_marker_tests": 25,
+    "neighborhood_preservation": 0.10666666666666667,
+    "morans_i_measured": 0.1706299905659829,
+    "morans_i_predicted": 0.8311331312677471,
+    "gearys_c_measured": 0.7967382664827771,
+    "gearys_c_predicted": 0.13131361042567624,
+    "gearys_c_abs_error": 0.6704105415026004,
+    "regions": [
+      {
+        "region": "1",
+        "n": 114,
+        "rmse": 0.23368939757347107,
+        "pearson_flat": 0.9181461202278114
+      },
+      {
+        "region": "2",
+        "n": 81,
+        "rmse": 0.30285629630088806,
+        "pearson_flat": 0.8590930762865133
+      },
+      {
+        "region": "3",
+        "n": 83,
+        "rmse": 0.22330516576766968,
+        "pearson_flat": 0.9119466286333042
+      },
+      {
+        "region": "4",
+        "n": 78,
+        "rmse": 0.2927630543708801,
+        "pearson_flat": 0.8507724394459464
+      },
+      {
+        "region": "5",
+        "n": 135,
+        "rmse": 0.24652694165706635,
+        "pearson_flat": 0.9164059819284123
+      },
+      {
+        "region": "6",
+        "n": 24,
+        "rmse": 0.3019590675830841,
+        "pearson_flat": 0.8551201825496294
+      }
+    ]
+  },
+  {
+    "section": "visium_mouse_kidney",
+    "model": "gnn",
+    "display": "GNN (GCN)",
+    "seed": 0,
+    "reference": "Space Ranger graph clusters",
+    "n_reference_domains": 6,
+    "ari_measured": 0.6886076996344653,
+    "nmi_measured": 0.7050670587855854,
+    "ari_predicted": 0.21727135275002646,
+    "nmi_predicted": 0.37616870362121274,
+    "ari_retention": 0.3155226885574485,
+    "marker_auroc_measured": 0.9132403817858546,
+    "marker_auroc_predicted": 0.8162764570405091,
+    "n_marker_tests": 25,
+    "neighborhood_preservation": 0.10588996763754045,
+    "morans_i_measured": 0.1706299905659829,
+    "morans_i_predicted": 0.8388600846439892,
+    "gearys_c_measured": 0.7967382664827771,
+    "gearys_c_predicted": 0.1222818179835019,
+    "gearys_c_abs_error": 0.6792474744381182,
+    "regions": [
+      {
+        "region": "1",
+        "n": 114,
+        "rmse": 0.23784573376178741,
+        "pearson_flat": 0.9153319623142635
+      },
+      {
+        "region": "2",
+        "n": 81,
+        "rmse": 0.30262717604637146,
+        "pearson_flat": 0.859364941142488
+      },
+      {
+        "region": "3",
+        "n": 83,
+        "rmse": 0.22925586998462677,
+        "pearson_flat": 0.9073238472470228
+      },
+      {
+        "region": "4",
+        "n": 78,
+        "rmse": 0.28987619280815125,
+        "pearson_flat": 0.853481854034241
+      },
+      {
+        "region": "5",
+        "n": 135,
+        "rmse": 0.2528734505176544,
+        "pearson_flat": 0.9123501254216875
+      },
+      {
+        "region": "6",
+        "n": 24,
+        "rmse": 0.3056528866291046,
+        "pearson_flat": 0.8514758468161935
+      }
+    ]
   }
 ]
