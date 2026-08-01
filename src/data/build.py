@@ -26,13 +26,39 @@ from .preprocess import QCConfig, QC_PRESETS, preprocess
 log = get_logger("nmo.build")
 
 #: Datasets that carry spatial coordinates (Perturb-seq does not).
+#: Datasets that carry spatial coordinates. Membership controls isotropic
+#: coordinate normalisation and the contiguous-block split, so a spatial dataset
+#: missing from this list is built silently as if it were dissociated cells:
+#: every location lands in the train split and coord_scale_um stays 1. That
+#: produces NaN test metrics rather than an error, which is how it was found.
 SPATIAL_KEYS = [
     "visium_mouse_brain",
     "visium_human_breast",
+    "visium_mouse_kidney",
+    "visium_human_lymph_node",
+    "visium_mouse_brain_coronal",
     "merfish_allen",
     "xenium_mouse_brain",
     "mosta_embryo",
 ]
+
+
+def _assert_spatial_built(adata, key: str) -> None:
+    """Fail loudly if a spatial dataset was built without splits or a scale.
+
+    Both are silent failures downstream: an all-train split yields NaN test
+    metrics and a unit coordinate scale yields meaningless diffusion lengths.
+    """
+    import numpy as np
+    sp = np.asarray(adata.obs["split"]) if "split" in adata.obs else np.array([])
+    if len(set(sp.tolist())) < 2:
+        raise RuntimeError(
+            f"{key}: built with a single split value; it is probably missing "
+            f"from SPATIAL_KEYS, so no contiguous-block split was applied")
+    if float(adata.uns.get("nmo", {}).get("coord_scale_um", 1.0)) == 1.0:
+        raise RuntimeError(
+            f"{key}: coord_scale_um is 1.0, so coordinates were never "
+            f"normalised; it is probably missing from SPATIAL_KEYS")
 
 
 def build_one(
@@ -66,6 +92,8 @@ def build_one(
         seed=seed,
         spatial=key in SPATIAL_KEYS,
     )
+    if key in SPATIAL_KEYS:
+        _assert_spatial_built(adata, key)
     out.parent.mkdir(parents=True, exist_ok=True)
     # uns must be h5ad-serialisable
     adata.uns["nmo"] = {k: v for k, v in adata.uns["nmo"].items() if _serialisable(v)}
