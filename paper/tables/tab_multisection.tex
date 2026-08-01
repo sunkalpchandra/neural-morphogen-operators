@@ -1,20 +1,20 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{Masked spatial reconstruction across 21 tissue sections spanning four technologies; mean $\pm$ s.d. over sections, 2 seeds each. Excluded for incomplete coverage: Gaussian Process (1/21), SpaGE-style (17/21). Stars: Holm-corrected Wilcoxon signed-rank $p$ against NRDO, section as the unit of analysis ($^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$). Win record and effect sizes: Table~\ref{tab:paired}.}
+\caption{Masked spatial reconstruction across 22 tissue sections spanning four technologies; mean $\pm$ s.d. over sections, 2 seeds each. Excluded for incomplete coverage: Gaussian Process (1/22), SpaGE-style (17/22). Stars: Holm-corrected Wilcoxon signed-rank $p$ against NRDO, section as the unit of analysis ($^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$). Win record and effect sizes: Table~\ref{tab:paired}.}
 \label{tab:multisection}
 \begin{tabular}{lrrrr}
 \toprule
 model & $n$ & Pearson $r$ $\uparrow$ & SSIM $\uparrow$ & $|\Delta I|$ $\downarrow$\\
 \midrule
-STAGATE-style & 21 & 0.154\,\tiny{$\pm$ 0.058}$^{**}$ & 0.309\,\tiny{$\pm$ 0.054}$^{*}$ & 0.761\,\tiny{$\pm$ 0.047}$^{***}$ \\
-Autoencoder (non-spatial) & 21 & 0.153\,\tiny{$\pm$ 0.058}$^{***}$ & 0.241\,\tiny{$\pm$ 0.066}$^{***}$ & 0.751\,\tiny{$\pm$ 0.052}$^{***}$ \\
-GNN (GCN) & 21 & 0.152\,\tiny{$\pm$ 0.057}$^{***}$ & 0.308\,\tiny{$\pm$ 0.055}$^{*}$ & 0.789\,\tiny{$\pm$ 0.045}$^{***}$ \\
-Tangram-style & 21 & 0.146\,\tiny{$\pm$ 0.058}$^{***}$ & \textbf{0.329\,\tiny{$\pm$ 0.068}} & 0.795\,\tiny{$\pm$ 0.075}$^{***}$ \\
-GP, multi-bandwidth & 21 & 0.121\,\tiny{$\pm$ 0.049}$^{***}$ & 0.288\,\tiny{$\pm$ 0.046}$^{***}$ & 0.762\,\tiny{$\pm$ 0.064}$^{***}$ \\
+STAGATE-style & 22 & 0.158\,\tiny{$\pm$ 0.060}$^{**}$ & 0.311\,\tiny{$\pm$ 0.054}$^{*}$ & 0.766\,\tiny{$\pm$ 0.050}$^{***}$ \\
+Autoencoder (non-spatial) & 22 & 0.157\,\tiny{$\pm$ 0.060}$^{***}$ & 0.246\,\tiny{$\pm$ 0.068}$^{***}$ & 0.756\,\tiny{$\pm$ 0.055}$^{***}$ \\
+GNN (GCN) & 22 & 0.156\,\tiny{$\pm$ 0.059}$^{***}$ & 0.310\,\tiny{$\pm$ 0.054}$^{*}$ & 0.793\,\tiny{$\pm$ 0.047}$^{***}$ \\
+Tangram-style & 22 & 0.150\,\tiny{$\pm$ 0.060}$^{***}$ & \textbf{0.330\,\tiny{$\pm$ 0.066}} & 0.797\,\tiny{$\pm$ 0.074}$^{***}$ \\
+GP, multi-bandwidth & 22 & 0.122\,\tiny{$\pm$ 0.049}$^{***}$ & 0.288\,\tiny{$\pm$ 0.045}$^{***}$ & 0.763\,\tiny{$\pm$ 0.063}$^{***}$ \\
 Neural field (SIREN) & 21 & 0.107\,\tiny{$\pm$ 0.049}$^{***}$ & 0.243\,\tiny{$\pm$ 0.046}$^{***}$ & \textbf{0.594\,\tiny{$\pm$ 0.115}}$^{***}$ \\
 \midrule
-NRDO (ours) & 21 & \textbf{0.167\,\tiny{$\pm$ 0.062}} & 0.320\,\tiny{$\pm$ 0.060} & 0.847\,\tiny{$\pm$ 0.046} \\
+NRDO (ours) & 22 & \textbf{0.171\,\tiny{$\pm$ 0.063}} & 0.321\,\tiny{$\pm$ 0.059} & 0.848\,\tiny{$\pm$ 0.045} \\
 \bottomrule
 \end{tabular}
 \end{table}

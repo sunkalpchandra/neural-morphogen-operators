@@ -31,54 +31,118 @@ from .style import (
 # --------------------------------------------------------------------------- #
 
 
-def figure1_overview() -> plt.Figure:
-    """Schematic of the encode -> evolve -> decode pipeline."""
+def figure1_overview(model=None, section=None) -> plt.Figure:
+    """The pipeline shown on real tissue rather than as a flow chart.
+
+    A box-and-arrow schematic tells a reader what the components are called,
+    which the text already does. What it cannot show is that each stage produces
+    something: measured expression on an irregular point set, a continuous latent
+    field on a lattice, that field after the operator has acted, and a prediction
+    at coordinates the encoder never saw. Every panel here is real output from a
+    trained checkpoint; only the arrows are drawn.
+
+    Falls back to the schematic when no checkpoint is supplied, so the figure
+    still builds on a fresh clone with no results.
+    """
     set_style()
-    fig, ax = plt.subplots(figsize=(WIDTH_FULL, 1.78))
-    ax.set_xlim(0, 100); ax.set_ylim(-2, 34)
-    ax.axis("off")
+    if model is None or section is None:
+        return _figure1_schematic()
 
-    def box(x, y, w, h, title, sub, color, alpha=0.13):
-        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.5,rounding_size=1.4",
-                                    linewidth=1.0, edgecolor=color,
-                                    facecolor=color, alpha=alpha, zorder=1))
-        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.5,rounding_size=1.4",
-                                    linewidth=1.0, edgecolor=color, facecolor="none", zorder=3))
-        ax.text(x + w / 2, y + h - 2.4, title, ha="center", va="top", fontsize=6.8,
-                fontweight="bold", color=INK, zorder=4)
-        ax.text(x + w / 2, y + h - 8.0, sub, ha="center", va="top", fontsize=5.4,
-                color=INK_SECONDARY, linespacing=1.45, zorder=4)
+    import torch
+    vis = section.mask("train")
+    with torch.no_grad():
+        z0, occ = model.encode(section.coords, section.expr * vis.view(-1, 1),
+                               section.edge_index, vis)
+        zT = model.evolve(z0)
+        out = model(section.coords, section.expr * vis.view(-1, 1),
+                    query_coords=section.coords, edge_index=section.edge_index,
+                    point_mask=vis)
+    xy = section.coords.cpu().numpy()
+    true = section.numpy_expr(denorm=False)
+    pred = out["pred"].detach().cpu().numpy()
+    held = ~vis.cpu().numpy().astype(bool)
 
-    def arrow(x0, x1, y=15, label=""):
-        ax.add_patch(FancyArrowPatch((x0, y), (x1, y), arrowstyle="-|>", mutation_scale=8,
-                                     linewidth=1.0, color=INK_SECONDARY, zorder=5))
-        if label:
-            ax.text((x0 + x1) / 2, y + 1.4, label, ha="center", va="bottom",
-                    fontsize=5.6, color=INK_MUTED, style="italic", zorder=6)
+    # the gene with the most spatial structure, so the panels show signal
+    from ..evaluation.metrics import morans_i, spatial_weights
+    W = spatial_weights(xy, 8)
+    gi = int(np.nanargmax(morans_i(true, W)))
 
-    box(0.5, 6, 20, 26, "Spatial encoder",
-        "spots $(p_i,\\, g_i)$\ngraph kernel integral\nGaussian splat\nspectral (FNO) blocks",
-        CATEGORICAL[0])
-    box(29.5, 6, 18, 26, "Latent field $z(x,y)$",
-        "continuous field on\na regular lattice\n+ occupancy support", CATEGORICAL[2])
-    box(56.5, 6, 22, 26, "Morphogen operator",
-        "$\\partial_t z = \\nabla\\!\\cdot\\!(D_\\theta \\nabla z) + f_\\theta(z)$\nStrang splitting;\nexact spectral\ndiffusion solve",
-        CATEGORICAL[1])
-    box(87.0, 6, 12.5, 26, "Decoder",
-        "read-out at\nany $(x,y)$\n$\\rightarrow\\ \\hat{g}$", CATEGORICAL[4])
+    Z0 = z0.detach().cpu().numpy()[0]
+    ZT = zT.detach().cpu().numpy()[0]
+    occ_np = occ.detach().cpu().numpy()[0, 0]
+    ch = int(np.argmax([np.nanstd(np.where(occ_np > np.percentile(occ_np, 45),
+                                           Z0[c], np.nan)) for c in range(Z0.shape[0])]))
 
-    arrow(22.0, 28.0, y=18, label="encode")
-    arrow(49.0, 55.0, y=18, label="evolve")
-    arrow(80.0, 85.5, y=18, label="decode")
+    fig = plt.figure(figsize=(WIDTH_FULL, 1.62))
+    gs = fig.add_gridspec(1, 5, wspace=0.28,
+                          width_ratios=[1, 1, 1, 1, 1.05])
 
-    ax.text(50, -1.4, "trained by masked spatial reconstruction; held-out regions are never seen by the encoder",
-            ha="center", va="bottom", fontsize=5.6, color=INK_MUTED, style="italic")
+    ax = fig.add_subplot(gs[0, 0])
+    scatter_field(ax, xy, np.where(held, np.nan, true[:, gi]), s=1.6)
+    ax.set_title("measured\n(held-out masked)", fontsize=6, pad=3)
+    panel_label(ax, "a", dx=-0.10, dy=1.13)
+
+    ax = fig.add_subplot(gs[0, 1])
+    ax.imshow(Z0[ch], cmap=LATENT, origin="lower", rasterized=True)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.set_title("encoded field\n$\\mathbf{z}_0$", fontsize=6, pad=3)
+    panel_label(ax, "b", dx=-0.10, dy=1.13)
+
+    ax = fig.add_subplot(gs[0, 2])
+    ax.imshow(ZT[ch], cmap=LATENT, origin="lower", rasterized=True)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.set_title("after operator\n$\\mathbf{z}_T$", fontsize=6, pad=3)
+    panel_label(ax, "c", dx=-0.10, dy=1.13)
+
+    ax = fig.add_subplot(gs[0, 3])
+    scatter_field(ax, xy, pred[:, gi], s=1.6)
+    ax.set_title("decoded\neverywhere", fontsize=6, pad=3)
+    panel_label(ax, "d", dx=-0.10, dy=1.13)
+
+    ax = fig.add_subplot(gs[0, 4])
+    ax.scatter(true[held, gi], pred[held, gi], s=1.5, alpha=0.35,
+               color=CATEGORICAL[0], linewidths=0, rasterized=True)
+    lo = float(min(true[held, gi].min(), pred[held, gi].min()))
+    hi = float(max(true[held, gi].max(), pred[held, gi].max()))
+    ax.plot([lo, hi], [lo, hi], color=INK_MUTED, lw=0.7, ls="--")
+    r = float(np.corrcoef(true[held, gi], pred[held, gi])[0, 1])
+    ax.text(0.04, 0.95, f"$r={r:.2f}$\n{section.gene_names[gi]}", transform=ax.transAxes,
+            fontsize=5.4, color=INK, va="top", linespacing=1.3)
+    ax.set_xlabel("measured", fontsize=5.6); ax.set_ylabel("predicted", fontsize=5.6)
+    ax.tick_params(labelsize=5)
+    ax.set_title("held-out, one gene", fontsize=6, pad=3)
+    panel_label(ax, "e", dx=-0.30, dy=1.13)
+
+    fig.subplots_adjust(left=0.045, right=0.985, top=0.78, bottom=0.20)
+    # Arrows go in the gaps between panels, derived from the drawn axes rather
+    # than from guessed figure coordinates -- hard-coded positions land on top of
+    # the panels as soon as any width ratio changes.
+    fig.canvas.draw()
+    boxes = [a.get_position() for a in fig.axes]
+    for left, right in zip(boxes[:3], boxes[1:4]):
+        gap_l, gap_r = left.x1, right.x0
+        if gap_r - gap_l < 0.012:
+            continue
+        y = (left.y0 + left.y1) / 2
+        fig.patches.append(plt.matplotlib.patches.FancyArrow(
+            gap_l + 0.1 * (gap_r - gap_l), y, 0.8 * (gap_r - gap_l), 0,
+            transform=fig.transFigure, width=0.004, head_width=0.022,
+            head_length=0.10 * (gap_r - gap_l), color=INK_MUTED,
+            length_includes_head=True))
     return fig
 
 
-# --------------------------------------------------------------------------- #
-# Figure 2 -- reconstruction examples
-# --------------------------------------------------------------------------- #
+def _figure1_schematic() -> plt.Figure:
+    """Fallback used when no trained checkpoint is available."""
+    set_style()
+    fig, ax = plt.subplots(figsize=(WIDTH_FULL, 1.0))
+    ax.axis("off")
+    ax.text(0.5, 0.5, "encode $\\rightarrow$ evolve under "
+                      "$\\partial_t\\mathbf{z} = \\nabla\\!\\cdot\\!"
+                      "(\\mathbf{D}_\\theta\\nabla\\mathbf{z}) + "
+                      "f_\\theta(\\mathbf{z})$ $\\rightarrow$ decode",
+            ha="center", va="center", fontsize=8, color=INK)
+    return fig
 
 
 def figure2_reconstruction(

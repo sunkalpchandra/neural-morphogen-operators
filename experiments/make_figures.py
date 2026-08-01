@@ -72,14 +72,13 @@ def main() -> int:
     device = get_device(cfg.experiment.get("device", "auto"))
     made: List[str] = []
 
-    # ---- Figure 1: schematic (no data needed) ---------------------------- #
-    savefig(F.figure1_overview(), figdir / "fig1_overview")
-    made.append("fig1_overview")
 
     # ---- Model-dependent figures ----------------------------------------- #
     ck = _find_ckpt(results, a.section, "nmo", a.seed)
     if ck is None:
-        print(f"[warn] no NMO checkpoint for {a.section}; skipping figures 2/3/5")
+        print(f"[warn] no NMO checkpoint for {a.section}; schematic overview only")
+        savefig(F.figure1_overview(), figdir / "fig1_overview")
+        made.append("fig1_overview")
     else:
         sec = load_section(Path(cfg.data.processed_dir) / f"{a.section}.h5ad", device=device)
         nmo = _load_model(ck, cfg, sec.n_genes, "nmo", device)
@@ -105,6 +104,8 @@ def main() -> int:
         made.append("fig3_latent_fields")
         savefig(F.figure5_dynamics(nmo, sec), figdir / "fig5_dynamics")
         made.append("fig5_dynamics")
+        savefig(F.figure1_overview(nmo, sec), figdir / "fig1_overview")
+        made.append("fig1_overview")
 
         # Physics diagnostics across every available NMO checkpoint, so the
         # numbers quoted in the paper (diffusion lengths, Turing fraction) are
