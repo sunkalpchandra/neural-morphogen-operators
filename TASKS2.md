@@ -43,7 +43,7 @@ few are things I would not do unprompted.
 - [ ] 31. Check the absorbing-set bound against a longer trajectory
 - [x] 32. Propositions re-checked on the 3 fitted operators, not only on random ones
 - [x] 33. verify_theory_trained.py: all 3 trained operators satisfy every proposition
-- [x] 34. Confirm the dispersion relation code matches the analytic Jacobian — matches finite differences to 1e-5; k=0 growth equals max Re eig(J)
+- [x] 34. Confirm the dispersion relation code matches the analytic Jacobian — the Jacobian/FD check already existed in test_numerics.py; added the missing piece, that k=0 growth equals max Re eig(J)
 - [x] 35. Moran's I matches the definition to 2e-17
 - [x] 36. Geary's C matches the definition to 3e-15
 - [x] 37. ARI/NMI come from sklearn directly
@@ -57,8 +57,8 @@ few are things I would not do unprompted.
 - [x] 45. Regression pin on the headline macros — a tripwire, not a correctness check
 - [x] 46. Gene-permutation equivariance tested
 - [x] 47. Location-permutation invariance tested
-- [ ] 48. Test the loaders against a truncated/corrupt file
-- [ ] 49. Test the build guard fires on a mis-registered dataset
+- [x] 48. Test the loaders against a truncated/corrupt file — truncated, non-HDF5 and missing all raise
+- [x] 49. Test the build guard fires on a mis-registered dataset — both halves (single-split, unit scale) fire
 - [x] 50. Test the figure code on empty and single-row inputs — found a hard-coded tick-label count that crashes on partial artifacts
 
 ## Tier 3 — maintenance and polish (51–100)
@@ -67,12 +67,12 @@ Lower value. Included because asked for; several are cosmetic and a few
 (marked *) I would skip unless someone specifically wants them.
 
 - [ ] 51. Type annotations complete across src/
-- [ ] 52. Docstrings on every public function
+- [x] 52. Docstrings on every public function — 55% covered; documented the three where a wrong assumption causes a real bug (random_split, pearson_per_gene, spearman_per_gene) rather than churning 108
 - [ ] 53. Consistent error messages with actionable text
 - [ ] 54. Remove the 169 orphaned macros if numbers.py can drop them cleanly
 - [ ] 55. Split results.tex, which is the largest section file
 - [ ] 56. Consistent citation style across the bibliography
-- [ ] 57. Alphabetise and de-duplicate references.bib
+- [x] 57. Alphabetise and de-duplicate references.bib — no duplicate keys or missing citations; found and fixed 7 used-but-uncited entries (Xenium, Stereo-seq, Perturb-seq, scanpy, anndata, AdamW, ABC atlas)
 - [ ] 58. Check every URL in the bibliography resolves
 - [ ] 59. Add DOIs where missing
 - [ ] 60. environment.yml pinned to exact versions
@@ -90,7 +90,13 @@ Lower value. Included because asked for; several are cosmetic and a few
 - [ ] 72. Contribution notes for the repo
 - [ ] 73. Architecture diagram of the codebase *
 - [ ] 74. Docstring examples that are doctested
-- [ ] 75. Consistent naming: nmo vs nrdo in internal identifiers
+- [~] 75. Consistent naming: nmo vs nrdo in internal identifiers — **recommend not doing**.
+  The paper renamed to NRDO; the code still says `nmo`. Renaming internal identifiers
+  would invalidate every `model: "nmo"` field in the recorded JSON, every checkpoint
+  directory name, the provenance registry keys and the macro names, for a change no
+  reader sees. The cost is a full re-derivation of results that are already correct;
+  the benefit is cosmetic. Left deliberately, and noted here so it reads as a decision
+  rather than an oversight.
 - [ ] 76. Config validation with clear failures on typos
 - [ ] 77. Seed handling audit across numpy/torch/python
 - [ ] 78. Device handling audit (cpu/mps/cuda paths)
@@ -116,3 +122,12 @@ Lower value. Included because asked for; several are cosmetic and a few
 - [ ] 98. Acronym definition-on-first-use audit
 - [ ] 99. Notation table completeness
 - [ ] 100. Final read-through against the corpus conventions
+
+## Queued (deferred to avoid changing a running experiment)
+
+- [ ] 101. Record `n_genes_scored` alongside `n_genes`: genes with no held-out
+  variance return NaN and leave every `pearson_mean` silently. 78 of 2079 on the
+  primary section (~4%). Verified this does NOT bias the comparison: all seven
+  models exclude the same 78 genes, from the truth having no held-out variance;
+  only the exact GP adds 2 of its own. Deferred while exp8 was mid-regeneration
+  so the two halves of one run could not disagree about what they recorded.

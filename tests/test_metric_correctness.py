@@ -185,54 +185,12 @@ def test_strang_splitting_is_second_order_in_dt():
     assert 1.7 < fine < 2.3, f"fine-range order {fine:.2f}, errors {e2}"
 
 
-def test_reaction_jacobian_matches_finite_differences():
-    """Task 34. The dispersion relation the paper plots is built from
-    reaction.jacobian_at(). If that analytic Jacobian disagreed with the actual
-    right-hand side, the Turing analysis would describe a different operator
-    than the one being trained, and nothing else in the pipeline would notice.
-
-    Compares against a central finite difference of the reaction term itself.
-    """
-    import numpy as np
-    import torch
-
-    from src.models.dynamics import DynamicsConfig, ReactionDiffusionOperator
-
-    torch.manual_seed(0)
-    C = 6
-    op = ReactionDiffusionOperator(DynamicsConfig(
-        channels=C, dt=0.05, n_steps=1, integrator="strang",
-        laplacian="spectral", reaction_gain=1.0)).eval().double()
-    # The output layer is zero-initialised, so an untrained Jacobian is exactly
-    # zero and would match trivially. Give it real weights.
-    with torch.no_grad():
-        for m in op.reaction.modules():
-            if hasattr(m, "weight") and m.weight.dim() > 1 and m.weight.norm() == 0:
-                m.weight.normal_(0, 0.3)
-
-    z_star = (torch.randn(C, dtype=torch.float64) * 0.4).requires_grad_(False)
-    J = op.reaction.jacobian_at(z_star).detach().cpu().numpy()
-    assert J.shape == (C, C)
-
-    def f(z):
-        """Reaction evaluated on a 1x C x 1 x 1 field, returned as a vector."""
-        with torch.no_grad():
-            return op.reaction(z.view(1, C, 1, 1)).view(C).cpu().numpy()
-
-    eps = 1e-6
-    fd = np.zeros((C, C))
-    for j in range(C):
-        e = torch.zeros(C, dtype=torch.float64)
-        e[j] = eps
-        fd[:, j] = (f(z_star + e) - f(z_star - e)) / (2 * eps)
-
-    assert np.allclose(J, fd, atol=1e-5), (
-        f"analytic Jacobian disagrees with finite differences; "
-        f"max |diff| = {np.abs(J - fd).max():.3e}")
-
-
 def test_dispersion_relation_is_negative_at_k_zero_for_a_stable_operator():
-    """The k=0 growth rate is the spectrum of the reaction Jacobian alone --
+    """Task 34. tests/test_numerics.py already checks the Jacobian against finite
+    differences and that pure diffusion cannot grow with |k|. Neither pins the
+    identity below, which is what makes the Turing signature interpretable.
+
+    The k=0 growth rate is the spectrum of the reaction Jacobian alone --
     diffusion contributes nothing at zero wavenumber. That identity is what
     makes 'negative at k=0, positive at finite k' meaningful as a Turing
     signature, so it is worth pinning."""

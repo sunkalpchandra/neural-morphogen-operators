@@ -4,8 +4,11 @@
 
 
 \paragraph{Data.} We use \NDatasets{} public datasets spanning four spatial
-technologies (Table~\ref{tab:data}), plus one non-spatial perturbation screen
-(\NPerturbCells{} dissociated cells) used only in Section~\ref{sec:results4}.
+technologies --- Visium \citep{stahl2016visium}, MERFISH
+\citep{chen2015merfish}, Xenium \citep{janesick2023xenium} and Stereo-seq
+\citep{chen2022mosta} (Table~\ref{tab:data}) --- plus one non-spatial
+perturbation screen \citep{dixit2016perturbseq} (\NPerturbCells{} dissociated
+cells) used only in Section~\ref{sec:results4}.
 Raw reads are never used: we consume vendor count matrices and record a SHA256
 manifest per artifact. One QC policy is applied throughout, then library-size
 normalization, log transform, and HVG selection that \emph{force-includes} every
@@ -33,24 +36,15 @@ in feature selection and are not directly comparable to a fully inductive protoc
 \citep{kipf2017gcn}, SpaGCN-style and STAGATE-style models
 \citep{hu2021spagcn,dong2022stagate}, a graph transformer
 \citep{vaswani2017attention}, exact and multi-bandwidth GPs
-\citep{rasmussen2006gp}, and an implicit neural field with Fourier features and
-SIREN activations \citep{tancik2020fourier}. The graph methods were not designed
+\citep{rasmussen2006gp}, an implicit neural field with Fourier features and
+SIREN activations \citep{tancik2020fourier}, and two imputation methods
+originally built to transfer expression from dissociated reference data ---
+Tangram \citep{biancalani2021tangram} and SpaGE \citep{abdelaal2020spage} ---
+adapted here to impute at held-out coordinates within a section. The graph methods were not designed
 to predict at unmeasured coordinates, so each receives the same inverse-distance
 read-out head --- the most favorable choice available --- and is marked
 \emph{-style}, since these are not reproductions of the authors' pipelines. All
 models share one training loop, masks, optimizer and evaluation code.
-
-\paragraph{Metrics.} Per-gene Pearson and Spearman across held-out locations,
-RMSE, SSIM \citep{wang2004ssim} on rasterized maps, and absolute error in Moran's
-$I$ \citep{moran1950}, the last included because correlation and RMSE both reward
-regression toward a smooth mean.
-
-\paragraph{Two scopes.} The \emph{benchmark} spans \MSSections{} sections at
-\MSSeeds{} seeds under a reduced budget and carries every claim about
-generality; the \emph{primary section} (\DiffLenSection{}) is run at the full
-budget with \NSeeds{} seeds and carries the diagnostics that need a converged
-fit. Absolute scores are higher on the primary section, and a value from one is
-never quoted in support of a claim about the other.
 
 \paragraph{Metrics.} Per-gene Pearson and Spearman across held-out locations,
 RMSE, SSIM \citep{wang2004ssim} on rasterized maps, and absolute error in Moran's

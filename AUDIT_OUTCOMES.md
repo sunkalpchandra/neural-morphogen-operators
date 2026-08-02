@@ -88,3 +88,60 @@ So the defect cannot have manufactured a result the paper reports; at worst it
 masks a fourth. The published numbers are conservative with respect to it, and
 regenerating those runs can only add a finding. Reproduced by
 `scripts/eval_noise_sensitivity.py`.
+
+### Two audit checks were no-ops (found 2026-08-02)
+
+Splitting the manuscript into `preamble.tex` + `sections/` broke two of the four
+checks in `scripts/check_numbers.py`, and both continued to report themselves as
+passing.
+
+`check_scope` parsed the `\@for\@nmocmd` stub block out of the section files.
+That block is in the preamble, which `_main_body()` deliberately excludes, so the
+set of stubbed macros was always empty and the provenance comparison ran against
+nothing.
+
+`check_literals` was worse. It initialises `in_preamble = True` and clears the
+flag on `\begin{document}`, which never appears in the concatenated section
+files, so every line was skipped. The hard-coded-numeral sweep -- the check whose
+entire purpose is preventing a number being typed directly into the prose -- had
+scanned zero lines since the split.
+
+Both repaired and both now probed by injection in `tests/test_check_numbers.py`:
+a bare `0.7391` added to `results.tex` is flagged, and the stub parser is
+asserted to recover more than 100 stubs. On the clean tree the sweep finds
+nothing, which is the correct answer -- the prose does route every number through
+a macro.
+
+One assertion in that new file was itself vacuous on first draft (`rep.rows`
+holds tuples, so `getattr(row, "ok", True)` was always `True`). Caught and fixed
+before commit, and recorded in the test.
+
+### Gene panel is selected transductively (found 2026-08-02)
+
+HVG selection runs before the split, so the 2000-gene panel is computed from
+every location including the held-out blocks. Recomputing it on the training
+split alone reproduces 82--84% of it across two sections: up to 365 genes depend
+on having seen held-out data. Applied identically to every model, so it cannot
+bias the comparison, but it does mean absolute accuracies are transductive in
+feature selection. Now stated in the setup section rather than left for a reader
+to discover. Measured by `scripts/hvg_leakage.py`.
+
+### Undefined genes leave every mean silently, but do not bias the comparison
+
+`pearson_per_gene` returns NaN for a gene with no variance across the held-out
+locations, and `evaluate_prediction` aggregates with `_nanmean`, so those genes
+leave the reported mean without being counted anywhere: `n_genes` in the result
+dict is `pred.shape[1]`, the total, not the number scored. On the primary section
+78 of 2079 genes (3.8%) are undefined.
+
+The condition triggers on either argument, so a model that predicted a constant
+for a hard gene would have that gene *excluded* rather than scored near zero,
+which would inflate its mean. Checked directly across seven checkpoints on the
+primary section: every model excludes the same 78 genes, all from the truth
+having no held-out variance. Only the exact GP contributes any of its own, and it
+contributes 2 (0.1% of the panel) in the weakest model in the benchmark.
+
+So this is a reporting gap rather than a fairness problem, and no published
+comparison is affected. Recording `n_genes_scored` is queued as task 101; it was
+deferred rather than applied immediately so that the two halves of an
+in-progress regeneration could not disagree about what they recorded.

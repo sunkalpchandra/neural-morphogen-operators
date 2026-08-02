@@ -139,3 +139,107 @@ def test_specimens_needed_returns_the_cap_when_no_n_would_do():
     assert specimens_needed(np.array([]), max_n=60) == 60
     # a strong effect resolves quickly
     assert specimens_needed(np.ones(10), max_n=60) < 15
+
+
+# --------------------------------------------------------------------------- #
+# Build guard
+# --------------------------------------------------------------------------- #
+
+def test_build_guard_fires_on_a_dataset_missing_from_the_registry():
+    """Task 49. Three sections were once built with no contiguous split and
+    coord_scale_um = 1, because their keys were absent from SPATIAL_KEYS. Both
+    failures are silent downstream: an all-train split gives NaN test metrics,
+    and a unit coordinate scale gives meaningless diffusion lengths in microns.
+    """
+    import numpy as np
+    import pytest as _pt
+    from types import SimpleNamespace
+
+    from src.data.build import _assert_spatial_built
+
+    class FakeAnnData(SimpleNamespace):
+        pass
+
+    import pandas as pd
+
+    def make(split_values, scale):
+        return FakeAnnData(obs=pd.DataFrame({"split": split_values}),
+                           uns={"nmo": {"coord_scale_um": scale}})
+
+    # the real failure: everything landed in one split
+    with _pt.raises(RuntimeError, match="single split value"):
+        _assert_spatial_built(make(["train"] * 10, 3191.0), "visium_x")
+
+    # the other half: coordinates never normalised
+    with _pt.raises(RuntimeError, match="coord_scale_um"):
+        _assert_spatial_built(
+            make(["train"] * 6 + ["val"] * 2 + ["test"] * 2, 1.0), "visium_x")
+
+    # a correctly built section passes both
+    _assert_spatial_built(
+        make(["train"] * 6 + ["val"] * 2 + ["test"] * 2, 3191.0), "visium_x")
+
+
+def test_every_spatial_key_is_a_real_source():
+    """SPATIAL_KEYS is the registry the guard depends on; an entry that names no
+    real dataset would make the guard pass by never being consulted."""
+    from src.data.build import SPATIAL_KEYS
+    from src.data import sources
+
+    known = set()
+    for attr in dir(sources):
+        v = getattr(sources, attr)
+        if isinstance(v, dict):
+            known |= set(v.keys())
+    unknown = [k for k in SPATIAL_KEYS if k not in known]
+    assert not unknown, f"SPATIAL_KEYS entries with no source: {unknown}"
+
+
+# --------------------------------------------------------------------------- #
+# Loaders
+# --------------------------------------------------------------------------- #
+
+def test_loader_rejects_a_truncated_file_rather_than_returning_partial_data():
+    """Task 48. A download or write interrupted partway leaves a file that
+    looks present. The loader must raise: silently returning a section with
+    fewer locations than the manifest records would produce metrics that are
+    real numbers computed on the wrong data, which no downstream check catches.
+    """
+    import tempfile
+    from pathlib import Path
+
+    from src.training.dataset import load_section
+
+    src = Path("data/processed/visium_mouse_brain.h5ad")
+    if not src.exists():
+        pytest.skip("processed section not built")
+
+    raw = src.read_bytes()
+    with tempfile.TemporaryDirectory() as d:
+        bad = Path(d) / "truncated.h5ad"
+        bad.write_bytes(raw[: len(raw) // 2])
+        with pytest.raises(Exception):
+            load_section(bad)
+
+
+def test_loader_rejects_a_file_that_is_not_hdf5_at_all():
+    """An HTML error page saved under a .h5ad name is a real download failure
+    mode and must not be mistaken for data."""
+    import tempfile
+    from pathlib import Path
+
+    from src.training.dataset import load_section
+
+    with tempfile.TemporaryDirectory() as d:
+        bad = Path(d) / "notdata.h5ad"
+        bad.write_text("<html><body>403 Forbidden</body></html>")
+        with pytest.raises(Exception):
+            load_section(bad)
+
+
+def test_loader_rejects_a_missing_file_with_a_clear_error():
+    from pathlib import Path
+
+    from src.training.dataset import load_section
+    with pytest.raises(Exception):
+        load_section(Path("data/processed/does_not_exist.h5ad"))

@@ -140,13 +140,16 @@ def main() -> int:
     exp1 = [r for r in load_json_glob("exp1/**/*.json", results)
             if "model" in r and "pearson_mean" in r]
     if exp1:
+        savefig(F.figure7_benchmark(exp1), figdir / "fig7_benchmark")
+        made.append("fig7_benchmark")
+
+    # Per-gene structure analysis: written by scripts/per_gene_analysis.py,
+    # independent of exp1, so it is guarded on its own artifact.
     pg = Path("results/audit/per_gene.json")
     if pg.exists():
         savefig(F.figure_per_gene(json.loads(pg.read_text())),
                 figdir / "fig_per_gene")
-
-        savefig(F.figure7_benchmark(exp1), figdir / "fig7_benchmark")
-        made.append("fig7_benchmark")
+        made.append("fig_per_gene")
 
     exp2 = [r for r in load_json_glob("exp2/**/*.json", results) if "setting" in r]
     exp3 = [r for r in load_json_glob("exp3/**/*.json", results) if "setting" in r]

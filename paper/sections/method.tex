@@ -5,11 +5,19 @@
 \begin{figure}[t]
   \centering
   \includegraphics[width=\linewidth]{figures/fig1_overview.pdf}
-  \caption{\textbf{Neural Reaction--Diffusion Operator.} Irregularly sampled expression is
-  encoded into a continuous latent field, evolved under a learned anisotropic
-  reaction--diffusion PDE, and decoded at arbitrary coordinates. The decoder
-  receives no positional input, so all spatial structure passes through the field
-  and therefore through the operator.}
+  \caption{\textbf{Neural Reaction--Diffusion Operator.} Every panel is real
+  data from a trained checkpoint on the primary Visium section, not a schematic.
+  \textbf{(a)} Measurements with contiguous blocks held out (pale). \textbf{(b)}
+  The encoded latent field $\vz_0$, one channel. \textbf{(c)} The same channel
+  after $T$ steps of
+  $\partial_t \vz = \nabla\!\cdot\!(\mD_\theta \nabla \vz) + f_\theta(\vz)$,
+  with the diffusion half-step solved exactly in the Fourier domain; the field is
+  visibly smoother, which is both the mechanism and the cost
+  (Section~\ref{sec:limitations}). \textbf{(d)} Expression decoded at every
+  coordinate, including the held-out blocks. \textbf{(e)} Held-out predictions
+  against measurements for one gene. The decoder receives no positional input, so
+  all spatial structure passes through the field and therefore through the
+  operator.}
   \label{fig:overview}
 \end{figure}
 

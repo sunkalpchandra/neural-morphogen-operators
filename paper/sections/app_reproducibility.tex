@@ -2,3 +2,11 @@
  All datasets download automatically with a recorded
 SHA256 manifest; every table and figure in this paper is regenerated from run
 artifacts by a single command; configurations, seeds and checkpoints are released.
+
+\paragraph{Software and sources.} Preprocessing uses Scanpy
+\citep{wolf2018scanpy} over AnnData \citep{virshup2024anndata}; all models are
+trained with AdamW \citep{loshchilov2019adamw} under one shared loop. The
+MERFISH sections are drawn from the Allen whole-brain atlas
+\citep{yao2023wholebrain}, which is why the twelve of them are treated as a
+single specimen throughout Section~\ref{sec:results2} rather than as twelve
+independent samples.

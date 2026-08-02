@@ -304,6 +304,16 @@ def spatial_block_split(
 def random_split(
     adata: ad.AnnData, val_frac: float = 0.15, test_frac: float = 0.20, seed: int = 0
 ) -> np.ndarray:
+    """Random spot-level split. **Not** the protocol any reported number uses.
+
+    A held-out spot keeps its immediate neighbours in the training set, and
+    neighbouring spots are strongly correlated, so this leaks: every model scores
+    far higher here than under ``spatial_block_split`` and the ordering between
+    models can change. Kept only so that the size of that gap can be measured
+    (``experiments/exp12_split_geometry.py``).
+
+    Use ``spatial_block_split`` unless you specifically want the leaky baseline.
+    """
     rng = np.random.default_rng(seed)
     n = adata.n_obs
     perm = rng.permutation(n)

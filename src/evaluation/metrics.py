@@ -35,6 +35,19 @@ def _center(a: np.ndarray) -> np.ndarray:
 
 
 def pearson_per_gene(pred: np.ndarray, true: np.ndarray, eps: float = 1e-12) -> np.ndarray:
+    """Pearson r per column of ``(N, G)`` arrays.
+
+    Genes with no variance across the held-out locations return NaN rather than
+    0: a constant gene has no correlation to measure, and scoring it 0 would
+    silently drag the mean toward zero in proportion to how many such genes a
+    section happens to contain. ``evaluate_prediction`` aggregates with
+    ``_nanmean`` accordingly.
+
+    Note that the number of genes dropped this way is not currently recorded:
+    ``n_genes`` in the result dict is the total, not the number scored. On the
+    primary section 78 of 2079 genes are undefined, so roughly 4% of the panel
+    silently leaves every reported mean.
+    """
     p, t = _center(pred), _center(true)
     num = (p * t).sum(0)
     den = np.linalg.norm(p, axis=0) * np.linalg.norm(t, axis=0)
@@ -46,6 +59,11 @@ def pearson_per_gene(pred: np.ndarray, true: np.ndarray, eps: float = 1e-12) -> 
 
 
 def spearman_per_gene(pred: np.ndarray, true: np.ndarray) -> np.ndarray:
+    """Spearman rho per gene: Pearson on column-wise ranks.
+
+    Ranks are taken over locations, not over genes, so this measures whether a
+    model orders locations correctly for each gene independently.
+    """
     pr = np.apply_along_axis(rankdata, 0, pred)
     tr = np.apply_along_axis(rankdata, 0, true)
     return pearson_per_gene(pr, tr)

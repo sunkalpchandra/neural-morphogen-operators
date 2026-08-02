@@ -199,6 +199,14 @@ python experiments/exp11_difflen_null.py               # diffusion-length null c
 python experiments/exp12_split_geometry.py             # split difficulty (no training)
 python experiments/exp13_spectral.py --mode shape      # spectral-matching sweep
 python experiments/exp14_converged.py                  # converged single-section
+python experiments/exp15_architecture_claims.py        # architecture sensitivity
+
+# Analyses over existing artifacts (no training). All of these together:
+#   make analysis
+python scripts/hvg_leakage.py            # how much of the gene panel needs held-out data
+python scripts/permutation_power.py      # exact permutation cross-check + power
+python scripts/eval_noise_sensitivity.py # could the eval-RNG defect have changed a verdict
+python scripts/per_gene_analysis.py      # per-gene advantage vs spatial structure
 python experiments/make_figures.py                     # figures + tables + numbers
 
 make check-numbers                                     # prose vs artifacts (CI gate)

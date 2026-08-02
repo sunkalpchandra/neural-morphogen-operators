@@ -17,12 +17,15 @@ improves masked-region reconstruction over graph, Gaussian-process, neural-field
 and imputation baselines. Because twelve of those sections come from one brain,
 we take the \emph{specimen} as the unit of analysis and assemble \MSSpecimens{}
 independent ones: the advantage survives Holm correction across the baseline
-family against \MSSpecNSig{} of them, including a graph model. Two controls
+family against \MSSpecNSig{} of them, including a graph model. Controls
 localize it. An exactly parameter-matched ablation, in which the
 $\OpParamPct\%$ of weights forming the operator are left allocated but unused,
-costs $\MatchedNoDynamicsDelta$ Pearson $r$; and a non-spatial baseline sharing
+costs $\MatchedNoDynamicsDelta$ Pearson $r$; a non-spatial baseline sharing
 the read-out head shows message passing contributes at most
-\MSBestGraphOverAE{} against \MSNMOOverAE{} for NRDO. We also prove that a single
+\MSBestGraphOverAE{} against \MSNMOOverAE{} for NRDO; and the per-gene
+advantage tracks how spatially autocorrelated a gene actually is, disappearing
+altogether on the least structured quartile --- the mechanism predicts where the
+model should stop winning, and it does. We also prove that a single
 stationary snapshot determines the reaction network only on a Lebesgue-null
 subset of latent space, delimiting what any method of this class can identify
 from static tissue.
@@ -31,8 +34,8 @@ Two limits are worth stating plainly. The separation is unresolved against the
 strongest graph baseline (\MSSpecGraphWorstModel{}: \MSSpecGraphWins{}
 specimens, $p = \MSSpecGraphWorstP$), so the method is distinguishable from most
 of this literature but not all of it; and the predicted fields are smoother than
-the measurements, on which NRDO trails every baseline tested --- a limitation a
-spectral-matching term bounds but does not remove.
+the measurements, so on spatial autocorrelation error NRDO trails every baseline
+tested --- a limitation a spectral-matching term bounds but does not remove.
 \end{abstract}
 
 % =====================================================================

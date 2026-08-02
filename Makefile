@@ -55,6 +55,17 @@ exp6:
 	$(PY) experiments/exp6_development.py --seeds $(SEEDS) --epochs $(EPOCHS)
 
 # --------------------------------------------------------------- paper
+# Analyses that read existing run artifacts rather than training anything.
+# Each writes to results/audit/ and feeds macros the manuscript quotes, so they
+# have to be regenerable by name, not only by having been run once by hand.
+analysis:
+	$(PY) scripts/hvg_leakage.py
+	$(PY) scripts/permutation_power.py
+	$(PY) scripts/eval_noise_sensitivity.py
+	$(PY) scripts/per_gene_analysis.py
+	$(PY) scripts/error_vs_distance.py
+	$(PY) scripts/verify_theory_trained.py
+
 figures:
 	PYTHONPATH=. $(PY) experiments/make_figures.py --section $(SECTION)
 

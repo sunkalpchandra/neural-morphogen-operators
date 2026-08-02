@@ -21,7 +21,12 @@ unmeasured coordinates---SpaGCN \citep{hu2021spagcn}, STAGATE
 \citep{svensson2018spatialde,sun2020spark}, DestVI \citep{lopez2022destvi}---which
 is why we adapt them for our task (Section~\ref{sec:setup}). Spateo
 \citep{qiu2024spateo} is closest in spirit but targets 3-D reconstruction rather
-than a perturbable operator.
+than a perturbable operator. A separate line imputes unmeasured expression by
+transferring it from dissociated reference data --- Tangram
+\citep{biancalani2021tangram}, SpaGE \citep{abdelaal2020spage} --- which solves
+a different problem than predicting at coordinates a section never sampled. We
+include them because they are what a practitioner reaching for missing expression
+would actually use, not because they were built for this task.
 
 \textbf{Reaction--diffusion formulations} supply our vocabulary
 \citep{turing1952,kondo2010reaction,green2015morphogen} and have been used to

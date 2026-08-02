@@ -11,11 +11,13 @@ rather than a graph improves prediction at unmeasured coordinates against every
 baseline tested under paired tests over sections. At the specimen level --- the
 conservative unit, and the one we regard as decisive --- the separation survives
 family-wise correction against \MSSpecNSig{} baselines including a graph model,
-and fails to resolve only against \MSSpecGraphWorstModel{}. Three controls localize what remains: a
+and fails to resolve only against \MSSpecGraphWorstModel{}. Four controls localize what remains: a
 parameter-matched ablation attributes the gain to the operator rather than to
 capacity, a non-spatial baseline shows message passing contributes little even at
-convergence, and an implicit neural field shows continuity alone is not
-sufficient. On the section whose ordering is budget-dependent, training to
+convergence, an implicit neural field shows continuity alone is not
+sufficient, and the per-gene advantage tracks how spatially autocorrelated each
+gene is --- vanishing on the least structured quartile, where the mechanism
+predicts it should. On the section whose ordering is budget-dependent, training to
 convergence reverses it in our favor.
 
 We are equally explicit about what the evidence does not support.

@@ -121,7 +121,11 @@ def figure1_overview(model=None, section=None) -> plt.Figure:
     # the panels as soon as any width ratio changes.
     fig.canvas.draw()
     boxes = [a.get_position() for a in fig.axes]
-    for left, right in zip(boxes[:3], boxes[1:4]):
+    # The middle arrow is where the entire method acts. Leaving all three
+    # unlabelled made this a data-flow diagram: a reader could follow the
+    # pictures without ever learning what happens between z_0 and z_T.
+    labels = ["encode", None, "decode"]
+    for i, (left, right) in enumerate(zip(boxes[:3], boxes[1:4])):
         gap_l, gap_r = left.x1, right.x0
         if gap_r - gap_l < 0.012:
             continue
@@ -131,6 +135,18 @@ def figure1_overview(model=None, section=None) -> plt.Figure:
             transform=fig.transFigure, width=0.004, head_width=0.022,
             head_length=0.10 * (gap_r - gap_l), color=INK_MUTED,
             length_includes_head=True))
+        mid = 0.5 * (gap_l + gap_r)
+        if i == 1:
+            # The full PDE does not fit a gap this narrow -- the first attempt
+            # ran the equation across both neighbouring panels. It belongs in
+            # the caption; the arrow carries only what it has room for.
+            fig.text(mid, y + 0.05, "evolve", ha="center", va="bottom",
+                     fontsize=5.6, color=INK_SECONDARY)
+            fig.text(mid, y - 0.05, "$T$ steps", ha="center", va="top",
+                     fontsize=5.0, color=INK_MUTED)
+        elif labels[i]:
+            fig.text(mid, y + 0.055, labels[i], ha="center", va="bottom",
+                     fontsize=5.6, color=INK_SECONDARY)
     return fig
 
 
