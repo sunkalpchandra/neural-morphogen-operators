@@ -439,7 +439,14 @@ MACRO_TABLE_PAIRS = [
 
 
 def check_macro_table_agreement(rep: "Report") -> None:
-    """A number in the prose must appear in the table the prose points at."""
+    """A number in the prose must appear in the table the prose cites for it.
+
+    Coverage is the explicit pair list above, not every macro, and only values
+    with a decimal point. Integer-valued macros (percentages like 93, lengths
+    like 375) are excluded on purpose: a bare "93" matches inside "0.937" and
+    the check would pass on coincidence. So this narrows the gap rather than
+    closing it -- it is not evidence that every table agrees with the prose.
+    """
     nums = PAPER / "numbers.tex"
     if not nums.exists():
         return
