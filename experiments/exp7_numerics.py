@@ -31,7 +31,7 @@ import math
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import numpy as np
 import torch
@@ -66,12 +66,23 @@ def cfl_limit(op: ReactionDiffusionOperator, H: int) -> float:
 
 
 def stability_sweep(C: int = 16, H: int = 64, n_steps: int = 300,
-                    seed: int = 0) -> List[Dict]:
+                    seed: int = 0, diffusion_init: float = 0.02,
+                    lattice: Optional[int] = None) -> List[Dict]:
+    """Sweep the step size for each scheme at one operator configuration.
+
+    A single configuration establishes nothing about a scheme whose stability
+    is supposed to be *unconditional*: the interesting claim is that no choice
+    of diffusion magnitude or lattice resolution produces a step-size
+    restriction, and that requires sweeping both. ``sweep_configurations``
+    below calls this across a range of each.
+    """
+    H = lattice or H
     rows = []
     dts = np.logspace(-4, -0.3, 16)
     for name, kw in SCHEMES.items():
         set_seed(seed)
-        op = ReactionDiffusionOperator(DynamicsConfig(channels=C, dt=0.05, n_steps=1, **kw))
+        op = ReactionDiffusionOperator(DynamicsConfig(
+            channels=C, dt=0.05, n_steps=1, diffusion_init=diffusion_init, **kw))
         with torch.no_grad():
             for p in op.reaction.parameters():
                 p.add_(0.3 * torch.randn_like(p))
@@ -86,8 +97,27 @@ def stability_sweep(C: int = 16, H: int = 64, n_steps: int = 300,
                         break
             ok = bool(torch.isfinite(z).all()) and float(z.abs().max()) < 1e3
             rows.append(dict(scheme=name, dt=float(dt), stable=ok,
-                             cfl_limit=limit,
+                             cfl_limit=limit, diffusion_init=diffusion_init,
+                             lattice=H,
                              max_abs=float(z.abs().max()) if torch.isfinite(z).all() else float("inf")))
+    return rows
+
+
+def sweep_configurations(C: int = 16, seed: int = 0) -> List[Dict]:
+    """Stability across diffusion magnitudes and lattice resolutions.
+
+    The claim under test is that the exponential scheme has no step-size
+    restriction anywhere in the regime training reaches, not merely at the
+    configuration the paper happens to use. The diffusion range spans two orders
+    of magnitude around the initialization; the lattice range covers the
+    resolutions the encoder is run at.
+    """
+    rows = []
+    for d0 in (0.002, 0.02, 0.2):
+        for H in (32, 64, 128):
+            for r in stability_sweep(C=C, H=H, seed=seed, diffusion_init=d0,
+                                     lattice=H):
+                rows.append(r)
     return rows
 
 

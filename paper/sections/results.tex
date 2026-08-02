@@ -92,9 +92,12 @@ Training to convergence on the one section whose ordering is budget-dependent
 reverses it in our favor (\ConvNMO{} against \ConvBest{},
 \ConvWins{}/\ConvNPairs{} seeds), so the fixed budget is conservative rather than
 flattering, and the non-spatial autoencoder still matches the graph models there.
-Across \RobAxes{} corruption axes NRDO is not the most robust to noise or
-dropout but retains \RobDensNMO\% of its accuracy at an eighth of the sampling
-density against \RobDensBest\% --- the axis a field-based formulation predicts.
+Under multiplicative count noise and random location dropout all models degrade
+comparably, at a single seed per point which does not support a ranking between
+them; we report them for completeness rather than as a result
+(Appendix~\ref{app:empirical}). Sampling density is the axis a field-based
+formulation actually predicts, and it is reported separately below at a sample
+size that can estimate it.
 A spectral-matching term bounds the over-smoothing rather than removing it:
 $I_{\mathrm{pred}}$ bottoms out at \SpecMinIPred{} against a measured
 \SpecITrue{} at every weight and both forms, so the smoothness belongs to the

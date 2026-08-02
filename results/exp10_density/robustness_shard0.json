@@ -1,0 +1,28 @@
+[
+  {
+    "axis": "density",
+    "level": 1.0,
+    "model": "nmo",
+    "display": "NRDO (ours)",
+    "seed": 0,
+    "n_obs": 36362,
+    "pearson_mean": 0.2292749583721161,
+    "pearson_median": 0.21202994883060455,
+    "spearman_mean": 0.21370822191238403,
+    "rmse": 1.770470142364502,
+    "mae": 1.3616042137145996,
+    "n_locations": 6345,
+    "n_genes": 248,
+    "pearson_per_location": 0.5343096852302551,
+    "ssim_mean": 0.6913980583276463,
+    "ssim_grid": 64,
+    "ssim_occupancy": 0.1953125,
+    "morans_i_pred": 0.9986075240415966,
+    "morans_i_true": 0.25602324516851216,
+    "morans_i_abs_error": 0.7425842788730845,
+    "morans_i_corr": 0.16438897613402204,
+    "gearys_c_pred": 0.0012156278783413562,
+    "gearys_c_true": 0.7445189421685586,
+    "gearys_c_abs_error": 0.7433033142902172
+  }
+]
