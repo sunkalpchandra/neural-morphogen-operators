@@ -1,6 +1,7 @@
 \begin{table}[htbp]
 \centering
-\small
+\footnotesize
+\setlength{\tabcolsep}{3pt}
 \caption{Converged comparison on visium\_mouse\_brain: the full section, no subsampling, trained to a shared early-stopping criterion on held-out validation rather than to a fixed epoch count, 3 seeds. $d_z$ and the win record are paired over seeds against NRDO. This addresses whether the reduced-budget ordering of Table~\ref{tab:multisection} is the converged ordering. It is not: at 200 epochs on this section NRDO scores below the STAGATE-style baseline, and at convergence it scores above it, so the benchmark budget is conservative for NRDO here rather than neutral. Two further points survive convergence --- the non-spatial autoencoder still matches the graph models, so their near-tie is a property of the task and not of undertraining; and NRDO retains the largest error in Moran's $I$, so the over-smoothing is structural. Wall time is single-CPU and is reported because NRDO is several times more expensive than every baseline.}
 \label{tab:converged}
 \begin{tabular}{lrrrrrrrr}

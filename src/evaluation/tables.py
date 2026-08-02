@@ -101,6 +101,18 @@ def _fmt(mean: float, std: float, prec: int = 3, bold: bool = False) -> str:
 def _wrap(body: str, caption: str, label: str, colspec: str, header: str,
           note: str = "", small: bool = True, position: str = "htbp") -> str:
     size = "\\small\n" if small else ""
+    # Wide tables overrun the text block. The build reported three of them
+    # overfull by 50-82pt, which is visible as text running into the margin.
+    # Tightening the intercolumn padding recovers 2*ncol*(6pt - 3pt); at seven
+    # or more columns that is enough, and it is less destructive than
+    # \resizebox, which rescales the font inconsistently between tables.
+    ncol = sum(colspec.count(c) for c in "clr")
+    if ncol >= 7:
+        # tabcolsep alone left the widest still 40pt over; one size step down
+        # closes the rest. Applied by column count rather than per-table so a
+        # regenerated table cannot silently reintroduce the overflow.
+        size = size.replace("\\small", "\\footnotesize")
+        size += "\\setlength{\\tabcolsep}{3pt}\n"
     note_line = f"\\\\[2pt]\n\\multicolumn{{{colspec.count('c') + colspec.count('l') + colspec.count('r')}}}{{p{{0.95\\linewidth}}}}{{\\scriptsize {note}}}\n" if note else ""
     return (
         f"\\begin{{table}}[{position}]\n\\centering\n{size}"
