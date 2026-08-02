@@ -115,7 +115,10 @@ _decl("physics", "DiffLenMedian", "DiffLenLo", "DiffLenHi", "TuringFrac",
 _decl("inventory", "NDatasets", "NSections", "TotalLocations", "NSpatialSections",
       "SpatialLocations", "NPerturbCells")
 _decl("architecture", "OpParams", "TotalParams", "OpParamPct")
-_decl("exp10", "RobRuns", "RobAxes", "RobNoiseNMO", "RobNoiseBest",
+_decl("exp10", "DensSeeds", "DensBase", "DensLevel", "DensNMO", "DensBest",
+      "DensBestModel", "DensWorst", "DensGapLo", "DensGapHi", "DensBothSeeds",
+      "DensFullBestModel", "DensNMOFullRank",
+      "RobRuns", "RobAxes", "RobNoiseNMO", "RobNoiseBest",
       "RobNoiseBestModel", "RobNoiseWins", "RobDropNMO", "RobDropBest",
       "RobDropBestModel", "RobDropWins", "RobDensNMO", "RobDensBest",
       "RobDensBestModel", "RobDensWins")

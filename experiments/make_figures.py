@@ -185,7 +185,10 @@ def main() -> int:
         savefig(F.figure_biology(json.loads(bio.read_text())), figdir / "fig_biology")
         made.append("fig_biology")
 
-    rob = [x for f in sorted(results.glob("exp10/robustness_shard*.json"))
+    # The density panel uses the corrected sweep, whose base is sized so the
+    # sparsest level stays estimable; the original exp10 run is single-seed.
+    rob = [x for f in sorted(results.glob("exp10_density/*.json"))
+           for x in json.loads(Path(f).read_text())] or           [x for f in sorted(results.glob("exp10/robustness_shard*.json"))
            for x in json.loads(Path(f).read_text())]
     if rob:
         savefig(F.figure_robustness(rob), figdir / "fig_robustness")

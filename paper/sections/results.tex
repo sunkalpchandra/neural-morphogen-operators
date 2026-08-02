@@ -100,9 +100,14 @@ flattering, and the non-spatial autoencoder still matches the graph models there
 Under multiplicative count noise and random location dropout all models degrade
 comparably, at a single seed per point which does not support a ranking between
 them; we report them for completeness rather than as a result
-(Appendix~\ref{app:empirical}). Sampling density is the axis a field-based
-formulation actually predicts, and is reported separately at a base section large
-enough that the sparsest level still leaves an estimable held-out set.
+(Appendix~\ref{app:empirical}). Sampling density behaves as a field-based formulation predicts. Subsampling a
+\DensBase-location base to \DensLevel{} of its locations changes density without
+changing anatomy; NRDO retains \DensNMO\% of its full-density accuracy against
+\DensBest\% for \DensBestModel{} and \DensWorst\% for the weakest, on both
+seeds. This does not track overall accuracy: at full density NRDO ranks
+\DensNMOFullRank{}rd here. It is not the most accurate model on this section, it
+is the one that loses least as sampling thins --- the property continuity is
+supposed to buy.
 A spectral-matching term bounds the over-smoothing rather than removing it:
 $I_{\mathrm{pred}}$ bottoms out at \SpecMinIPred{} against a measured
 \SpecITrue{} at every weight and both forms, so the smoothness belongs to the

@@ -568,6 +568,43 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
                         cmd(f"Rob{tag}Wins", "yes" if float(ret["nmo"]) > float(others.max())
                             else "no")
 
+    # ---- Experiment 10b : density on an estimable base ---------------------- #
+    # The original density sweep ran on a section where the sparsest level left
+    # ~70 held-out locations -- below the threshold this project uses to call
+    # Pearson r unestimable -- with one seed, and produced a non-monotone curve.
+    dj = sorted(Path(results_root).glob("exp10_density/*.json"))
+    if dj:
+        DN = pd.DataFrame([x for f in dj for x in json.loads(f.read_text())
+                           if not x.get("failed")])
+        if not DN.empty:
+            piv = DN.pivot_table(index="level", columns="model", values="pearson_mean")
+            ret = (piv / piv.loc[piv.index.max()]).loc[piv.index.min()]
+            cmd("DensSeeds", str(int(DN["seed"].nunique())))
+            cmd("DensBase", f"{int(DN['n_obs'].max()):,}".replace(",", "{,}"))
+            cmd("DensLevel", f"1/{int(round(1/float(piv.index.min())))}")
+            if "nmo" in ret.index:
+                cmd("DensNMO", f"{100*float(ret['nmo']):.0f}")
+                others = ret.drop(index=["nmo"])
+                if len(others):
+                    top = others.idxmax()
+                    cmd("DensBest", f"{100*float(others.max()):.0f}")
+                    cmd("DensBestModel", DISPLAYNAMES.get(top, top))
+                    cmd("DensWorst", f"{100*float(others.min()):.0f}")
+                    # consistency across seeds, since two seeds cannot give a p
+                    gaps = []
+                    for sd in sorted(DN["seed"].unique()):
+                        q = DN[DN["seed"] == sd].pivot_table(
+                            index="level", columns="model", values="pearson_mean")
+                        g = q.loc[q.index.min()] / q.loc[q.index.max()]
+                        gaps.append(float(g["nmo"]) - float(g[top]))
+                    cmd("DensGapLo", f"{100*min(gaps):.1f}")
+                    cmd("DensGapHi", f"{100*max(gaps):.1f}")
+                    cmd("DensBothSeeds", "yes" if all(g > 0 for g in gaps) else "no")
+            full = piv.loc[piv.index.max()]
+            cmd("DensFullBestModel", DISPLAYNAMES.get(full.idxmax(), full.idxmax()))
+            cmd("DensNMOFullRank",
+                str(int((full.sort_values(ascending=False).index == "nmo").argmax() + 1)))
+
     # ---- Experiment 13 : spectral matching --------------------------------- #
     sj = Path(results_root) / "exp13" / "spectral_sweep.json"
     if sj.exists():

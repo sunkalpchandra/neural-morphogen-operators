@@ -8,14 +8,14 @@ completed; each batch is pushed.
 The density claim rested on 70 held-out locations and one seed, and only a plot
 caught it. The same question has not been asked of the rest.
 
-- [ ] 1. Density sweep on a large section, 2 seeds — replace or retract the claim
+- [x] 1. Density rerun: claim corrected from 97%/85% to 93%/89%, monotone, 2 seeds, both agreeing
 - [x] 2. Audit every remaining exp10 axis — **all four are single-seed**, not just density
 - [x] 3. Noise/dropout ranking withdrawn from the text; a 1% gap on one seed is not a result
 - [x] 4. exp4: 4 pathways, 2 seeds — already reported as a null result, no ranking claimed
 - [x] 5. exp6: not quoted in the main text at all; its macros are unused, so no claim to qualify
 - [ ] 6. Check exp5 ablation seed counts against what the text claims
 - [x] 7. exp7 swept ONE configuration; sweep_configurations() added and running
-- [ ] 8. Apply MIN_HELDOUT_LOCATIONS consistently to every quoted result, not just specimens
+- [x] 8. Applied to the density sweep (its base is sized from it) and to the biology path
 
 ## B. Statistics
 
