@@ -161,7 +161,13 @@ def main() -> int:
         corr_lo=min(rhos), corr_hi=max(rhos),
         top_quartile_lo=min(tops), top_quartile_hi=max(tops),
         bottom_quartile_lo=min(lows), bottom_quartile_hi=max(lows),
-        top_gains=gains, top_losses=losses), indent=2))
+        top_gains=gains, top_losses=losses,
+        # Per-gene vectors so a figure can show the distribution rather than
+        # replotting the quartile means a second time. Rounded to keep the
+        # artifact small; the analysis above uses full precision.
+        gene_structure=[round(float(x), 4) for x in struct],
+        gene_advantage=[None if not np.isfinite(v) else round(float(v), 4)
+                        for v in mean_adv]), indent=2))
     print(f"wrote {dest}")
     return 0
 

@@ -74,6 +74,19 @@ capacity advantage would not produce. Each seed is compared against whichever
 baseline is strongest for that seed, so the margin is not obtained by fixing a
 weak opponent.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_per_gene}
+\caption{\textbf{The advantage appears only where there is spatial structure to
+exploit.} Left: every gene, held-out per-gene Pearson $r$ against the strongest
+baseline, versus the Moran's $I$ of the measured signal; the running mean rises
+from zero to roughly \GeneTopHi{}. Right: quartile means, bars spanning the
+range across \GeneSeeds{} seeds. The least-structured quartile straddles zero.
+This is a sharper test than any aggregate number because the mechanism predicts
+where the model should \emph{stop} winning, and it does.}
+\label{fig:pergene}
+\end{figure}
+
 The cost is smoothness. NRDO is second on SSIM behind \MSBestAnySSIMModel{}
 (\MSNMOSSIM{} against \MSBestAnySSIM{}) and has by some margin the largest error
 in Moran's $I$ (\MSNMOMoran{} against \MSBestAnyMoran{} for

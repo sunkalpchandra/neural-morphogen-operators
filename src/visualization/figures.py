@@ -980,3 +980,67 @@ def figure_evidence(converged, robustness, spectral, biology) -> plt.Figure:
 
     fig.subplots_adjust(left=0.075, right=0.99, top=0.79, bottom=0.30, wspace=0.62)
     return fig
+
+
+def figure_per_gene(per_gene: Dict) -> plt.Figure:
+    """Where the advantage lives: per-gene margin against spatial structure.
+
+    The continuity argument predicts the advantage should vanish on genes with
+    no spatial structure, and that is a sharper claim than any aggregate number
+    because it says where the model should *stop* winning. The left panel shows
+    every gene; the right shows the quartile means with the across-seed range,
+    so the reader can see the least-structured quartile straddling zero rather
+    than take it on assertion.
+    """
+    set_style()
+    fig, axes = plt.subplots(1, 2, figsize=(WIDTH_FULL, 1.7),
+                             gridspec_kw=dict(width_ratios=[1.25, 1.0]))
+    seeds = per_gene.get("seeds", [])
+    if not seeds:
+        for ax in axes:
+            ax.axis("off")
+        return fig
+
+    ax = axes[0]
+    # Every gene, not the quartile means: the right panel already shows those,
+    # and plotting the same four numbers twice would make the pair decorative.
+    gx = np.asarray(per_gene.get("gene_structure", []), dtype=float)
+    ga = np.array([np.nan if v is None else v
+                   for v in per_gene.get("gene_advantage", [])], dtype=float)
+    m = np.isfinite(gx) & np.isfinite(ga)
+    ax.scatter(gx[m], ga[m], s=1.6, alpha=0.28, linewidths=0,
+               color=MODEL_COLORS.get("nmo", "#1f77b4"), rasterized=True)
+    # running mean over structure, so the trend is visible through the cloud
+    if m.sum() > 40:
+        o = np.argsort(gx[m])
+        xs, ys = gx[m][o], ga[m][o]
+        w = max(25, len(xs) // 25)
+        k = np.ones(w) / w
+        ax.plot(xs[w - 1:], np.convolve(ys, k, mode="valid"),
+                color="0.1", lw=1.0, label=f"running mean ({w} genes)")
+        ax.legend(fontsize=5.0, frameon=False, loc="upper left")
+    ax.axhline(0, color="0.55", lw=0.6, ls="--", zorder=0)
+    ax.set_xlabel("Moran's $I$ of measured expression")
+    ax.set_ylabel("per-gene $\\Delta r$ vs best baseline")
+    rl, rh = per_gene.get("corr_lo"), per_gene.get("corr_hi")
+    ax.set_title(f"{int(m.sum())} genes, $r$ = {rl:+.2f} to {rh:+.2f} across seeds"
+                 if rl is not None else f"{int(m.sum())} genes", fontsize=6.5)
+
+    ax = axes[1]
+    nq = len(seeds[0]["bins"])
+    means = [np.mean([s["bins"][i]["delta"] for s in seeds]) for i in range(nq)]
+    lo = [min(s["bins"][i]["delta"] for s in seeds) for i in range(nq)]
+    hi = [max(s["bins"][i]["delta"] for s in seeds) for i in range(nq)]
+    x = np.arange(nq)
+    ax.bar(x, means, color=["0.75", "0.65", "0.5", "0.25"], width=0.68)
+    ax.errorbar(x, means, yerr=[np.array(means) - np.array(lo),
+                                np.array(hi) - np.array(means)],
+                fmt="none", ecolor="0.15", elinewidth=0.7, capsize=1.6)
+    ax.axhline(0, color="0.15", lw=0.7)
+    ax.set_xticks(x)
+    ax.set_xticklabels(["Q1\nleast", "Q2", "Q3", "Q4\nmost"], fontsize=5.5)
+    ax.set_xlabel("spatial-structure quartile")
+    ax.set_ylabel("$\\Delta r$")
+    ax.set_title("no structure, no advantage", fontsize=6.5)
+    fig.tight_layout(pad=0.35)
+    return fig
