@@ -418,6 +418,45 @@ def check_coherence(rep: Report, results: Path) -> None:
 # 5. Hard-coded numerals in the main body
 # --------------------------------------------------------------------------- #
 
+#: (macro, table file, what it is) -- a number the prose quotes that must also
+#: appear in the table the prose cites for it. The biology table showed NRDO at
+#: 1.127 while \BioARIRet, computed from the same artifact, said 0.485; nothing
+#: compared the two because every existing coherence check compares tables to
+#: other tables.
+MACRO_TABLE_PAIRS = [
+    ("BioARIRetMean", "tab_biology", "NRDO ARI retention"),
+    ("BioARIRetBestMean", "tab_biology", "best-baseline ARI retention"),
+    ("MSNMOPearson", "tab_multisection", "NRDO benchmark Pearson"),
+]
+
+
+def check_macro_table_agreement(rep: "Report") -> None:
+    """A number in the prose must appear in the table the prose points at."""
+    nums = PAPER / "numbers.tex"
+    if not nums.exists():
+        return
+    text = nums.read_text()
+    for macro, table, what in MACRO_TABLE_PAIRS:
+        m = re.search(r"\\newcommand\{\\" + macro + r"\}\{(.*)\}", text)
+        tab = PAPER / "tables" / f"{table}.tex"
+        if not m or not tab.exists():
+            continue
+        # leading numeric value, ignoring \ensuremath and any +- part
+        v = re.search(r"-?\d+\.\d+", m.group(1))
+        if not v:
+            continue
+        val = v.group(0)
+        body = tab.read_text()
+        ok = val in body
+        if not ok:
+            # allow the table to round one place shorter
+            ok = val[:-1] in body and len(val.split(".")[-1]) > 2
+        rep.add(f"\\{macro}", f"{table}.tex", "prose vs table", val,
+                f"{what}: {val} appears in {table}" if ok else
+                f"{what}: prose says {val}; {table} does not contain it -- the "
+                f"table and the macro were computed under different rules", ok)
+
+
 def check_sample_sizes(rep: Report, results: Path) -> None:
     """Fail when a quoted statistic rests on less than it needs.
 
@@ -557,6 +596,7 @@ def main() -> int:
         check_freshness(rep, results)
     check_scope(rep)
     check_coherence(rep, results)
+    check_macro_table_agreement(rep)
     check_sample_sizes(rep, results)
     check_spelling(rep)
     check_literals(rep)
