@@ -988,12 +988,17 @@ def table_headline(records: List[Dict], out: Path, reference: str = "nmo") -> st
     analysis. They belong side by side: the mean says how much, the specimen
     columns say whether it holds across independent tissue.
     """
-    from .statistics import paired_comparison, by_specimen, stars, MIN_HELDOUT_LOCATIONS
+    from .statistics import by_specimen, paired_comparison, size_eligible_frame, stars
 
     df = pd.DataFrame([r for r in records if "pearson_mean" in r and not r.get("failed")])
     if df.empty:
         return ""
-    df = df[df.get("n_obs_used", 10 ** 9) >= 4 * MIN_HELDOUT_LOCATIONS]
+    # Was df[df.get("n_obs_used", 10**9) >= ...]. DataFrame.get returns the
+    # column when present and the scalar default when absent, so on records
+    # lacking the column this indexes with a bare True rather than filtering --
+    # the same shape as the df.get("mode", "full") bug that once silently
+    # dropped half a figure's data.
+    df = size_eligible_frame(df)
     per = df.groupby(["section", "model"])[["pearson_mean", "morans_i_abs_error"]].mean()
     per = per.reset_index()
     ref_secs = set(per.loc[per["model"] == reference, "section"])
