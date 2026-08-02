@@ -212,3 +212,26 @@ def test_every_table_over_exp8_applies_the_same_size_rule():
                 f"below the {4 * MIN_HELDOUT_LOCATIONS} the rule requires")
             assert " 7 " not in text.replace("\\", " "), (
                 f"tab_{name} counted 7 sections; only 6 are eligible")
+
+    # The figure consumes the same records and its caption quotes \MSSections,
+    # so it has to drop the same section or the plot and its caption disagree.
+    import matplotlib
+    import numpy as np
+    matplotlib.use("Agg")
+    from src.visualization.figures import figure_multisection
+    import pandas as pd
+    fig = figure_multisection(rows)
+    # Inspect what was actually plotted, not what a re-implementation of the
+    # filter would produce: the first draft of this assertion re-filtered the
+    # fixture with pandas and asserted on that, which tests nothing about the
+    # figure. The undersized section sits at (0.99, 0.98) and would be visible
+    # as a plotted point if it survived.
+    # Panel (a) is one point per section. Count them: an earlier draft matched on
+    # the coordinate pair (0.99, 0.98) and still passed with the filter disabled,
+    # because the panel plots (baseline, reference) and the point is at
+    # (0.98, 0.99). A count does not depend on getting the axis order right.
+    pts = sum(len(c.get_offsets()) for c in fig.axes[0].collections
+              if c.get_offsets() is not None)
+    assert pts == 6, (
+        f"panel (a) plotted {pts} points for 6 eligible sections; the undersized "
+        f"section its caption excludes appears to have survived")

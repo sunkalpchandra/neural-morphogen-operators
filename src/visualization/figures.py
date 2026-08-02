@@ -715,9 +715,15 @@ def figure_multisection(records: List[Dict], reference: str = "nmo") -> plt.Figu
     """Per-section paired view of the benchmark, plus effect sizes."""
     set_style()
     import pandas as pd
-    from ..evaluation.statistics import paired_comparison
+    from ..evaluation.statistics import MIN_HELDOUT_LOCATIONS, paired_comparison
 
     df = pd.DataFrame([r for r in records if "pearson_mean" in r and not r.get("failed")])
+    # Same size rule as the tables and the specimen-level analysis. Without it
+    # this figure plotted a section (visium_human_heart, 331 held-out locations
+    # against a threshold of 800) that the text names as excluded, so the figure
+    # and its own caption disagreed about how many sections the benchmark spans.
+    if "n_obs_used" in df.columns:
+        df = df[df["n_obs_used"] >= 4 * MIN_HELDOUT_LOCATIONS]
     per = df.groupby(["section", "model"])["pearson_mean"].mean().unstack("model")
     others = [c for c in per.columns if c != reference]
     fig, axes = plt.subplots(1, 3, figsize=(WIDTH_FULL, 1.35),
