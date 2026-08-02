@@ -52,3 +52,26 @@ reading the commit log.
 `make check-numbers` now gates the first class of defect: freshness by
 regenerate-and-diff, macro provenance against a declared registry, cross-table
 coherence, and a hard-coded-numeral sweep.
+
+### Held-out scores for three baselines were partly a random draw (found 2026-08-02)
+
+`GPSpatialBaseline`, `MultiScaleGPBaseline`, `TangramStyleBaseline` and
+`SpaGEStyleBaseline` subsample their conditioning set with `torch.randperm` inside
+`forward`, with no train/eval distinction. Every scoring pass therefore drew a new
+subset, and the returned metric depended on global RNG state at the moment of the
+call rather than on the checkpoint alone.
+
+Measured on one `gp` checkpoint scored ten times: Pearson r ranged 0.1383--0.1611,
+a spread of 0.0227. The across-seed s.d. for the same model is smaller than that,
+so the error bars reported for these baselines understate their true variability,
+and best-checkpoint selection on validation was partly selecting which subset the
+model happened to draw.
+
+Fixed: `_inducing_subset()` resamples in training and uses a fixed subset in eval.
+Verified spread is exactly 0 after the change. Pinned by
+`test_baseline_scoring_does_not_depend_on_global_rng_state`.
+
+**Affects 99 recorded runs** (gp 19, spage 34, tangram 46), which predate the fix
+and are queued for regeneration. This does not change any ranking in the paper --
+the GP sits at ~0.15 against NRDO's 0.245, far outside the wobble -- but the
+numbers on disk do not yet match the code that would produce them.

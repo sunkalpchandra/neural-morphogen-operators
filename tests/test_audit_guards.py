@@ -140,3 +140,29 @@ def test_headline_numbers_are_pinned():
     assert macro("MSSpecNSig") == "3"
     assert "0.190" in macro("MSNMOPearson") or macro("MSNMOPearson").startswith("0.1")
     assert macro("MSExcluded").replace("\\", "") == "visium_human_heart"
+
+
+def test_baseline_scoring_does_not_depend_on_global_rng_state():
+    """Task 26. Four baselines drew a fresh inducing-point subset on every
+    forward pass, including in eval. The same GP checkpoint scored ten times
+    spanned 0.023 Pearson r -- wider than its across-seed spread -- so its
+    reported number was partly a draw rather than a property of the model.
+
+    Scoring twice under different global RNG state must give the same answer.
+    """
+    import torch
+    from src.models.baselines import _inducing_subset
+
+    dev = torch.device("cpu")
+    torch.manual_seed(0)
+    a = _inducing_subset(5000, 1024, dev, training=False)
+    torch.manual_seed(999)
+    b = _inducing_subset(5000, 1024, dev, training=False)
+    assert torch.equal(a, b), "eval subset moved with the global seed"
+
+    # training keeps resampling: that is the intended stochastic scheme
+    torch.manual_seed(0)
+    c = _inducing_subset(5000, 1024, dev, training=True)
+    torch.manual_seed(999)
+    d = _inducing_subset(5000, 1024, dev, training=True)
+    assert not torch.equal(c, d), "training subset is frozen; resampling was lost"

@@ -299,6 +299,21 @@ class GraphTransformerBaseline(nn.Module):
 # --------------------------------------------------------------------------- #
 
 
+def _inducing_subset(n_total: int, n_keep: int, device, training: bool) -> torch.Tensor:
+    """Pick the subset of visible locations these baselines condition on.
+
+    Training resamples, which is the usual stochastic-inducing-point scheme.
+    Evaluation must not: drawing a fresh subset on every forward pass made the
+    score a function of global RNG state rather than of the checkpoint, and the
+    same GP checkpoint scored ten times spanned 0.023 Pearson r -- wider than
+    its across-seed spread. Held-out numbers have to be a property of the model.
+    """
+    if training:
+        return torch.randperm(n_total, device=device)[:n_keep]
+    g = torch.Generator().manual_seed(0)
+    return torch.randperm(n_total, generator=g).to(device)[:n_keep]
+
+
 class GPSpatialBaseline(nn.Module):
     """Exact GP regression per gene with a shared learnable RBF kernel.
 
@@ -331,7 +346,7 @@ class GPSpatialBaseline(nn.Module):
         )
         cv, ev = coords[vis], expr[vis]
         if cv.shape[0] > self.n_inducing:
-            sel = torch.randperm(cv.shape[0], device=cv.device)[: self.n_inducing]
+            sel = _inducing_subset(cv.shape[0], self.n_inducing, cv.device, self.training)
             cv, ev = cv[sel], ev[sel]
 
         K = self._k(cv, cv)
@@ -473,7 +488,7 @@ class MultiScaleGPBaseline(nn.Module):
             coords.shape[0], dtype=torch.bool, device=coords.device)
         cv, ev = coords[vis], expr[vis]
         if cv.shape[0] > self.n_inducing:
-            sel = torch.randperm(cv.shape[0], device=cv.device)[: self.n_inducing]
+            sel = _inducing_subset(cv.shape[0], self.n_inducing, cv.device, self.training)
             cv, ev = cv[sel], ev[sel]
 
         preds = []
@@ -548,7 +563,7 @@ class TangramStyleBaseline(nn.Module):
             coords.shape[0], dtype=torch.bool, device=coords.device)
         cv, ev = coords[vis], expr[vis]
         if cv.shape[0] > self.n_anchor:
-            sel = torch.randperm(cv.shape[0], device=cv.device)[: self.n_anchor]
+            sel = _inducing_subset(cv.shape[0], self.n_anchor, cv.device, self.training)
             cv, ev = cv[sel], ev[sel]
 
         # expression similarity in a learned space, as in the Tangram objective
@@ -598,7 +613,7 @@ class SpaGEStyleBaseline(nn.Module):
             coords.shape[0], dtype=torch.bool, device=coords.device)
         cv, ev = coords[vis], expr[vis]
         if cv.shape[0] > self.n_anchor:
-            sel = torch.randperm(cv.shape[0], device=cv.device)[: self.n_anchor]
+            sel = _inducing_subset(cv.shape[0], self.n_anchor, cv.device, self.training)
             cv, ev = cv[sel], ev[sel]
         if cv.shape[0] < 2:
             return {"pred": expr.mean(0, keepdim=True).expand(q.shape[0], -1),
