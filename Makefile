@@ -1,4 +1,4 @@
-.PHONY: workshop papers help data download build experiments all-experiments exp1 exp2 exp3 exp4 exp5 exp6 figures paper clean-runs test reevaluate finalize check-numbers
+.PHONY: ci manifest workshop papers help data download build experiments all-experiments exp1 exp2 exp3 exp4 exp5 exp6 figures paper clean-runs test reevaluate finalize check-numbers
 
 # Use the project venv when present, otherwise whatever python is on PATH
 # (conda users, CI, etc.). Override with `make PY=python3.11 ...`.
@@ -83,6 +83,17 @@ test:
 # prose edit and before every commit; it is also the CI gate.
 check-numbers:
 	PYTHONPATH=. $(PY) scripts/check_numbers.py --results results
+
+# Everything a reviewer or CI should be able to run in one command: the unit
+# tests, the prose-vs-artifact audit, and both PDF builds. Non-zero exit on any
+# failure, so it is usable as a gate rather than as a report.
+ci: test check-numbers papers
+	@echo "CI: tests, number audit and both builds passed"
+
+# Recompute the SHA256 manifest over processed artifacts, so a claim of
+# reproducibility can be checked rather than asserted.
+manifest:
+	PYTHONPATH=. $(PY) scripts/write_manifest.py
 
 # Regenerate every derived artifact from run results, in dependency order.
 finalize:

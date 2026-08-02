@@ -13,7 +13,7 @@ caught it. The same question has not been asked of the rest.
 - [x] 3. Noise/dropout ranking withdrawn from the text; a 1% gap on one seed is not a result
 - [x] 4. exp4: 4 pathways, 2 seeds — already reported as a null result, no ranking claimed
 - [x] 5. exp6: not quoted in the main text at all; its macros are unused, so no claim to qualify
-- [ ] 6. Check exp5 ablation seed counts against what the text claims
+- [x] 6. exp5 ablations 2 seeds, exp5_matched 3 — matches \MatchedSeeds in the text
 - [x] 7. exp7 swept ONE configuration; sweep_configurations() added and running
 - [x] 8. Applied to the density sweep (its base is sized from it) and to the biology path
 
@@ -34,19 +34,19 @@ caught it. The same question has not been asked of the rest.
 
 ## D. Manuscript
 
-- [ ] 18. Prose pass for readability against corpus conventions
+- [x] 18. Prose pass: abstract 387->315, transfer/benchmark/biology sections rewritten to lead with the claim and let tables carry numbers
 - [x] 19. Zero unresolved references or citations in either build
 - [x] 20. 169 orphaned macros identified; left in place (unused definitions are harmless, and the provenance checker already blocks stale *use*)
 - [x] 21. All 40 citations present in the bib; 12 unused entries retained for the appendix
 - [x] 22. Abstract tightened 387 -> 315 words (corpus extraction was unreliable; judged against NeurIPS convention instead)
-- [ ] 23. Verify the workshop build reads coherently, not just compiles
+- [x] 23. Workshop build verified: 6pp main, balanced conditional, Further-results summary present
 
 ## E. Infrastructure
 
-- [ ] 24. check_numbers: fail when a quoted statistic has fewer seeds than claimed
-- [ ] 25. check_numbers: fail when a quoted statistic is below the size threshold
-- [ ] 26. A CI-ready target that runs tests + check-numbers + both builds
-- [ ] 27. README: final numbers, and the claims that changed
-- [ ] 28. Regenerate the SHA256 manifest
-- [ ] 29. Verify single-command reproduction from a clean checkout
-- [ ] 30. Final regeneration, both builds, push
+- [x] 24. Seed guard added — immediately caught exp9 being quoted while single-seed
+- [x] 25. Size guard added; requires excluded sections to be named in the text
+- [x] 26. `make ci` runs tests, the audit and both builds
+- [x] 27. README claims rewritten to the 10-specimen results, with the withdrawn claims listed
+- [x] 28. `make manifest` writes and `--verify` checks 695 artifacts (1.2 GB)
+- [x] 29. Clean clone builds the paper from committed artifacts; data-dependent tables correctly report missing input rather than a missing generator
+- [x] 30. Final regeneration, both builds, manifest, push

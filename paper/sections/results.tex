@@ -121,8 +121,10 @@ analyses a biologist would run on it, so we cluster the \emph{predicted}
 expression at held-out locations and score it against annotations shipped with
 the public data, over \BioSections{} sections with reference labels
 (Appendix~\ref{app:empirical}, Table~\ref{tab:biology}). NRDO retains
-\BioARIRet{} of the adjusted Rand index obtainable from the measured data against
-\BioARIRetBest{} for the best baseline.
+\BioARIRet{} of the adjusted Rand index obtainable from the measured data,
+against \BioARIRetBest{} for the closest baseline. This evaluation uses one seed
+per configuration, so we read the ordering as indicative rather than established
+(Appendix~\ref{app:empirical}, Table~\ref{tab:samplesizes}).
 
 Across \BioSections{} annotated sections NRDO separates from the neural field
 but not from the graph baselines: against \MSBestBaseline{} the ARI-retention

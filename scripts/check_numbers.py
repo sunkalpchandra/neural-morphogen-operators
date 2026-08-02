@@ -228,10 +228,23 @@ def check_freshness(rep: Report, results: Path) -> None:
 
         # A table checked into paper/ that nothing regenerates is unverifiable.
         generated = {p.name for p in tmp.glob("tables/*.tex")}
+        # A table can fail to regenerate for two very different reasons: nothing
+        # calls its generator (the defect that let stale tables ship), or its
+        # input is simply absent, which is the normal state of a fresh clone
+        # since data/ is gitignored. Reporting them identically sent a clean
+        # checkout chasing a bug that was not there.
+        summary_missing = not Path("data/processed/SUMMARY.json").exists()
+        DATA_DEPENDENT = {"tab_data.tex", "tab_datasets.tex"}
         for live in sorted((PAPER / "tables").glob("*.tex")):
-            if live.name not in generated and live.name != "tab_theory.tex":
-                rep.add(live.name, str(live.relative_to(ROOT)), "none", "-",
-                        "no generator reachable from build_all()", False)
+            if live.name in generated or live.name == "tab_theory.tex":
+                continue
+            if live.name in DATA_DEPENDENT and summary_missing:
+                rep.add(live.name, str(live.relative_to(ROOT)), "data/processed",
+                        "-", "input absent (run `make data`); not a missing "
+                             "generator", True)
+                continue
+            rep.add(live.name, str(live.relative_to(ROOT)), "none", "-",
+                    "no generator reachable from build_all()", False)
 
 
 # --------------------------------------------------------------------------- #
@@ -385,6 +398,72 @@ def check_coherence(rep: Report, results: Path) -> None:
 # 5. Hard-coded numerals in the main body
 # --------------------------------------------------------------------------- #
 
+def check_sample_sizes(rep: Report, results: Path) -> None:
+    """Fail when a quoted statistic rests on less than it needs.
+
+    Two claims in this paper shipped on inadequate samples: a robustness number
+    from one seed, and a specimen whose held-out set was too small to estimate
+    the metric being compared. Both were caught by eye. These checks are the
+    mechanical version.
+    """
+    import json as _json
+    sys.path.insert(0, str(ROOT))
+    from src.evaluation.statistics import MIN_HELDOUT_LOCATIONS
+
+    body = _sources()
+
+    # (a) any experiment whose macros are quoted must have >= 2 seeds, unless
+    #     the prose explicitly declines to rank on it.
+    # Experiments the text explicitly declines to rank on. Adding one here
+    # is a commitment that the prose says so, not a way to silence the check.
+    SINGLE_SEED_OK = {"exp10", "exp9"}
+    for src, pat in [("exp8", "exp8/results_shard*.json"),
+                     ("exp14", "exp14/converged.json"),
+                     ("exp13", "exp13/spectral_sweep.json"),
+                     ("exp11", "exp11/difflen_null.json"),
+                     ("exp9", "exp9/biology.json")]:
+        rows = []
+        for f in results.glob(pat):
+            try:
+                d = _json.loads(f.read_text())
+                rows += d if isinstance(d, list) else [d]
+            except Exception:
+                continue
+        rows = [r for r in rows if isinstance(r, dict) and not r.get("failed")]
+        if not rows:
+            continue
+        seeds = len({r.get("seed") for r in rows if "seed" in r})
+        quoted = any(m in body for m, s_ in PROVENANCE.items() if s_ == src)
+        if not quoted:
+            continue
+        ok = seeds >= 2 or src in SINGLE_SEED_OK
+        rep.add(f"{src} seeds", "sample size", src, str(seeds),
+                "adequate" if ok else
+                "quoted in prose but single-seed; either add seeds or stop "
+                "ranking models on it", ok)
+
+    # (b) no section below the estimability threshold may reach the benchmark
+    rows = []
+    for f in results.glob("exp8/results_shard*.json"):
+        try:
+            rows += _json.loads(f.read_text())
+        except Exception:
+            continue
+    small = sorted({r["section"] for r in rows
+                    if isinstance(r, dict) and not r.get("failed")
+                    and r.get("n_obs_used", 10 ** 9) < 4 * MIN_HELDOUT_LOCATIONS})
+    if small:
+        # The text names them through a macro, so accept either the literal
+        # section name or the macro that expands to it.
+        flat = body.replace("\\_", "").replace("_", "")
+        named = all(sec.replace("_", "") in flat for sec in small) or \
+            ("MSExcluded" in body and "BioExcluded" in body)
+        rep.add("undersized sections", "sample size", "exp8",
+                ", ".join(small),
+                "excluded and named in the text" if named else
+                "excluded from the analysis but not named in the text", named)
+
+
 def check_literals(rep: Report) -> None:
     body = _main_body(TEX.read_text())
     lines = body.split("\n")
@@ -424,6 +503,7 @@ def main() -> int:
         check_freshness(rep, results)
     check_scope(rep)
     check_coherence(rep, results)
+    check_sample_sizes(rep, results)
     check_literals(rep)
 
     w = [max(len(str(r[i])) for r in rep.rows) if rep.rows else 8 for i in range(5)]

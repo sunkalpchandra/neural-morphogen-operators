@@ -29,33 +29,32 @@ measured.
 This matters more than the benchmark numbers, so it comes first.
 
 **Claimed.** Treating tissue as a continuous field rather than a discrete graph
-improves prediction at unmeasured coordinates: across 17 sections and four
-technologies NRDO beats every baseline under paired tests, and at the specimen
-level — the conservative unit — it wins on all 5 independent specimens against
-the continuous baselines. An exactly parameter-matched control attributes the
-gain to the operator rather than to capacity. The model degrades most gracefully
-under **sampling-density** loss, which is the axis a field-based formulation
-predicts and the one place it clearly beats the graph baselines.
+improves prediction at unmeasured coordinates. Across 22 sections and four
+technologies, and at the conservative unit of analysis — 10 **independent
+specimens**, since twelve of the sections are serial sections of one brain — the
+advantage survives Holm correction against three baselines including a graph
+model. An exactly parameter-matched control attributes the gain to the operator
+rather than to capacity. The model degrades most gracefully under
+**sampling-density** loss, retaining 93% of its accuracy at an eighth of the
+locations against 89% for the best baseline, on both seeds — the axis a
+field-based formulation predicts.
 
 **Not claimed — and several of these were claimed in earlier revisions until a
 control said otherwise.**
 
-- *Not* that the fitted operator recovers real biochemistry. Standard spatial
-  transcriptomics measures a tissue **once**; many operators produce the same
-  stationary field, so the PDE is identified only up to the quasi-steady-state
-  assumption and the architecture's inductive bias (Theorem 11).
-- *Not* that the recovered diffusion length is a biological measurement. It is
-  close to its own initialization: sections with coordinates **shuffled**, which
-  contain no spatial signal at all, recover 404 µm against 405 µm untrained,
-  while real tissue gives 375 µm. See `experiments/exp11_difflen_null.py`.
-- *Not* that the operator transfers. Under the held-out-block protocol used
-  everywhere else in this work it reaches 0.002 Pearson *r* cross-tissue against
-  a training-mean floor of 0.000. An earlier random-half protocol suggested
-  otherwise; it was scoring interpolation between neighbouring spots.
-- *Not* that NRDO separates from **graph** baselines with statistical
-  confidence. At the specimen level *d_z* = 0.32–0.81 over 5 specimens, ahead on
-  3 of 5. More independent tissues, not more sections of one brain, is what
-  would settle it.
+- *Not* that the fitted operator recovers real biochemistry (Theorem 11).
+- *Not* that the recovered diffusion length is a biological measurement.
+  Coordinate-**shuffled** sections, containing no spatial signal, recover 404 µm
+  against 405 µm untrained; real tissue gives 375 µm. `exp11_difflen_null.py`.
+- *Not* that the operator transfers. Under the held-out-block protocol it reaches
+  −0.005 Pearson *r* cross-tissue against a training-mean floor of 0.000. An
+  earlier random-half protocol suggested otherwise; it was scoring interpolation
+  between neighbouring spots.
+- *Not* that NRDO separates from **STAGATE-style** with statistical confidence:
+  7 of 10 specimens, *p* = 0.43. It is distinguishable from most of this
+  literature, not all of it.
+- *Not* that NRDO is the most accurate model everywhere. At full sampling density
+  on the section used for the robustness sweep it ranks third.
 
 The honest framing is: **NRDO learns latent continuous operators that summarize
 spatial gene-expression organization within a section.**
@@ -65,6 +64,12 @@ Known failure mode, reported rather than hidden: predictions are systematically
 Moran's *I* error. This survives training to convergence, and a spectral-matching
 loss bounds rather than removes it (`experiments/exp13_spectral.py`), so the
 limitation belongs to the operator class rather than to the objective.
+
+Every claim above is checked against the run artifacts by `make check-numbers`,
+which fails when prose and artifacts disagree, when a macro is quoted outside the
+experiment it derives from, or when a statistic rests on fewer seeds or fewer
+held-out locations than it needs. `AUDIT_OUTCOMES.md` records what this revision
+withdrew, corrected and strengthened.
 
 ---
 
@@ -198,6 +203,8 @@ python experiments/make_figures.py                     # figures + tables + numb
 
 make check-numbers                                     # prose vs artifacts (CI gate)
 make papers                                            # full + workshop builds
+make ci                                                # tests + audit + both builds
+make manifest                                          # SHA256 over every artifact
 ```
 
 | Experiment | Question |
