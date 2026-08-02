@@ -189,10 +189,22 @@ affected models by s.d. 0.0059, measured by scoring one gp checkpoint ten times.
 I wrote that applying the gp scale to the other three "likely overstates it for
 the others and makes the conclusion conservative."
 
-That was wrong. Comparing spage runs before and after the fix, the shifts reach
-0.0484 with a mean of +0.0037 over the first 20 runs -- unbiased in direction,
-but roughly eight times the assumed magnitude. The gp measurement was not an
-upper bound on the family.
+That was wrong, though not by as much as I first said. Comparing runs before and
+after the fix gives a measured s.d. of 0.0087 for tangram (n=46) and 0.0150 for
+spage (n=22 so far), against the 0.0059 assumed -- so about 1.5x and 2.5x, not
+the eight I initially claimed. That first figure compared the largest single
+shift (0.0484) against an s.d., which is not a comparison of like with like;
+0.0484 is roughly a 3-sigma draw from s.d. 0.0150 and is what a tail looks like,
+not evidence of an eightfold error.
+
+The substantive point survives: the gp measurement was not an upper bound on the
+family, and one model's noise does not stand in for another's.
+
+Worse, `gp_multiscale` -- one of the three comparisons the paper reports as
+significant, and one of the four affected models -- was deliberately left out of
+the regeneration on the grounds that its flip rate was 0% under the assumed
+scale. That reasoning is now circular: the 0% came from the assumption the
+regeneration has just falsified. There is still no measurement of its noise.
 
 Two caveats on the comparison itself. The old-vs-new difference conflates the
 eval-determinism fix with a change in which checkpoint validation selects, since

@@ -38,8 +38,42 @@ from src.evaluation.statistics import (  # noqa: E402
 #: Models whose recorded scores predate the eval-determinism fix.
 AFFECTED = {"gp", "gp_multiscale", "spage", "tangram"}
 
-#: s.d. across ten scorings of one unchanged gp checkpoint.
-MEASURED_SD = 0.0059
+#: s.d. across ten scorings of one unchanged gp checkpoint. Used only as a
+#: fallback: measuring one model and assuming it bounds the others was wrong --
+#: spage shifts reached 0.0484, about eight times this.
+FALLBACK_SD = 0.0059
+
+#: Pre-fix shards, kept so the per-model shift can be measured rather than
+#: assumed. See AUDIT_OUTCOMES.md.
+BACKUP_GLOB = ".audit_backups/exp8_pre_evalfix/results_shard*.json"
+
+
+def measured_shifts(backup_glob: str = BACKUP_GLOB,
+                    live_glob: str = "results/exp8/results_shard*.json"):
+    """Per-model s.d. of (regenerated - original) on runs present in both.
+
+    This is an upper bound on the eval-determinism effect rather than a clean
+    measurement of it: per-epoch validation called the same nondeterministic
+    subsample, so a rerun can also select a different checkpoint. Using the
+    upper bound is the conservative choice for a sensitivity analysis.
+    """
+    import glob as _glob
+    import statistics
+
+    def load(pat):
+        out = {}
+        for f in _glob.glob(pat):
+            for r in json.loads(Path(f).read_text()):
+                if not r.get("failed") and "pearson_mean" in r and r.get("model"):
+                    out[(r["model"], r["section"], r["seed"])] = r["pearson_mean"]
+        return out
+
+    before, after = load(backup_glob), load(live_glob)
+    per = {}
+    for k in set(before) & set(after):
+        per.setdefault(k[0], []).append(after[k] - before[k])
+    return {m: (statistics.pstdev(v) if len(v) > 1 else abs(v[0]), len(v))
+            for m, v in per.items()}
 
 
 def _holm(ps: np.ndarray) -> np.ndarray:
@@ -58,7 +92,8 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--results", default="results")
     p.add_argument("--n-resamples", type=int, default=2000)
-    p.add_argument("--sd", type=float, default=MEASURED_SD)
+    p.add_argument("--sd", type=float, default=None,
+                   help="override; default is the measured per-model shift")
     p.add_argument("--alpha", type=float, default=0.05)
     p.add_argument("--out", default="results/audit/eval_noise_sensitivity.json")
     a = p.parse_args()
