@@ -1038,7 +1038,14 @@ def figure_per_gene(per_gene: Dict) -> plt.Figure:
                 fmt="none", ecolor="0.15", elinewidth=0.7, capsize=1.6)
     ax.axhline(0, color="0.15", lw=0.7)
     ax.set_xticks(x)
-    ax.set_xticklabels(["Q1\nleast", "Q2", "Q3", "Q4\nmost"], fontsize=5.5)
+    # Labels must follow the bin count in the artifact, not a hard-coded four:
+    # a partial run writes fewer quartiles and matplotlib raises on the
+    # mismatch rather than dropping the extras.
+    labels = [f"Q{i + 1}" for i in range(nq)]
+    if nq:
+        labels[0] += "\nleast"
+        labels[-1] += "\nmost"
+    ax.set_xticklabels(labels, fontsize=5.5)
     ax.set_xlabel("spatial-structure quartile")
     ax.set_ylabel("$\\Delta r$")
     ax.set_title("no structure, no advantage", fontsize=6.5)

@@ -59,7 +59,7 @@ few are things I would not do unprompted.
 - [x] 47. Location-permutation invariance tested
 - [ ] 48. Test the loaders against a truncated/corrupt file
 - [ ] 49. Test the build guard fires on a mis-registered dataset
-- [ ] 50. Test the figure code on empty and single-row inputs
+- [x] 50. Test the figure code on empty and single-row inputs — found a hard-coded tick-label count that crashes on partial artifacts
 
 ## Tier 3 — maintenance and polish (51–100)
 
