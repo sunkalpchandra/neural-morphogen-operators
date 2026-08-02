@@ -1145,20 +1145,31 @@ def table_architecture(records: List[Dict], out: Path) -> str:
     g = df.groupby("variant")["pearson_mean"].agg(["mean", "std", "count"])
     base = float(g.loc["full", "mean"])
     noise = float(df[df["variant"] == "full"]["pearson_mean"].std())
+    # Initial bandwidth per variant, so the table can show where sigma started
+    # and where it converged to. It ends up within a few percent of its start in
+    # every case, which is the evidence that it is not meaningfully learned.
+    SIG0 = {"splat_sigma_half": 0.5, "splat_sigma_2x": 2.0}
+    sig = (df.groupby("variant")["learned_splat_sigma"].mean()
+           if "learned_splat_sigma" in df.columns else None)
     rows = []
     for v in [k for k in LABEL if k in g.index]:
         d = float(g.loc[v, "mean"]) - base
         cell = "--" if v == "full" else (
             f"\\textbf{{{d:+.4f}}}" if abs(d) > 2 * noise else f"{d:+.4f}")
+        scell = ""
+        if sig is not None and v in sig.index:
+            scell = f" & {SIG0.get(v, 1.0):.1f} $\\to$ {float(sig.loc[v]):.2f}"
         rows.append(f"{LABEL[v]} & {_fmt(g.loc[v,'mean'], g.loc[v,'std'])} & "
-                    f"{cell} \\\\\n")
+                    f"{cell}{scell} \\\\\n")
     tex = _wrap(
         "".join(rows),
         f"\\textbf{{Architectural choices, measured.}} Each row retrains with one "
         f"component changed, {int(g['count'].max())} seeds, at the benchmark "
         f"budget on the primary section. $\\Delta r$ is bold where it exceeds "
         f"twice the across-seed s.d. of the published configuration "
-        f"({noise:.4f}); nothing else here is distinguishable from a rerun. The "
+        f"({2 * noise:.4f}); nothing else here is distinguishable from a rerun. "
+        f"At {int(g['count'].max())} seeds that s.d. is itself a coarse estimate, "
+        f"so the threshold is indicative rather than a test. The "
         f"method section describes the pre-relaxation term as conditioning the "
         f"encoder and the splat bandwidth as learnable; neither claim is "
         f"supported by held-out accuracy. Withholding coordinates from the "
@@ -1166,8 +1177,8 @@ def table_architecture(records: List[Dict], out: Path) -> str:
         f"consistently in direction across seeds, but at two seeds its magnitude "
         f"sits just under the threshold this table uses; we read it as suggestive "
         f"rather than established.",
-        "tab:architecture", "lrr",
-        "variant & Pearson $r$ & $\\Delta r$",
+        "tab:architecture", "lrrc",
+        "variant & Pearson $r$ & $\\Delta r$ & splat $\\sigma$",
     )
     out.write_text(tex)
     return tex

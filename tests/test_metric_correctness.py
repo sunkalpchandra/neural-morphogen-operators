@@ -118,3 +118,68 @@ def test_metrics_equivariant_to_location_permutation(field):
     a = morans_i(values, spatial_weights(coords, 8))
     b = morans_i(values[perm], spatial_weights(coords[perm], 8))
     assert np.allclose(a, b, atol=1e-10)
+
+
+def test_strang_splitting_is_second_order_in_dt():
+    """Task 29. The method calls the integrator a second-order Strang scheme.
+    That is a falsifiable numerical claim and it had never been checked.
+
+    Integrate a fixed initial state to a fixed end time T with decreasing dt and
+    compare against a reference at much smaller dt. Halving dt must cut the error
+    by ~4x, i.e. slope ~2 on a log-log fit. A first-order splitting would give
+    slope ~1, which is what a mis-ordered half-step would produce and what this
+    test exists to catch.
+
+    Checked over two separate dt decades, because a scheme can look second-order
+    over one narrow window by coincidence.
+    """
+    import numpy as np
+    import torch
+
+    from src.models.dynamics import DynamicsConfig, ReactionDiffusionOperator
+
+    torch.manual_seed(0)
+    C, H, W, T = 4, 16, 16, 0.4
+    op = ReactionDiffusionOperator(DynamicsConfig(
+        channels=C, dt=0.05, n_steps=1, integrator="strang", laplacian="spectral",
+        # A near-zero reaction makes the two operators nearly commute, and the
+        # splitting error this test measures vanishes into round-off.
+        reaction_gain=1.0))
+    op.eval().double()
+    # The reaction network's output layer is zero-initialised, so an untrained
+    # operator is exactly a diffusion operator: the two split factors commute,
+    # the spectral solve is exact at any dt, and the measured error is round-off
+    # at ~1e-12 regardless of step size. Give the reaction real weights so there
+    # is a commutator to measure.
+    with torch.no_grad():
+        for m in op.reaction.modules():
+            if hasattr(m, "weight") and m.weight.dim() > 1 and m.weight.norm() == 0:
+                m.weight.normal_(0, 0.3)
+    # float32 over 4096 reference steps accumulates ~1e-4 of round-off, which is
+    # larger than the splitting error at these step sizes; the first version of
+    # this test measured that round-off and reported order 0.00.
+    z0 = torch.randn(1, C, H, W, dtype=torch.float64) * 0.5
+
+    def integrate(dt: float) -> torch.Tensor:
+        n = int(round(T / dt))
+        z = z0.clone()
+        with torch.no_grad():
+            for _ in range(n):
+                z = op.step(z, dt)
+        return z
+
+    with torch.no_grad():
+        ref = integrate(T / 4096)
+
+    def slope_over(dts):
+        errs = [float((integrate(dt) - ref).norm()) for dt in dts]
+        # guard: if the scheme were exact these would be at round-off and the
+        # fit would be meaningless
+        assert min(errs) > 1e-9, f"errors at round-off: {errs}"
+        return np.polyfit(np.log(dts), np.log(errs), 1)[0], errs
+
+    coarse, e1 = slope_over([T / 8, T / 16, T / 32])
+    fine, e2 = slope_over([T / 64, T / 128, T / 256])
+
+    assert 1.7 < coarse < 2.3, f"coarse-range order {coarse:.2f}, errors {e1}"
+    assert 1.7 < fine < 2.3, f"fine-range order {fine:.2f}, errors {e2}"

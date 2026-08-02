@@ -24,7 +24,10 @@ Irregular sampling is handled by kernel-integral layers on a $k$-NN graph
 \sum_{j\in\mathcal{N}(i)} \kappa_\theta(\vp_j-\vp_i)\odot\vz_j )$, where
 $\kappa_\theta$ maps a \emph{relative} displacement to a per-channel gain, so the
 layer depends on geometry rather than node identity. Features are splatted onto a
-regular $H\times W$ lattice (Nadaraya--Watson, learnable bandwidth), yielding a
+regular $H\times W$ lattice (Nadaraya--Watson, bandwidth free to train but in
+practice inert: it converges to within a few percent of whatever value it starts
+from, and a fourfold change in it costs \ArchSigmaDelta{} Pearson $r$;
+Table~\ref{tab:architecture}), yielding a
 field and an \emph{occupancy} map distinguishing ``tissue with no signal'' from
 ``no measurement here''. Spectral blocks \citep{li2021fno} refine the field.
 

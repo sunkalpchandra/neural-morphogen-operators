@@ -817,6 +817,28 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
                 cmd(f"Split{tag}Block", f"{G[key]['block_median_um']:.1f}")
                 cmd(f"Split{tag}Ratio", f"{G[key]['ratio']:.1f}")
 
+    # ---- Experiment 15 : architecture sensitivity ------------------------ #
+    aj = Path(results_root) / "exp15" / "architecture.json"
+    if aj.exists():
+        A = [x for x in json.loads(aj.read_text()) if not x.get("failed")]
+        if A:
+            ad = pd.DataFrame(A)
+            gm = ad.groupby("variant")["pearson_mean"].mean()
+            if "full" in gm.index:
+                base = float(gm["full"])
+                cmd("ArchSeeds", str(int(ad.groupby("variant").size().max())))
+                cmd("ArchNoise", f'{2 * float(ad[ad.variant == "full"]["pearson_mean"].std()):.4f}')
+                for key, mac in [("decoder_sees_xy", "ArchDecoder"),
+                                 ("no_aux_z0", "ArchAux"),
+                                 ("knn16", "ArchKnn")]:
+                    if key in gm.index:
+                        cmd(mac, f"{float(gm[key]) - base:+.4f}")
+                sig = [k for k in ("splat_sigma_half", "splat_sigma_2x") if k in gm.index]
+                if sig:
+                    # largest absolute cost across the bandwidth settings
+                    cmd("ArchSigmaDelta",
+                        f"{max(abs(float(gm[k]) - base) for k in sig):.4f}")
+
     # ---- permutation cross-check and power ------------------------------- #
     # Wilcoxon stays the reported test. These macros let the prose say whether
     # an exact randomisation test agrees with it, and what sample size would

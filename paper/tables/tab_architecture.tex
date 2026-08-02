@@ -1,18 +1,19 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{\textbf{Architectural choices, measured.} Each row retrains with one component changed, 2 seeds, at the benchmark budget on the primary section. $\Delta r$ is bold where it exceeds twice the across-seed s.d. of the published configuration (0.0052); nothing else here is distinguishable from a rerun. The method section describes the pre-relaxation term as conditioning the encoder and the splat bandwidth as learnable; neither claim is supported by held-out accuracy. Withholding coordinates from the decoder is the only change that moves the result at all, and it does so consistently in direction across seeds, but at two seeds its magnitude sits just under the threshold this table uses; we read it as suggestive rather than established.}
+\caption{\textbf{Architectural choices, measured.} Each row retrains with one component changed, 2 seeds, at the benchmark budget on the primary section. $\Delta r$ is bold where it exceeds twice the across-seed s.d. of the published configuration (0.0103); nothing else here is distinguishable from a rerun. At 2 seeds that s.d. is itself a coarse estimate, so the threshold is indicative rather than a test. The method section describes the pre-relaxation term as conditioning the encoder and the splat bandwidth as learnable; neither claim is supported by held-out accuracy. Withholding coordinates from the decoder is the only change that moves the result at all, and it does so consistently in direction across seeds, but at two seeds its magnitude sits just under the threshold this table uses; we read it as suggestive rather than established.}
 \label{tab:architecture}
-\begin{tabular}{lrr}
+\begin{tabular}{lrrc}
 \toprule
-variant & Pearson $r$ & $\Delta r$\\
+variant & Pearson $r$ & $\Delta r$ & splat $\sigma$\\
 \midrule
-as published & 0.249\,\tiny{$\pm$ 0.005} & -- \\
-decoder given coordinates & 0.240\,\tiny{$\pm$ 0.004} & -0.0088 \\
-pre-relaxation term removed & 0.248\,\tiny{$\pm$ 0.004} & -0.0006 \\
-encoder graph $k=4$ & 0.249\,\tiny{$\pm$ 0.005} & +0.0001 \\
-encoder graph $k=16$ & 0.249\,\tiny{$\pm$ 0.005} & +0.0001 \\
-splat bandwidth halved & 0.247\,\tiny{$\pm$ 0.002} & -0.0013 \\
+as published & 0.249\,\tiny{$\pm$ 0.005} & -- & 1.0 $\to$ 0.96 \\
+decoder given coordinates & 0.240\,\tiny{$\pm$ 0.004} & -0.0088 & 1.0 $\to$ 0.95 \\
+pre-relaxation term removed & 0.248\,\tiny{$\pm$ 0.004} & -0.0006 & 1.0 $\to$ 0.98 \\
+encoder graph $k=4$ & 0.249\,\tiny{$\pm$ 0.005} & +0.0001 & 1.0 $\to$ 0.96 \\
+encoder graph $k=16$ & 0.249\,\tiny{$\pm$ 0.005} & +0.0001 & 1.0 $\to$ 0.96 \\
+splat bandwidth halved & 0.247\,\tiny{$\pm$ 0.002} & -0.0013 & 0.5 $\to$ 0.51 \\
+splat bandwidth doubled & 0.247\,\tiny{$\pm$ 0.003} & -0.0011 & 2.0 $\to$ 1.95 \\
 \bottomrule
 \end{tabular}
 \end{table}

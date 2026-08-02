@@ -34,6 +34,35 @@ each appears with its heading.
 \inputtable{tab_numerics}
 \inputtable{tab_biology}
 
+\subsection{Architecture sensitivity}
+
+The method section describes several components as doing specific work. Each is
+cheap to test by retraining with that component changed, and none had been. We
+ran \ArchSeeds{} seeds per variant at the benchmark budget on the primary
+section (Table~\ref{tab:architecture}); the natural yardstick is twice the
+across-seed s.d. of the published configuration, \ArchNoise{} Pearson $r$.
+
+Three of the four tested claims do not survive. Removing the term that
+supervises the pre-relaxation read-out costs \ArchAux{}, and quadrupling the
+encoder's graph neighborhood costs \ArchKnn{} --- both an order of magnitude
+inside the noise. The splat bandwidth, described as learnable, converges to
+within a few percent of its initialization at every value we tried
+($0.5 \to 0.51$, $1.0 \to 0.96$, $2.0 \to 1.95$): it is not being learned so
+much as retained, and a fourfold change in it costs \ArchSigmaDelta{}. We report
+this rather than quietly restating the architecture, because a component that a
+paper says is doing something and that measurably is not is exactly the kind of
+claim a reader has no way to check.
+
+The one change that moves the result is giving the decoder direct access to
+coordinates, at \ArchDecoder{}, consistent in direction across both seeds. Even
+this sits just inside the noise band, so we describe it as suggestive. It is the
+variant we would most want more seeds on, since it is the one the interpretation
+of every ablation depends on: a decoder that could read coordinates could
+memorize a coordinate-to-expression map, and no ablation of the operator would
+mean anything.
+
+\inputtable{tab_architecture}
+
 \subsection{Dataset inventory}
 \inputtable{tab_datasets}
 
