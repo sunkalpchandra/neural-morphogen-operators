@@ -172,7 +172,7 @@ def figure2_reconstruction(
 
     others = list(preds_other.items())
     ncol = 2 + len(others)
-    fig, axes = plt.subplots(len(gi), ncol, figsize=(WIDTH_FULL, 0.84 * len(gi)),
+    fig, axes = plt.subplots(len(gi), ncol, figsize=(WIDTH_FULL, 0.78 * len(gi)),
                              squeeze=False)
 
     for r_i, g in enumerate(gi):
@@ -196,7 +196,8 @@ def figure2_reconstruction(
                                     transform=axes[r_i][2 + c_i].transAxes, ha="center",
                                     va="top", fontsize=6, color=INK_SECONDARY)
 
-    titles = ["Measured", "NRDO (ours)"] + [n for n, _ in others]
+    titles = ["Measured", "NRDO (ours)"] + [DISPLAY_NAMES.get(n, n)
+                                        for n, _ in others]
     for c, t in enumerate(titles):
         axes[0][c].set_title(t, fontsize=7.5, color=INK, pad=4)
     fig.subplots_adjust(wspace=0.06, hspace=0.30)

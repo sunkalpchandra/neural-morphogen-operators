@@ -40,6 +40,20 @@ alone is therefore insufficient and message passing adds little over a good
 read-out head; it is the \emph{operator} that carries the gain, which the
 parameter-matched $T{=}0$ control confirms (Section~\ref{sec:ablations}).
 
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig2_reconstruction.pdf}
+  \caption{\textbf{Predicted expression at held-out locations.} Grey marks the
+  contiguous blocks hidden from every encoder. Genes are chosen to span the
+  performance range rather than to favor any model --- the top row is a
+  well-reconstructed gene, the bottom row one near the lower quartile --- and the
+  per-gene $r$ printed beneath each map is for that gene alone, not the
+  benchmark mean. The failure mode the paper reports is visible directly: our
+  predictions are smoother than the measurement, which costs us Moran's $I$
+  even where correlation is comparable.}
+  \label{fig:reconstruction}
+\end{figure}
+
 \paragraph{Spatial autocorrelation.}
 NRDO does not lead on every structural metric. On SSIM it is second, behind
 \MSBestAnySSIMModel{} (\MSNMOSSIM{} against \MSBestAnySSIM{}), and it has by
@@ -201,41 +215,6 @@ scale --- the response decays to half its peak within \BeadWidth\,$\mu$m. A
 second pre-specified probe against Perturb-seq \citep{norman2019perturbseq} was
 underpowered ($n = \PSNPerturb$) and is inconclusive
 (Appendix~\ref{app:empirical}).
-
-\paragraph{Can the smoothness be trained away?}
-The obvious remedy is a loss term matching the radially averaged power spectrum
-of the predicted field to that of the measured field. We implement it and sweep
-its weight in two forms (Appendix~\ref{app:empirical},
-Table~\ref{tab:spectral}). The result is a bound rather than a fix: the better
-form buys $\SpecShapePctMoran\%$ of $|\Delta I|$ for $\SpecShapePctR\%$ of the
-Pearson $r$ at its optimum, but across every weight and both forms the predicted
-autocorrelation bottoms out at $I_{\mathrm{pred}} = \SpecMinIPred$ against a
-measured $\SpecITrue$. Weighting the term heavily enough to destroy predictive
-accuracy still does not bring the reconstruction near the roughness of the data,
-so the smoothness belongs to the operator class rather than to the objective. We
-keep $\lambda = 0$ throughout.
-
-\paragraph{Robustness to sampling density.}
-Under \RobAxes{} corruption axes applied identically to every model
-(\RobRuns{} runs; Appendix~\ref{app:empirical}, Table~\ref{tab:robustness}),
-NRDO is not the most robust to count noise (\RobNoiseNMO\% retained against
-\RobNoiseBest\%) or to location dropout. The exception is the axis the
-continuous formulation predicts: subsampling to an eighth of the locations
-changes sampling density without changing anatomy, and NRDO retains
-\RobDensNMO\% of its full-density accuracy against \RobDensBest\% for the best
-baseline.
-
-\paragraph{Is the benchmark's ordering the converged ordering?}
-Not exactly, and the direction favors us. Training every model to a shared
-early-stopping criterion on the full \ConvSection{} section --- the one whose
-ordering changes with budget --- NRDO attains \ConvNMO{} against \ConvBest{} for
-the strongest baseline, winning \ConvWins{}/\ConvNPairs{} seeds with
-$d_z = \ConvMinDz$--$\ConvMaxDz$, having \emph{lost} to it at the benchmark
-budget (Appendix~\ref{app:empirical}, Table~\ref{tab:converged}). Two findings
-survive convergence: the non-spatial autoencoder still matches the graph models,
-so their near-tie is a property of the task rather than of undertraining; and
-NRDO retains the largest error in Moran's $I$, so the over-smoothing is
-structural.
 
 \subsection{Further results}
 The exponential integrator costs
