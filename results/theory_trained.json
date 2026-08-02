@@ -1,0 +1,38 @@
+[
+  {
+    "checkpoint": "results/exp1/a/runs/visium_mouse_brain__nmo__seed0/best.pt",
+    "lambda_min": 0.009807492606341839,
+    "eps": 0.0001,
+    "spd_ok": true,
+    "contraction_sup": 0.8902328610420227,
+    "contraction_ok": true,
+    "mass_err": 5.122274160385132e-09,
+    "mass_ok": true,
+    "reaction_slack": 0.0,
+    "reaction_ok": true
+  },
+  {
+    "checkpoint": "results/exp1/a/runs/visium_mouse_brain__nmo__seed1/best.pt",
+    "lambda_min": 0.00803393218666315,
+    "eps": 0.0001,
+    "spd_ok": true,
+    "contraction_sup": 0.8896746635437012,
+    "contraction_ok": true,
+    "mass_err": 7.450580596923828e-09,
+    "mass_ok": true,
+    "reaction_slack": 0.0,
+    "reaction_ok": true
+  },
+  {
+    "checkpoint": "results/exp1/a/runs/visium_mouse_brain__nmo__seed2/best.pt",
+    "lambda_min": 0.00979998242110014,
+    "eps": 0.0001,
+    "spd_ok": true,
+    "contraction_sup": 0.8913325667381287,
+    "contraction_ok": true,
+    "mass_err": 7.450580596923828e-09,
+    "mass_ok": true,
+    "reaction_slack": 0.0,
+    "reaction_ok": true
+  }
+]

@@ -100,6 +100,8 @@ _decl("exp5_matched", "MatchedFull", "MatchedNoDynamics", "MatchedNoDynamicsDelt
       "MatchedNoReaction", "MatchedNoReactionDelta", "MatchedSeeds")
 _decl("exp6", "DevPersistence", "DevNMOBest", "DevNMOBestHorizon", "DevNMOZero",
       "DevBeatsPersistence")
+_decl("theory", "TheoryTrainedN", "TheoryTrainedOK",
+      "TheoryTrainedLambdaMin", "TheoryTrainedSup")
 _decl("exp7", "CfgN", "CfgDiffLo", "CfgDiffHi", "CfgLatLo", "CfgLatHi",
       "CfgOursMin", "CfgOursAllStable", "CfgWorstScheme", "CfgWorstDt",
       "CfgWorstRatio", "CfgSpread",

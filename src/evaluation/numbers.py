@@ -508,6 +508,19 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("NumSpeedup", f"{eul.iloc[0]/base:.0f}")
         cmd("NumStrangSteps", str(int(base)))
 
+    # ---- Propositions checked on the fitted operators ----------------------- #
+    tt = Path(results_root) / "theory_trained.json"
+    if tt.exists():
+        T = json.loads(tt.read_text())
+        if T:
+            ok = [r for r in T if all(v for k, v in r.items() if k.endswith("_ok"))]
+            cmd("TheoryTrainedN", str(len(T)))
+            cmd("TheoryTrainedOK", str(len(ok)))
+            cmd("TheoryTrainedLambdaMin",
+                f"{min(float(r['lambda_min']) for r in T):.1e}")
+            cmd("TheoryTrainedSup",
+                f"{max(float(r['contraction_sup']) for r in T):.4f}")
+
     # ---- Experiment 7b : stability across configurations -------------------- #
     # One configuration cannot establish that a scheme has *no* step-size
     # restriction. These macros carry the sweep that can.

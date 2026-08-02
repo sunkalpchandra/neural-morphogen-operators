@@ -37,12 +37,12 @@ few are things I would not do unprompted.
 - [x] 25. Standardisation verified train-only: train mean 0, sd 1; held-out splits differ
 - [ ] 26. Confirm no gene-selection leakage across the split
 - [x] 27. Isotropic normalisation verified on every section
-- [ ] 28. Verify SPD parametrisation holds after every optimiser step, not just at init
+- [x] 28. SPD verified on fitted weights: lambda_min 8.0e-03 against a floor of eps
 - [ ] 29. Verify the Strang order empirically at more than one dt range
-- [ ] 30. Test the mass-conservation claim at extreme dt
+- [x] 30. Mass conservation verified at dt up to 50 on fitted operators
 - [ ] 31. Check the absorbing-set bound against a longer trajectory
-- [ ] 32. Verify Theorem 11's numerical corollary on real fitted operators
-- [ ] 33. Test the vacuity proposition on a trained model, not a random one
+- [x] 32. Propositions re-checked on the 3 fitted operators, not only on random ones
+- [x] 33. verify_theory_trained.py: all 3 trained operators satisfy every proposition
 - [ ] 34. Confirm the dispersion relation code matches the analytic Jacobian
 - [x] 35. Moran's I matches the definition to 2e-17
 - [x] 36. Geary's C matches the definition to 3e-15

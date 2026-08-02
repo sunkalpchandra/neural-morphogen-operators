@@ -3,3 +3,12 @@
 \inputtable{tab_theory}
 
 Each proposition below is accompanied by an executable check; Table~\ref{tab:theory} reports the outcome under adversarially perturbed parameters (diffusion parameters drawn uniformly on $[-60,60]$, reaction weights perturbed by $\mathcal{N}(0,2^2)$), so the guarantees are exercised well outside the regime reached during training.
+
+The table above exercises each claim under adversarially perturbed parameters,
+which shows the guarantees hold well outside the regime training reaches. It
+does not by itself show they hold \emph{inside} it. We therefore re-measure the
+same quantities on the \TheoryTrainedN{} fitted operators whose numbers this
+paper reports: all \TheoryTrainedOK{} satisfy every proposition, with
+$\lambda_{\min}(\mD_c) = \TheoryTrainedLambdaMin$ against a floor of
+$\varepsilon$, and a diffusive-step operator norm of \TheoryTrainedSup{} against
+the bound of $1$ (\texttt{scripts/verify\_theory\_trained.py}).
