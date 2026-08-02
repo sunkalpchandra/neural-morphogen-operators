@@ -30,7 +30,7 @@ few are things I would not do unprompted.
 
 ## Tier 2 — hardens existing claims (21–50)
 
-- [ ] 21. Seed-variance table: how much of each margin is optimisation noise
+- [x] 21. Seed-noise floor computed per model; every margin is 1.9-7.3x it, smallest for STAGATE
 - [ ] 22. Verify every checkpoint loads and reproduces its recorded metrics
 - [x] 23. Split determinism tested: same section, two loads, identical splits and coords
 - [x] 24. Held-out blocks verified contiguous — measurably farther from training data than a random subset of equal size

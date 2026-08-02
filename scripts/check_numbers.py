@@ -82,7 +82,8 @@ _decl("exp8",           # multi-section benchmark
       "MSNMOMoran", "MSBestAnyMoran", "MSBestAnyMoranModel", "MSMoranDelta",
       "MSNMORMSE", "MSBestAnyRMSE", "MSBestAnyRMSEModel", "MSRMSEDelta",
       "MSAEPearson", "MSBestGraphOverAE", "MSWorstGraphOverAE", "MSNGraphModels",
-      "MSNMOOverAE", "MSExcludedN", "MSExcluded", "MSMinHeldOut")
+      "MSNMOOverAE", "SeedSDNMO", "SeedSDMax", "SeedSDMaxModel",
+      "SeedRatioLo", "SeedRatioLoModel", "SeedRatioHi", "MSExcludedN", "MSExcluded", "MSMinHeldOut")
 _decl("exp2", "TissueZeroShot", "TissueOracle", "TissueFloor", "TissueFineTune",
       "TissueZeroShotBest", "TissueZeroShotBaseline", "TissueZeroShotBaselineName",
       "TissueZeroShotGap", "TissueZeroShotRatio", "TissueSharedGenes")

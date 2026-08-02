@@ -338,6 +338,34 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
                 cmd(f"MSBestAny{tag}Model", DISPLAYNAMES.get(bi, bi))
                 cmd(f"MS{tag}Delta", _val(float(pm["nmo"].mean()) - float(others[bi])))
 
+        # How much of each margin could be optimisation noise. The within-section
+        # across-seed s.d. is the floor below which a difference between models
+        # is not distinguishable from a rerun.
+        sdev = m8.groupby(["section", "model"])["pearson_mean"].std().groupby(
+            "model").median()
+        if "nmo" in sdev.index:
+            cmd("SeedSDNMO", _val(float(sdev["nmo"]), 4))
+            cmd("SeedSDMax", _val(float(sdev.max()), 4))
+            cmd("SeedSDMaxModel", DISPLAYNAMES.get(sdev.idxmax(), sdev.idxmax()))
+            ratios = {}
+            # Restrict to models the benchmark table actually shows: including a
+            # baseline dropped for coverage would let its very large margin set
+            # the top of the reported range.
+            shown = {m for m in matched.columns
+                     if int(matched[m].notna().sum()) >= max(3, int(0.9 * len(matched)))}
+            for other in sdev.index:
+                if other == "nmo" or other not in shown:
+                    continue
+                delta = float(matched["nmo"].mean()) - float(matched[other].mean())
+                noise = float(np.hypot(sdev["nmo"], sdev[other]))
+                if noise > 0:
+                    ratios[other] = delta / noise
+            if ratios:
+                lo = min(ratios, key=ratios.get)
+                cmd("SeedRatioLo", f"{ratios[lo]:.1f}")
+                cmd("SeedRatioLoModel", DISPLAYNAMES.get(lo, lo))
+                cmd("SeedRatioHi", f"{max(ratios.values()):.1f}")
+
         # Message-passing isolation, recomputed at this benchmark's scope.
         if "autoencoder" in matched.columns:
             ae = float(matched["autoencoder"].mean())

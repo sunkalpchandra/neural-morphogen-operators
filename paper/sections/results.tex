@@ -24,7 +24,9 @@ as independent overstates the effective sample size. Collapsing to
 defensible test: the separation still survives Holm--Bonferroni correction across the
 family of \MSNBaselines{} baselines against \MSSpecNSig{} of them (\MSSpecSigModels{}), winning on at least
 \MSSpecSigMinWins{} specimens at $p \le \MSSpecSigMaxHolm$. The tightest, \MSSpecTightModel{}, has a bootstrap 95\% CI of \MSSpecTightCI{}
-excluding zero. It does not survive against \MSSpecGraphWorstModel{}
+excluding zero. Every margin is \SeedRatioLo--\SeedRatioHi$\times$ the
+across-seed noise floor, the smallest being \SeedRatioLoModel{} --- the same
+comparison that fails to resolve. It does not survive against \MSSpecGraphWorstModel{}
 (Section~\ref{sec:limitations}). The grouping is conservative and does not drive
 the result: counting the two Stereo-seq stages separately gives \MSSpecAltN{}
 specimens and the same \MSSpecAltNSig{} significant comparisons.
