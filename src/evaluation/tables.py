@@ -570,7 +570,7 @@ def table_multisection(records: List[Dict], out: Path,
                                                  "morans_i_abs_error"),
                        reference: str = "nmo") -> str:
     """Per-model aggregate across sections, with paired tests against ``reference``."""
-    from .statistics import MIN_HELDOUT_LOCATIONS, paired_comparison, stars
+    from .statistics import paired_comparison, size_eligible_frame, stars
 
     df = pd.DataFrame([r for r in records if "pearson_mean" in r and not r.get("failed")])
     if df.empty:
@@ -580,8 +580,7 @@ def table_multisection(records: List[Dict], out: Path,
     # rule here made this table average over 23 sections while the prose reported
     # 22, and put visium_human_heart (331 held-out locations against a threshold
     # of 800) inside the section-level paired tests that the text says exclude it.
-    if "n_obs_used" in df.columns:
-        df = df[df["n_obs_used"] >= 4 * MIN_HELDOUT_LOCATIONS]
+    df = size_eligible_frame(df)
     if df.empty:
         return ""
     metrics = [m for m in metrics if m in df.columns]
@@ -661,7 +660,7 @@ def table_multisection(records: List[Dict], out: Path,
 def table_paired_stats(records: List[Dict], out: Path, reference: str = "nmo",
                        metric: str = "pearson_mean") -> str:
     """Effect sizes and confidence intervals for the paired comparison."""
-    from .statistics import MIN_HELDOUT_LOCATIONS, paired_comparison
+    from .statistics import paired_comparison, size_eligible_frame
 
     df = pd.DataFrame([r for r in records if metric in r and not r.get("failed")])
     # Sections whose held-out set is too small to estimate Pearson r are excluded
@@ -669,8 +668,7 @@ def table_paired_stats(records: List[Dict], out: Path, reference: str = "nmo",
     # rule here made this table average over 23 sections while the prose reported
     # 22, and put visium_human_heart (331 held-out locations against a threshold
     # of 800) inside the section-level paired tests that the text says exclude it.
-    if "n_obs_used" in df.columns:
-        df = df[df["n_obs_used"] >= 4 * MIN_HELDOUT_LOCATIONS]
+    df = size_eligible_frame(df)
     res = paired_comparison(df, reference, metric)
     if not res:
         return ""
@@ -698,7 +696,7 @@ def table_paired_stats(records: List[Dict], out: Path, reference: str = "nmo",
 
 def table_biology(records: List[Dict], out: Path) -> str:
     """Biological preservation metrics, averaged over sections."""
-    from .statistics import MIN_REFERENCE_ARI
+    from .statistics import ari_eligible_frame
 
     df = pd.DataFrame([r for r in records if "ari_predicted" in r])
     if df.empty:
@@ -709,8 +707,7 @@ def table_biology(records: List[Dict], out: Path) -> str:
     # the reference it is divided by -- while every baseline went negative.
     # Corrected, the models are close. numbers.py already applied this rule, so
     # the table was contradicting the prose computed from the same records.
-    if "ari_measured" in df.columns:
-        df = df[df["ari_measured"] >= MIN_REFERENCE_ARI]
+    df = ari_eligible_frame(df)
     if df.empty:
         return ""
     cols = ["ari_predicted", "ari_retention", "nmi_predicted",

@@ -306,3 +306,37 @@ def specimens_needed(diffs: np.ndarray, alpha: float = 0.05,
         if 1.0 - binom.cdf(k_crit - 1, n, p_win) >= power:
             return n
     return max_n
+
+
+# --------------------------------------------------------------------------- #
+# Eligibility, applied at the point of loading rather than the point of use
+# --------------------------------------------------------------------------- #
+
+def size_eligible_frame(df: "pd.DataFrame") -> "pd.DataFrame":
+    """Drop sections whose held-out set is too small to estimate Pearson r.
+
+    Four consumers of the exp8 records each decided separately whether to apply
+    this rule, and four of them forgot: the benchmark table averaged over 23
+    sections while the prose reported 22, the section-level Wilcoxon tests
+    included a section the text names as excluded, and the benchmark figure
+    plotted it under a caption saying otherwise.
+
+    Call this immediately after loading. It is a no-op on frames with no
+    ``n_obs_used`` column, so it is safe on older records.
+    """
+    if "n_obs_used" not in df.columns:
+        return df
+    return df[df["n_obs_used"] >= 4 * MIN_HELDOUT_LOCATIONS]
+
+
+def ari_eligible_frame(df: "pd.DataFrame") -> "pd.DataFrame":
+    """Drop sections whose measured reference ARI is too small to divide by.
+
+    ``ari_retention`` is predicted/measured; a near-zero denominator makes the
+    ratio meaningless and unbounded. Omitting this rule put one section's
+    retention at -6.86..+6.90 and made NRDO appear to retain 1.127 of a quantity
+    bounded above by 1, with every baseline negative.
+    """
+    if "ari_measured" not in df.columns:
+        return df
+    return df[df["ari_measured"] >= MIN_REFERENCE_ARI]
