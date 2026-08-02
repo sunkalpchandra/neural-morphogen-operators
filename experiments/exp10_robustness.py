@@ -96,6 +96,11 @@ def main() -> int:
     p.add_argument("--axes", nargs="+", default=list(AXES))
     p.add_argument("--seeds", type=int, nargs="+", default=[0, 1])
     p.add_argument("--epochs", type=int, default=200)
+    p.add_argument("--max-locations", type=int, default=0,
+                   help="cap the section before corrupting it. The density axis "
+                        "needs a base small enough to be affordable and large "
+                        "enough that the sparsest level still leaves an "
+                        "estimable held-out set")
     p.add_argument("--out-dir", default="results/exp10")
     p.add_argument("--shard", type=int, default=0)
     p.add_argument("--n-shards", type=int, default=1)
@@ -124,6 +129,8 @@ def main() -> int:
         try:
             set_seed(seed)
             sec = load_section(Path(cfg.data.processed_dir) / f"{a.section}.h5ad", device=device)
+            if a.max_locations and sec.n_obs > a.max_locations:
+                sec = subsample_section(sec, a.max_locations, seed=0).to(device)
             sec = corrupt(sec, axis, level, seed)
             model = (build_nmo(cfg.model.to_dict(), n_genes=sec.n_genes) if model_type == "nmo"
                      else build_baseline(model_type, n_genes=sec.n_genes, hidden=128,

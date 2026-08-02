@@ -81,13 +81,16 @@ same diffusion-driven smoothing analyzed for graph neural diffusion
 \paragraph{The numerical machinery is load-bearing.}
 Replacing the exponential integrator with explicit Euler, and the spectral
 Laplacian with a five-point stencil, answers whether it is necessary or merely
-elegant. The exponential scheme was stable at every step size tested, up to
-$\Delta t = \NumStableDt$ or $\NumCFLRatio\times$ the CFL bound; since it never
-destabilized that ratio is a lower bound set by the sweep grid, which is what
-Proposition~\ref{prop:contraction} predicts. The explicit finite-difference
-limit tracks the CFL bound closely. Reaching a $10^{-2}$ tolerance takes
-\NumStrangSteps{} steps against \NumEulerSteps{} for Euler, a
-$\NumSpeedup\times$ difference (Appendix~\ref{app:empirical}).
+elegant. One configuration cannot establish that a scheme has \emph{no} step-size
+restriction, so we sweep \CfgN{}: diffusion magnitudes over
+\CfgDiffLo--\CfgDiffHi{} crossed with lattices \CfgLatLo--\CfgLatHi. The
+exponential scheme is stable at every step tested in all of them
+($\Delta t \ge \CfgOursMin$), while the alternatives' stable steps shrink by up
+to $\CfgSpread\times$ across the same range --- a factor of $\CfgWorstRatio$
+between the two at the stiffest setting. That is a property of the scheme rather
+than of the configuration we happen to use, and it is what
+Proposition~\ref{prop:contraction} predicts. Reaching a $10^{-2}$ tolerance takes
+\NumStrangSteps{} steps against \NumEulerSteps{} (Appendix~\ref{app:empirical}).
 
 \paragraph{Budget, density and smoothness.}
 Training to convergence on the one section whose ordering is budget-dependent
@@ -98,8 +101,8 @@ Under multiplicative count noise and random location dropout all models degrade
 comparably, at a single seed per point which does not support a ranking between
 them; we report them for completeness rather than as a result
 (Appendix~\ref{app:empirical}). Sampling density is the axis a field-based
-formulation actually predicts, and it is reported separately below at a sample
-size that can estimate it.
+formulation actually predicts, and is reported separately at a base section large
+enough that the sparsest level still leaves an estimable held-out set.
 A spectral-matching term bounds the over-smoothing rather than removing it:
 $I_{\mathrm{pred}}$ bottoms out at \SpecMinIPred{} against a measured
 \SpecITrue{} at every weight and both forms, so the smoothness belongs to the

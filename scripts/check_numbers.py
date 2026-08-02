@@ -100,7 +100,10 @@ _decl("exp5_matched", "MatchedFull", "MatchedNoDynamics", "MatchedNoDynamicsDelt
       "MatchedNoReaction", "MatchedNoReactionDelta", "MatchedSeeds")
 _decl("exp6", "DevPersistence", "DevNMOBest", "DevNMOBestHorizon", "DevNMOZero",
       "DevBeatsPersistence")
-_decl("exp7", "NumStableDt", "NumCFL", "NumCFLRatio", "NumEulerSteps", "NumSpeedup",
+_decl("exp7", "CfgN", "CfgDiffLo", "CfgDiffHi", "CfgLatLo", "CfgLatHi",
+      "CfgOursMin", "CfgOursAllStable", "CfgWorstScheme", "CfgWorstDt",
+      "CfgWorstRatio", "CfgSpread",
+      "NumStableDt", "NumCFL", "NumCFLRatio", "NumEulerSteps", "NumSpeedup",
       "NumStrangSteps")
 _decl("exp9", "BioSections", "BioARIRet", "BioARIRetBest", "BioARIRetBestModel",
       "BioMarker", "BioMarkerBest", "BioMarkerBestModel", "BioKNN", "BioKNNBest",

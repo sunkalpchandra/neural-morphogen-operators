@@ -508,6 +508,34 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("NumSpeedup", f"{eul.iloc[0]/base:.0f}")
         cmd("NumStrangSteps", str(int(base)))
 
+    # ---- Experiment 7b : stability across configurations -------------------- #
+    # One configuration cannot establish that a scheme has *no* step-size
+    # restriction. These macros carry the sweep that can.
+    cj = Path(results_root) / "exp7" / "stability_configs.json"
+    if cj.exists():
+        CF = pd.DataFrame(json.loads(cj.read_text()))
+        st = CF[CF["stable"]].groupby(["scheme", "diffusion_init", "lattice"])["dt"].max()
+        st = st.reset_index()
+        grid_max = float(CF["dt"].max())
+        cmd("CfgN", str(int(st.groupby("scheme").size().max())))
+        cmd("CfgDiffLo", f"{CF['diffusion_init'].min():g}")
+        cmd("CfgDiffHi", f"{CF['diffusion_init'].max():g}")
+        cmd("CfgLatLo", str(int(CF["lattice"].min())))
+        cmd("CfgLatHi", str(int(CF["lattice"].max())))
+        ours = st[st["scheme"] == "strang-spectral"]["dt"]
+        if len(ours):
+            cmd("CfgOursMin", f"{ours.min():.3g}")
+            cmd("CfgOursAllStable",
+                "yes" if bool(np.isclose(ours, grid_max).all()) else "no")
+        others = st[st["scheme"] != "strang-spectral"]
+        if len(others):
+            worst = others.loc[others["dt"].idxmin()]
+            cmd("CfgWorstScheme", str(worst["scheme"]))
+            cmd("CfgWorstDt", f"{float(worst['dt']):.2g}")
+            cmd("CfgWorstRatio", f"{grid_max / float(worst['dt']):.0f}")
+            spread = others.groupby("scheme")["dt"].agg(lambda x: x.max() / x.min())
+            cmd("CfgSpread", f"{spread.max():.0f}")
+
     # ---- Experiment 10 : robustness ---------------------------------------- #
     rb = sorted(Path(results_root).glob("exp10/robustness_shard*.json"))
     if rb:

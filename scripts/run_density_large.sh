@@ -10,6 +10,6 @@ cd "$(dirname "$0")/.."
 export PYTHONPATH=. OMP_NUM_THREADS=2 PYTHONWARNINGS=ignore
 PY=$PWD/.venv/bin/python
 $PY experiments/exp10_robustness.py --section xenium_mouse_brain \
-    --axes density --models nmo stagate gnn --seeds 0 1 --epochs 150 \
+    --axes density --models nmo stagate gnn --seeds 0 1 --epochs 150 --max-locations 8000 \
     --out-dir results/exp10_density 2>&1 | grep -E "^\[|FAIL"
 echo "DENSITY SWEEP COMPLETE"
