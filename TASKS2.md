@@ -17,7 +17,7 @@ few are things I would not do unprompted.
 - [ ] 8. Ablations at converged budget beyond the two decisive variants
 - [ ] 9. Hyperparameter sensitivity: latent channels, horizon T, lattice size
 - [ ] 10. Learning-curve: accuracy vs training-set fraction, per model
-- [ ] 11. Per-gene analysis: which genes NRDO wins and loses on, and why
+- [x] 11. Per-gene analysis: which genes NRDO wins and loses on, and why — advantage tracks spatial structure (corr 0.22-0.30), vanishes on unstructured genes
 - [x] 12. Error-vs-distance computed: NRDO last in the nearest quartile, +50% in the farthest
 - [ ] 13. Runtime and peak memory per model, reported alongside accuracy
 - [ ] 14. Ablate the occupancy channel (claimed essential, never tested)
@@ -25,8 +25,8 @@ few are things I would not do unprompted.
 - [x] 16. Verified: decoder reads the field at query coords, not a coordinate map
 - [x] 17. Bandwidth trains but moves only ~4% from init; exp15 tests whether it matters
 - [x] 18. k-NN size varied properly (edges 23006 -> 12632); changes r by 0.0001
-- [ ] 19. A permutation test for the specimen-level result, not just Wilcoxon
-- [ ] 20. Power analysis: how many specimens would resolve STAGATE
+- [x] 19. A permutation test for the specimen-level result, not just Wilcoxon — agrees 7/7
+- [x] 20. Power analysis: how many specimens would resolve STAGATE — ~49, a 5x larger study
 
 ## Tier 2 — hardens existing claims (21–50)
 
@@ -38,7 +38,7 @@ few are things I would not do unprompted.
 - [x] 26. Confirm no gene-selection leakage across the split — found: HVG precedes the split, 16-18% of the panel needs held-out data, now disclosed
 - [x] 27. Isotropic normalisation verified on every section
 - [x] 28. SPD verified on fitted weights: lambda_min 8.0e-03 against a floor of eps
-- [ ] 29. Verify the Strang order empirically at more than one dt range
+- [x] 29. Verify the Strang order empirically at more than one dt range — 1.984 and 2.002
 - [x] 30. Mass conservation verified at dt up to 50 on fitted operators
 - [ ] 31. Check the absorbing-set bound against a longer trajectory
 - [x] 32. Propositions re-checked on the 3 fitted operators, not only on random ones

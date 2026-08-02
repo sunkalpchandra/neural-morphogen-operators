@@ -817,6 +817,22 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
                 cmd(f"Split{tag}Block", f"{G[key]['block_median_um']:.1f}")
                 cmd(f"Split{tag}Ratio", f"{G[key]['ratio']:.1f}")
 
+    # ---- per-gene structure analysis -------------------------------------- #
+    # The continuity argument predicts the advantage concentrates on spatially
+    # structured genes. These macros carry the measured range across seeds so
+    # the claim in the results cannot drift from the artifact.
+    gj = Path(results_root) / "audit" / "per_gene.json"
+    if gj.exists():
+        G = json.loads(gj.read_text())
+        cmd("GeneSeeds", str(len(G.get("seeds", []))))
+        cmd("GeneNGenes", str(G["seeds"][0]["n_genes"]) if G.get("seeds") else "0")
+        cmd("GeneCorrLo", f'{G["corr_lo"]:.2f}')
+        cmd("GeneCorrHi", f'{G["corr_hi"]:.2f}')
+        cmd("GeneTopLo", f'{G["top_quartile_lo"]:.3f}')
+        cmd("GeneTopHi", f'{G["top_quartile_hi"]:.3f}')
+        cmd("GeneBotLo", f'{G["bottom_quartile_lo"]:+.3f}')
+        cmd("GeneBotHi", f'{G["bottom_quartile_hi"]:+.3f}')
+
     # ---- Experiment 15 : architecture sensitivity ------------------------ #
     aj = Path(results_root) / "exp15" / "architecture.json"
     if aj.exists():

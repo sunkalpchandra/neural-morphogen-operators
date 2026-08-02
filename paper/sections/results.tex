@@ -60,6 +60,20 @@ observation. By distance quartile, NRDO is \emph{last} in the nearest
 data every model interpolates; far from it, only the field still has a value to
 read.
 
+The same argument makes a second, independent prediction: a field helps only
+where there is spatial structure to exploit, so the advantage should concentrate
+on genes whose measured expression is spatially autocorrelated and disappear on
+genes that are not. Ranking all \GeneNGenes{} genes by the Moran's $I$ of the
+\emph{measured} held-out signal, the per-gene advantage over the strongest
+baseline correlates with structure at $\GeneCorrLo$--$\GeneCorrHi$ across
+\GeneSeeds{} seeds. It is \GeneTopLo--\GeneTopHi{} Pearson $r$ in the most
+structured quartile and \GeneBotLo{} to \GeneBotHi{} in the least --- an
+interval containing zero. On genes with no spatial signal the model has no
+advantage at all, which is what the mechanism predicts and what a general
+capacity advantage would not produce. Each seed is compared against whichever
+baseline is strongest for that seed, so the margin is not obtained by fixing a
+weak opponent.
+
 The cost is smoothness. NRDO is second on SSIM behind \MSBestAnySSIMModel{}
 (\MSNMOSSIM{} against \MSBestAnySSIM{}) and has by some margin the largest error
 in Moran's $I$ (\MSNMOMoran{} against \MSBestAnyMoran{} for
