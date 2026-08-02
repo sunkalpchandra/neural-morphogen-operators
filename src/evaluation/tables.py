@@ -514,6 +514,11 @@ def build_all(results_root: str | Path = "results", out_dir: str | Path = "paper
     made["sample_sizes"] = table_sample_sizes(results_root,
                                               out_dir / "tab_samplesizes.tex")
 
+    ar = results_root / "exp15" / "architecture.json"
+    if ar.exists():
+        made["architecture"] = table_architecture(json.loads(ar.read_text()),
+                                                  out_dir / "tab_architecture.tex")
+
     cv = results_root / "exp14" / "converged.json"
     if cv.exists():
         made["converged"] = table_converged(json.loads(cv.read_text()),
@@ -1118,6 +1123,51 @@ def table_sample_sizes(results_root: str | Path, out: Path) -> str:
         "held-out locations without the text saying so.",
         "tab:samplesizes", "lrrr",
         "experiment & runs & sections & seeds",
+    )
+    out.write_text(tex)
+    return tex
+
+
+def table_architecture(records: List[Dict], out: Path) -> str:
+    """What the architectural choices are worth, measured rather than asserted."""
+    df = pd.DataFrame([r for r in records if not r.get("failed")])
+    if df.empty or "full" not in set(df["variant"]):
+        return ""
+    LABEL = {
+        "full": "as published",
+        "decoder_sees_xy": "decoder given coordinates",
+        "no_aux_z0": "pre-relaxation term removed",
+        "knn4": "encoder graph $k=4$",
+        "knn16": "encoder graph $k=16$",
+        "splat_sigma_half": "splat bandwidth halved",
+        "splat_sigma_2x": "splat bandwidth doubled",
+    }
+    g = df.groupby("variant")["pearson_mean"].agg(["mean", "std", "count"])
+    base = float(g.loc["full", "mean"])
+    noise = float(df[df["variant"] == "full"]["pearson_mean"].std())
+    rows = []
+    for v in [k for k in LABEL if k in g.index]:
+        d = float(g.loc[v, "mean"]) - base
+        cell = "--" if v == "full" else (
+            f"\\textbf{{{d:+.4f}}}" if abs(d) > 2 * noise else f"{d:+.4f}")
+        rows.append(f"{LABEL[v]} & {_fmt(g.loc[v,'mean'], g.loc[v,'std'])} & "
+                    f"{cell} \\\\\n")
+    tex = _wrap(
+        "".join(rows),
+        f"\\textbf{{Architectural choices, measured.}} Each row retrains with one "
+        f"component changed, {int(g['count'].max())} seeds, at the benchmark "
+        f"budget on the primary section. $\\Delta r$ is bold where it exceeds "
+        f"twice the across-seed s.d. of the published configuration "
+        f"({noise:.4f}); nothing else here is distinguishable from a rerun. The "
+        f"method section describes the pre-relaxation term as conditioning the "
+        f"encoder and the splat bandwidth as learnable; neither claim is "
+        f"supported by held-out accuracy. Withholding coordinates from the "
+        f"decoder is the only change that moves the result at all, and it does so "
+        f"consistently in direction across seeds, but at two seeds its magnitude "
+        f"sits just under the threshold this table uses; we read it as suggestive "
+        f"rather than established.",
+        "tab:architecture", "lrr",
+        "variant & Pearson $r$ & $\\Delta r$",
     )
     out.write_text(tex)
     return tex
