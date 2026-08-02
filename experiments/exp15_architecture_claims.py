@@ -53,8 +53,11 @@ VARIANTS: Dict[str, Dict] = {
     "full":            dict(model={}, loss={}),
     "decoder_sees_xy": dict(model={"decoder_sees_coords": True}, loss={}),
     "no_aux_z0":       dict(model={}, loss={"aux_z0": 0.0}),
-    "knn4":            dict(model={"knn_k": 4}, loss={}),
-    "knn16":           dict(model={"knn_k": 16}, loss={}),
+    # knn is a property of the section's graph, not of the model: the encoder
+    # only consults cfg.knn_k when no edge_index is supplied, and every
+    # experiment supplies one. Varying the model field tested nothing.
+    "knn4":            dict(model={}, loss={}, knn=4),
+    "knn16":           dict(model={}, loss={}, knn=16),
     "splat_sigma_half": dict(model={"splat_sigma": 0.5}, loss={}),
     "splat_sigma_2x":  dict(model={"splat_sigma": 2.0}, loss={}),
 }
@@ -85,7 +88,7 @@ def main() -> int:
         try:
             set_seed(seed)
             sec = load_section(Path(cfg.data.processed_dir) / f"{a.section}.h5ad",
-                               device=device)
+                               device=device, knn_k=spec.get("knn", 8))
             mcfg = {**copy.deepcopy(cfg.model.to_dict()), **spec["model"]}
             model = build_nmo(mcfg, n_genes=sec.n_genes)
             lw = LossWeights(**{**cfg.loss.to_dict(), **spec["loss"]})
@@ -96,6 +99,8 @@ def main() -> int:
             res = tr.fit()["test"]
             sig = model.encoder.splat.log_sigma.exp().item()
             rows.append(dict(variant=variant, seed=seed, section=a.section,
+                             knn=int(spec.get("knn", 8)),
+                             n_edges=int(sec.edge_index.shape[1]),
                              learned_splat_sigma=float(sig),
                              **{m: float(res[m]) for m in
                                 ("pearson_mean", "rmse", "ssim_mean",

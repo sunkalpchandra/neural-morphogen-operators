@@ -54,6 +54,11 @@ class NMOConfig:
     gene_embed_dim: int = 128
     encoder_hidden: int = 128
     n_graph_layers: int = 3
+    #: Neighbourhood size used ONLY when forward() is called without an
+    #: edge_index. Every experiment in this repository supplies one, built by
+    #: load_section(knn_k=...), so changing this field alone has no effect --
+    #: which made an ablation of it silently test nothing. Vary the graph where
+    #: it is built, not here.
     knn_k: int = 8
     n_fno_blocks: int = 2
     fno_modes: int = 12
@@ -133,6 +138,15 @@ class SpatialEncoder(nn.Module):
         if len(self.graph_layers):
             if edge_index is None:
                 edge_index = knn_graph(coords, self.cfg.knn_k)
+            elif self.cfg.knn_k != 8 and not getattr(self, "_knn_warned", False):
+                # Silently ignoring a non-default setting is how an ablation of
+                # this field came to measure nothing at all.
+                import logging
+                logging.getLogger(__name__).warning(
+                    "model.knn_k=%d is ignored: an edge_index was supplied. "
+                    "Set knn_k on load_section() to change the graph.",
+                    self.cfg.knn_k)
+                self._knn_warned = True
             if point_mask is not None:
                 # keep only edges whose source is observed, so masked points
                 # cannot leak their own (held-out) expression into the field
