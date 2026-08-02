@@ -75,3 +75,16 @@ Verified spread is exactly 0 after the change. Pinned by
 and are queued for regeneration. This does not change any ranking in the paper --
 the GP sits at ~0.15 against NRDO's 0.245, far outside the wobble -- but the
 numbers on disk do not yet match the code that would produce them.
+
+**Sensitivity analysis (2026-08-02).** Regenerating the affected runs means
+retraining, since the exp8 shards keep no checkpoints. Before spending that
+compute we measured whether it could matter: perturbing the four affected
+models' per-specimen scores by the measured noise (s.d. 0.0059) and re-running
+the full Holm-corrected comparison 2000 times. None of the three reported
+significant comparisons changes verdict in any resample. One non-significant
+comparison, tangram at p_holm = 0.0781, flips 19.75% of the time.
+
+So the defect cannot have manufactured a result the paper reports; at worst it
+masks a fourth. The published numbers are conservative with respect to it, and
+regenerating those runs can only add a finding. Reproduced by
+`scripts/eval_noise_sensitivity.py`.

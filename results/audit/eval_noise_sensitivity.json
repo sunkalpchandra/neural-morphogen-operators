@@ -1,0 +1,44 @@
+{
+  "autoencoder": {
+    "p_holm": 0.2109375,
+    "significant": false,
+    "affected": false,
+    "flip_rate": 0.0
+  },
+  "gnn": {
+    "p_holm": 0.01953125,
+    "significant": true,
+    "affected": false,
+    "flip_rate": 0.0
+  },
+  "gp_multiscale": {
+    "p_holm": 0.013671875,
+    "significant": true,
+    "affected": true,
+    "flip_rate": 0.0
+  },
+  "neural_field": {
+    "p_holm": 0.013671875,
+    "significant": true,
+    "affected": false,
+    "flip_rate": 0.0
+  },
+  "spage": {
+    "p_holm": 0.1875,
+    "significant": false,
+    "affected": true,
+    "flip_rate": 0.0
+  },
+  "stagate": {
+    "p_holm": 0.431640625,
+    "significant": false,
+    "affected": false,
+    "flip_rate": 0.0
+  },
+  "tangram": {
+    "p_holm": 0.078125,
+    "significant": false,
+    "affected": true,
+    "flip_rate": 0.1975
+  }
+}
