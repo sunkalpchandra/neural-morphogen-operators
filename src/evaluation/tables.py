@@ -1142,13 +1142,27 @@ def table_sample_sizes(results_root: str | Path, out: Path) -> str:
         warn = "\\,$\\dagger$" if seeds < 2 else ""
         rows.append(f"{_esc(name)} & {len(rs)} & {n if secs else '--'} & "
                     f"{seeds}{warn} \\\\\n")
+    # Counts here are what was *run*. For the multi-section benchmark that is
+    # one more than what is analysed, because the size rule drops a section
+    # after the fact; saying so is the point of this table.
+    from .statistics import MIN_HELDOUT_LOCATIONS
+    ms_all = load("exp8/results_shard*.json")
+    ineligible = sorted({r["section"] for r in ms_all
+                         if r.get("section")
+                         and r.get("n_obs_used", 10 ** 9) < 4 * MIN_HELDOUT_LOCATIONS})
+    excl_note = ("" if not ineligible else
+                 f" The benchmark row counts sections \\emph{{run}}; "
+                 f"{len(ineligible)} of them "
+                 f"({', '.join(_esc(x) for x in ineligible)}) is excluded from "
+                 f"every analysis by the held-out-size rule, so the analysed "
+                 f"count is one lower.")
     tex = _wrap(
         "".join(rows),
         "Sample size behind each experiment: total runs, distinct tissue "
         "sections, and random seeds per configuration. $\\dagger$ marks a single "
         "seed, at which we report no ordering between models. This table exists "
         "because a claim in an earlier version rested on one seed and seventy "
-        "held-out locations without the text saying so.",
+        "held-out locations without the text saying so." + excl_note,
         "tab:samplesizes", "lrrr",
         "experiment & runs & sections & seeds",
     )
