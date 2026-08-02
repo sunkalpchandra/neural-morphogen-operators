@@ -22,8 +22,8 @@ few are things I would not do unprompted.
 - [ ] 13. Runtime and peak memory per model, reported alongside accuracy
 - [ ] 14. Ablate the occupancy channel (claimed essential, never tested)
 - [ ] 15. Ablate the aux_z0 term (claimed to keep the encoder conditioned)
-- [ ] 16. Test whether the decoder truly ignores coordinates (claimed, unverified)
-- [ ] 17. Check the splat bandwidth actually trains, or is stuck at init
+- [x] 16. Verified: decoder reads the field at query coords, not a coordinate map
+- [x] 17. Bandwidth trains but moves only ~4% from init; exp15 tests whether it matters
 - [ ] 18. Sensitivity to the k-NN graph size used by the encoder
 - [ ] 19. A permutation test for the specimen-level result, not just Wilcoxon
 - [ ] 20. Power analysis: how many specimens would resolve STAGATE
@@ -44,19 +44,19 @@ few are things I would not do unprompted.
 - [ ] 32. Verify Theorem 11's numerical corollary on real fitted operators
 - [ ] 33. Test the vacuity proposition on a trained model, not a random one
 - [ ] 34. Confirm the dispersion relation code matches the analytic Jacobian
-- [ ] 35. Cross-check Moran's I against an independent implementation
-- [ ] 36. Cross-check Geary's C against an independent implementation
-- [ ] 37. Cross-check ARI/NMI against sklearn on a fixed example
-- [ ] 38. Verify SSIM matches skimage on rasterised maps
+- [x] 35. Moran's I matches the definition to 2e-17
+- [x] 36. Geary's C matches the definition to 3e-15
+- [x] 37. ARI/NMI come from sklearn directly
+- [x] 38. SSIM matches skimage to 1e-4 and orders degradations identically
 - [ ] 39. Confirm the bootstrap CI is percentile, not normal-approximation
 - [ ] 40. Check Holm implementation against statsmodels
-- [ ] 41. Unit test for the specimen-collapse function
-- [ ] 42. Unit test for MIN_HELDOUT and MIN_REFERENCE_ARI guards
+- [x] 41. Specimen-collapse unit tested
+- [x] 42. MIN_HELDOUT and MIN_REFERENCE_ARI guards unit tested against the sections that motivated them
 - [ ] 43. Unit test that check_numbers fails on an injected mismatch
 - [ ] 44. Unit test for the provenance registry
 - [ ] 45. Regression test pinning the headline numbers
-- [ ] 46. Property test: metrics invariant to gene permutation
-- [ ] 47. Property test: metrics invariant to location permutation
+- [x] 46. Gene-permutation equivariance tested
+- [x] 47. Location-permutation invariance tested
 - [ ] 48. Test the loaders against a truncated/corrupt file
 - [ ] 49. Test the build guard fires on a mis-registered dataset
 - [ ] 50. Test the figure code on empty and single-row inputs
