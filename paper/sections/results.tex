@@ -27,7 +27,13 @@ family of \MSNBaselines{} baselines against \MSSpecNSig{} of them (\MSSpecSigMod
 excluding zero. Every margin is \SeedRatioLo--\SeedRatioHi$\times$ the
 across-seed noise floor, the smallest being \SeedRatioLoModel{} --- the same
 comparison that fails to resolve. It does not survive against \MSSpecGraphWorstModel{}
-(Section~\ref{sec:limitations}). The grouping is conservative and does not drive
+(Section~\ref{sec:limitations}). Because a rank test at this sample size is coarse
+and discards magnitude, we repeated every comparison as an exact sign-flip
+permutation test enumerating all $2^{\MSSpecimens{}}$ assignments; it agrees with
+the rank test on \PermNAgree{} of \PermNModels{} models at $\alpha = 0.05$, so
+the conclusions do not rest on which test was chosen. We report the rank test
+throughout. The unresolved comparison stays unresolved under both
+($p = \PermStagateP$ by permutation). The grouping is conservative and does not drive
 the result: counting the two Stereo-seq stages separately gives \MSSpecAltN{}
 specimens and the same \MSSpecAltNSig{} significant comparisons.
 

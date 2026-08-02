@@ -1,0 +1,58 @@
+{
+  "autoencoder": {
+    "n": 10,
+    "wins": 7,
+    "wilcoxon": 0.10546875,
+    "permutation": 0.0703125,
+    "n_for_80pct_power": 49,
+    "agree": true
+  },
+  "gnn": {
+    "n": 10,
+    "wins": 9,
+    "wilcoxon": 0.00390625,
+    "permutation": 0.00390625,
+    "n_for_80pct_power": 12,
+    "agree": true
+  },
+  "gp_multiscale": {
+    "n": 10,
+    "wins": 10,
+    "wilcoxon": 0.001953125,
+    "permutation": 0.001953125,
+    "n_for_80pct_power": 6,
+    "agree": true
+  },
+  "neural_field": {
+    "n": 10,
+    "wins": 10,
+    "wilcoxon": 0.001953125,
+    "permutation": 0.001953125,
+    "n_for_80pct_power": 6,
+    "agree": true
+  },
+  "spage": {
+    "n": 5,
+    "wins": 5,
+    "wilcoxon": 0.0625,
+    "permutation": 0.0625,
+    "n_for_80pct_power": 6,
+    "agree": true
+  },
+  "stagate": {
+    "n": 10,
+    "wins": 7,
+    "wilcoxon": 0.431640625,
+    "permutation": 0.197265625,
+    "n_for_80pct_power": 49,
+    "agree": true
+  },
+  "tangram": {
+    "n": 10,
+    "wins": 9,
+    "wilcoxon": 0.01953125,
+    "permutation": 0.015625,
+    "n_for_80pct_power": 12,
+    "agree": true
+  }
+}

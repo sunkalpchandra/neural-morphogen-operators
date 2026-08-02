@@ -817,6 +817,25 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
                 cmd(f"Split{tag}Block", f"{G[key]['block_median_um']:.1f}")
                 cmd(f"Split{tag}Ratio", f"{G[key]['ratio']:.1f}")
 
+    # ---- permutation cross-check and power ------------------------------- #
+    # Wilcoxon stays the reported test. These macros let the prose say whether
+    # an exact randomisation test agrees with it, and what sample size would
+    # resolve the comparisons that remain open, without quoting either from
+    # memory.
+    pj = Path(results_root) / "audit" / "permutation_power.json"
+    if pj.exists():
+        P = json.loads(pj.read_text())
+        if P:
+            cmd("PermNModels", str(len(P)))
+            cmd("PermNAgree", str(sum(1 for v in P.values() if v["agree"])))
+            if "stagate" in P:
+                cmd("PermStagateP", f'{P["stagate"]["permutation"]:.2f}')
+                cmd("PowerStagateN", str(P["stagate"]["n_for_80pct_power"]))
+            sig = [v["n_for_80pct_power"] for k, v in P.items()
+                   if v["wilcoxon"] < 0.05]
+            if sig:
+                cmd("PowerSigMaxN", str(max(sig)))
+
     # ---- gene-panel leakage ---------------------------------------------- #
     # HVG selection precedes the split, so the panel is computed from every
     # location including the held-out blocks. Shared by all models, so it

@@ -21,7 +21,7 @@ few are things I would not do unprompted.
 - [x] 12. Error-vs-distance computed: NRDO last in the nearest quartile, +50% in the farthest
 - [ ] 13. Runtime and peak memory per model, reported alongside accuracy
 - [ ] 14. Ablate the occupancy channel (claimed essential, never tested)
-- [ ] 15. Ablate the aux_z0 term (claimed to keep the encoder conditioned)
+- [x] 15. Ablate the aux_z0 term (claimed to keep the encoder conditioned) — inert: 0.0006, below the noise floor
 - [x] 16. Verified: decoder reads the field at query coords, not a coordinate map
 - [x] 17. Bandwidth trains but moves only ~4% from init; exp15 tests whether it matters
 - [x] 18. k-NN size varied properly (edges 23006 -> 12632); changes r by 0.0001
@@ -31,11 +31,11 @@ few are things I would not do unprompted.
 ## Tier 2 — hardens existing claims (21–50)
 
 - [x] 21. Seed-noise floor computed per model; every margin is 1.9-7.3x it, smallest for STAGATE
-- [ ] 22. Verify every checkpoint loads and reproduces its recorded metrics
+- [x] 22. Verify every checkpoint loads and reproduces its recorded metrics — 20/21 exact; gp was RNG-dependent at eval, fixed
 - [x] 23. Split determinism tested: same section, two loads, identical splits and coords
 - [x] 24. Held-out blocks verified contiguous — measurably farther from training data than a random subset of equal size
 - [x] 25. Standardisation verified train-only: train mean 0, sd 1; held-out splits differ
-- [ ] 26. Confirm no gene-selection leakage across the split
+- [x] 26. Confirm no gene-selection leakage across the split — found: HVG precedes the split, 16-18% of the panel needs held-out data, now disclosed
 - [x] 27. Isotropic normalisation verified on every section
 - [x] 28. SPD verified on fitted weights: lambda_min 8.0e-03 against a floor of eps
 - [ ] 29. Verify the Strang order empirically at more than one dt range
@@ -52,8 +52,8 @@ few are things I would not do unprompted.
 - [x] 40. Holm matches statsmodels exactly on the paper's own p-values
 - [x] 41. Specimen-collapse unit tested
 - [x] 42. MIN_HELDOUT and MIN_REFERENCE_ARI guards unit tested against the sections that motivated them
-- [ ] 43. Unit test that check_numbers fails on an injected mismatch
-- [ ] 44. Unit test for the provenance registry
+- [x] 43. Unit test that check_numbers fails on an injected mismatch — found check_literals was dead
+- [x] 44. Unit test for the provenance registry — found the stub parser was dead
 - [x] 45. Regression pin on the headline macros — a tripwire, not a correctness check
 - [x] 46. Gene-permutation equivariance tested
 - [x] 47. Location-permutation invariance tested

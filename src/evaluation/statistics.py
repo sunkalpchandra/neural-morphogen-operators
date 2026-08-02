@@ -245,3 +245,64 @@ MIN_REFERENCE_ARI = 0.05
 def ari_retention_estimable(ari_measured: float) -> bool:
     """Whether a retention ratio can be formed from this reference ARI."""
     return float(ari_measured) >= MIN_REFERENCE_ARI
+
+
+# --------------------------------------------------------------------------- #
+# Exact sign-flip permutation test and power, for the specimen-level design
+# --------------------------------------------------------------------------- #
+
+def exact_sign_permutation_p(diffs: np.ndarray) -> float:
+    """Two-sided p from enumerating all 2^n sign flips of the paired differences.
+
+    The paper reports Wilcoxon signed-rank p-values on 10 specimens. Wilcoxon
+    discards magnitude in favour of ranks, and at n=10 its null distribution is
+    coarse. This enumerates the randomisation null directly under the sharp null
+    that the sign of each specimen's difference is exchangeable, so it uses the
+    magnitudes and is exact rather than asymptotic.
+
+    It is a cross-check, not a replacement: if the two disagree materially, the
+    conclusion rests on which test was chosen, and that is worth knowing.
+    """
+    d = np.asarray(diffs, dtype=float)
+    d = d[np.isfinite(d)]
+    n = len(d)
+    if n == 0:
+        return float("nan")
+    if n > 22:                                   # 2^22 ~ 4e6, still tractable
+        raise ValueError(f"enumeration is 2^{n}; use a sampled permutation")
+    obs = abs(float(d.mean()))
+    signs = 1 - 2 * ((np.arange(2 ** n)[:, None] >> np.arange(n)) & 1)
+    means = np.abs((signs * d).mean(axis=1))
+    # >= : the observed assignment is itself one of the enumerated flips
+    return float((means >= obs - 1e-15).mean())
+
+
+def specimens_needed(diffs: np.ndarray, alpha: float = 0.05,
+                     power: float = 0.80, max_n: int = 200) -> int:
+    """Smallest n at which a sign test could reach `alpha` with `power`.
+
+    Answers the question the STAGATE comparison raises: the paper reports it
+    unresolved at 10 specimens, and a reader is entitled to ask how many would
+    settle it. Uses the observed win rate as the effect size and the exact
+    binomial sign test, which is the weakest of the tests in use here, so the
+    answer is an upper bound on what a rank or permutation test would need.
+
+    Returns ``max_n`` if the observed win rate cannot reach the target at any n
+    below it -- with a win rate near 1/2 no achievable sample size helps.
+    """
+    from scipy.stats import binom
+    d = np.asarray(diffs, dtype=float)
+    d = d[np.isfinite(d) & (d != 0)]
+    if len(d) == 0:
+        return max_n
+    p_win = float((d > 0).mean())
+    if p_win <= 0.5:
+        return max_n
+    for n in range(3, max_n + 1):
+        # critical count for a two-sided sign test at alpha under H0: p = 1/2
+        k_crit = int(binom.ppf(1 - alpha / 2, n, 0.5)) + 1
+        if k_crit > n:
+            continue
+        if 1.0 - binom.cdf(k_crit - 1, n, p_win) >= power:
+            return n
+    return max_n

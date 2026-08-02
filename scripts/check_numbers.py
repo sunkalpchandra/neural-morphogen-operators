@@ -185,6 +185,9 @@ SCOPE_EXEMPTIONS: Dict[Tuple[str, str], str] = {
 ALLOWED_LITERALS = {
     "0", "1", "2", "3", "4", "5", "10", "50", "55", "90", "95", "100", "2026",
     "1968", "1952",
+    # Conventional design constants, not results: the 80% in a power calculation
+    # is chosen the same way the 95% in a confidence interval is.
+    "80",
 }
 
 

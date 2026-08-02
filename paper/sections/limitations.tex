@@ -48,3 +48,14 @@ sections so that \MSRuns{} runs were feasible on CPU, and scope is limited to
 single 2-D sections.
 
 \iffullpaper\else\label{endofmain}\fi
+
+\paragraph{What would settle the open comparison.} We can say what the
+unresolved comparison would cost to resolve rather than leaving it as a caveat.
+Taking the observed win rate as the effect size and an exact binomial sign test
+--- the weakest test used here, so an upper bound --- reaching 80\% power at
+$\alpha = 0.05$ would need roughly \PowerStagateN{} independent specimens,
+against the \MSSpecimens{} available. That is a five-fold larger study, not a
+few more sections, and it is the honest reason the comparison is open: the design
+is underpowered for an effect of this size, not merely inconclusive. For contrast,
+the comparisons that do separate would have needed at most \PowerSigMaxN{}
+specimens, which is why they resolve at this scale.
