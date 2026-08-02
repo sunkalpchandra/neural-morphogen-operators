@@ -168,27 +168,22 @@ An earlier version conditioned on a random half of the target and scored the
 complement, which is not comparable: on the Xenium target the median distance
 from a scored location to the nearest visible one is \SplitXenRandom\,$\mu$m
 under a random split against \SplitXenBlock\,$\mu$m under blocks, so it admits
-exactly the neighbor leakage that motivated blocks. Under that protocol a
-zero-shot model appeared to beat models trained on the target; under blocks it
-does not.
+exactly the neighbor leakage the block protocol exists to prevent. Under that
+protocol a zero-shot model appeared to beat models trained on the target; under
+blocks it does not.
 
-Applied unchanged from adult mouse brain to human breast carcinoma, NRDO reaches
-\TissueZeroShot{} against a training-mean floor of \TissueFloor{} and an
-in-domain oracle of \TissueOracle{}. That is not weak transfer but none: the
-zero-shot operator is indistinguishable from, and nominally below, predicting the
-training mean. Decoder-only refitting recovers \TissueFineTune{}, about half the
-oracle.
-Cross-resolution is better but still poor: an operator fitted to 55\,$\mu$m
-Visium spots and evaluated on single-cell Xenium of the same organ reaches
-\ResZeroShot{} over \ResSharedGenes{} shared genes against an oracle of
-\ResOracle{}. Every baseline transfers better in both settings. We attribute this to the mechanism that produces the in-domain gain: NRDO fits an
-operator whose fixed point is the source tissue, and relaxing toward that
-attractor is inappropriate when the target has a different architecture, whereas
-local message passing encodes less about the source.
-Proposition~\ref{prop:nystrom} makes the distinction precise --- discretization
-invariance of the \emph{encoder} does not entail portability of the \emph{fitted}
-operator. Full tables and the developmental-forecasting result are in
-Appendix~\ref{app:empirical}.
+The corrected result is negative. Applied unchanged from adult mouse brain to
+human breast carcinoma NRDO reaches \TissueZeroShot{} against a training-mean
+floor of \TissueFloor{} and an in-domain oracle of \TissueOracle{}: not weak
+transfer but none, and every baseline transfers better. Cross-resolution is
+better but still poor (\ResZeroShot{} against an oracle of \ResOracle{} over
+\ResSharedGenes{} shared genes). We attribute this to the mechanism that produces
+the in-domain gain --- NRDO fits an operator whose fixed point is the source
+tissue, and relaxing toward that attractor is inappropriate when the target has a
+different architecture, whereas local message passing encodes less about the
+source. Proposition~\ref{prop:nystrom} makes the distinction precise:
+discretization invariance of the \emph{encoder} does not entail portability of
+the \emph{fitted} operator.
 
 \subsection{Counterfactual perturbation}
 \label{sec:results4}

@@ -1,43 +1,38 @@
 \begin{abstract}
 Machine learning for spatial transcriptomics almost universally models a tissue
-section as a graph over the measured spots, an inductive bias that ties the
-learned function to one sampling lattice and leaves expression undefined between
-nodes. Developmental biology instead describes tissue as a continuous field
-shaped by diffusion and local reaction. We introduce \textbf{Neural Reaction--Diffusion
-Operators} (NRDO), which encode irregularly sampled expression into a continuous
-latent field, evolve it under a learned anisotropic reaction--diffusion PDE
+section as a graph over the measured spots, tying the learned function to one
+sampling lattice and leaving expression undefined between nodes. Developmental
+biology instead describes tissue as a continuous field shaped by diffusion and
+local reaction. We introduce \textbf{Neural Reaction--Diffusion Operators}
+(NRDO), which encode irregularly sampled expression into a continuous latent
+field, evolve it under a learned anisotropic reaction--diffusion PDE
 $\partial_t \vz = \nabla\!\cdot\!(\mD_\theta \nabla \vz) + f_\theta(\vz)$, and
 decode at arbitrary coordinates. Solving the diffusion half-step exactly in the
 Fourier domain under Strang splitting makes the integrator unconditionally
 stable and second-order accurate, at $\NumSpeedup\times$ fewer steps than
 explicit Euler for the same tolerance.
-Across \MSSections{} tissue sections from four technologies (\MSRuns{} runs), NRDO
-improves masked-region reconstruction over graph, Gaussian-process, implicit
-neural-field and imputation baselines, beating every one with Holm-corrected
-$p \le \MSMaxHolm$ in paired tests over sections. Because twelve of those sections
-are serial sections of one brain, the conservative unit of analysis is the
-specimen, so we assembled \MSSpecimens{} independent specimens across five
-organs and two donors' species. At that level the advantage survives
-family-wise correction against \MSSpecNSig{} baselines
-(\MSSpecSigModels{}; Holm-corrected $p \le \MSSpecSigMaxHolm$, winning on at
-least \MSSpecSigMinWins{} specimens), including one graph model. Two controls
-localize the gain. An exactly parameter-matched ablation---the $\OpParamPct\%$
-of weights forming the operator are left allocated but unused---costs
-$\MatchedNoDynamicsDelta$ Pearson $r$, more than the entire margin over the best
-baseline, so the effect is attributable to the operator rather than to capacity;
-and a non-spatial baseline sharing the same read-out head shows that graph
-message passing contributes at most \MSBestGraphOverAE{}, against \MSNMOOverAE{}
-for NRDO. We also prove that a single stationary snapshot determines the
-reaction network only on a Lebesgue-null subset of latent space, which delimits
-what any method of this class can identify from static tissue.
-Two limits are worth stating plainly. Against the strongest graph baseline the
-separation is still unresolved (\MSSpecGraphWorstModel{}:
-\MSSpecGraphWins{} specimens, $p = \MSSpecGraphWorstP$), so the method is
-distinguishable from most of this literature but not from all of it;
-and the predicted fields are
-smoother than the measurements, on which NRDO trails every baseline tested ---
-a spectral-matching term reduces the gap but cannot close it, so the limitation
-belongs to the operator class rather than to the objective.
+
+Across \MSSections{} sections from four technologies (\MSRuns{} runs), NRDO
+improves masked-region reconstruction over graph, Gaussian-process, neural-field
+and imputation baselines. Because twelve of those sections come from one brain,
+we take the \emph{specimen} as the unit of analysis and assemble \MSSpecimens{}
+independent ones: the advantage survives Holm correction across the baseline
+family against \MSSpecNSig{} of them, including a graph model. Two controls
+localize it. An exactly parameter-matched ablation, in which the
+$\OpParamPct\%$ of weights forming the operator are left allocated but unused,
+costs $\MatchedNoDynamicsDelta$ Pearson $r$; and a non-spatial baseline sharing
+the read-out head shows message passing contributes at most
+\MSBestGraphOverAE{} against \MSNMOOverAE{} for NRDO. We also prove that a single
+stationary snapshot determines the reaction network only on a Lebesgue-null
+subset of latent space, delimiting what any method of this class can identify
+from static tissue.
+
+Two limits are worth stating plainly. The separation is unresolved against the
+strongest graph baseline (\MSSpecGraphWorstModel{}: \MSSpecGraphWins{}
+specimens, $p = \MSSpecGraphWorstP$), so the method is distinguishable from most
+of this literature but not all of it; and the predicted fields are smoother than
+the measurements, on which NRDO trails every baseline tested --- a limitation a
+spectral-matching term bounds but does not remove.
 \end{abstract}
 
 % =====================================================================

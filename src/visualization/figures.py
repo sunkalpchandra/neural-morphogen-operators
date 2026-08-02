@@ -73,7 +73,7 @@ def figure1_overview(model=None, section=None) -> plt.Figure:
     ch = int(np.argmax([np.nanstd(np.where(occ_np > np.percentile(occ_np, 45),
                                            Z0[c], np.nan)) for c in range(Z0.shape[0])]))
 
-    fig = plt.figure(figsize=(WIDTH_FULL, 1.62))
+    fig = plt.figure(figsize=(WIDTH_FULL, 1.42))
     gs = fig.add_gridspec(1, 5, wspace=0.28,
                           width_ratios=[1, 1, 1, 1, 1.05])
 
