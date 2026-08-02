@@ -467,6 +467,37 @@ def check_sample_sizes(rep: Report, results: Path) -> None:
                 "excluded from the analysis but not named in the text", named)
 
 
+#: British spellings that have crept into this manuscript before. American
+#: English throughout is an explicit requirement, and a spelling that reappears
+#: during an edit is invisible in a diff of a rewritten paragraph.
+#: Matched whole-word. Stems are dangerous here: "analys" also matches
+#: "analysis", which is correct in both dialects, and flagging it sends an edit
+#: chasing a non-error.
+BRITISH = (
+    r"normalis(e|ed|es|ing|ation)", r"penalis(e|ed|es|ing)",
+    r"summaris(e|ed|es|ing)", r"characteris(e|ed|es|ing|ation)",
+    r"colour(s|ed|ing|blind)?", r"behaviour(s|al)?", r"neighbour(s|hood|hoods|ing)?",
+    r"centre(s|d)?", r"analys(ed|ing)", r"optimis(e|ed|es|ing|ation)",
+    r"discretis(e|ed|es|ing|ation)", r"parametris(e|ed|es|ing|ation)",
+    r"generalis(e|ed|es|ing|ation)", r"recognis(e|ed|es|ing)",
+    r"artefact(s)?", r"favour(s|ed|able|ing)?", r"modelling", r"labelling",
+)
+
+
+def check_spelling(rep: Report) -> None:
+    """Fail on British spellings anywhere in the manuscript sources."""
+    for f in sorted(SECTIONS.glob("*.tex")) + [PAPER / "preamble.tex"]:
+        if not f.exists():
+            continue
+        text = f.read_text()
+        for pat in BRITISH:
+            for m in re.finditer(r"\b" + pat + r"\b", text, re.I):
+                line = text[:m.start()].count("\n") + 1
+                rep.add(m.group(0), f"{f.name}:{line}", "spelling", m.group(0),
+                        "British spelling; this manuscript is American English",
+                        False)
+
+
 def check_literals(rep: Report) -> None:
     body = _main_body(TEX.read_text())
     lines = body.split("\n")
@@ -507,6 +538,7 @@ def main() -> int:
     check_scope(rep)
     check_coherence(rep, results)
     check_sample_sizes(rep, results)
+    check_spelling(rep)
     check_literals(rep)
 
     w = [max(len(str(r[i])) for r in rep.rows) if rep.rows else 8 for i in range(5)]

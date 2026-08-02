@@ -38,5 +38,15 @@
     "rmse": 0.253076434135437,
     "ssim_mean": 0.3916297509982213,
     "morans_i_abs_error": 0.7200745740642321
+  },
+  {
+    "variant": "no_aux_z0",
+    "seed": 0,
+    "section": "visium_mouse_brain",
+    "learned_splat_sigma": 0.9776833653450012,
+    "pearson_mean": 0.2447844296693802,
+    "rmse": 0.25276821851730347,
+    "ssim_mean": 0.40228724166298535,
+    "morans_i_abs_error": 0.761234009658343
   }
 ]

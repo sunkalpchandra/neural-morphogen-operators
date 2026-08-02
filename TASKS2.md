@@ -109,8 +109,8 @@ Lower value. Included because asked for; several are cosmetic and a few
 - [ ] 91. Check hyphenation in the built PDF *
 - [ ] 92. Spell-check the manuscript
 - [ ] 93. Grammar pass
-- [ ] 94. American English consistency check
-- [ ] 95. Verify no British spellings crept back in
+- [x] 94. American English enforced by check-numbers, not by a one-off pass
+- [x] 95. One British spelling found and fixed; the guard prevents regression
 - [ ] 96. Consistent tense across sections
 - [ ] 97. Consistent use of "we" vs passive
 - [ ] 98. Acronym definition-on-first-use audit
