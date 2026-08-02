@@ -43,6 +43,13 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
     ]
 
     def cmd(name: str, value: str):
+        # LaTeX control sequences are letters only. A name like \DistQ1Um parses
+        # as \DistQ followed by literal "1Um", which is typesettable material in
+        # the preamble, and the resulting "Missing \begin{document}" points at a
+        # line that looks perfectly valid.
+        if not name.isalpha():
+            raise ValueError(
+                f"macro name {name!r} is not letters-only; LaTeX would split it")
         L.append(f"\\newcommand{{\\{name}}}{{{value}}}")
 
     # ---- Experiment 1 : main benchmark ---------------------------------- #
@@ -546,8 +553,8 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             piv = E.pivot_table(index="quartile", columns="model", values="pearson")
             q_lo, q_hi = int(piv.index.min()), int(piv.index.max())
             edges = E.groupby("quartile")[["lo_um", "hi_um"]].first()
-            cmd("DistQ1Um", f"{edges.loc[q_hi, 'lo_um']:.0f}")
-            cmd("DistQ4Um", f"{edges.loc[q_hi, 'hi_um']:.0f}")
+            cmd("DistFarLoUm", f"{edges.loc[q_hi, 'lo_um']:.0f}")
+            cmd("DistFarHiUm", f"{edges.loc[q_hi, 'hi_um']:.0f}")
             if "nmo" in piv.columns:
                 near, far = piv.loc[q_lo], piv.loc[q_hi]
                 others_n = near.drop(index=["nmo"]).dropna()

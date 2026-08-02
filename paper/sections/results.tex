@@ -45,50 +45,28 @@ read-out head; it is the \emph{operator} that carries the gain, which the
 parameter-matched $T{=}0$ control confirms (Section~\ref{sec:ablations}).
 
 
-\paragraph{The advantage is where the observations are not.}
-The continuity argument makes a point-by-point prediction, not just a
-section-level one: a field is defined everywhere, a graph is not, so the gap
-should widen with distance from the nearest observation. Splitting the held-out
-locations into quartiles by that distance, NRDO is \emph{last} in the nearest
-quartile (\DistNearNMO{} against \DistNearBest{}, rank
-\DistNearRank{}) and first in the farthest, \DistQ1Um--\DistQ4Um\,$\mu$m out,
-by \DistFarGainPct\% relative (\DistFarNMO{} against \DistFarBest{} for
-\DistFarBestModel{}). Close to data every model interpolates and the operator
-buys nothing; far from it, only the continuous formulation still has a value to
+\paragraph{Where the advantage is, and what it costs.}
+Continuity predicts something point-by-point: a field is defined everywhere and
+a graph is not, so the gap should widen with distance from the nearest
+observation. By distance quartile, NRDO is \emph{last} in the nearest
+(\DistNearNMO{} against \DistNearBest{}) and first in the farthest,
+\DistFarLoUm--\DistFarHiUm\,$\mu$m out, by \DistFarGainPct\% relative. Close to
+data every model interpolates; far from it, only the field still has a value to
 read.
 
-\paragraph{Spatial autocorrelation.}
-Predicted maps beside measured ones are in Appendix~\ref{app:empirical},
-Fig.~\ref{fig:reconstruction}.
-NRDO does not lead on every structural metric. On SSIM it is second, behind
-\MSBestAnySSIMModel{} (\MSNMOSSIM{} against \MSBestAnySSIM{}), and it has by
-some margin the largest error in Moran's $I$
-(\MSNMOMoran{} against \MSBestAnyMoran{} for \MSBestAnyMoranModel{}, a deficit of
-\MSMoranDelta{}): the predicted fields are markedly more spatially autocorrelated
-than the measurements. On the primary Visium section, where the diagnostic can be
-read directly, the predicted map has $I = \NMOMoranPred$ against \MoranTrue{}
-measured. SSIM measures local contrast on a rasterized map and Moran's $I$
-global autocorrelation on the point set, and the pattern is the expected
-signature of a dissipative operator attenuating high spatial frequencies --- the
-same diffusion-driven smoothing analyzed for graph neural diffusion
-\citep{grand2021,gread2022}. Section~\ref{sec:limitations} discusses the remedy.
+The cost is smoothness. NRDO is second on SSIM behind \MSBestAnySSIMModel{}
+(\MSNMOSSIM{} against \MSBestAnySSIM{}) and has by some margin the largest error
+in Moran's $I$ (\MSNMOMoran{} against \MSBestAnyMoran{} for
+\MSBestAnyMoranModel{}, a deficit of \MSMoranDelta{}): the predicted fields are
+markedly more autocorrelated than the measurements. On the primary Visium
+section the predicted map has $I = \NMOMoranPred$ against \MoranTrue{} measured.
+This is the expected signature of a dissipative operator attenuating high spatial
+frequencies --- the same trade-off analyzed for graph neural diffusion
+\citep{grand2021,gread2022} --- and Section~\ref{sec:limitations} bounds what it
+costs. Predicted maps beside measured ones are in
+Appendix~\ref{app:empirical}, Fig.~\ref{fig:reconstruction}.
 
 \iffullpaper
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig_evidence.pdf}
-  \caption{\textbf{Four checks on the benchmark.} (a) The reduced training budget
-  is not neutral: on the section whose ordering depends on it, training to
-  convergence reverses the ordering in our favor. (b) Retained accuracy under
-  uniform subsampling; a model defined on a field rather than a lattice should
-  survive this, and it is the one corruption axis where NRDO clearly leads.
-  (c) Spectral matching trades accuracy for spatial fidelity along both forms
-  tested and bounds rather than removes the over-smoothing. (d) Per-section
-  difference in ARI retention against each baseline: NRDO separates from the
-  implicit neural field and not from the graph models.}
-  \label{fig:evidence}
-\end{figure}
-
 \subsection{Four checks on the benchmark}
 \label{sec:numerics}
 
