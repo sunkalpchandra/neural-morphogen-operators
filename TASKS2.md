@@ -43,7 +43,7 @@ few are things I would not do unprompted.
 - [ ] 31. Check the absorbing-set bound against a longer trajectory
 - [x] 32. Propositions re-checked on the 3 fitted operators, not only on random ones
 - [x] 33. verify_theory_trained.py: all 3 trained operators satisfy every proposition
-- [ ] 34. Confirm the dispersion relation code matches the analytic Jacobian
+- [x] 34. Confirm the dispersion relation code matches the analytic Jacobian — matches finite differences to 1e-5; k=0 growth equals max Re eig(J)
 - [x] 35. Moran's I matches the definition to 2e-17
 - [x] 36. Geary's C matches the definition to 3e-15
 - [x] 37. ARI/NMI come from sklearn directly
