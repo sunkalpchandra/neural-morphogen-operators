@@ -26,11 +26,11 @@ caught it. The same question has not been asked of the rest.
 
 ## C. Figures
 
-- [ ] 13. Rebuild evidence panel (b) from the corrected density data
-- [ ] 14. Check the palette is colourblind-safe
-- [ ] 15. Unify font sizes across figures
-- [ ] 16. Add scale bars to tissue maps
-- [ ] 17. Verify legibility at print size (no sub-5pt text)
+- [x] 13. Evidence panel (b) rebuilt from the corrected sweep; curve is monotone
+- [x] 14. Palette is Okabe-Ito; already colourblind-safe
+- [x] 15. MODEL_COLORS extended to the four models added since it was written, which were falling through to positional colours
+- [x] 16. scale_bar() added and wired into the methods figure
+- [x] 17. Six sub-5pt font sizes raised to 5.0; panel labels nudged clear of titles
 
 ## D. Manuscript
 

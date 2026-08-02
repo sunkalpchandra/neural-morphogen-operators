@@ -51,6 +51,10 @@ MODEL_COLORS: Dict[str, str] = {
     "graph_transformer": "#7F3C8D",
     "gp": "#56B4E9",
     "autoencoder": "#CC79A7",
+    "neural_field": "#F0E442",
+    "gp_multiscale": "#8DA0CB",
+    "tangram": "#B15928",
+    "spage": "#999999",
     "mean": INK_MUTED,
 }
 
@@ -215,3 +219,28 @@ def savefig(fig, path, formats=("pdf", "png")):
         out.append(p)
     plt.close(fig)
     return out
+
+
+def scale_bar(ax, coords, coord_scale_um: float, length_um: float = 1000.0,
+              label: Optional[str] = None) -> None:
+    """Draw a physical scale bar on a tissue map.
+
+    A spatial figure without one gives the reader no way to judge the length
+    scales the method is arguing about, which for a paper about diffusion
+    lengths is the whole point.
+    """
+    import numpy as np
+    frac = float(length_um) / float(coord_scale_um)      # coords are in [-1, 1]
+    x0, x1 = np.nanmin(coords[:, 0]), np.nanmax(coords[:, 0])
+    y0 = np.nanmin(coords[:, 1])
+    span = x1 - x0
+    if not np.isfinite(frac) or frac <= 0 or frac > 0.9 * span:
+        return
+    xs = x1 - frac - 0.04 * span
+    ys = y0 - 0.03 * (np.nanmax(coords[:, 1]) - y0)
+    ax.plot([xs, xs + frac], [ys, ys], lw=1.4, color=INK, solid_capstyle="butt",
+            clip_on=False, zorder=6)
+    ax.text(xs + frac / 2, ys - 0.02 * span,
+            label or (f"{length_um/1000:g} mm" if length_um >= 1000
+                      else f"{length_um:g} $\\mu$m"),
+            ha="center", va="top", fontsize=5.0, color=INK, clip_on=False)

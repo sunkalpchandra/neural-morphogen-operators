@@ -22,7 +22,7 @@ from ..models.baselines import DISPLAY_NAMES
 from .style import (
     CATEGORICAL, DIV, GRID, INK, INK_MUTED, INK_SECONDARY, LATENT, MODEL_COLORS,
     SEQ, WIDTH_FULL, WIDTH_HALF, add_colorbar, bar_with_error, panel_label,
-    scatter_field, set_style, spatial_axes,
+    scale_bar, scatter_field, set_style, spatial_axes,
 )
 
 
@@ -79,25 +79,27 @@ def figure1_overview(model=None, section=None) -> plt.Figure:
 
     ax = fig.add_subplot(gs[0, 0])
     scatter_field(ax, xy, np.where(held, np.nan, true[:, gi]), s=1.6)
-    ax.set_title("measured\n(held-out masked)", fontsize=6, pad=3)
-    panel_label(ax, "a", dx=-0.10, dy=1.13)
+    scale_bar(ax, xy, section.coord_scale_um, 1000.0)
+    ax.set_title("measured, masked", fontsize=6, pad=3)
+    # equal aspect shrinks this axes box, so the usual offset lands on the title
+    panel_label(ax, "a", dx=-0.26, dy=1.18)
 
     ax = fig.add_subplot(gs[0, 1])
     ax.imshow(Z0[ch], cmap=LATENT, origin="lower", rasterized=True)
     ax.set_xticks([]); ax.set_yticks([])
-    ax.set_title("encoded field\n$\\mathbf{z}_0$", fontsize=6, pad=3)
+    ax.set_title("encoded $\\mathbf{z}_0$", fontsize=6, pad=3)
     panel_label(ax, "b", dx=-0.10, dy=1.13)
 
     ax = fig.add_subplot(gs[0, 2])
     ax.imshow(ZT[ch], cmap=LATENT, origin="lower", rasterized=True)
     ax.set_xticks([]); ax.set_yticks([])
-    ax.set_title("after operator\n$\\mathbf{z}_T$", fontsize=6, pad=3)
+    ax.set_title("evolved $\\mathbf{z}_T$", fontsize=6, pad=3)
     panel_label(ax, "c", dx=-0.10, dy=1.13)
 
     ax = fig.add_subplot(gs[0, 3])
     scatter_field(ax, xy, pred[:, gi], s=1.6)
-    ax.set_title("decoded\neverywhere", fontsize=6, pad=3)
-    panel_label(ax, "d", dx=-0.10, dy=1.13)
+    ax.set_title("decoded", fontsize=6, pad=3)
+    panel_label(ax, "d", dx=-0.26, dy=1.18)
 
     ax = fig.add_subplot(gs[0, 4])
     ax.scatter(true[held, gi], pred[held, gi], s=1.5, alpha=0.35,
@@ -805,7 +807,7 @@ def figure_robustness(records: List[Dict]) -> plt.Figure:
             ax.set_xscale("log", base=2)
         ax.tick_params(labelsize=5.6)
     axs[0][0].set_ylabel("Pearson $r$", fontsize=6.5)
-    axs[0][-1].legend(fontsize=4.8, loc="best", handletextpad=0.3, borderpad=0.2)
+    axs[0][-1].legend(fontsize=5.0, loc="best", handletextpad=0.3, borderpad=0.2)
     fig.subplots_adjust(wspace=0.30)
     return fig
 
@@ -842,7 +844,7 @@ def figure_spectral(records: List[Dict]) -> plt.Figure:
             if r["spectral_weight"] > 0:
                 ax.annotate(f"{r['spectral_weight']:g}",
                             (r["morans_i_abs_error"], r["pearson_mean"]),
-                            fontsize=4.6, color=INK_SECONDARY,
+                            fontsize=5.0, color=INK_SECONDARY,
                             xytext=(2.5, 2.5), textcoords="offset points")
     base = g[g["spectral_weight"] == 0]
     if len(base):
@@ -855,7 +857,7 @@ def figure_spectral(records: List[Dict]) -> plt.Figure:
     ax.set_xlabel("$|\\Delta I|$  (lower is better)")
     ax.set_ylabel("Pearson $r$")
     ax.set_title("Accuracy against spatial fidelity", fontsize=7, pad=4)
-    ax.legend(fontsize=4.8, frameon=False, loc="lower left")
+    ax.legend(fontsize=5.0, frameon=False, loc="lower left")
     panel_label(ax, "a", dx=-0.24, dy=1.10)
 
     ax = axes[1]
@@ -908,7 +910,7 @@ def figure_evidence(converged, robustness, spectral, biology) -> plt.Figure:
         ax.set_xticklabels(["NRDO", "STAGATE", "GCN", "AE"][:len(order)],
                            fontsize=5, rotation=30, ha="right")
         ax.set_ylabel("Pearson $r$", fontsize=6)
-        ax.legend(fontsize=4.6, frameon=False, loc="lower right")
+        ax.legend(fontsize=5.0, frameon=False, loc="lower right")
     ax.set_title("budget flips the order", fontsize=6.2, pad=3)
     ax.tick_params(labelsize=5)
     panel_label(ax, "a", dx=-0.30, dy=1.14)
@@ -930,7 +932,7 @@ def figure_evidence(converged, robustness, spectral, biology) -> plt.Figure:
         ax.minorticks_off()
         ax.set_xlabel("fraction of locations", fontsize=6)
         ax.set_ylabel("retained accuracy", fontsize=6)
-        ax.legend(fontsize=4.6, frameon=False, loc="lower right")
+        ax.legend(fontsize=5.0, frameon=False, loc="lower right")
     ax.set_title("density robustness", fontsize=6.2, pad=3)
     ax.tick_params(labelsize=5)
     panel_label(ax, "b", dx=-0.32, dy=1.14)
@@ -949,7 +951,7 @@ def figure_evidence(converged, robustness, spectral, biology) -> plt.Figure:
                         lw=0.9, label=lab)
         ax.set_xlabel("$|\\Delta I|$", fontsize=6)
         ax.set_ylabel("Pearson $r$", fontsize=6)
-        ax.legend(fontsize=4.6, frameon=False, loc="lower left")
+        ax.legend(fontsize=5.0, frameon=False, loc="lower left")
     ax.set_title("accuracy vs fidelity", fontsize=6.2, pad=3)
     ax.tick_params(labelsize=5)
     panel_label(ax, "c", dx=-0.32, dy=1.14)
