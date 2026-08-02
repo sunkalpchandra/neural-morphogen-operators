@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Sample size behind each experiment: total runs, distinct tissue sections, and random seeds per configuration. $\dagger$ marks a single seed, at which we report no ordering between models. This table exists because a claim in an earlier version rested on one seed and seventy held-out locations without the text saying so.}
+\label{tab:samplesizes}
+\begin{tabular}{lrrr}
+\toprule
+experiment & runs & sections & seeds\\
+\midrule
+Multi-section benchmark & 350 & 23 & 2 \\
+Converged comparison & 12 & 1 & 3 \\
+Ablations (matched budget) & 12 & 1 & 3 \\
+Diffusion-length nulls & 16 & -- & 2 \\
+Spectral sweep & 18 & 1 & 2 \\
+Biological preservation & 48 & 10 & 1\,$\dagger$ \\
+Robustness & 48 & -- & 1\,$\dagger$ \\
+Counterfactual perturbation & 8 & 1 & 2 \\
+\bottomrule
+\end{tabular}
+\end{table}

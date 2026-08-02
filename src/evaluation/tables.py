@@ -511,6 +511,9 @@ def build_all(results_root: str | Path = "results", out_dir: str | Path = "paper
         made["spectral"] = table_spectral(json.loads(sw.read_text()),
                                           out_dir / "tab_spectral.tex")
 
+    made["sample_sizes"] = table_sample_sizes(results_root,
+                                              out_dir / "tab_samplesizes.tex")
+
     cv = results_root / "exp14" / "converged.json"
     if cv.exists():
         made["converged"] = table_converged(json.loads(cv.read_text()),
@@ -1060,6 +1063,61 @@ def table_data_summary(summary_path: str | Path, out: Path,
         "Appendix~\\ref{app:empirical}.",
         "tab:data", "llrrrrl",
         "assay & organism & specimens & sections & locations & genes & resolution",
+    )
+    out.write_text(tex)
+    return tex
+
+
+def table_sample_sizes(results_root: str | Path, out: Path) -> str:
+    """What every experiment actually rests on.
+
+    Written because a claim in this paper once rested on one seed and seventy
+    held-out locations, and nothing in the manuscript said so. A reader should
+    not have to open the artifacts to find the sample size behind a number.
+    """
+    import glob as _glob
+    root = Path(results_root)
+
+    def load(pattern: str) -> List[Dict]:
+        rs: List[Dict] = []
+        for f in _glob.glob(str(root / pattern), recursive=True):
+            try:
+                d = json.loads(Path(f).read_text())
+                rs += d if isinstance(d, list) else [d]
+            except Exception:
+                continue
+        return [r for r in rs if isinstance(r, dict) and not r.get("failed")]
+
+    SPECS = [
+        ("Multi-section benchmark", "exp8/results_shard*.json", "sections"),
+        ("Converged comparison", "exp14/converged.json", "seeds"),
+        ("Ablations (matched budget)", "exp5_matched/**/*.json", "seeds"),
+        ("Diffusion-length nulls", "exp11/difflen_null.json", "seeds"),
+        ("Spectral sweep", "exp13/spectral_sweep.json", "seeds"),
+        ("Biological preservation", "exp9/biology.json", "sections"),
+        ("Robustness", "exp10/robustness_shard*.json", "seeds"),
+        ("Counterfactual perturbation", "exp4/**/bead_implant.json", "seeds"),
+    ]
+    rows = []
+    for name, pat, unit in SPECS:
+        rs = load(pat)
+        if not rs:
+            continue
+        seeds = len({r.get("seed") for r in rs if "seed" in r}) or 1
+        secs = len({r.get("section") for r in rs if r.get("section")})
+        n = secs if secs else len(rs)
+        warn = "\\,$\\dagger$" if seeds < 2 else ""
+        rows.append(f"{_esc(name)} & {len(rs)} & {n if secs else '--'} & "
+                    f"{seeds}{warn} \\\\\n")
+    tex = _wrap(
+        "".join(rows),
+        "Sample size behind each experiment: total runs, distinct tissue "
+        "sections, and random seeds per configuration. $\\dagger$ marks a single "
+        "seed, at which we report no ordering between models. This table exists "
+        "because a claim in an earlier version rested on one seed and seventy "
+        "held-out locations without the text saying so.",
+        "tab:samplesizes", "lrrr",
+        "experiment & runs & sections & seeds",
     )
     out.write_text(tex)
     return tex

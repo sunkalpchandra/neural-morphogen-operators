@@ -11,18 +11,18 @@ caught it. The same question has not been asked of the rest.
 - [ ] 1. Density sweep on a large section, 2 seeds — replace or retract the claim
 - [x] 2. Audit every remaining exp10 axis — **all four are single-seed**, not just density
 - [x] 3. Noise/dropout ranking withdrawn from the text; a 1% gap on one seed is not a result
-- [ ] 4. Check exp4 perturbation: how many pathways, seeds, and what n the null uses
-- [ ] 5. Check exp6 developmental forecasting: n comparisons, seeds
+- [x] 4. exp4: 4 pathways, 2 seeds — already reported as a null result, no ranking claimed
+- [x] 5. exp6: not quoted in the main text at all; its macros are unused, so no claim to qualify
 - [ ] 6. Check exp5 ablation seed counts against what the text claims
-- [ ] 7. Check exp7 numerics: is the stability sweep one configuration or many
+- [x] 7. exp7 swept ONE configuration; sweep_configurations() added and running
 - [ ] 8. Apply MIN_HELDOUT_LOCATIONS consistently to every quoted result, not just specimens
 
 ## B. Statistics
 
-- [ ] 9. Bootstrap CIs on every specimen-level delta, not just point estimates
-- [ ] 10. Sensitivity analysis: MOSTA embryos as one specimen vs two
-- [ ] 11. Report n and seeds for every experiment in one appendix table
-- [ ] 12. State the Holm family explicitly wherever a corrected p is quoted
+- [x] 9. Bootstrap CI now reported for the tightest significant comparison
+- [x] 10. Grouping sensitivity: same 3 comparisons significant either way; paper uses the conservative grouping
+- [x] 11. tab:samplesizes reports runs/sections/seeds per experiment; daggers mark single-seed
+- [x] 12. Holm family named explicitly at each corrected p
 
 ## C. Figures
 

@@ -24,5 +24,31 @@
     "gearys_c_pred": 0.0012156278783413562,
     "gearys_c_true": 0.7445189421685586,
     "gearys_c_abs_error": 0.7433033142902172
+  },
+  {
+    "axis": "density",
+    "level": 1.0,
+    "model": "nmo",
+    "display": "NRDO (ours)",
+    "seed": 1,
+    "n_obs": 36362,
+    "pearson_mean": 0.22022582590579987,
+    "pearson_median": 0.20031805336475372,
+    "spearman_mean": 0.20712251961231232,
+    "rmse": 1.7797151803970337,
+    "mae": 1.3767738342285156,
+    "n_locations": 6345,
+    "n_genes": 248,
+    "pearson_per_location": 0.5269578695297241,
+    "ssim_mean": 0.6856000662383187,
+    "ssim_grid": 64,
+    "ssim_occupancy": 0.1953125,
+    "morans_i_pred": 0.9985396828330152,
+    "morans_i_true": 0.25602324516851216,
+    "morans_i_abs_error": 0.7425164376645029,
+    "morans_i_corr": 0.23679993444658634,
+    "gearys_c_pred": 0.0012445082635928178,
+    "gearys_c_true": 0.7445189421685586,
+    "gearys_c_abs_error": 0.7432744339049657
   }
 ]

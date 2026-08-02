@@ -369,10 +369,37 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
                 cmd("MSSpecHolmFloor", f"{_map(res2[0].n_sections) * len(res2):.3f}")
                 # Baselines separated after family-wise correction: the claim
                 # the design could not previously express at any effect size.
+                # Sensitivity to the one debatable grouping choice: the two
+                # Stereo-seq stages are different embryos but the same series,
+                # and the paper counts them once. Reported so a reader can see
+                # the conclusion does not depend on it.
+                try:
+                    from .statistics import SPECIMEN_OF as _SO
+                    _alt = {k: v for k, v in _SO.items() if k != "mosta_embryo"}
+
+                    def _spec_alt(sec: str) -> str:
+                        for pre, nm in _alt.items():
+                            if sec.startswith(pre):
+                                return nm
+                        return sec
+                    _a = m8.copy()
+                    _a["section"] = _a["section"].map(_spec_alt)
+                    _a = _a.groupby(["section", "model"], as_index=False)["pearson_mean"].mean()
+                    _ra = _pc(_a, "nmo", "pearson_mean")
+                    cmd("MSSpecAltN", str(_ra[0].n_sections) if _ra else r"\NA")
+                    cmd("MSSpecAltNSig",
+                        str(sum(1 for r in _ra if r.p_holm < 0.05)))
+                except Exception:
+                    pass
                 sig = [r for r in res2 if r.p_holm < 0.05 and r.n_sections >= 8]
                 cmd("MSSpecNSig", str(len(sig)))
                 if sig:
                     cmd("MSSpecSigMaxHolm", f"{max(r.p_holm for r in sig):.3f}")
+                    _tight = min(sig, key=lambda r: r.mean_diff)
+                    cmd("MSSpecTightModel", DISPLAYNAMES.get(_tight.other, _tight.other))
+                    cmd("MSSpecTightDelta", _val(_tight.mean_diff))
+                    cmd("MSSpecTightCI",
+                        f"[{_tight.ci_lo:+.4f}, {_tight.ci_hi:+.4f}]")
                     cmd("MSSpecSigMinWins",
                         f"{min(r.n_reference_wins for r in sig)}/{sig[0].n_sections}")
                     cmd("MSSpecSigModels",

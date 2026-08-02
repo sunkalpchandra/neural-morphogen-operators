@@ -21,11 +21,13 @@ paired test removes the between-section variance that otherwise dominates; all
 But twelve of these sections are serial sections of one brain, and treating them
 as independent overstates the effective sample size. Collapsing to
 \MSSpecimens{} independent \emph{specimens} costs most of that power and is the
-defensible test: the separation still survives family-wise correction against
-\MSSpecNSig{} baselines (\MSSpecSigModels{}), winning on at least
-\MSSpecSigMinWins{} specimens at $p \le \MSSpecSigMaxHolm$. It does not survive
-against \MSSpecGraphWorstModel{}, which we return to in
-Section~\ref{sec:limitations}.
+defensible test: the separation still survives Holm--Bonferroni correction across the
+family of \MSNBaselines{} baselines against \MSSpecNSig{} of them (\MSSpecSigModels{}), winning on at least
+\MSSpecSigMinWins{} specimens at $p \le \MSSpecSigMaxHolm$. The tightest, \MSSpecTightModel{}, has a bootstrap 95\% CI of \MSSpecTightCI{}
+excluding zero. It does not survive against \MSSpecGraphWorstModel{}
+(Section~\ref{sec:limitations}). The grouping is conservative and does not drive
+the result: counting the two Stereo-seq stages separately gives \MSSpecAltN{}
+specimens and the same \MSSpecAltNSig{} significant comparisons.
 
 \paragraph{The gain comes from continuity, not from message passing.}
 Two controls localize the effect, both measured on this benchmark. A non-spatial
@@ -205,14 +207,11 @@ scale --- the response decays to half its peak within \BeadWidth\,$\mu$m. A
 second pre-specified probe against Perturb-seq \citep{norman2019perturbseq} was
 underpowered ($n = \PSNPerturb$) and is inconclusive
 (Appendix~\ref{app:empirical}).
-
-\subsection{Further results}
-The exponential integrator costs
-$\NumSpeedup\times$ fewer steps than explicit Euler to reach the same
-tolerance; the reconstruction does not degrade spatial-domain structure,
-marker localization or $k$-NN neighborhoods; zero-shot transfer retains part
-of the learned structure but is beaten by the STAGATE-style baseline; and a
-counterfactual perturbation probe returns a null result that
-Theorem~\ref{thm:identifiability} predicts in advance. All are reported in
-full in the archival version.
+\else
+\paragraph{Further results.} The exponential integrator needs
+$\NumSpeedup\times$ fewer steps than explicit Euler for the same tolerance; the
+reconstruction does not degrade spatial-domain structure; zero-shot transfer to a
+new tissue does not exceed the training-mean floor; and a counterfactual
+perturbation probe returns the null result Theorem~\ref{thm:identifiability}
+predicts. All are reported in full in the archival version.
 \fi
