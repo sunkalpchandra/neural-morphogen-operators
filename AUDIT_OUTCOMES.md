@@ -145,3 +145,39 @@ So this is a reporting gap rather than a fairness problem, and no published
 comparison is affected. Recording `n_genes_scored` is queued as task 101; it was
 deferred rather than applied immediately so that the two halves of an
 in-progress regeneration could not disagree about what they recorded.
+
+### Eligibility rules were applied by some consumers and not others (found 2026-08-02)
+
+Two rules govern which records are analysable: a section's held-out set must be
+large enough to estimate Pearson r, and a section's measured ARI must be large
+enough to divide by. Both were implemented at each point of use rather than at
+the point of loading, so every consumer had to remember them independently.
+
+Six did not. `tab_multisection`, `tab_paired`, `fig_multisection` and
+`tab_sample_sizes` omitted the size rule; `table_biology` and `figure_biology`
+omitted the ARI rule. `numbers.py` applied both, so the prose and the tables it
+cites were computed under different rules from the same artifacts.
+
+The size-rule consequence was a count mismatch: the benchmark table and figure
+covered 23 sections under captions reading 22, and the section-level Wilcoxon
+tests included `visium_human_heart`, which the limitations section names as
+excluded.
+
+The ARI consequence was material and flattering. With `visium_human_heart`
+included (measured ARI 0.009) the retention column spanned -6.86..+6.90:
+
+| model | table showed | eligible only |
+|---|---|---|
+| NRDO | 1.127 | 0.485 |
+| GNN | -0.256 | 0.478 |
+| STAGATE | -0.135 | 0.463 |
+| GP, multi-bandwidth | -0.316 | 0.430 |
+
+So Table 8 showed NRDO retaining more structure than the reference it divides by,
+with every baseline negative, while the prose citing that table said 0.485
+against 0.478 and stated plainly that NRDO does not separate from the graph
+baselines. The prose was right; the table was not.
+
+Fixed by `size_eligible_frame()` and `ari_eligible_frame()` in `statistics.py`,
+with all six call sites routed through them, and guards that were each verified
+to fail with the rule removed.
