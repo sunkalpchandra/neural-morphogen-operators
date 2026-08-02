@@ -259,8 +259,13 @@ class LossWeights:
     mass: float = 1e-3
     jacobian: float = 1e-3
     jacobian_max_norm: float = 3.0
-    # weight on decoding the *pre-relaxation* field; a small value keeps the
-    # encoder well conditioned without letting the model bypass the operator
+    # Weight on decoding the *pre-relaxation* field. The intent was to keep the
+    # encoder well conditioned without letting the model bypass the operator.
+    # Measured (exp15): removing it changes held-out r by 0.0006, an order of
+    # magnitude below the across-seed noise floor of 0.0040 -- so on this task it
+    # is inert with respect to predictive accuracy, and the conditioning claim is
+    # not supported by anything we measure. Kept at its trained value rather than
+    # removed, because every result in the paper was produced with it on.
     aux_z0: float = 0.1
     # spectral matching: penalize the high-frequency energy a dissipative
     # operator discards. Off by default; Section 5 sweeps it.
