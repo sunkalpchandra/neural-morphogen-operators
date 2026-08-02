@@ -87,3 +87,56 @@ def test_holm_correction_is_monotone_and_bounded():
     assert ps == sorted(ps), "Holm-adjusted p must be non-decreasing in raw p"
     assert all(r.p_holm >= r.wilcoxon_p - 1e-12 for r in res)
     assert all(r.p_holm <= 1.0 for r in res)
+
+
+def test_bootstrap_ci_is_percentile_not_normal_approximation():
+    """Task 39. The paper says percentile bootstrap. On skewed differences a
+    percentile interval is asymmetric about the mean and a normal approximation
+    is not, which is what distinguishes them."""
+    from src.evaluation.statistics import _bootstrap_ci
+    rng = np.random.default_rng(0)
+    skewed = rng.exponential(0.02, 40)
+    lo, hi = _bootstrap_ci(skewed, n_boot=20000, seed=0)
+    m = float(skewed.mean())
+    assert lo < m < hi
+    assert abs((hi - m) - (m - lo)) > 1e-4, "interval is symmetric; looks normal-approx"
+
+
+def test_holm_matches_statsmodels_on_the_papers_own_p_values():
+    """Task 40. Checked on the actual specimen-level p-values, so the test fails
+    if the implementation drifts in the regime the paper reports."""
+    sm = pytest.importorskip("statsmodels.stats.multitest")
+    from src.evaluation.statistics import PairedResult, holm_correct
+    ps = [0.0020, 0.0020, 0.0039, 0.0195, 0.0625, 0.1055, 0.4316]
+    rows = [PairedResult("nmo", f"m{i}", "pearson_mean", 10, 0.01,
+                         0.0, 0.0, 0.0, p, 0.0, 0.0, 0.0, 0)
+            for i, p in enumerate(ps)]
+    ours = [r.p_holm for r in holm_correct(rows)]
+    ref = sm.multipletests(ps, method="holm")[1]
+    assert np.allclose(ours, ref, atol=1e-12), f"ours {ours} vs statsmodels {list(ref)}"
+
+
+def test_headline_numbers_are_pinned():
+    """Task 45. A regression pin on the numbers the paper leads with.
+
+    Not a correctness check -- it is a tripwire. If a refactor changes the
+    headline result, this fails and forces the change to be noticed and the
+    prose updated, rather than the number quietly moving.
+    """
+    import json
+    from pathlib import Path
+    nums = Path("paper/numbers.tex")
+    if not nums.exists():
+        pytest.skip("numbers.tex not generated")
+    import re
+    text = nums.read_text()
+
+    def macro(name: str) -> str:
+        m = re.search(r"\\newcommand\{\\" + name + r"\}\{(.*)\}", text)
+        return m.group(1) if m else ""
+
+    assert macro("MSSections") == "22"
+    assert macro("MSSpecimens") == "10"
+    assert macro("MSSpecNSig") == "3"
+    assert "0.190" in macro("MSNMOPearson") or macro("MSNMOPearson").startswith("0.1")
+    assert macro("MSExcluded").replace("\\", "") == "visium_human_heart"

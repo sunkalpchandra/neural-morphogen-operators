@@ -48,13 +48,13 @@ few are things I would not do unprompted.
 - [x] 36. Geary's C matches the definition to 3e-15
 - [x] 37. ARI/NMI come from sklearn directly
 - [x] 38. SSIM matches skimage to 1e-4 and orders degradations identically
-- [ ] 39. Confirm the bootstrap CI is percentile, not normal-approximation
-- [ ] 40. Check Holm implementation against statsmodels
+- [x] 39. Confirmed percentile, not normal-approximation (asymmetric on skewed data)
+- [x] 40. Holm matches statsmodels exactly on the paper's own p-values
 - [x] 41. Specimen-collapse unit tested
 - [x] 42. MIN_HELDOUT and MIN_REFERENCE_ARI guards unit tested against the sections that motivated them
 - [ ] 43. Unit test that check_numbers fails on an injected mismatch
 - [ ] 44. Unit test for the provenance registry
-- [ ] 45. Regression test pinning the headline numbers
+- [x] 45. Regression pin on the headline macros — a tripwire, not a correctness check
 - [x] 46. Gene-permutation equivariance tested
 - [x] 47. Location-permutation invariance tested
 - [ ] 48. Test the loaders against a truncated/corrupt file
