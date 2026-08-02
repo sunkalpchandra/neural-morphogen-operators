@@ -292,3 +292,43 @@ def test_biology_table_and_figure_apply_the_ari_eligibility_rule():
     assert max(abs(y) for y in ys) < 3.0, (
         f"figure_biology plotted a retention of {max(ys, key=abs):.2f}; the "
         f"degenerate section survived the eligibility rule")
+
+
+def test_no_generator_is_orphaned():
+    """A figure or table generator with no caller produces a file that `make
+    figures` never refreshes, so it sits on disk looking current while the data
+    moves under it.
+
+    The Stage 0 audit found four tables and five figures in this state. One more
+    turned up later: figure_evidence had no caller, its PNG was 7.5 hours stale
+    while every other figure had regenerated, and its biology panel lacked the
+    eligibility rule -- so wiring it back in would have redrawn the artefact
+    that made tab_biology overstate NRDO by more than twofold.
+    """
+    import ast
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    callers = "".join(
+        (root / p).read_text() for p in
+        ("experiments/make_figures.py", "src/evaluation/tables.py",
+         "scripts/per_gene_analysis.py")
+        if (root / p).exists())
+
+    orphans = []
+    for rel, prefix in (("src/visualization/figures.py", ("figure",)),
+                        ("src/evaluation/tables.py", ("table_",))):
+        f = root / rel
+        if not f.exists():
+            continue
+        for node in ast.parse(f.read_text()).body:
+            if isinstance(node, ast.FunctionDef) and node.name.startswith(prefix):
+                # a table generator's own definition appears in the caller text
+                own = 1 if rel.endswith("tables.py") else 0
+                if len(re.findall(r"\b" + node.name + r"\b", callers)) <= own:
+                    orphans.append(f"{rel}:{node.lineno} {node.name}")
+
+    assert not orphans, (
+        "generators with no caller -- `make figures` will leave their output "
+        f"stale: {orphans}")
