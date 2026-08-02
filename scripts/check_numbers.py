@@ -426,7 +426,15 @@ def check_coherence(rep: Report, results: Path) -> None:
 MACRO_TABLE_PAIRS = [
     ("BioARIRetMean", "tab_biology", "NRDO ARI retention"),
     ("BioARIRetBestMean", "tab_biology", "best-baseline ARI retention"),
+    ("BioMarkerMean", "tab_biology", "NRDO marker AUROC"),
     ("MSNMOPearson", "tab_multisection", "NRDO benchmark Pearson"),
+    ("MSNMOSSIM", "tab_multisection", "NRDO benchmark SSIM"),
+    ("ConvNMO", "tab_converged", "NRDO at convergence"),
+    ("ConvBest", "tab_converged", "best baseline at convergence"),
+    ("SpecBaseR", "tab_spectral", "spectral-sweep baseline r"),
+    ("SpecFullBestR", "tab_spectral", "best spectral-matching r"),
+    ("ArchDecoder", "tab_architecture", "decoder-coordinates delta"),
+    ("ArchSigmaDelta", "tab_architecture", "splat-bandwidth delta"),
 ]
 
 
