@@ -18,13 +18,13 @@ few are things I would not do unprompted.
 - [ ] 9. Hyperparameter sensitivity: latent channels, horizon T, lattice size
 - [ ] 10. Learning-curve: accuracy vs training-set fraction, per model
 - [ ] 11. Per-gene analysis: which genes NRDO wins and loses on, and why
-- [ ] 12. Error-vs-distance-to-nearest-observation curve, per model
+- [x] 12. Error-vs-distance computed: NRDO last in the nearest quartile, +50% in the farthest
 - [ ] 13. Runtime and peak memory per model, reported alongside accuracy
 - [ ] 14. Ablate the occupancy channel (claimed essential, never tested)
 - [ ] 15. Ablate the aux_z0 term (claimed to keep the encoder conditioned)
 - [x] 16. Verified: decoder reads the field at query coords, not a coordinate map
 - [x] 17. Bandwidth trains but moves only ~4% from init; exp15 tests whether it matters
-- [ ] 18. Sensitivity to the k-NN graph size used by the encoder
+- [x] 18. k-NN size varied properly (edges 23006 -> 12632); changes r by 0.0001
 - [ ] 19. A permutation test for the specimen-level result, not just Wilcoxon
 - [ ] 20. Power analysis: how many specimens would resolve STAGATE
 

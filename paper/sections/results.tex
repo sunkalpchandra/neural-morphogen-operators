@@ -45,6 +45,18 @@ read-out head; it is the \emph{operator} that carries the gain, which the
 parameter-matched $T{=}0$ control confirms (Section~\ref{sec:ablations}).
 
 
+\paragraph{The advantage is where the observations are not.}
+The continuity argument makes a point-by-point prediction, not just a
+section-level one: a field is defined everywhere, a graph is not, so the gap
+should widen with distance from the nearest observation. Splitting the held-out
+locations into quartiles by that distance, NRDO is \emph{last} in the nearest
+quartile (\DistNearNMO{} against \DistNearBest{}, rank
+\DistNearRank{}) and first in the farthest, \DistQ1Um--\DistQ4Um\,$\mu$m out,
+by \DistFarGainPct\% relative (\DistFarNMO{} against \DistFarBest{} for
+\DistFarBestModel{}). Close to data every model interpolates and the operator
+buys nothing; far from it, only the continuous formulation still has a value to
+read.
+
 \paragraph{Spatial autocorrelation.}
 Predicted maps beside measured ones are in Appendix~\ref{app:empirical},
 Fig.~\ref{fig:reconstruction}.

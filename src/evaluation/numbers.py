@@ -536,6 +536,34 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
             cmd("NumSpeedup", f"{eul.iloc[0]/base:.0f}")
         cmd("NumStrangSteps", str(int(base)))
 
+    # ---- Error against distance from the nearest observation ---------------- #
+    # The point-by-point form of the continuity argument: a field is defined
+    # everywhere, a graph is not, so the gap should widen with distance.
+    ed = Path(results_root) / "error_vs_distance.json"
+    if ed.exists():
+        E = pd.DataFrame(json.loads(ed.read_text()))
+        if not E.empty:
+            piv = E.pivot_table(index="quartile", columns="model", values="pearson")
+            q_lo, q_hi = int(piv.index.min()), int(piv.index.max())
+            edges = E.groupby("quartile")[["lo_um", "hi_um"]].first()
+            cmd("DistQ1Um", f"{edges.loc[q_hi, 'lo_um']:.0f}")
+            cmd("DistQ4Um", f"{edges.loc[q_hi, 'hi_um']:.0f}")
+            if "nmo" in piv.columns:
+                near, far = piv.loc[q_lo], piv.loc[q_hi]
+                others_n = near.drop(index=["nmo"]).dropna()
+                others_f = far.drop(index=["nmo"]).dropna()
+                cmd("DistNearNMO", _val(float(near["nmo"])))
+                cmd("DistNearBest", _val(float(others_n.max())))
+                cmd("DistNearRank",
+                    str(int((near.sort_values(ascending=False).index == "nmo").argmax() + 1)))
+                cmd("DistFarNMO", _val(float(far["nmo"])))
+                cmd("DistFarBest", _val(float(others_f.max())))
+                cmd("DistFarBestModel",
+                    DISPLAYNAMES.get(others_f.idxmax(), others_f.idxmax()))
+                if float(others_f.max()) > 0:
+                    cmd("DistFarGainPct",
+                        f"{100*(float(far['nmo'])/float(others_f.max())-1):.0f}")
+
     # ---- Propositions checked on the fitted operators ----------------------- #
     tt = Path(results_root) / "theory_trained.json"
     if tt.exists():

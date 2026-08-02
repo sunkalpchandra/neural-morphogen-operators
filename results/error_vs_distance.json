@@ -1,0 +1,146 @@
+[
+  {
+    "model": "nmo",
+    "display": "NRDO (ours)",
+    "quartile": 1,
+    "lo_um": 99.99997933445674,
+    "hi_um": 101.0388943445407,
+    "n": 252,
+    "pearson": 0.34602734446525574
+  },
+  {
+    "model": "nmo",
+    "display": "NRDO (ours)",
+    "quartile": 2,
+    "lo_um": 101.0388943445407,
+    "hi_um": 201.45969696440258,
+    "n": 250,
+    "pearson": 0.3272019326686859
+  },
+  {
+    "model": "nmo",
+    "display": "NRDO (ours)",
+    "quartile": 3,
+    "lo_um": 201.45969696440258,
+    "hi_um": 349.63508226319385,
+    "n": 248,
+    "pearson": 0.25770801305770874
+  },
+  {
+    "model": "nmo",
+    "display": "NRDO (ours)",
+    "quartile": 4,
+    "lo_um": 349.63508226319385,
+    "hi_um": 703.2031757440027,
+    "n": 258,
+    "pearson": 0.13832777738571167
+  },
+  {
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "quartile": 1,
+    "lo_um": 99.99997933445674,
+    "hi_um": 101.0388943445407,
+    "n": 252,
+    "pearson": 0.34795889258384705
+  },
+  {
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "quartile": 2,
+    "lo_um": 101.0388943445407,
+    "hi_um": 201.45969696440258,
+    "n": 250,
+    "pearson": 0.3160237669944763
+  },
+  {
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "quartile": 3,
+    "lo_um": 201.45969696440258,
+    "hi_um": 349.63508226319385,
+    "n": 248,
+    "pearson": 0.21960069239139557
+  },
+  {
+    "model": "stagate",
+    "display": "STAGATE-style",
+    "quartile": 4,
+    "lo_um": 349.63508226319385,
+    "hi_um": 703.2031757440027,
+    "n": 258,
+    "pearson": 0.0924934446811676
+  },
+  {
+    "model": "gnn",
+    "display": "GNN (GCN)",
+    "quartile": 1,
+    "lo_um": 99.99997933445674,
+    "hi_um": 101.0388943445407,
+    "n": 252,
+    "pearson": 0.33555155992507935
+  },
+  {
+    "model": "gnn",
+    "display": "GNN (GCN)",
+    "quartile": 2,
+    "lo_um": 101.0388943445407,
+    "hi_um": 201.45969696440258,
+    "n": 250,
+    "pearson": 0.3036932349205017
+  },
+  {
+    "model": "gnn",
+    "display": "GNN (GCN)",
+    "quartile": 3,
+    "lo_um": 201.45969696440258,
+    "hi_um": 349.63508226319385,
+    "n": 248,
+    "pearson": 0.2136375904083252
+  },
+  {
+    "model": "gnn",
+    "display": "GNN (GCN)",
+    "quartile": 4,
+    "lo_um": 349.63508226319385,
+    "hi_um": 703.2031757440027,
+    "n": 258,
+    "pearson": 0.08966448158025742
+  },
+  {
+    "model": "autoencoder",
+    "display": "Autoencoder (non-spatial)",
+    "quartile": 1,
+    "lo_um": 99.99997933445674,
+    "hi_um": 101.0388943445407,
+    "n": 252,
+    "pearson": 0.34975743293762207
+  },
+  {
+    "model": "autoencoder",
+    "display": "Autoencoder (non-spatial)",
+    "quartile": 2,
+    "lo_um": 101.0388943445407,
+    "hi_um": 201.45969696440258,
+    "n": 250,
+    "pearson": 0.3161551356315613
+  },
+  {
+    "model": "autoencoder",
+    "display": "Autoencoder (non-spatial)",
+    "quartile": 3,
+    "lo_um": 201.45969696440258,
+    "hi_um": 349.63508226319385,
+    "n": 248,
+    "pearson": 0.21894219517707825
+  },
+  {
+    "model": "autoencoder",
+    "display": "Autoencoder (non-spatial)",
+    "quartile": 4,
+    "lo_um": 349.63508226319385,
+    "hi_um": 703.2031757440027,
+    "n": 258,
+    "pearson": 0.08872397989034653
+  }
+]
