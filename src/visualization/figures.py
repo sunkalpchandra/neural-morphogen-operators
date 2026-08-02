@@ -172,7 +172,7 @@ def figure2_reconstruction(
 
     others = list(preds_other.items())
     ncol = 2 + len(others)
-    fig, axes = plt.subplots(len(gi), ncol, figsize=(WIDTH_FULL, 0.78 * len(gi)),
+    fig, axes = plt.subplots(len(gi), ncol, figsize=(WIDTH_FULL, 0.66 * len(gi)),
                              squeeze=False)
 
     for r_i, g in enumerate(gi):
@@ -889,7 +889,7 @@ def figure_evidence(converged, robustness, spectral, biology) -> plt.Figure:
     """
     import pandas as pd
     set_style()
-    fig, axes = plt.subplots(1, 4, figsize=(WIDTH_FULL, 1.28))
+    fig, axes = plt.subplots(1, 4, figsize=(WIDTH_FULL, 1.18))
 
     # (a) budget vs convergence -- the ordering inverts
     ax = axes[0]

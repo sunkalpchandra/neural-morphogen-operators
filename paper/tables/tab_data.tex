@@ -1,0 +1,19 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{\textbf{Benchmark composition.} One row per assay. \emph{Specimens} is the number of independent biological samples, which is the unit the conservative analysis uses and the quantity that limits its resolution: the MERFISH sections are serial sections of a single brain and count once. Sampling density spans two orders of magnitude, from multi-cell spots to single cells, which is the range over which a continuous formulation is supposed to be an advantage. Per-section inventory in Appendix~\ref{app:empirical}.}
+\label{tab:data}
+\begin{tabular}{llrrrrl}
+\toprule
+assay & organism & specimens & sections & locations & genes & resolution\\
+\midrule
+MERFISH & Mus & 1 & 12 & 900,614 & 500--503 & single cell \\
+Xenium In Situ & Mus & 1 & 1 & 36,362 & 248 & single cell \\
+Stereo-seq & Mus & 1 & 2 & 24,258 & 2,069--2,099 & bin50 (~25 um) \\
+Visium & Homo/Mus & 5 & 5 & 15,914 & 2,073--2,087 & spot (multi-cell) \\
+Visium FFPE & Homo/Mus & 2 & 2 & 6,633 & 2,075--2,088 & spot (multi-cell) \\
+\midrule
+\textbf{total} & & \textbf{10} & \textbf{22} & \textbf{983,781} & & \\
+\bottomrule
+\end{tabular}
+\end{table}

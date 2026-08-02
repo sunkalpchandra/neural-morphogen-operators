@@ -40,21 +40,10 @@ alone is therefore insufficient and message passing adds little over a good
 read-out head; it is the \emph{operator} that carries the gain, which the
 parameter-matched $T{=}0$ control confirms (Section~\ref{sec:ablations}).
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig2_reconstruction.pdf}
-  \caption{\textbf{Predicted expression at held-out locations.} Grey marks the
-  contiguous blocks hidden from every encoder. Genes are chosen to span the
-  performance range rather than to favor any model --- the top row is a
-  well-reconstructed gene, the bottom row one near the lower quartile --- and the
-  per-gene $r$ printed beneath each map is for that gene alone, not the
-  benchmark mean. The failure mode the paper reports is visible directly: our
-  predictions are smoother than the measurement, which costs us Moran's $I$
-  even where correlation is comparable.}
-  \label{fig:reconstruction}
-\end{figure}
 
 \paragraph{Spatial autocorrelation.}
+Predicted maps beside measured ones are in Appendix~\ref{app:empirical},
+Fig.~\ref{fig:reconstruction}.
 NRDO does not lead on every structural metric. On SSIM it is second, behind
 \MSBestAnySSIMModel{} (\MSNMOSSIM{} against \MSBestAnySSIM{}), and it has by
 some margin the largest error in Moran's $I$
@@ -139,22 +128,20 @@ ratio is dominated by its denominator rather than by the reconstruction.
 
 
 \paragraph{The recovered length scale is close to its own initialization.}
-The fitted operator has a median diffusion length of \NullBaseline\,$\mu$m on the
-primary section. An earlier version of this work noted that this is the same
-order as measured morphogen gradients \citep{kicheva2007kinetics,yu2009fgf8}; a
-control retracts that observation. Refitting the identical architecture at the
-identical budget on \emph{coordinate-shuffled} sections --- expression permuted
-across positions, preserving every marginal and destroying all spatial structure
---- recovers \NullShuffled\,$\mu$m at $r = \NullShuffledR$, against
-\NullInit\,$\mu$m untrained: a move of \NullShuffledShift\% from initialization
-against \NullDataShift\% for real tissue. Sweeping the splat bandwidth and the
-lattice resolution leaves the value unchanged in microns while it moves by a
-factor of four in lattice cells, so neither is the mechanism
-(Table~\ref{tab:difflen_null}). We therefore withdraw the correspondence with
-measured gradient lengths: the median is largely a configuration constant. What
-the data do determine is the \emph{spread} --- at initialization every channel
-carries an identical length scale, and training differentiates them across
-\DiffLenLo--\DiffLenHi\,$\mu$m. The anisotropy is
+The fitted operator has a median diffusion length of \NullBaseline\,$\mu$m. An
+earlier version of this work read that as the same order as measured morphogen
+gradients \citep{kicheva2007kinetics,yu2009fgf8}; a control retracts it. Refitting
+the identical architecture at the identical budget on \emph{coordinate-shuffled}
+sections --- expression permuted across positions, destroying all spatial
+structure --- recovers \NullShuffled\,$\mu$m at $r = \NullShuffledR$, against
+\NullInit\,$\mu$m untrained. The shuffled fit moves the length by
+\NullShuffledShift\% from initialization and real tissue by \NullDataShift\%.
+Sweeping the splat bandwidth and the lattice leaves it unchanged in microns while
+it moves fourfold in lattice cells, so neither is the mechanism
+(Table~\ref{tab:difflen_null}). We therefore withdraw the correspondence: the
+median is largely a configuration constant. What the data determine is the
+\emph{spread} --- at initialization every channel carries an identical length
+scale, and training differentiates them across \DiffLenLo--\DiffLenHi\,$\mu$m. The anisotropy is
 used rather than merely available: constraining $\mD$ to be isotropic costs
 \AblIsotropicDelta{} Pearson $r$.
 

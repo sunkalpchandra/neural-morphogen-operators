@@ -37,6 +37,21 @@ each appears with its heading.
 \subsection{Dataset inventory}
 \inputtable{tab_datasets}
 
+\subsection{Qualitative reconstruction}
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig2_reconstruction.pdf}
+  \caption{\textbf{Predicted expression at held-out locations.} Grey marks the
+  contiguous blocks hidden from every encoder. Genes are chosen to span the
+  performance range rather than to favor any model --- the top row is a
+  well-reconstructed gene, the bottom row one near the lower quartile --- and the
+  per-gene $r$ printed beneath each map is for that gene alone, not the
+  benchmark mean. The failure mode the paper reports is visible directly: our
+  predictions are smoother than the measurement, which costs us Moran's $I$
+  even where correlation is comparable.}
+  \label{fig:reconstruction}
+\end{figure}
+
 \subsection{Multi-section benchmark}
 \begin{figure}[t]
   \centering

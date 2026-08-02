@@ -445,6 +445,8 @@ def build_all(results_root: str | Path = "results", out_dir: str | Path = "paper
 
     if Path(processed_summary).exists():
         made["datasets"] = table_datasets(processed_summary, out_dir / "tab_datasets.tex")
+        made["data_summary"] = table_data_summary(processed_summary,
+                                                  out_dir / "tab_data.tex", results_root)
 
     exp1 = load_json_glob("exp1/**/*.json", results_root)
     exp1 = [r for r in exp1 if "model" in r and "pearson_mean" in r]
@@ -1000,6 +1002,64 @@ def table_headline(records: List[Dict], out: Path, reference: str = "nmo") -> st
         "tab:headline", "lrrrrr",
         "model & Pearson $r$ $\\uparrow$ & $|\\Delta I|$ $\\downarrow$ "
         "& specimens & $d_z$ & $p_{\\mathrm{Holm}}$",
+    )
+    out.write_text(tex)
+    return tex
+
+
+def table_data_summary(summary_path: str | Path, out: Path,
+                       results_root: str | Path = "results") -> str:
+    """One row per technology, not one per section.
+
+    The per-section inventory runs to twenty-odd rows and belongs in an
+    appendix. What a reader needs in the main text is what the benchmark spans:
+    which assays, how many independent specimens each contributes, and at what
+    sampling density -- because the specimen count is what limits the analysis
+    and the density is what the continuity argument is about.
+    """
+    from .statistics import specimen
+
+    from .statistics import MIN_HELDOUT_LOCATIONS
+    s_ = {k: v for k, v in json.loads(Path(summary_path).read_text()).items()
+          if not is_derived(k) and not k.startswith("perturb_")}
+    # Sections excluded from the analysis by the held-out-size rule are excluded
+    # here too, so the specimen count in this table is the one the tests use.
+    # Roughly four times the threshold, since the split reserves ~20% for test.
+    s_ = {k: v for k, v in s_.items()
+          if int(v["n_obs"]) >= 4 * MIN_HELDOUT_LOCATIONS}
+    groups: Dict[str, Dict] = {}
+    for key, r in s_.items():
+        tech = str(r.get("technology", "")).split(",")[0].split("(")[0].strip()
+        g = groups.setdefault(tech, dict(secs=0, spec=set(), obs=0, genes=[],
+                                         res=r.get("resolution", ""), org=set()))
+        g["secs"] += 1
+        g["spec"].add(specimen(key))
+        g["obs"] += int(r["n_obs"])
+        g["genes"].append(int(r.get("n_vars", 0)))
+        g["org"].add(str(r.get("organism", "")).split()[0])
+
+    rows, tot = [], dict(secs=0, spec=set(), obs=0)
+    for tech, g in sorted(groups.items(), key=lambda kv: -kv[1]["obs"]):
+        gl, gh = min(g["genes"]), max(g["genes"])
+        genes = f"{gl:,}" if gl == gh else f"{gl:,}--{gh:,}"
+        rows.append(f"{_esc(tech)} & {'/'.join(sorted(g['org']))} & {len(g['spec'])} & "
+                    f"{g['secs']} & {g['obs']:,} & {genes} & {_esc(g['res'])} \\\\\n")
+        tot["secs"] += g["secs"]; tot["spec"] |= g["spec"]; tot["obs"] += g["obs"]
+    rows.append("\\midrule\n")
+    rows.append(f"\\textbf{{total}} & & \\textbf{{{len(tot['spec'])}}} & "
+                f"\\textbf{{{tot['secs']}}} & \\textbf{{{tot['obs']:,}}} & & \\\\\n")
+    tex = _wrap(
+        "".join(rows),
+        "\\textbf{Benchmark composition.} One row per assay. \\emph{Specimens} is "
+        "the number of independent biological samples, which is the unit the "
+        "conservative analysis uses and the quantity that limits its resolution: "
+        "the MERFISH sections are serial sections of a single brain and count "
+        "once. Sampling density spans two orders of magnitude, from multi-cell "
+        "spots to single cells, which is the range over which a continuous "
+        "formulation is supposed to be an advantage. Per-section inventory in "
+        "Appendix~\\ref{app:empirical}.",
+        "tab:data", "llrrrrl",
+        "assay & organism & specimens & sections & locations & genes & resolution",
     )
     out.write_text(tex)
     return tex
