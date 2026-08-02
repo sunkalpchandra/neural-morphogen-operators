@@ -181,3 +181,29 @@ baselines. The prose was right; the table was not.
 Fixed by `size_eligible_frame()` and `ari_eligible_frame()` in `statistics.py`,
 with all six call sites routed through them, and guards that were each verified
 to fail with the rule removed.
+
+### Correction: the eval-noise sensitivity analysis used too small a noise scale
+
+The sensitivity analysis (`scripts/eval_noise_sensitivity.py`) perturbed all four
+affected models by s.d. 0.0059, measured by scoring one gp checkpoint ten times.
+I wrote that applying the gp scale to the other three "likely overstates it for
+the others and makes the conclusion conservative."
+
+That was wrong. Comparing spage runs before and after the fix, the shifts reach
+0.0484 with a mean of +0.0037 over the first 20 runs -- unbiased in direction,
+but roughly eight times the assumed magnitude. The gp measurement was not an
+upper bound on the family.
+
+Two caveats on the comparison itself. The old-vs-new difference conflates the
+eval-determinism fix with a change in which checkpoint validation selects, since
+per-epoch validation also called the nondeterministic subsample and consumed RNG
+state that subsequent training draws depended on. So it is an upper bound on the
+eval effect alone, not a clean measurement of it. And spage's absolute values are
+small (0.00--0.08), so a shift of 0.048 is large relative to the model but small
+relative to the 0.19 the benchmark reference reaches.
+
+The conclusion that no reported significant result changes verdict has to be
+re-derived from the measured per-model shifts rather than from a single assumed
+scale. Queued for once the regeneration completes; the honest position until then
+is that the earlier conclusion rested on an assumption now shown to be wrong for
+at least one of the four models.
