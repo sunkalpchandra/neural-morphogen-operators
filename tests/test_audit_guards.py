@@ -166,3 +166,49 @@ def test_baseline_scoring_does_not_depend_on_global_rng_state():
     torch.manual_seed(999)
     d = _inducing_subset(5000, 1024, dev, training=True)
     assert not torch.equal(c, d), "training subset is frozen; resampling was lost"
+
+
+def test_every_table_over_exp8_applies_the_same_size_rule():
+    """A section too small to estimate Pearson r is excluded from the
+    specimen-level analysis and from tab_headline. tab_multisection and
+    tab_paired consumed the same records without that rule, so the table
+    averaged over 23 sections while the prose reported 22, and
+    visium_human_heart -- 331 held-out locations against a threshold of 800 --
+    sat inside section-level paired tests the text says exclude it.
+
+    Feeds one undersized section to each generator and asserts it is dropped.
+    """
+    import tempfile
+    from pathlib import Path
+
+    from src.evaluation.statistics import MIN_HELDOUT_LOCATIONS
+    from src.evaluation.tables import (
+        table_headline, table_multisection, table_paired_stats)
+
+    big, small = 4 * MIN_HELDOUT_LOCATIONS, 4 * MIN_HELDOUT_LOCATIONS - 1
+    rows = []
+    for i in range(6):                       # six eligible sections
+        for m, v in (("nmo", 0.30), ("gnn", 0.20)):
+            rows.append(dict(section=f"s{i}", model=m, seed=0, pearson_mean=v,
+                             ssim_mean=0.4, morans_i_abs_error=0.1,
+                             n_obs_used=big))
+    for m, v in (("nmo", 0.99), ("gnn", 0.98)):   # one undersized outlier
+        rows.append(dict(section="tiny", model=m, seed=0, pearson_mean=v,
+                         ssim_mean=0.9, morans_i_abs_error=0.01,
+                         n_obs_used=small))
+
+    with tempfile.TemporaryDirectory() as d:
+        for fn, name in ((table_multisection, "multisection"),
+                         (table_paired_stats, "paired"),
+                         (table_headline, "headline")):
+            out = Path(d) / f"{name}.tex"
+            fn(rows, out)
+            if not out.exists():
+                continue
+            text = out.read_text()
+            # 0.99 only appears if the undersized section reached the mean
+            assert "0.99" not in text, (
+                f"tab_{name} included a section with {small} held-out locations, "
+                f"below the {4 * MIN_HELDOUT_LOCATIONS} the rule requires")
+            assert " 7 " not in text.replace("\\", " "), (
+                f"tab_{name} counted 7 sections; only 6 are eligible")

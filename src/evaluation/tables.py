@@ -570,9 +570,18 @@ def table_multisection(records: List[Dict], out: Path,
                                                  "morans_i_abs_error"),
                        reference: str = "nmo") -> str:
     """Per-model aggregate across sections, with paired tests against ``reference``."""
-    from .statistics import paired_comparison, stars
+    from .statistics import MIN_HELDOUT_LOCATIONS, paired_comparison, stars
 
     df = pd.DataFrame([r for r in records if "pearson_mean" in r and not r.get("failed")])
+    if df.empty:
+        return ""
+    # Sections whose held-out set is too small to estimate Pearson r are excluded
+    # from every specimen-level analysis and from tab_headline. Omitting the same
+    # rule here made this table average over 23 sections while the prose reported
+    # 22, and put visium_human_heart (331 held-out locations against a threshold
+    # of 800) inside the section-level paired tests that the text says exclude it.
+    if "n_obs_used" in df.columns:
+        df = df[df["n_obs_used"] >= 4 * MIN_HELDOUT_LOCATIONS]
     if df.empty:
         return ""
     metrics = [m for m in metrics if m in df.columns]
@@ -652,9 +661,16 @@ def table_multisection(records: List[Dict], out: Path,
 def table_paired_stats(records: List[Dict], out: Path, reference: str = "nmo",
                        metric: str = "pearson_mean") -> str:
     """Effect sizes and confidence intervals for the paired comparison."""
-    from .statistics import paired_comparison
+    from .statistics import MIN_HELDOUT_LOCATIONS, paired_comparison
 
     df = pd.DataFrame([r for r in records if metric in r and not r.get("failed")])
+    # Sections whose held-out set is too small to estimate Pearson r are excluded
+    # from every specimen-level analysis and from tab_headline. Omitting the same
+    # rule here made this table average over 23 sections while the prose reported
+    # 22, and put visium_human_heart (331 held-out locations against a threshold
+    # of 800) inside the section-level paired tests that the text says exclude it.
+    if "n_obs_used" in df.columns:
+        df = df[df["n_obs_used"] >= 4 * MIN_HELDOUT_LOCATIONS]
     res = paired_comparison(df, reference, metric)
     if not res:
         return ""
