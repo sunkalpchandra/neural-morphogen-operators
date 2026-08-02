@@ -414,6 +414,19 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
     if bp.exists():
         b = pd.DataFrame([r for r in json.loads(bp.read_text()) if "ari_predicted" in r])
         if not b.empty:
+            # Two exclusions, for the same reason as the benchmark: a section
+            # too small to estimate the metric, and a reference clustering too
+            # weak for a ratio to mean anything.
+            from .statistics import (MIN_REFERENCE_ARI as _MINARI,
+                                     MIN_HELDOUT_LOCATIONS as _MINHO2)
+            if "ari_measured" in b.columns:
+                _drop = sorted(set(b.loc[b["ari_measured"] < _MINARI, "section"]))
+                b = b[b["ari_measured"] >= _MINARI]
+                if _drop:
+                    cmd("BioExcluded", ", ".join(d.replace("_", r"\_") for d in _drop))
+                    cmd("BioExcludedN", str(len(_drop)))
+                    cmd("BioMinARI", f"{_MINARI:g}")
+        if not b.empty:
             cmd("BioSections", str(int(b["section"].nunique())))
             # With seven annotated sections the biology comparison is testable,
             # which it was not at four. Report the paired test rather than

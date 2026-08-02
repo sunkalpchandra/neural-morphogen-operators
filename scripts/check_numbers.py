@@ -104,7 +104,7 @@ _decl("exp7", "NumStableDt", "NumCFL", "NumCFLRatio", "NumEulerSteps", "NumSpeed
 _decl("exp9", "BioSections", "BioARIRet", "BioARIRetBest", "BioARIRetBestModel",
       "BioMarker", "BioMarkerBest", "BioMarkerBestModel", "BioKNN", "BioKNNBest",
       "BioKNNBestModel", "BioARIStagateD", "BioARIStagateDz",
-      "BioARIStagateP", "BioARIStagateWins", "BioARINSig", "BioARINComp")
+      "BioARIStagateP", "BioARIStagateWins", "BioARINSig", "BioARINComp", "BioExcluded", "BioExcludedN", "BioMinARI")
 _decl("physics", "DiffLenMedian", "DiffLenLo", "DiffLenHi", "TuringFrac",
       "NPhysicsRuns", "GrowthAtZero", "PatternWavelength", "DiffLenN",
       "DiffLenPerRun", "DiffLenSections", "DiffLenSection")

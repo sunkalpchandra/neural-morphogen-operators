@@ -230,3 +230,18 @@ def size_eligible(n_test: int) -> bool:
     """Whether a section's held-out set is large enough to estimate Pearson r."""
     return int(n_test) >= MIN_HELDOUT_LOCATIONS
 
+
+#: Smallest reference ARI for which a retention *ratio* is meaningful.
+#:
+#: ARI retention is predicted/measured. When the measured ARI is near zero the
+#: reference clustering carries almost no recoverable structure, the ratio is
+#: dominated by its denominator, and it can exceed 1 or go negative -- neither
+#: of which means what "retention" is supposed to mean. One section
+#: (visium_human_heart, measured ARI 0.009) produced retentions from -6.9 to
+#: +6.9 and pushed the reported mean above 1.0 before this guard existed.
+MIN_REFERENCE_ARI = 0.05
+
+
+def ari_retention_estimable(ari_measured: float) -> bool:
+    """Whether a retention ratio can be formed from this reference ARI."""
+    return float(ari_measured) >= MIN_REFERENCE_ARI
