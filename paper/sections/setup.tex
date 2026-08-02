@@ -21,7 +21,13 @@ blocks are hidden from the encoder and every model predicts expression at those
 coordinates. Random spot-level splits leak, since a held-out spot is trivially
 predicted from its correlated neighbors, so we hold out whole contiguous blocks
 \citep{roberts2017crossvalidation} and compute standardization statistics on the
-training split only.
+training split only. One transductive step remains: the \HVGPanelSize{}-gene panel
+is selected before the split, from all locations in a section. Recomputing it on
+the training split alone reproduces \HVGOverlapLo--\HVGOverlapHi\% of it across
+\HVGSections{} sections, so up to \HVGLeakedHi{} genes depend on having seen the
+held-out blocks. Every model receives the identical panel, so this cannot bias the
+comparison between them, but it does mean absolute accuracies here are transductive
+in feature selection and are not directly comparable to a fully inductive protocol.
 
 \paragraph{Baselines.} A non-spatial autoencoder (the floor), a GCN
 \citep{kipf2017gcn}, SpaGCN-style and STAGATE-style models

@@ -1,0 +1,20 @@
+[
+  {
+    "section": "visium_mouse_brain",
+    "n_top": 2000,
+    "n_locations": 2691,
+    "train_fraction": 0.6254180602006689,
+    "overlap": 1635,
+    "overlap_frac": 0.8175,
+    "leaked": 365
+  },
+  {
+    "section": "visium_human_breast",
+    "n_top": 2000,
+    "n_locations": 4869,
+    "train_fraction": 0.6379133292257138,
+    "overlap": 1677,
+    "overlap_frac": 0.8385,
+    "leaked": 323
+  }
+]

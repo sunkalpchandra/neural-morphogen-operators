@@ -118,5 +118,29 @@
     "rmse": 0.2517140805721283,
     "ssim_mean": 0.40396416356707027,
     "morans_i_abs_error": 0.7664213346331163
+  },
+  {
+    "variant": "splat_sigma_half",
+    "seed": 1,
+    "section": "visium_mouse_brain",
+    "knn": 8,
+    "n_edges": 23006,
+    "learned_splat_sigma": 0.5078073740005493,
+    "pearson_mean": 0.2489304095506668,
+    "rmse": 0.24872292578220367,
+    "ssim_mean": 0.40667085766383976,
+    "morans_i_abs_error": 0.7610015439384812
+  },
+  {
+    "variant": "splat_sigma_2x",
+    "seed": 0,
+    "section": "visium_mouse_brain",
+    "knn": 8,
+    "n_edges": 23006,
+    "learned_splat_sigma": 1.9420832395553589,
+    "pearson_mean": 0.2451409250497818,
+    "rmse": 0.2514210045337677,
+    "ssim_mean": 0.3983194798693509,
+    "morans_i_abs_error": 0.7656299704720086
   }
 ]

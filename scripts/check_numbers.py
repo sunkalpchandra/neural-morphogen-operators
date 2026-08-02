@@ -319,6 +319,17 @@ def check_scope(rep: Report) -> None:
 
     # Every macro the manuscript stubs must actually be defined.
     stubbed: Set[str] = set()
+    # The stub block lives in the preamble, which _main_body() deliberately
+    # excludes. Parsing only the section files left `stubbed` permanently empty,
+    # so this check silently passed on everything from the day the paper was
+    # split into preamble.tex + sections/.
+    pre = PAPER / "preamble.tex"
+    if stub_lo is None and pre.exists():
+        pl = pre.read_text().split("\n")
+        stub_lo = next((i for i, l in enumerate(pl) if r"\@for\@nmocmd" in l), None)
+        stub_hi = next((i for i, l in enumerate(pl[stub_lo:], stub_lo)
+                        if r"\makeatother" in l), None) if stub_lo is not None else None
+        lines = pl if stub_lo is not None else lines
     if stub_lo is not None and stub_hi is not None:
         blk = "\n".join(lines[stub_lo:stub_hi + 1])
         stubbed = set(re.findall(r"[A-Za-z]+", blk.split(":=")[-1].split(r"}\do")[0]))
@@ -504,7 +515,10 @@ def check_spelling(rep: Report) -> None:
 def check_literals(rep: Report) -> None:
     body = _main_body(TEX.read_text())
     lines = body.split("\n")
-    in_preamble = True
+    # _main_body() returns the concatenated section files, which contain no
+    # \begin{document}. Starting in_preamble=True therefore skipped every line
+    # and this sweep silently scanned nothing from the day the paper was split.
+    in_preamble = r"\begin{document}" in body
     for i, line in enumerate(lines):
         if r"\begin{document}" in line:
             in_preamble = False

@@ -817,6 +817,21 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
                 cmd(f"Split{tag}Block", f"{G[key]['block_median_um']:.1f}")
                 cmd(f"Split{tag}Ratio", f"{G[key]['ratio']:.1f}")
 
+    # ---- gene-panel leakage ---------------------------------------------- #
+    # HVG selection precedes the split, so the panel is computed from every
+    # location including the held-out blocks. Shared by all models, so it
+    # cannot bias the comparison, but it is transductive and the setup says so.
+    hj = Path(results_root) / "audit" / "hvg_leakage.json"
+    if hj.exists():
+        H = json.loads(hj.read_text())
+        if H:
+            fr = [r["overlap_frac"] for r in H]
+            cmd("HVGOverlapLo", f"{min(fr) * 100:.0f}")
+            cmd("HVGOverlapHi", f"{max(fr) * 100:.0f}")
+            cmd("HVGLeakedHi", str(max(r["leaked"] for r in H)))
+            cmd("HVGPanelSize", f'{H[0]["n_top"]:,}'.replace(",", "{,}"))
+            cmd("HVGSections", str(len(H)))
+
     # ---- dataset inventory ---------------------------------------------- #
     sp = Path(processed_summary)
     if sp.exists():
