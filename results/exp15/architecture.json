@@ -1,0 +1,12 @@
+[
+  {
+    "variant": "full",
+    "seed": 0,
+    "section": "visium_mouse_brain",
+    "learned_splat_sigma": 0.9574443101882935,
+    "pearson_mean": 0.24484214186668396,
+    "rmse": 0.251777708530426,
+    "ssim_mean": 0.4003817468888413,
+    "morans_i_abs_error": 0.7623402586348501
+  }
+]

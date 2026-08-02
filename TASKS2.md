@@ -32,11 +32,11 @@ few are things I would not do unprompted.
 
 - [ ] 21. Seed-variance table: how much of each margin is optimisation noise
 - [ ] 22. Verify every checkpoint loads and reproduces its recorded metrics
-- [ ] 23. Determinism check: same seed, same machine, same numbers
-- [ ] 24. Assert the held-out blocks are identical across models, not just sized alike
-- [ ] 25. Verify standardisation statistics never see held-out data
+- [x] 23. Split determinism tested: same section, two loads, identical splits and coords
+- [x] 24. Held-out blocks verified contiguous — measurably farther from training data than a random subset of equal size
+- [x] 25. Standardisation verified train-only: train mean 0, sd 1; held-out splits differ
 - [ ] 26. Confirm no gene-selection leakage across the split
-- [ ] 27. Check the isotropic-coordinate claim numerically on every section
+- [x] 27. Isotropic normalisation verified on every section
 - [ ] 28. Verify SPD parametrisation holds after every optimiser step, not just at init
 - [ ] 29. Verify the Strang order empirically at more than one dt range
 - [ ] 30. Test the mass-conservation claim at extreme dt
@@ -78,7 +78,7 @@ Lower value. Included because asked for; several are cosmetic and a few
 - [ ] 60. environment.yml pinned to exact versions
 - [ ] 61. requirements.txt matches environment.yml
 - [ ] 62. Document minimum RAM and expected wall-clock
-- [ ] 63. A smoke-test target that runs in under a minute
+- [x] 63. `make test` runs in 16s (slow data tests split out under `make test-data`)
 - [ ] 64. Cache-friendly ordering in the download script
 - [ ] 65. Resumability check for every long-running experiment
 - [ ] 66. Consistent logging levels

@@ -1,4 +1,4 @@
-.PHONY: ci manifest workshop papers help data download build experiments all-experiments exp1 exp2 exp3 exp4 exp5 exp6 figures paper clean-runs test reevaluate finalize check-numbers
+.PHONY: test-data ci manifest workshop papers help data download build experiments all-experiments exp1 exp2 exp3 exp4 exp5 exp6 figures paper clean-runs test reevaluate finalize check-numbers
 
 # Use the project venv when present, otherwise whatever python is on PATH
 # (conda users, CI, etc.). Override with `make PY=python3.11 ...`.
@@ -78,6 +78,11 @@ papers: paper workshop
 # ---------------------------------------------------------------- misc
 test:
 	PYTHONPATH=. $(PY) -m pytest tests -q
+
+# The leakage checks load real sections and take a couple of minutes, so they
+# are excluded from the default suite and run explicitly.
+test-data:
+	PYTHONPATH=. $(PY) -m pytest tests -q -m data
 
 # Fail when the manuscript and the run artifacts disagree. Run after every
 # prose edit and before every commit; it is also the CI gate.
