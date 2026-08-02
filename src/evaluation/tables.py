@@ -698,7 +698,19 @@ def table_paired_stats(records: List[Dict], out: Path, reference: str = "nmo",
 
 def table_biology(records: List[Dict], out: Path) -> str:
     """Biological preservation metrics, averaged over sections."""
+    from .statistics import MIN_REFERENCE_ARI
+
     df = pd.DataFrame([r for r in records if "ari_predicted" in r])
+    if df.empty:
+        return ""
+    # ari_retention is predicted/measured. Where the measured reference is near
+    # zero the ratio is meaningless and enormous: one section drove the column
+    # across -6.86..+6.90 and put NRDO at 1.127 -- retaining more structure than
+    # the reference it is divided by -- while every baseline went negative.
+    # Corrected, the models are close. numbers.py already applied this rule, so
+    # the table was contradicting the prose computed from the same records.
+    if "ari_measured" in df.columns:
+        df = df[df["ari_measured"] >= MIN_REFERENCE_ARI]
     if df.empty:
         return ""
     cols = ["ari_predicted", "ari_retention", "nmi_predicted",

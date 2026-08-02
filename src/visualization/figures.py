@@ -784,7 +784,13 @@ def figure_biology(records: List[Dict]) -> plt.Figure:
     """Biological preservation across models."""
     set_style()
     import pandas as pd
+    from ..evaluation.statistics import MIN_REFERENCE_ARI
     df = pd.DataFrame([r for r in records if "ari_predicted" in r])
+    # Same guard as the table and numbers.py: ari_retention divides by the
+    # measured ARI, and where that is near zero the ratio is meaningless. One
+    # section spread the column across -6.86..+6.90 and inverted the ordering.
+    if "ari_measured" in df.columns:
+        df = df[df["ari_measured"] >= MIN_REFERENCE_ARI]
     panels = [("ari_retention", "ARI retention $\\uparrow$"),
               ("marker_auroc_predicted", "marker AUROC $\\uparrow$"),
               ("neighborhood_preservation", "$k$-NN preservation $\\uparrow$"),

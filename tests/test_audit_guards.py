@@ -235,3 +235,60 @@ def test_every_table_over_exp8_applies_the_same_size_rule():
     assert pts == 6, (
         f"panel (a) plotted {pts} points for 6 eligible sections; the undersized "
         f"section its caption excludes appears to have survived")
+
+
+def test_biology_table_and_figure_apply_the_ari_eligibility_rule():
+    """ari_retention is predicted/measured, so a near-zero measured reference
+    makes the ratio meaningless and unbounded. numbers.py applied the rule;
+    table_biology and figure_biology did not, so the appendix table the prose
+    points at showed NRDO retaining 1.127 -- more structure than the reference
+    it divides by -- where the prose computed from the same records said 0.485,
+    and every baseline appeared negative. Corrected, the models are close.
+    """
+    import tempfile
+    from pathlib import Path
+
+    import matplotlib
+    matplotlib.use("Agg")
+
+    from src.evaluation.statistics import MIN_REFERENCE_ARI
+    from src.evaluation.tables import table_biology
+    from src.visualization.figures import figure_biology
+
+    rows = []
+    for i in range(4):                       # eligible sections, sane ratios
+        for m, v in (("nmo", 0.50), ("gnn", 0.48)):
+            rows.append(dict(section=f"s{i}", model=m, ari_predicted=0.25,
+                             ari_measured=0.50, ari_retention=v,
+                             marker_auroc_predicted=0.7,
+                             neighborhood_preservation=0.4,
+                             gearys_c_abs_error=0.1))
+    for m, v in (("nmo", 6.90), ("gnn", -6.86)):   # degenerate reference
+        rows.append(dict(section="degenerate", model=m, ari_predicted=0.25,
+                         ari_measured=MIN_REFERENCE_ARI / 10, ari_retention=v,
+                         marker_auroc_predicted=0.7,
+                         neighborhood_preservation=0.4,
+                         gearys_c_abs_error=0.1))
+
+    with tempfile.TemporaryDirectory() as d:
+        out = Path(d) / "bio.tex"
+        table_biology(rows, out)
+        text = out.read_text()
+        assert "1.7" not in text and "6.9" not in text, (
+            "table_biology averaged in a section whose measured ARI is near zero")
+        assert "0.50" in text or "0.480" in text or "0.48" in text, (
+            "eligible rows disappeared; the filter is too aggressive")
+
+    fig = figure_biology(rows)
+    ys = []
+    for ax in fig.axes:
+        for coll in ax.collections:
+            off = coll.get_offsets()
+            if off is not None and len(off):
+                ys.extend(float(p[1]) for p in off)
+        for line in ax.lines:
+            ys.extend(float(y) for y in line.get_ydata())
+    assert ys, "nothing plotted; the assertion below would be vacuous"
+    assert max(abs(y) for y in ys) < 3.0, (
+        f"figure_biology plotted a retention of {max(ys, key=abs):.2f}; the "
+        f"degenerate section survived the eligibility rule")
