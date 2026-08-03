@@ -111,13 +111,34 @@ def main() -> int:
         index="section", columns="model", values="pearson_mean")
     models = [c for c in piv.columns if c != "nmo"]
 
+    # Per-model noise, measured from the retained pre-fix shards. --sd overrides
+    # with a single scale for every model, which is what the first version of
+    # this analysis did and what turned out to be wrong.
+    shifts = measured_shifts()
+    sd_of = {}
+    for m in AFFECTED:
+        if a.sd is not None:
+            sd_of[m] = a.sd
+        elif m in shifts and shifts[m][1] > 1 and shifts[m][0] > 0:
+            sd_of[m] = shifts[m][0]
+        else:
+            sd_of[m] = FALLBACK_SD
+    print("noise scale per affected model:")
+    for m in sorted(sd_of):
+        n = shifts.get(m, (None, 0))[1]
+        src = ("--sd override" if a.sd is not None else
+               f"measured, n={n}" if m in shifts and shifts[m][1] > 1
+               and shifts[m][0] > 0 else "FALLBACK (unmeasured)")
+        print(f"   {m:<16}{sd_of[m]:.4f}  ({src})")
+    print()
+
     def run(rng=None):
         ps, ms = [], []
         for m in models:
             sub = piv[["nmo", m]].dropna()
             if len(sub) < 3:
                 continue
-            pert = (rng.normal(0, a.sd, len(sub))
+            pert = (rng.normal(0, sd_of[m], len(sub))
                     if rng is not None and m in AFFECTED else 0.0)
             d = (sub["nmo"] - (sub[m] + pert)).values
             ps.append(float(wilcoxon(d)[1]) if np.any(d != 0) else 1.0)
@@ -134,11 +155,12 @@ def main() -> int:
                 flips[m] += 1
 
     out = {}
-    print(f"noise s.d. {a.sd}, {a.n_resamples} resamples\n")
+    print(f"{a.n_resamples} resamples\n")
     print(f"{'model':<16}{'p_holm':>9}{'sig':>6}{'flip rate':>11}")
     for m, b in zip(names, base):
         out[m] = dict(p_holm=float(b), significant=bool(b < a.alpha),
                       affected=m in AFFECTED,
+                      noise_sd=sd_of.get(m),
                       flip_rate=flips[m] / a.n_resamples)
         print(f"{m:<16}{b:>9.4f}{'yes' if b < a.alpha else '--':>6}"
               f"{flips[m] / a.n_resamples:>10.2%}")
