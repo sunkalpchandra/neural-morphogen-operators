@@ -3,6 +3,16 @@
 SHA256 manifest; every table and figure in this paper is regenerated from run
 artifacts by a single command; configurations, seeds and checkpoints are released.
 
+\paragraph{Environment and cost.} Every run records the versions it executed
+under, so these are read from the artifacts rather than from whatever happens to
+be installed at build time: Python \EnvPython{}, PyTorch \EnvTorch{}, NumPy
+\EnvNumpy{}, on \EnvMachine{}. No GPU was used; all results are CPU, which is
+why the benchmark runs at a reduced epoch budget. The \ComputeRuns{} runs that
+record wall-clock total \ComputeHours{} CPU-hours, the multi-section benchmark
+being most of it. \texttt{requirements-lock.txt} pins the exact resolved
+environment; \texttt{requirements.txt} keeps ranges so the project installs
+elsewhere.
+
 \paragraph{Software and sources.} Preprocessing uses Scanpy
 \citep{wolf2018scanpy} over AnnData \citep{virshup2024anndata}; all models are
 trained with AdamW \citep{loshchilov2019adamw} under one shared loop. The

@@ -817,6 +817,36 @@ def build(results_root: str | Path = "results", out: str | Path = "paper/numbers
                 cmd(f"Split{tag}Block", f"{G[key]['block_median_um']:.1f}")
                 cmd(f"Split{tag}Ratio", f"{G[key]['ratio']:.1f}")
 
+    # ---- environment and compute cost --------------------------------------- #
+    # Every run records the versions it ran under, so the reproducibility
+    # appendix can quote them from artifacts rather than from whatever is
+    # installed when someone happens to rebuild the paper.
+    _envs, _wall, _nwall = {}, 0.0, 0
+    for _f in Path(results_root).rglob("*.json"):
+        if ".audit_backups" in str(_f):
+            continue
+        try:
+            _d = json.loads(_f.read_text())
+        except Exception:
+            continue
+        for _r in (_d if isinstance(_d, list) else [_d]):
+            if not isinstance(_r, dict):
+                continue
+            if isinstance(_r.get("wall_s"), (int, float)):
+                _wall += _r["wall_s"]; _nwall += 1
+            for _k in ("torch", "python", "numpy", "machine"):
+                if _k in _r:
+                    _envs.setdefault(_k, set()).add(str(_r[_k]))
+    for _k, _mac in [("torch", "EnvTorch"), ("python", "EnvPython"),
+                     ("numpy", "EnvNumpy"), ("machine", "EnvMachine")]:
+        if _envs.get(_k):
+            # If runs disagree the paper should say so rather than pick one.
+            _v = sorted(_envs[_k])
+            cmd(_mac, _v[0] if len(_v) == 1 else "/".join(_v))
+    if _nwall:
+        cmd("ComputeHours", f"{_wall / 3600:.0f}")
+        cmd("ComputeRuns", str(_nwall))
+
     # ---- per-gene structure analysis -------------------------------------- #
     # The continuity argument predicts the advantage concentrates on spatially
     # structured genes. These macros carry the measured range across seeds so
