@@ -282,11 +282,27 @@ class NeuralMorphogenOperator(nn.Module):
 # --------------------------------------------------------------------------- #
 
 
+#: Keys consumed before build_nmo (model selection in train.py), so they
+#: legitimately never reach NMOConfig.
+DISPATCH_KEYS = {"type"}
+
+
 def build_nmo(cfg: Dict | NMOConfig, n_genes: Optional[int] = None) -> NeuralMorphogenOperator:
     if isinstance(cfg, dict):
         d = dict(cfg)
         dyn = d.pop("dynamics", {}) or {}
         known = set(NMOConfig.__dataclass_fields__) - {"dynamics"}
+        # Dropping unknown keys silently means a typo in a config, or an
+        # ablation that sets a field this model does not read, produces a run
+        # that looks configured and is not. That is how model.knn_k came to be
+        # swept across three values that scored bit-identically.
+        unknown = sorted(set(d) - known - DISPATCH_KEYS)
+        if unknown:
+            raise ValueError(
+                f"unknown model config key(s) {unknown}; NMOConfig accepts "
+                f"{sorted(known)}. A key that reaches nothing produces a run "
+                f"that looks configured but is not -- rename it, remove it, or "
+                f"add it to DISPATCH_KEYS if it is consumed before build_nmo.")
         d = {k: v for k, v in d.items() if k in known}
         cfg = NMOConfig(**d, dynamics=DynamicsConfig(**dyn))
     if n_genes is not None:

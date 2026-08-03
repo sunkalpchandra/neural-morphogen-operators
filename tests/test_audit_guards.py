@@ -332,3 +332,48 @@ def test_no_generator_is_orphaned():
     assert not orphans, (
         "generators with no caller -- `make figures` will leave their output "
         f"stale: {orphans}")
+
+
+def test_unknown_model_config_keys_are_rejected():
+    """A config key that reaches no field produces a run that looks configured
+    and is not. model.knn_k was swept across three values that scored
+    bit-identically because the encoder only reads it when no edge_index is
+    supplied, and every experiment supplies one. build_nmo dropped unknown keys
+    silently, so nothing distinguished a dead knob from a typo.
+    """
+    import pytest as _pt
+
+    from src.models.nmo import DISPATCH_KEYS, build_nmo
+    from src.utils.common import Config
+
+    cfg = Config.load("configs/base.yaml").model.to_dict()
+    build_nmo(cfg, n_genes=32)                      # the real config still builds
+
+    with _pt.raises(ValueError, match="unknown model config key"):
+        build_nmo({**cfg, "latnet_channels": 64}, n_genes=32)
+
+    # keys consumed before build_nmo are allowed through by name, not by luck
+    assert "type" in DISPATCH_KEYS
+    build_nmo({**cfg, "type": "nmo"}, n_genes=32)
+
+
+def test_every_key_in_the_shipped_config_reaches_a_field():
+    """The shipped config must not carry settings nothing consumes."""
+    import yaml
+
+    from src.losses.objectives import LossWeights
+    from src.models.dynamics import DynamicsConfig
+    from src.models.nmo import DISPATCH_KEYS, NMOConfig
+    from src.training.trainer import TrainConfig
+
+    c = yaml.safe_load(open("configs/base.yaml"))
+    checks = [
+        ("model", c.get("model", {}), set(NMOConfig.__dataclass_fields__) | DISPATCH_KEYS),
+        ("model.dynamics", c.get("model", {}).get("dynamics", {}),
+         set(DynamicsConfig.__dataclass_fields__)),
+        ("train", c.get("train", {}), set(TrainConfig.__dataclass_fields__)),
+        ("loss", c.get("loss", {}), set(LossWeights.__dataclass_fields__)),
+    ]
+    dead = {name: sorted(set(cfg) - known) for name, cfg, known in checks
+            if sorted(set(cfg) - known)}
+    assert not dead, f"config keys consumed by nothing: {dead}"
